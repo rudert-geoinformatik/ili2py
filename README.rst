@@ -74,7 +74,7 @@ First install all DEPS:
     poetry build
     poetry install
 
-Read [Report](report.md) and try out commands as shown.
+Read `Report <./report.md>`_ and try out commands as shown.
 
 
 License
