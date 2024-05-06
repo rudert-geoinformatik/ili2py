@@ -1,0 +1,226 @@
+INTERLIS 2.3;
+
+/** Minimales Geodatenmodell
+ * Nutzungsplanung (kantonal/kommunal)
+ * Geobasisdatensatz Nr. 73
+ * TRANSLATION OF-Modelle: PlansDAffectation_V1_2.ili, PianiDiUtilizzazione_V1_2.ili
+ */
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2023-03-20 | ARE   | - DOMAIN Gebietseinteilung fällt weg
+!!                    | - CLASS Grundnutzung_Zonenflaeche: Geometrie vom Typ Einzelflaeche (SURFACE)
+!!                    | - CLASS Grundnutzung_Zonenflaeche: CONSTRAINT zur Gewährleistung der AREA-Topologie
+!!                    | - CLASS Typ und Typ_Kt: Attribut Code, Feldlänge 40 Zeichen
+!!------------------------------------------------------------------------------
+!! 2021-11-19 | KOGIS | Localisation_V1 replaced by LocalisationCH_V1
+!!------------------------------------------------------------------------------
+!! 2021-09-01 | ARE   | Version 1.2
+!!                    | Anpassungen an das ÖREB-Rahmenmodell Version 2.0 vom 14.04.2021
+!!                    | - DOMAIN RechtsStatus angepasst, DokumentTyp neu
+!!                    | - STRUCTURE LocalisedBlob und MultilingualBlob neu
+!!                    | - CLASS Geometrie: neues Attribut publiziertBis
+!!                    | - CLASS Dokument angepasst an ÖREB-Rahmenmodell
+!!                    | - CLASS Amt angepasst an ÖREB-Rahmenmodell
+!!                    | Weitere technische Anpassungen
+!!                    | - MODEL Nutzungsplanung_V1_2: nur noch ein Modell, separate Modelle für LV03 und Katalog nicht mehr notwendig
+!!                    | - CLASS Hauptnutzung_CH heisst neu Catalogue_CH und ist mehrsprachig (Text als MultilingualText)
+!!                    | - ASSOCIATION Geometrie_Dokument zusätzlich eingefügt, um eine direkte Verknüpfung von Geometrie und Dokument zu ermöglichen
+!!                    | - TOPIC Geobasisdaten neu mit BASKET OID vom Typ TypeID
+!!                    | - CLASS Datenbestand: Attribut BasketID neu vom Typ TypeID, neues Meta-Attribut zur Überprüfung der ID
+!!
+!!------------------------------------------------------------------------------
+
+!!@ technicalContact=mailto:info@are.admin.ch
+!!@ furtherInformation=https://www.are.admin.ch/mgm
+!!@ IDGeoIV=73
+MODEL Nutzungsplanung_V1_2 (de)
+AT "https://models.geo.admin.ch/ARE/"
+VERSION "2023-03-20"  =
+  IMPORTS CHAdminCodes_V1,InternationalCodes_V1,LocalisationCH_V1,GeometryCHLV95_V1;
+
+  DOMAIN
+
+    Einzelflaeche = SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.05;
+
+    TypeID = OID TEXT*60;
+
+    RechtsStatus = (
+      inKraft,
+      AenderungMitVorwirkung,
+      AenderungOhneVorwirkung
+    );
+
+    DokumentTyp = (
+      Rechtsvorschrift,
+      GesetzlicheGrundlage,
+      Hinweis
+    );
+
+    Verbindlichkeit = (
+      Nutzungsplanfestlegung,
+      orientierend,
+      hinweisend,
+      wegleitend
+    );
+
+  STRUCTURE LocalisedUri =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Text : MANDATORY URI;
+  END LocalisedUri;
+
+  STRUCTURE MultilingualUri =
+    LocalisedText : BAG {1..*} OF Nutzungsplanung_V1_2.LocalisedUri;
+    UNIQUE (LOCAL) LocalisedText: Language;
+  END MultilingualUri;
+
+  STRUCTURE LocalisedBlob =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Blob : MANDATORY BLACKBOX BINARY;
+  END LocalisedBlob;
+
+  STRUCTURE MultilingualBlob =
+    LocalisedBlob : BAG {1..*} OF Nutzungsplanung_V1_2.LocalisedBlob;
+    UNIQUE (LOCAL) LocalisedBlob: Language;
+  END MultilingualBlob;
+
+  TOPIC Catalogue_CH =
+    BASKET OID AS TypeID;
+
+    CLASS Catalogue_CH (FINAL) =
+      OID AS TypeID;
+      Code : MANDATORY 11 .. 99;
+      Designation : MANDATORY LocalisationCH_V1.MultilingualText;
+    END Catalogue_CH;
+
+  END Catalogue_CH;
+
+  TOPIC Rechtsvorschriften =
+    DEPENDS ON Nutzungsplanung_V1_2.Catalogue_CH;
+
+    CLASS Dokument =
+      Typ : MANDATORY Nutzungsplanung_V1_2.DokumentTyp;
+      Titel : MANDATORY LocalisationCH_V1.MultilingualText;
+      Abkuerzung : LocalisationCH_V1.MultilingualText;
+      OffizielleNr : LocalisationCH_V1.MultilingualText;
+      NurInGemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      TextImWeb : Nutzungsplanung_V1_2.MultilingualUri;
+      Dokument : Nutzungsplanung_V1_2.MultilingualBlob;
+      AuszugIndex : MANDATORY -1000 .. 1000;
+      Rechtsstatus : MANDATORY Nutzungsplanung_V1_2.RechtsStatus;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+    END Dokument;
+
+  END Rechtsvorschriften;
+
+  TOPIC Geobasisdaten =
+    BASKET OID AS TypeID;
+    DEPENDS ON Nutzungsplanung_V1_2.Catalogue_CH,Nutzungsplanung_V1_2.Rechtsvorschriften;
+
+    CLASS Geometrie (ABSTRACT) =
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+      Rechtsstatus : MANDATORY Nutzungsplanung_V1_2.RechtsStatus;
+      Bemerkungen : MTEXT;
+    END Geometrie;
+
+    CLASS Typ =
+      Code : MANDATORY TEXT*40;
+      Bezeichnung : MANDATORY TEXT*80;
+      Abkuerzung : TEXT*12;
+      Verbindlichkeit : MANDATORY Nutzungsplanung_V1_2.Verbindlichkeit;
+      Nutzungsziffer : 0.00 .. 9.00;
+      Nutzungsziffer_Art : TEXT*40;
+      Bemerkungen : MTEXT;
+      Symbol : BLACKBOX BINARY;
+    END Typ;
+
+    CLASS Typ_Kt =
+      Code : MANDATORY TEXT*40;
+      Bezeichnung : MANDATORY TEXT*80;
+      Abkuerzung : TEXT*12;
+      Bemerkungen : MTEXT;
+    END Typ_Kt;
+
+    CLASS Grundnutzung_Zonenflaeche
+    EXTENDS Geometrie =
+      Geometrie : MANDATORY Nutzungsplanung_V1_2.Einzelflaeche;
+    SET CONSTRAINT WHERE Rechtsstatus == #inKraft:
+      INTERLIS.areAreas(ALL, UNDEFINED, >> Geometrie);
+    END Grundnutzung_Zonenflaeche;
+
+    CLASS Linienbezogene_Festlegung
+    EXTENDS Geometrie =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+    END Linienbezogene_Festlegung;
+
+    CLASS Objektbezogene_Festlegung
+    EXTENDS Geometrie =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+    END Objektbezogene_Festlegung;
+
+    CLASS Ueberlagernde_Festlegung
+    EXTENDS Geometrie =
+      Geometrie : MANDATORY Nutzungsplanung_V1_2.Einzelflaeche;
+    END Ueberlagernde_Festlegung;
+
+    ASSOCIATION Typ_Dokument =
+      Typ (EXTERNAL) -- {0..*} Typ;
+      Dokument (EXTERNAL) -- {0..*} Nutzungsplanung_V1_2.Rechtsvorschriften.Dokument;
+    END Typ_Dokument;
+
+    ASSOCIATION Geometrie_Dokument =
+      Geometrie (EXTERNAL) -- {0..*} Geometrie;
+      Dokument (EXTERNAL) -- {0..*} Nutzungsplanung_V1_2.Rechtsvorschriften.Dokument;
+    END Geometrie_Dokument;
+
+    ASSOCIATION Typ_Geometrie =
+      Geometrie -- {0..*} Geometrie;
+      Typ -<> {1} Typ;
+    END Typ_Geometrie;
+
+    ASSOCIATION Typ_Typ_Kt =
+      Typ -- {0..*} Typ;
+      Typ_Kt (EXTERNAL) -<> {1} Typ_Kt;
+    END Typ_Typ_Kt;
+
+    ASSOCIATION TypKt_CatalogueCH =
+      Typ_Kt -- {0..*} Typ_Kt;
+      Catalogue_CH (EXTERNAL) -- {1} Nutzungsplanung_V1_2.Catalogue_CH.Catalogue_CH;
+    END TypKt_CatalogueCH;
+
+  END Geobasisdaten;
+
+  TOPIC TransferMetadaten =
+    DEPENDS ON Nutzungsplanung_V1_2.Rechtsvorschriften;
+
+    CLASS Amt =
+      Name : MANDATORY LocalisationCH_V1.MultilingualText;
+      AmtImWeb : Nutzungsplanung_V1_2.MultilingualUri;
+      UID : TEXT*12;
+      Zeile1 : TEXT*80;
+      Zeile2 : TEXT*80;
+      Strasse : TEXT*100;
+      Hausnr : TEXT*7;
+      PLZ : TEXT*4;
+      Ort : TEXT*40;
+      UNIQUE UID;
+    END Amt;
+
+    CLASS Datenbestand =
+      !!@ basketRef=Nutzungsplanung_V1_2.Geobasisdaten
+      BasketID : MANDATORY TypeID;
+      Stand : MANDATORY INTERLIS.XMLDate;
+      Lieferdatum : INTERLIS.XMLDate;
+      Bemerkungen : MTEXT;
+    END Datenbestand;
+
+    ASSOCIATION zustStelle_Daten =
+      zustaendigeStelle -<> {1} Amt;
+      Datenbestand -- {0..*} Datenbestand;
+    END zustStelle_Daten;
+
+  END TransferMetadaten;
+
+END Nutzungsplanung_V1_2.

@@ -1,0 +1,8 @@
+{{ attr_or_param_item.name.lower() }}: {% if type_item.mandatory %}int{% else %}Optional[int]{% endif %} = field(
+        {% if not type_item.mandatory %}default=None,{% endif %}
+        metadata={
+            "name": "{{ attr_or_param_item.name }}",
+            "type": "Element",
+            "required": {{ type_item.mandatory }}
+        }
+    )

@@ -1,0 +1,199 @@
+INTERLIS 2.3;
+
+CONTRACTED TYPE MODEL INTERLIS (en) AT "http://www.interlis.ch/"
+  VERSION "2005-06-16" =
+
+  LINE FORM
+    STRAIGHTS;
+    ARCS;
+
+  UNIT
+    ANYUNIT (ABSTRACT);
+    DIMENSIONLESS (ABSTRACT);
+    LENGTH (ABSTRACT);
+    MASS (ABSTRACT);
+    TIME (ABSTRACT);
+    ELECTRIC_CURRENT (ABSTRACT);
+    TEMPERATURE (ABSTRACT);
+    AMOUNT_OF_MATTER (ABSTRACT);
+    ANGLE (ABSTRACT);
+    SOLID_ANGLE (ABSTRACT);
+    LUMINOUS_INTENSITY (ABSTRACT);
+    MONEY (ABSTRACT);
+
+    METER [m] EXTENDS LENGTH;
+    KILOGRAM [kg] EXTENDS MASS;
+    SECOND [s] EXTENDS TIME;
+    AMPERE [A] EXTENDS ELECTRIC_CURRENT;
+    DEGREE_KELVIN [K] EXTENDS TEMPERATURE;
+    MOLE [mol] EXTENDS AMOUNT_OF_MATTER;
+    RADIAN [rad] EXTENDS ANGLE;
+    STERADIAN [sr] EXTENDS SOLID_ANGLE;
+    CANDELA [cd] EXTENDS LUMINOUS_INTENSITY;
+
+  DOMAIN
+    URI (FINAL) = TEXT*1023;
+    NAME (FINAL) = TEXT*255;
+    INTERLIS_1_DATE (FINAL) = TEXT*8;
+    BOOLEAN (FINAL) = (
+      false,
+      true) ORDERED;
+    HALIGNMENT (FINAL) = (
+      Left,
+      Center,
+      Right) ORDERED;
+    VALIGNMENT (FINAL) = (
+      Top,
+      Cap,
+      Half,
+      Base,
+      Bottom) ORDERED;
+    ANYOID = OID ANY;
+    I32OID = OID 0 .. 2147483647;
+    STANDARDOID = OID TEXT*16;
+    UUIDOID = OID TEXT*36;
+    LineCoord (ABSTRACT) = COORD NUMERIC, NUMERIC;
+
+  FUNCTION myClass (Object: ANYSTRUCTURE): STRUCTURE;
+  FUNCTION isSubClass (potSubClass: STRUCTURE; potSuperClass: STRUCTURE):
+    BOOLEAN;
+  FUNCTION isOfClass (Object: ANYSTRUCTURE; Class: STRUCTURE): BOOLEAN;
+  FUNCTION elementCount (bag: BAG OF ANYSTRUCTURE): NUMERIC;
+  FUNCTION objectCount (Objects: OBJECTS OF ANYCLASS): NUMERIC;
+  FUNCTION len (TextVal: TEXT): NUMERIC;
+  FUNCTION lenM (TextVal: MTEXT): NUMERIC;
+  FUNCTION trim (TextVal: TEXT): TEXT;
+  FUNCTION trimM (TextVal: MTEXT): MTEXT;
+  FUNCTION isEnumSubVal (SubVal: ENUMTREEVAL; NodeVal: ENUMTREEVAL): BOOLEAN;
+  FUNCTION inEnumRange (Enum: ENUMVAL;
+                        MinVal: ENUMTREEVAL;
+                        MaxVal: ENUMTREEVAL): BOOLEAN;
+  FUNCTION convertUnit (from: NUMERIC): NUMERIC;
+  FUNCTION areAreas (Objects: OBJECTS OF ANYCLASS;
+                     SurfaceBag: ATTRIBUTE OF @ Objects
+                                           RESTRICTION (BAG OF ANYSTRUCTURE);
+                     SurfaceAttr: ATTRIBUTE OF @ SurfaceBag
+                                            RESTRICTION (SURFACE)): BOOLEAN;
+
+  CLASS METAOBJECT (ABSTRACT) =
+    Name: MANDATORY NAME;
+  UNIQUE Name;
+  END METAOBJECT;
+
+  CLASS METAOBJECT_TRANSLATION =
+    Name: MANDATORY NAME;
+    NameInBaseLanguage: MANDATORY NAME;
+  UNIQUE Name;
+  UNIQUE NameInBaseLanguage;
+  END METAOBJECT_TRANSLATION;
+
+  STRUCTURE AXIS =
+    PARAMETER
+      Unit: NUMERIC [ANYUNIT];
+  END AXIS;
+
+  CLASS REFSYSTEM (ABSTRACT) EXTENDS METAOBJECT =
+  END REFSYSTEM;
+
+  CLASS COORDSYSTEM (ABSTRACT) EXTENDS REFSYSTEM =
+    ATTRIBUTE
+      Axis: LIST {1..3} OF AXIS;
+  END COORDSYSTEM;
+
+  CLASS SCALSYSTEM (ABSTRACT) EXTENDS REFSYSTEM =
+    PARAMETER
+      Unit: NUMERIC [ANYUNIT];
+  END SCALSYSTEM;
+
+  CLASS SIGN (ABSTRACT) EXTENDS METAOBJECT =
+    PARAMETER
+      Sign: METAOBJECT;
+  END SIGN;
+
+
+  TOPIC TIMESYSTEMS =
+
+    CLASS CALENDAR EXTENDS INTERLIS.SCALSYSTEM =
+      PARAMETER
+        Unit(EXTENDED): NUMERIC [TIME];
+    END CALENDAR;
+
+    CLASS TIMEOFDAYSYS EXTENDS INTERLIS.SCALSYSTEM =
+      PARAMETER
+        Unit(EXTENDED): NUMERIC [TIME];
+    END TIMEOFDAYSYS;
+
+  END TIMESYSTEMS;
+
+  UNIT
+    Minute [min] = 60 [INTERLIS.s];
+    Hour   [h]   = 60 [min];
+    Day    [d]   = 24 [h];
+    Month [M] EXTENDS INTERLIS.TIME;
+    Year [Y] EXTENDS INTERLIS.TIME;
+
+  REFSYSTEM BASKET BaseTimeSystems ~ TIMESYSTEMS
+    OBJECTS OF CALENDAR: GregorianCalendar
+    OBJECTS OF TIMEOFDAYSYS: UTC;
+
+  STRUCTURE TimeOfDay (ABSTRACT) =
+    Hours: 0 .. 23 CIRCULAR [h];
+    CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [min];
+    CONTINUOUS SUBDIVISION Seconds: 0.000 .. 59.999 CIRCULAR [INTERLIS.s];
+  END TimeOfDay;
+
+  STRUCTURE UTC EXTENDS TimeOfDay =
+    Hours(EXTENDED): 0 .. 23 {UTC};
+  END UTC;
+
+  DOMAIN
+    GregorianYear = 1582 .. 2999 [Y] {GregorianCalendar};
+
+  STRUCTURE GregorianDate =
+    Year: GregorianYear;
+    SUBDIVISION Month: 1 .. 12 [M];
+    SUBDIVISION Day: 1 .. 31 [d];
+  END GregorianDate;
+
+  STRUCTURE GregorianDateTime EXTENDS GregorianDate =
+    SUBDIVISION Hours: 0 .. 23 CIRCULAR [h] {UTC};
+    CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [min];
+    CONTINUOUS SUBDIVISION Seconds: 0.000 .. 59.999 CIRCULAR [INTERLIS.s];
+  END GregorianDateTime;
+
+  DOMAIN XMLTime = FORMAT BASED ON UTC ( Hours/2 ":" Minutes ":" Seconds );
+  DOMAIN XMLDate = FORMAT BASED ON GregorianDate ( Year "-" Month "-" Day );
+  DOMAIN XMLDateTime EXTENDS XMLDate = FORMAT BASED ON GregorianDateTime
+                                              ( INHERITANCE "T" Hours/2 ":" Minutes
+                                                            ":" Seconds );
+
+  STRUCTURE LineSegment (ABSTRACT) =
+    SegmentEndPoint: MANDATORY LineCoord;
+  END LineSegment;
+
+  STRUCTURE StartSegment (FINAL) EXTENDS LineSegment =
+  END StartSegment;
+
+  STRUCTURE StraightSegment (FINAL) EXTENDS LineSegment =
+  END StraightSegment;
+
+  STRUCTURE ArcSegment (FINAL) EXTENDS LineSegment =
+    ArcPoint: MANDATORY LineCoord;
+    Radius: NUMERIC [LENGTH];
+  END ArcSegment;
+
+  STRUCTURE SurfaceEdge =
+    Geometry: DIRECTED POLYLINE;
+    LineAttrs: ANYSTRUCTURE;
+  END SurfaceEdge;
+
+  STRUCTURE SurfaceBoundary =
+    Lines: LIST OF SurfaceEdge;
+  END SurfaceBoundary;
+
+  STRUCTURE LineGeometry =
+    Segments: LIST OF LineSegment;
+  MANDATORY CONSTRAINT isOfClass (Segments[FIRST],StartSegment);
+  END LineGeometry;
+
+END INTERLIS.

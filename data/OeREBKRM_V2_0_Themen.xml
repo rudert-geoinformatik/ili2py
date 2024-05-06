@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="generic_xtf.xsl" ?>
+<!--
+Version    | Who   | Modification
+=======================================================================================
+2021-07-14 | V+D   | Several translations of the themes adapted
+2021-09-15 | V+D   | AuszugIndex 010 and 020 replaced by 10 and 20
+2022-01-25 | V+D   | In the topic ch.Waldabstandslinien, the reference to "ch.admin.bk.sr.921.01" has been deleted
+2022-03-01 | V+D   | Cleanup of various typos in French and Italian
+2022-09-01 | KOGIS | File name adapted (without date at the end)
+-->
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <HEADERSECTION SENDER="swisstopo, Geodesy and Federal Directorate of Cadastral Surveying" VERSION="2.3">
+    <MODELS>
+      <MODEL NAME="InternationalCodes_V1" VERSION="2011-08-30" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="LocalisationCH_V1" VERSION="2011-08-30" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="CatalogueObjects_V1" VERSION="2011-08-30" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="OeREBKRMkvs_V2_0" VERSION="2021-04-14" URI="https://models.geo.admin.ch/V_D/OeREB/"/>
+    </MODELS>
+    <!-- Stand der XML-Datei, Etat du fichier XML, Stato del XML-File -->
+    <COMMENT>"2022-09-01"</COMMENT>
+  </HEADERSECTION>
+  <DATASECTION>
+    <OeREBKRMkvs_V2_0.Thema BID="ch.admin.v_d.oerebkrmkvs_thema">
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Nutzungsplanung">
+        <Code>ch.Nutzungsplanung</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Nutzungsplanung (kantonal/kommunal)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Plans d'affectation (cantonaux/communaux)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Piani di utilizzazione (cantonali/comunali)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Planisaziun d'utilisaziun (chantunal/communal)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Land use plans (cantonal/municipal)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>20</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Nutzungsplanung"/>
+        <Gesetz REF="ch.admin.bk.sr.700"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.ProjektierungszonenNationalstrassen">
+        <Code>ch.ProjektierungszonenNationalstrassen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Projektierungszonen Nationalstrassen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Zones réservées des routes nationales</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Zone riservate per le strade nazionali</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Zonas da projectaziun da las vias naziunalas</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Reserved zones for motorways</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>110</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.ProjektierungszonenNationalstrassen"/>
+        <Gesetz REF="ch.admin.bk.sr.725.11"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.ProjektierungszonenNationalstrassen"/>
+        <Gesetz REF="ch.admin.bk.sr.725.111"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BaulinienNationalstrassen">
+        <Code>ch.BaulinienNationalstrassen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Baulinien Nationalstrassen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Alignements des routes nationales</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Allineamenti per le strade nazionali</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Lingias da construcziun da las vias naziunalas</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Building lines for motorways</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>120</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BaulinienNationalstrassen"/>
+        <Gesetz REF="ch.admin.bk.sr.725.11"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BaulinienNationalstrassen"/>
+        <Gesetz REF="ch.admin.bk.sr.725.111"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.ProjektierungszonenEisenbahnanlagen">
+        <Code>ch.ProjektierungszonenEisenbahnanlagen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Projektierungszonen Eisenbahnanlagen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Zones réservées des installations ferroviaires</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Zone riservate per gli impianti ferroviari</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Zonas da projectaziun dals implants da viafier</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Reserved zones for railways</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>210</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.ProjektierungszonenEisenbahnanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.742.101"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BaulinienEisenbahnanlagen">
+        <Code>ch.BaulinienEisenbahnanlagen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Baulinien Eisenbahnanlagen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Alignements des installations ferroviaires</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Allineamenti per gli impianti ferroviari</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Lingias da construcziun dals implants da viafier</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Building lines for railways</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>220</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BaulinienEisenbahnanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.742.101"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.ProjektierungszonenFlughafenanlagen">
+        <Code>ch.ProjektierungszonenFlughafenanlagen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Projektierungszonen Flughafenanlagen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Zones réservées des installations aéroportuaires</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Zone riservate per gli impianti aeroportuali</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Zonas da projectaziun dals implants d'eroport</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Reserved zones for airports</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>310</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.ProjektierungszonenFlughafenanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.748.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.ProjektierungszonenFlughafenanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.748.131.1"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BaulinienFlughafenanlagen">
+        <Code>ch.BaulinienFlughafenanlagen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Baulinien Flughafenanlagen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Alignements des installations aéroportuaires</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Allineamenti per gli impianti aeroportuali</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Lingias da construcziun dals implants d'eroport</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Building lines for airports</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>320</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BaulinienFlughafenanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.748.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BaulinienFlughafenanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.748.131.1"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Sicherheitszonenplan">
+        <Code>ch.Sicherheitszonenplan</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Sicherheitszonenplan</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Plan de la zone de sécurité</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Piano delle zone di sicurezza</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Plan da zonas da segirezza</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Security zone plan</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>330</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Sicherheitszonenplan"/>
+        <Gesetz REF="ch.admin.bk.sr.748.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Sicherheitszonenplan"/>
+        <Gesetz REF="ch.admin.bk.sr.748.131.1"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BelasteteStandorte">
+        <Code>ch.BelasteteStandorte</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Kataster der belasteten Standorte</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Cadastre des sites pollués</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Catasto dei siti inquinati</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Cataster dals lieus contaminads</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Cadastre of contaminated sites</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>410</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorte"/>
+        <Gesetz REF="ch.admin.bk.sr.814.01"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorte"/>
+        <Gesetz REF="ch.admin.bk.sr.814.680"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BelasteteStandorteMilitaer">
+        <Code>ch.BelasteteStandorteMilitaer</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Kataster der belasteten Standorte im Bereich des Militärs</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Cadastre des sites pollués – domaine militaire</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Catasto dei siti inquinati nel settore militare</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Cataster dals lieus contaminads en il sectur da l'armada</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Cadastre of contaminated military sites</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>420</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorteMilitaer"/>
+        <Gesetz REF="ch.admin.bk.sr.814.01"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorteMilitaer"/>
+        <Gesetz REF="ch.admin.bk.sr.814.680"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BelasteteStandorteZivileFlugplaetze">
+        <Code>ch.BelasteteStandorteZivileFlugplaetze</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Kataster der belasteten Standorte im Bereich der zivilen Flugplätze</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Cadastre des sites pollués – domaine des aérodromes civils</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Catasto dei siti inquinati nel settore degli aeroporti civili</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Cataster dals lieus contaminads en il sectur da las plazzas aviaticas civilas</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Cadastre of contaminated civil aviation sites</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>430</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorteZivileFlugplaetze"/>
+        <Gesetz REF="ch.admin.bk.sr.814.01"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorteZivileFlugplaetze"/>
+        <Gesetz REF="ch.admin.bk.sr.814.680"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BelasteteStandorteOeffentlicherVerkehr">
+        <Code>ch.BelasteteStandorteOeffentlicherVerkehr</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Kataster der belasteten Standorte im Bereich des öffentlichen Verkehrs</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Cadastre des sites pollués – domaine des transports publics</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Catasto dei siti inquinati nel settore dei trasporti pubblici</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Cataster dals lieus contaminads en il sectur dal traffic public</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Cadastre of contaminated public transport sites</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>440</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorteOeffentlicherVerkehr"/>
+        <Gesetz REF="ch.admin.bk.sr.814.01"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BelasteteStandorteOeffentlicherVerkehr"/>
+        <Gesetz REF="ch.admin.bk.sr.814.680"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Grundwasserschutzzonen">
+        <Code>ch.Grundwasserschutzzonen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Grundwasserschutzzonen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Zones de protection des eaux souterraines</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Zone di protezione delle acque sotterranee</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Zonas da protecziun da las auas sutterranas</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Groundwater protection zones</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>510</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Grundwasserschutzzonen"/>
+        <Gesetz REF="ch.admin.bk.sr.814.20"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Grundwasserschutzzonen"/>
+        <Gesetz REF="ch.admin.bk.sr.814.201"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Grundwasserschutzareale">
+        <Code>ch.Grundwasserschutzareale</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Grundwasserschutzareale</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Périmètres de protection des eaux souterraines</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Aree di protezione delle acque sotterranee</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Areals da protecziun da las auas sutterranas</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Groundwater protection areas</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>520</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Grundwasserschutzareale"/>
+        <Gesetz REF="ch.admin.bk.sr.814.20"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Grundwasserschutzareale"/>
+        <Gesetz REF="ch.admin.bk.sr.814.201"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Laermempfindlichkeitsstufen">
+        <Code>ch.Laermempfindlichkeitsstufen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Lärmempfindlichkeitsstufen (in Nutzungszonen)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Degré de sensibilité au bruit (dans les zones d'affectation)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Gradi di sensibilità al rumore (in zone d'utilizzazione)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Grads da sensibladad da canera (en las zonas d'utilisaziun)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Noise sensitivity level (in land use zones)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>610</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Laermempfindlichkeitsstufen"/>
+        <Gesetz REF="ch.admin.bk.sr.814.41"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.StatischeWaldgrenzen">
+        <Code>ch.StatischeWaldgrenzen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Statische Waldgrenzen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Limites forestières statiques</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Margini statici della foresta</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Cunfins statics dal guaud</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Static forest perimeters</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>710</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.StatischeWaldgrenzen"/>
+        <Gesetz REF="ch.admin.bk.sr.921.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.StatischeWaldgrenzen"/>
+        <Gesetz REF="ch.admin.bk.sr.921.01"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Waldabstandslinien">
+        <Code>ch.Waldabstandslinien</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Waldabstandslinien</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Distances par rapport à la forêt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Linee di distanza dalla foresta</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Lingias da distanza dal guaud</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Forest distance lines</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>720</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Waldabstandslinien"/>
+        <Gesetz REF="ch.admin.bk.sr.921.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Planungszonen">
+        <Code>ch.Planungszonen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Planungszonen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Zones réservées</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Zone di pianificazione</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Zonas da planisaziun</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Planning zones</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>10</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Planungszonen"/>
+        <Gesetz REF="ch.admin.bk.sr.700"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Waldreservate">
+        <Code>ch.Waldreservate</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Waldreservate</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Réserves forestières</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Riserve forestali</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Reservats da guaud</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Forest reserves</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>730</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Waldreservate"/>
+        <Gesetz REF="ch.admin.bk.sr.921.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Waldreservate"/>
+        <Gesetz REF="ch.admin.bk.sr.921.01"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.Gewaesserraum">
+        <Code>ch.Gewaesserraum</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Gewässerraum</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Espace réservé aux eaux</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Spazio riservato alle acque</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Spazi d'auas</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Space provided for waters</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>530</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Gewaesserraum"/>
+        <Gesetz REF="ch.admin.bk.sr.814.20"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.Gewaesserraum"/>
+        <Gesetz REF="ch.admin.bk.sr.814.201"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.ProjektierungszonenStarkstromanlagen">
+        <Code>ch.ProjektierungszonenStarkstromanlagen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Projektierungszonen Leitungen mit einer Nennspannung von 220 kV oder höher</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Zones réservées des lignes d'une tension nominale égale ou supérieure à 220 kV</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Zone riservate per linee con una tensione nominale pari o superiore a 220 kV</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Zonas da projectaziun per conducts cun ina tensiun nominala da 220 kV u dapli</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Reserved zones for power lines with a nominal voltage of 220 kV or higher</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>810</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.ProjektierungszonenStarkstromanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.734.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+      <OeREBKRMkvs_V2_0.Thema.Thema TID="ch.BaulinienStarkstromanlagen">
+        <Code>ch.BaulinienStarkstromanlagen</Code>
+        <Titel>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Baulinien Starkstromanlagen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Alignements des installations électriques à courant fort</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Allineamenti per impianti a corrente forte</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>rm</Language>
+                <Text>Lingias da construcziun d'implants da current ferm</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Building lines for high-voltage installations</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Titel>
+        <AuszugIndex>820</AuszugIndex>
+      </OeREBKRMkvs_V2_0.Thema.Thema>
+      <OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+        <Thema REF="ch.BaulinienStarkstromanlagen"/>
+        <Gesetz REF="ch.admin.bk.sr.734.0"/>
+      </OeREBKRMkvs_V2_0.Thema.ThemaGesetz>
+    </OeREBKRMkvs_V2_0.Thema>
+  </DATASECTION>
+</TRANSFER>

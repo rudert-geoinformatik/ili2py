@@ -1,0 +1,17 @@
+{% for topic_item in model_data.sub_model %}
+{% with topic_item=topic_item, model_data=model_data, all_model_data=all_model_data %}
+{% include 'class.jinja2' %}{%- endwith %}{%- endfor %}
+
+
+@dataclass
+class Datasection:
+    class Meta(ILI_META_BASE):
+        name = "TRANSFER"
+    {% for topic_item in model_data.sub_model %}
+        {{ topic_item.name.lower() }}: {{ topic_item.name }}Topic = field(
+            metadata={
+                "name": "{{ topic_item.tid }}",
+                "type": "Element",
+                "default": None
+            }
+        ){%- endfor %}

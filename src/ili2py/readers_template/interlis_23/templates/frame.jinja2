@@ -1,0 +1,117 @@
+from dataclasses import dataclass, field
+from typing import List, Optional
+
+"""
+{{ model_data.model.name }}
+
+{% for doc_item in model_data.model.documentation %}
+{% with doc_item=doc_item.doc_text %}
+{% include 'documentation.jinja2' %}
+{%- endwith %}
+{%- endfor %}
+"""
+
+
+ns_map = {
+    "ili": "http://www.interlis.ch/INTERLIS2.3"
+}
+
+
+class ILI_META_BASE:
+    namespace = ns_map["ili"]
+{% with model_data=model_data, all_model_data=all_model_data %}
+{% include 'topic.jinja2' %}
+{% endwith %}
+
+
+@dataclass(kw_only=True)
+class Model:
+    class Meta(ILI_META_BASE):
+        name = "MODEL"
+
+    name: str = field(
+        metadata={
+            "name": "NAME",
+            "type": "Attribute",
+            "required": False,
+        },
+    )
+    version: str = field(
+        metadata={
+            "name": "VERSION",
+            "type": "Attribute",
+            "required": False,
+        },
+    )
+    uri: str = field(
+        metadata={
+            "name": "URI",
+            "type": "Attribute",
+            "required": False,
+        },
+    )
+
+
+@dataclass
+class ModelItem:
+    class Meta(ILI_META_BASE):
+        name = "MODEL"
+
+    model: Model = field(
+        metadata={
+            "name": "MODEL",
+            "type": "Element",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class Headersection:
+    class Meta(ILI_META_BASE):
+        name = "HEADERSECTION"
+
+    models: List[ModelItem] = field(
+        metadata={
+            "name": "MODELS",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    sender: str = field(
+        default=None,
+        metadata={
+            "name": "SENDER",
+            "type": "Attribute",
+            "required": True,
+        },
+    )
+    version: str = field(
+        default=None,
+        metadata={
+            "name": "VERSION",
+            "type": "Attribute",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class Transfer:
+    class Meta(ILI_META_BASE):
+        name = "TRANSFER"
+
+    headersection: Headersection = field(
+        metadata={
+            "name": "HEADERSECTION",
+            "type": "Element",
+            "required": True,
+        },
+    )
+    datasection: Datasection = field(
+        metadata={
+            "name": "DATASECTION",
+            "type": "Element",
+            "required": True,
+        },
+    )

@@ -1,0 +1,382 @@
+
+\documentclass[10pt]{scrreprt}   % list options between brackets
+\usepackage[
+  a4paper,
+  top=25mm,
+  bottom=25mm,
+  inner=25mm,
+  outer=15mm,
+  headsep=-7mm,
+  head=72.25455pt,
+  foot=18mm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{newfloat}
+\usepackage{caption}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{anyfontsize}
+\usepackage{footnote}
+\usepackage{scrhack}
+\usepackage[figure]{hypcap}
+\usepackage[ngerman]{varioref}
+\usepackage[headwidth=185mm]{scrlayer-scrpage}
+\usepackage[absolute]{textpos}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{titleps}
+\usepackage{hhline}
+\usepackage{todonotes}
+\usepackage[final]{pdfpages}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\setmainfont[
+BoldFont = AvenirNextLTPro-Bold.otf,
+ItalicFont = AvenirNextLTPro-It.otf]
+{AvenirNextLTPro-Regular.otf}
+\newfontfamily\headingfont[
+BoldFont = AvenirNextLTPro-Bold.otf,
+ItalicFont = AvenirNextLTPro-It.otf]
+{AvenirNextLTPro-Regular.otf}
+\setkomafont{chapter}{\normalfont\huge\headingfont\bfseries}
+\setkomafont{section}{\normalfont\large\headingfont\bfseries}
+\setkomafont{subsection}{\normalfont\normalsize\headingfont\bfseries}
+\setkomafont{subsubsection}{\normalfont\normalsize\bfseries}
+
+\newcommand{\documentTitle}{Detailkonzept - Python Bindings für INTERLIS}
+
+\title{\documentTitle}   % type title between braces
+\author{Clemens Rudert}         % type author(s) between braces
+\date{26.04.2024}    % type date between braces
+\makeatletter
+
+\let\Title\@title
+\let\Author\@author
+\let\Date\@date
+\makeatother
+
+
+\pagestyle{scrheadings}
+\automark{section}
+\clearpairofpagestyles
+\lofoot*{\documentTitle - \currentchapter}
+\lefoot*{\documentTitle - \currentchapter}
+\rofoot*{\thepage}
+\refoot*{\thepage}
+
+
+\makeindex
+
+\begin{document}
+
+\begin{titlepage}
+		\begin{textblock*}{6cm}(2.5cm, 2.5cm)
+			\noindent			
+			\fontsize{8pt}{10pt}RUDERT-GEOINFORMATIK.ch\\ Maulbeerstrasse 22\\ 4058 Basel\\ Schweiz \\ +41 76 725 58 91\\ rudert-geoinformatik@posteo.ch\\ https://rudert-geoinformatik.ch
+		\end{textblock*}
+		\vspace*{5.0cm}
+		\flushleft\Large\color{black}
+		\textbf{\Title}\		\vspace*{14pt}
+    \normalsize
+		\rule{\textwidth}{0.4pt}\		\vspace*{11pt}
+    \begin{tabular}[ht]{l p{12cm}}
+      Projekt: & Python Bindings für INTERLIS\\
+      Auftraggeber: & OPENGIS.ch GmbH \\
+      Projektleiter: & \Author \\
+      Author/in: & \Author \\
+      Date: & \Date
+		\end{tabular}\		\vspace*{11pt}
+		\rule{\textwidth}{0.4pt}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\def \currentchapter{Table of contents}
+
+%\listoffigures
+%\def \currentchapter{List of figures}
+
+\newcommand{\chapterSummaryTitle}{Zusammenfassung}
+\chapter{\chapterSummaryTitle}
+\def \currentchapter{\chapterSummaryTitle}
+
+TODO
+
+\newcommand{\chapterEntryTitle}{Einführung}
+\chapter{\chapterEntryTitle}
+\def \currentchapter{\chapterEntryTitle}
+
+INTERLIS ist in der Schweiz eine der wichtigsten (und vom Bund vorgeschriebene) Modellierungssprache für
+digitale (Geo)Daten. An dieser Stelle sollen dem Leser die Details der Theorie erspart bleiben und einfach
+nur auf die umfangreichen Referenzhandbücher verwiesen sein.
+
+Wichtige Punkte zum Verständnis dieses Konzepts werden hier kurz erläutert. Es wird jedoch erwartet, dass eine
+gewisse Vorbildung zum Thema besteht. Auch wenn mit diesem Text kleinere praktische Elemente erläutert werden
+geht es doch vorerst noch darum technisch, philosophisch auf einen Nenner mit dem Leser zu kommen. Es sollen
+wichtige technische Grundbegriffe beleuchtet werden.
+
+\subsection{Einordnung}
+
+INTERLIS wird immer als einer unabhängigen Modellierungssprache, vorrangig für Geodaten, inzwischen aber auch
+darüber hinaus gehandelt. Das ist korrekt. Die intuitive \textit{Sprache} lässt aber schnell vergessen, dass
+man sich in der digitalen Welt bewegt und das was man \textit{modellieren} nennt eigentlich
+\textit{programmieren} ist. Dem interessierten Leser sein an dieser Stelle das Studium der Programmiersprache
+Modula2 ans Herz gelegt. Sie ist es, die man schreibt wenn man INTERLIS schreibt. Natürlich mit Erweiterungen,
+aber im Kern ist es Modula2. Wir programmieren also wenn wir modellieren! Man könnte dieselben Resultate
+erreichen wenn man die Klassen und Assoziationen einfach in JAVA oder PYTHON schreiben würde. Bis auf ein
+Detail: INTERLIS bildet die Grundbausteine ab, die in jeder halbwegs modernen Programmiersprache heutzutage zu
+finden sind und ist deshalb universell. Das heisst, es lässt sich ohne Probleme in Konstrukte der Wahlsprache
+übersetzen. Und das ist eine der wichtigsten Fähigkeiten von INTERLIS. Die, die wir nutzen wollen. Denn, wozu
+ein Datenmodell, wenn man keine Software dafür hat?
+
+Wenn wir nun also beim Modellieren programmieren sollten wir unsere Werkzeuge, Arbeitsabläufe, Praktiken und
+Verwaltungsansätze auch den Entwicklungen der Zeit annähern. Versionsverwaltung, Packagemangement,
+Releasemanagement, Codingsupport, automatische Generierung von Dokumentation, all das sind verglichen mit
+INTERLIS eher neuere aber nicht weniger wichtige Erfindungen in der IT.
+
+Man kann nun sagen, dass INTERLIS ein reines Austauschformat ist. Also ein Vertrag zwischen Datenlieferant und
+Datenempfänger, welcher in aller Tiefe den Inhalt definiert. Als solches wird es auch vorrangig genutzt.
+Allerdings hat die Praxis wie immer auch ihre eigenen Blüten neben der Theorie getrieben und INTERLIS wird eben
+nicht nur mehr zur Definition im Datenaustausch genutzt, sondern auch zur Definition von Erfassungsmodellen,
+Darstellungsmodellen (Strukturen optimiert für das grafische Rendering der Daten) oder applikationszentrischen
+Modellen (z.B.: ÖREB). Schnell wird neben dem Anwendungsfall die Daten zu senden und zu empfangen, das bedeutet
+eigentlich Datenbankexport und Datenbankimport, auch eine Applikation mit Logik auf INTERLIS Strukturen aufgebaut
+die über den ursprünglichen Anwendungszeck hinausgehen. Werkzeuge wie die verschiednen ÖREB-Server Umsetzungen
+Versuche Texteditoren mit
+\href{https://marketplace.visualstudio.com/items?itemName=geowerkstatt.InterlisLanguageSupport}{Syntax-Highlighting}
+und Autocompletion auszustatten oder auch \href{https://github.com/opengisch/QgisModelBaker}{Model Baker} sind
+lebendige Beweise dieser These.
+
+\newcommand{\chapterSoftwareTitle}{Software}
+\chapter{\chapterSoftwareTitle}
+\def \currentchapter{\chapterSoftwareTitle}
+
+Die folgenden Betrachtungen beziehen sich auf OpenSource Software. Sie sind nicht ausgrenzend oder
+abschliessend und orientieren sich an dem Ökosystem welches dem Autor in seinem täglichen Umgang mit dem Thema
+bekannt ist.
+
+Wovon reden wir also wenn es um die Software geht. Heute gibt es neben diversen Fachschalen nur EINE Sammlung
+von Werkzeugen, die sich mit der generischen Nutzung von INTERLIS im Applikationsumfeld auseinandersetzt:
+
+\tab\textbf{Die \href{http://www.eisenhutinformatik.ch/interlis/}{Ilitools der Eisenhut Informatik AG}}.
+
+Sie sind seit Jahren \textit{first-class-member} der INTERLIS-Welt und können wohl als der Goldstandard
+hinsichtlich Umsetzung, Generik und dem Verständnis der Materie gelten. Dies gilt nicht nur für JAVA sondern
+die Designentscheidungen welche hier getroffen wurden sind unabhängig von der Zielsprache als universell zu
+betrachten.
+
+\subsection{Funktionsüberblick ilitools}
+
+Auf der Webseite werden diese Werkzeuge als Schnittstellen bezeichnet. Und das sind sie. Nicht mehr und nicht
+weniger. Wenn wir das Umfeld anschauen und es grob vereinfachen gruppieren sie alle sich um einen Kern.
+Dem \href{https://www.interlis.ch/modelle/metamodell}{Metamodell}. Es ist die abstrakte Beschreibung der
+INTERLIS-Sprachelemente. Ihr Zweck ist die Übersetzung von \textit{.ili} Dateien in die Sprache/Elemente des
+jeweiligen Zielsystems. Soweit so logisch.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{images/interlis_translation_workflow-1.png}
+  \caption{Vereinfachter Ablauf ilitools}
+  \label{fig:ilitools_flow_simple}
+\end{figure}
+
+Statt also für jedes Modell eigene Software schreiben zu müssen, führt die Abfolge der Arbeitsschritte über
+die generische Schicht ins Zielsystem. Das Kompilieren des \textit{.ili} Modells in das Metamodell
+erfolgt durch JAVA und im Prozess innerhalb von JAVA Code. Der Nutzer merkt bei den ilitools davon nichts.
+Intern wird aber nach dem Bauplan des Metamodells ein ineinander verschachteltes Konstrukt aus (Java) Klassen,
+sozusagen Programmierung-on-the-fly, erzeugt.
+Dieses standardisierte Konstrukt wird dann innerhalb der jeweiligen spezifischen Ausprägung
+(z.B.: \href{http://www.eisenhutinformatik.ch/interlis/ili2pg/}{ili2pg}) genutzt um Operationen auszuführen.
+In unserem Beispiel eben dann, um mittels SQL dem Modell entsprechende Datenbankstrukturen zu erstellen.
+Mittels \href{https://www.interlis.ch/downloads/ili2c}{INTERLIS Compiler (ili2c)} kann der \grqq{}versteckte\grqq{}
+Schritt für den Nutzer \grqq{}sichtbar\grqq{} gemacht werden. Es wird eine \textit{.imd} Datei erzeugt. Diese
+ist eigentlich eine INTERLIS Transferdatei, also ein XML und enthält den universellen Bauplan des kompilierten
+Modells.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{images/interlis_compiler-1.png}
+  \caption{Vereinfachter Ablauf ili2c}
+  \label{fig:ili2c_flow_simple}
+\end{figure}
+
+INTERLIS ermöglicht in einem Modell Elemente aus einem anderen Modell zu nutzen (\textit{IMPORTS}). Dies ist
+ein wichtiger Baustein der zum Erfolg des Systems beiträgt. Diese Art Verkettung bedeutet aber, dass zum
+Kompilierungszeitpunkt die komplette Kette an Informationen zur Verfügung stehen muss.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{images/interlis_imports_simple-1.png}
+  \caption{Vereinfachte Darstellung imports}
+  \label{fig:interlis_imports}
+\end{figure}
+
+Dieses Detail ist für die späteren Diskussionspunkte wichtig und aus diesem Grunde hier nur stark verkürzt
+und fast schon unzulässig vereinfacht dargestellt. Die ilitools übernehmen dies Aufgabe aber. So ist der Inhalt
+eines kompilierten Metamodells immer der Inhalt der kompletten Kette - Ein wichtiges Detail.
+
+\section{Flexibilität}
+
+Aus Sicht eines JAVA-Entwicklers dürften nun alle wichtigen Informationen klar sein. Ein neues Zielsystem
+bedeutet ein neues ili2XXX Werkzeug. Der Vielfalt sind keine Grenzen gesetzt. Solange wir uns im JAVA-Umfeld
+bewegen ist die Geschichte wahr. Und darüber hinaus auch in die eine oder andere Richtung vielleicht auch noch
+weiter. Will man aber die Domainspezifischen Informationen die üblicherweise in einem INTERLIS-Modell stecken
+aber in anderen Programmiersprachen nutzen wird es schnell dünn. Über Umwege können wir diese Information
+transportieren. Klassisch wäre hier der Import von Modell und Daten in eine relationale Datenbank und aufbauend
+auf dieser dann die Extraktion der Modellinformationen. Doch halt. Wir haben hier einen Transformationsschritt
+bei dem Informationen verlorengehen. Darüber hinaus müssen beim Wechsel vom Objektraum (INTERLIS-Modell) in
+den relationalen Raum (Datenbank) Kompromisse eingegangen werden. Dies verhindert, dass ein Programm welches
+seine Informationen aus der resultierenden Datenbank bezieht nicht die \textit{Wahrheit} des urspränglichen
+Modells kennen kann. In der Praxis behilft man sich mit allerhand Feenstaub und das funktioniert auch meistens.
+Ein paar Metaattribute hier, ein bisschen Kommentarprogrammierung dort. Letzen Endes sind das aber alles teils
+spezifische Lösungen und nicht vom Charakter wie wir ihn von einem generischen Software-Ansatz erwarten.
+Flexibel und systemunabhängig sind wir aktuell im INTERLIS-Umfeld nur in der JAVA-Welt. Don't state the
+obvious. Egal ich tu es trotzdem. DAS IST EIN WIDERSPRUCH!
+
+Natürlich können wir aus JAVA heraus allerhand Spielereien machen. Wir können JAVA in Container packen, wir
+können mit JAVA Python ausführen. Aber wirklich nativ in der jeweiligen Programmiersprache und mit den ihr
+zugehörigen Bordmitteln optimalen Code produzieren. Das können wir so nicht. Wir sind etwas unflexibel.
+
+\section{Ansätze}
+
+
+
+\section{Noch ein WebGIS Stack?}
+
+Viele Jahre Erfahrung im Betrieb von vielen verschiednen WebGIS aller Größenordnungen und Arten bei unterschiedlichen Kunden versetzten \href{https://opengis.ch}{OPENGIS.ch} in die Lage einen einzigartigen Überblick zu erhalten. Nach reiflicher Überlegung stehen wir nun am Übergang von einzelnen Konzepten hin zu einem kompletten Stack. Dieser ist nicht als eine Einheit zu verstehen. Vielmehr handelt es sich dabei um einzelne Module, welche auf die eine oder andere Art betrieben werden können. Wir wissen, dass im täglichen Leben ein Stack aus MicroServices genauso mühsam sein kann wie der monolithische Stack. Wir wissen, dass nicht alles einfach konfiguriert werden kann. Wir wissen, dass die es bereits bei der Integration der Daten anfängt. Deshalb haben wir bei unseren Überlegungen darauf geachtet Komponenten einfach und auch einzeln nutzbar zu machen. Die Konfektionierung geschieht in Zusammenarbeit mit dem Kunden.
+
+\section{Dem Nutzer zugewandt}
+
+Das Rückgrat unsere Überlegungen bildet das \href{https://www.python.org/}{Python} Webframework \href{https://www.djangoproject.com/}{Django}. In dieser Umgebung werden als Django Plugin Applikationen angeboten. Das WebGIS und die Datenintegration sind dabei die Komplexesten Anwendungen. Weitere beliebige Fachapplikationen können als Django Plugin eingebunden werden. Neben den eigentlichen Applikationen gibt es die Service Proxies (auch Django Plugins). Diese dienen eigentlich nur als Durchlaufstelle zu den eigentlichen Diensten. Sie ermöglichen zugeschnitten auf die Bedürfnisse des jeweiligen Dienstes (WMS/WFS/etc.). PRE und POST Filter der Inhalte und natürlich die Authorisierung/Authentifizierung werden in dieser Ebene abgewickelt. Anfragen werden nach dieser Phase einfach in eine Queue abgelegt und nach Erledigung der Anfrage ausgeliefert. Natürlich werden von dieser Ebene auch Anfragen wie \textit{GetCapabilities} beantwortet. Für weitere Details vgl. \nameref{sec:components:application:elements:service-proxies},  \nameref{sec:components:application:elements:administer-component}, \nameref{sec:components:application:elements:geogirafe} und \nameref{sec:components:application:elements:django-plugins}.
+
+\section{Die Kraft liegt im Verborgenen}
+
+Der spannende und für den Nutzer unsichtbare Teil liegt in der tieferen Schicht. Auch hier handelt es sich mehr um einen Deploymentansatz als um eine vorgeschriebene und fertige Lösung. Wie im oben beschrieben, leiten die \textit{Applikationen} den Verkehr in eine Warteschlange. Diese wird von verschiednen Workern bearbeitet. Jeder Worker ist auf sein Spezialgebiet hin optimiert. Der QSL-Maps Worker soll schnell Bilder rendern, der QSL-Print Worker soll druckbare Karten bereitstellen und QSL-Features muss Vektordaten extrahieren. Das heisst wir lassen kleine Worker laufen. Explizit verabschieden wir und damit von Mapserver, Geoserver oder QGIS-Server, welche ja einen riesigen Funktionsumfang bieten. Dadurch gewinnen wir schnelle Bootzeiten, niedrigen Resourcenverbrauch und Skalierbarkeit. Die Worker selber sind Stateless. Sie erhalten ihre Konfiguration aus der Warteschlange (welche Datenquelle, welcher Ausschnitt, etc.). Für weitere Details vgl. \nameref{sec:components:application:elements:worker}, \nameref{sec:components:application:elements:qsl-ecosystem}, \nameref{sec:components:application:elements:qsl-maps}, \nameref{sec:components:application:elements:qsl-print} und \nameref{sec:components:application:elements:pygeoapi}.
+
+\section{Daten}
+
+Die Datenintegration erfolgt ähnlich wie im Kanton Basel-Landschaft bereits aufgesetzt. Dem händischen Erfassen von Konfigurationsdateien steht aber in unserem Stack ein GUI gegenüber, welches aus den vorhandenen JSON-Schemas abgeleitet werden kann. Damit ist dem gewünschten Erfassungsumfang Rechnung getragen.
+
+\section{Ausblick}
+
+Die hier vorgestellte Übersicht ist als Vorschlag zu verstehen. \href{https://opengis.ch}{OPENGIS.ch} freut sich auf eine spannende Diskussion zum Thema und gibt gern weitere Auskünfte. Unser interner Fahrplan sieht eine Umsetzung der Hauptbestandteile bis Ende 2024 vor.
+
+
+\includepdf[pages=-,landscape]{images/big_picture.pdf}
+
+
+\newcommand{\chapterConponentsTitle}{Bestandteile}
+\chapter{\chapterConponentsTitle}
+\def \currentchapter{\chapterConponentsTitle}
+
+Im Folgenden sollen die einzelnen Bestandteile detaillierter erläutert werden.
+
+\section{Standards}
+\label{sec:components:application:standards}
+
+\href{https://opengis.ch}{OPENGIS.ch} ist eine OpenSource-Firma. Daher bauen wir sehr auf die Standards der OGC und setzen diese ein wo immer möglich.
+
+Hauptsächlich sind es die bekannten Standards des OpenGeospatialConsortium (OGC):
+
+\begin{itemize}
+	\item \href{https://www.ogc.org/standard/wms/}{WMS} (Web Map Service)
+	\item \href{https://www.ogc.org/standard/wfs/}{WFS} (Web Feature Service)
+	\item \href{https://www.ogc.org/standard/wps/}{WPS} (Web Processing Service)
+\end{itemize}
+
+Zu diesen gibt es vermutlich keine großen Fragen.
+
+Allerdings befindet diese Welt sich aktuell sehr in Bewegung und neue Versionen und neue Standards werden aktuell durch die OGC definiert. Diese wollen wir so früh wie möglich in unserem Stack berücksichtigen:
+
+\begin{itemize}
+	\item \href{https://ogcapi.ogc.org/maps/}{OGC API Maps} als Nachfolger von WMS
+	\item \href{https://ogcapi.ogc.org/features/}{OGC API Features} als Nachfolger von WFS
+	\item \href{https://ogcapi.ogc.org/processes/}{OGC API Processes} als Nachfolger von WPS
+\end{itemize}
+
+
+\section{Service Proxies}
+\label{sec:components:application:elements:service-proxies}
+
+Die Service Proxies dienen als i/o Schleuse zum System. Jeder Proxy hat spezifische Anforderungen an Filterung und Berechtigungsmanagement. Informationen zu Umfang und Angebot der jeweiligen Dienste (typischerweise Capabilities) sind auch sehr vom jeweiliegen Standard abhängig (WFS/WMS/WPS). Aus diesem Grunde werden diese Informationen auch direkt von den Service Proxies bereitgestellt. Sie haben durch \nameref{sec:components:application:elements:administer-component} direkten Zugriff auf die nötigen Informationen und können diese entsprechend bereitstellen.
+Neben diesen genannten Funktionen ist ihre Aufgabe der Transport von Daten, die Kommunikation mit den Clients und die Verwaltung der Warteschlange.
+
+Natürlich sind Dienste wie WMS oder WFS nicht asynchron. In diesem Falle werden die Verbindungen vom jeweiligen Proxy zum Client offen gehalten bis eine Antwort gegeben werden kann. Oder eben im Fehler- oder Timeout-Fall entsprechend beantwortet. Für Services die ein asyncrones Interface bieten wird dieses dem Standard entsprechend bedient (z.B. WPS).
+
+Man kann argumentieren, dass der Warteschlangenansatz ein Delay zur Kommunikation hinzufügt. Das ist auch korrekt. Allerdings sind alle Dienste WMS, WFS, WPS, Print im Netzwerkverkehrvergleich sowieso schon sehr langsam. Unsere Messungen zeigen, dass in Alltagssituationen die Skalierbarkeit und die Entkoplung positiv auf die Antworzeiten im Durchschnitt wirken. Insgesamt also werden Anfragen durchschnittlich besser beantwortet. Besonders bei hoher Last.
+
+\section{Django Admin}
+\label{sec:components:application:elements:administer-component}
+
+Eines der Haupargumente für den Einsatz von Django als Framework ist \href{https://docs.djangoproject.com/en/5.0/ref/contrib/admin/}{Django Admin}. Es vereint automatisch die Einstellungen aller eingebundenen \nameref{sec:components:application:elements:django-plugins} in einer Administrationsoberfläche. Schön aufbereitet und organisiert. Damit ist sichergestellt, dass dem Administrator nichts entgeht und allfällig veknüpfte Einstellungen über Plugingrenzen hinweg können einfach nachgeführt werden.
+
+\section{Django Plugins}
+\label{sec:components:application:elements:django-plugins}
+
+Wie andere Webframeworks auch (z.B. \href{https://trypyramid.com/documentation.html}{pyramid}) unterstützt Django Plugins. Das Prinzip ist grundsätzlich dasselbe. Wird aber bei Django durch nützliche Funktionen wie  \nameref{sec:components:application:elements:administer-component} ergänzt. Letztendlich ermöglichten Plugins die organisatorische Trennung von Programmteilen. Aus diesem Grund ist die beigefügte Zeichnung auch nur exemplarisch. Eine Fachanwendung muss nicht in derselben Django Umgebung laufen. Es muss nur der Austausch zwischen den Instanzen sichergestellt sein (welche Daten sind verfügbar, etc.). Auf die Vorteile einer gemeinsamen Administrationsoberfläche verzichtet man dann allerings.
+
+\section{GeoGirafe}
+\label{sec:components:application:elements:geogirafe}
+
+Entstanden durch einen gewissen Leidensdruck mit der Idee es besser zu machen ist \href{https://gitlab.com/geogirafe/gg-viewer}{GeoGirafe} noch ein recht junges Projekt. Es implementiert sowohl eine Library (NPM) als auch eine komplette Applikation. Die wesentlichen Vorteile bestehen in der Nutzung von \href{https://www.webcomponents.org/}{WebComponents} als Basis und dem kompletten Verzicht auf Frameworks wie \href{https://angular.io/}{angular} oder \href{https://react.dev/}{react}. Es nutzt konsequent \href{https://www.typescriptlang.org/}{TypeScript} und besticht durch modularen Aufbau. Das ermöglicht den Einsatz als fertig gebuildete Applikation als Static Website auf einem Webserver aber auch in einer Umgebung die serverseitig auf Templates setzt und so den Funktionsumfang pro Nutzer bereitstellen will.
+
+Den zweiten Ansatz werden wir von \href{https://opengis.ch}{OPENGIS.ch} hauptsächlich nutzen, da es uns die Bausteine an die Hand gibt, aber die Freiheit lässt diese zu kombinieren wie wir es für den jeweiligen Anwendungsfall brauchen.
+
+Unsere Umsetzung wird also ein Django Plugin sein, dass die WebComponents in einem Template vorrendert und dann an den Browser ausliefert. Das zusätzliche Backend sorgt dann für die Bereitstellung der Konfigurationsdateien (themes.json/config.json/etc.) welche wir dadurch auch auf die Berechtigungen hin aufbereiten können. So entsteht ein Verbundsystem welches aus unserer Sicht das Gute aus beiden Welten vereint.
+
+\section{Worker}
+\label{sec:components:application:elements:worker}
+
+Userer Erfahrung nach ist die stärke eines Orchestrierungssystems erst dann genutzt wenn ein Service mal ausfallen kann und niemand etwas merkt. Dafür müssen aber einige Prämissen erfüllt sein:
+
+\begin{enumerate}
+	\item schnelle Bootzeit
+	\item keine/minimale Config zur Bootzeit
+	\item selbstheilende Warteschlange
+	\item kleiner Fußabdruck
+\end{enumerate}
+
+Unser Ansatz sieht also vor jedem Anwendungsfall einen Typ Worker zur Verfügung zu stellen. Bilder rendern, Drucke generieren, Vektordaten extrahieren. Diese Worker sind in ihrem Funktionsumfang so beschnitten, dass sie nur einen Python Prozess beinhalten und daher auch ein Minimum an Resourcen verbrauchen. Fällt ein Worker durch Fehler aus, übernimmt ein anderer desselben Typs. Die Wartezeiten sind minimal verzögert.
+
+\section{QSL Ökosystem}
+\label{sec:components:application:elements:qsl-ecosystem}
+
+Das Naming ist noch WIP. QSL heisst QGIS-Server light. Die ursprüngliche Idee war, QGIS-Server so im Funktionsumfang zu beschneiden, dass ein gestarteter Prozess nur noch ein Bild rendern kann. Das war leider nicht erfolgreich. Stattdessen sind wir dazu übergegangen direkt aus einem Python Prozess das Rendering zu betreiben. Dies eignet sich für WMS und Print. Andere Dienste wie z.B. QSL-Features sind aktuell nur dem Namen nach mit QGIS in Verbindung. Nach ersten Erfahrungen zeigte sich, dass die WFS3-Umsetzung im QGIS-Server einige Probleme mit sich bringt. Deshalb haben wir uns für WPS und WFS dazu entschieden im Hintergrund auf pygeoapi zu setzen. Der Ansatz ist derselbe. Konfiguration kommt aus der Warteschlange, pygeoapi stellt die Schnittstelle OGC-konform zur Verfügung. Im Falle von WFS setzt pygeoapi im Hintergrund auf SQL-Alchemy.
+
+Anpassungen an diesem Ansatz sind denkbar.
+
+\section{QSL-Maps}
+\label{sec:components:application:elements:qsl-maps}
+
+QGIS-Server light heisst jetzt QSL-Maps. Es ist ein Python-Prozess der in der ihm zugewiesenen Warteschlange nach Jobs zum rendern von WMS Bildern sucht. Wird ein Job gefunden, wird das Bild direkt im Python gerendert und in die Warteschlange als Ergebnis übergeben. Der Prozess ist nun bereit für den nächsten Job. In der Praxis lassen wir dieses Setup mit 8-16 Instanzen laufen. So ist eine ausreichende Leistung gegeben. Natürlich kann das den Bedürfnissen angepasst werden.
+
+Mit dieser Umsetzung isolieren wir eine größten Stärken von QGIS in ein handliches Executable. Das Kartenbild.
+
+Die Konfiguration ist ein JSON welches ein Subset aus einem QGIS-Projekt widerspiegelt, dass nur die zum Rendern relevanten Daten beinhaltet. Vornehmlich Datenquelle und Style (QML). Mit diesen Infos wird das Bild direkt erzeugt. Der Prozess hat keine Ahnung vom kompletten Layertree. Er kennt nur die im Moment des Renderns angefragten Layer.
+
+Zur Optimierung werden bereits geöffnete Datenverbindungen im Cache behalten. Die Dauer lässt sich einstellen. Es kann auch ein Start ohne Cache erfolgen, so wird im Falle von DB-Verbindungsfehlern für jede neue Anfrage eine frischer Verbindungsaufbau versucht.
+
+\section{QSL-Print}
+\label{sec:components:application:elements:qsl-print}
+
+Eine weitere Stärke ist die Druckfunktion von QGIS. Wir können sehr einfach in QGIS Templates erstellen welche wir dann als gedrucktes Rendering ausliefern. Das hat besonders im WebGIS-Kontext Sinn. Ähnlich wie auch für \nameref{sec:components:application:elements:qsl-maps} isolieren wir diesen Teil in einem einzigen Pythonprozess. Auch dieser nutzt die Warteschlange um Jobs abzuarbeiten. Die Konfikuration ist auch hier ein JSON welches die nötigen Informationen sowie das PrintTemplate (QPT) enthält.
+
+\section{pygeoapi}
+\label{sec:components:application:elements:pygeoapi}
+
+Die alten und neuen OGC Services sind sehr umfangreich. Alle komplett umzusetzen ist ein enormer Aufwand. Hier hilft uns pygeoapi. Es bietet für die wichtigsten Services entsprechende Schnittstellendefinitionen und das auch noch nativ in Python. Wir nutzen es mehr wie eine Bibliothek anstatt als komplette Lösung. Auch hier isoloieren wir für den jeweilige Funktionisumfang das was wir brauchen um einen schlanken Pythonprozess bereitstellen zu können. Der Ansatz ist derselbe wie in den oben erklärten Beispielen.
+
+\section{A word about QGIS-Server}
+\label{sec:components:services:word-about-qgis-server}
+
+\href{https://opengis.ch}{OPENGIS.ch} gehört zu den aktivsten Kernentwicklern von QGIS. Das betrifft natürlich auch Features in QGIS-Server. Wir können also nicht an QGIS zweifeln. Denn wir haben hauptsächlich daran mitgewirkt es zu dem zu machen was es heute ist. Allerdings müssen wir auch feststellen, dass sich ein Desktop-GIS eben nicht besonders gut eignet um parallel in verschiednen Umgebungen (DEV/STAG/PROD) zu laufen. Der Aufwand gerade große Projekte zu verwalten steigt enorm. Daher eignet sich QGIS-Server so wie er ist nicht zum Deployment im Enterprise-Umfeld
+
+Diese Aussage basiert auf vielen Erfahrungen in unserem täglichen Leben. Wir denken es ist der Moment gekommen die Teile aus QGIS in dem Maße zu isolieren und zu nutzen wie wir es hier vorschlagen. Erkenntnisse und Weiterentwicklungsmöglichkeiten aus unserer Arbeit werden wir wann immer möglich auch zurück ins QGIS-Projekt fließen lassen.
+
+\end{document}
