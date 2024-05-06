@@ -64,7 +64,17 @@ Using `pip` is the approved way for installing `ili2py`.
     python3 -m pip install ili2py
 
 
-TODO Document a use case
+DEV
+===
+
+First install all DEPS:
+
+.. code-block:: sh
+
+    poetry build
+    poetry install
+
+Read [Report](report.md) and try out commands as shown.
 
 
 License
