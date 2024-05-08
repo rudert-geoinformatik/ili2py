@@ -259,7 +259,34 @@ die wir benötigen, um das Metamodell in Python abzubilden. Auf Details wird in 
 eingegangen.
 
 Zum besseren Verständnis nutzen wir ein einfaches [Beispielmodell](example/example.ili). Es beinhaltet einige
-INTERLIS-Definitionen anhand derer wir alles Weitere nachvollziehen können.
+INTERLIS-Definitionen anhand derer wir alles Weitere nachvollziehen können. Das diesem Beispiel
+zugehörige [Metamodell](example/example.imd) soll uns noch kurz zur Betrachtung wichtiger Details dienen.
+
+#### Die Natur des Metamodells
+
+Der offensichtlichste aber deshalb nicht weniger wichtige Fakt ist, dass das Metamodell ein XML-Dokument ist.
+Weniger offensichtlich ist, dass das Metamodell ein XTF ist, und zwar nach INTERLIS 2.4 und natürlich nach
+dem [INTERLIS-Modell Metamodell](./data/IlisMeta16.ili). Es handelt sich also um Transferdaten.
+
+Die Dateigröße von rund 350 KB mag überraschen. Doch wenn man den Inhalt genauer anschaut, wird der Grund klar.
+Das imd enthält die komplette Beschreibung aller Modell die in der Kette durch Imports irgendwie betroffen sind.
+Der XML-Baum beginnt also mit dem *internen INTERLIS-Modell* welches alle Basisbeschreibungen von INTERLIS beinhaltet.
+Also der Ursuppe und dem Teil, den man eigentlich nie zu Gesicht bekommt, wenn man mit ili und xtf Dateien umgeht.
+Der Inhalt des Metamodells spannt sich weiter über das Modell [CoordSys](https://models.interlis.ch/refhb23/CoordSys-20151124.ili)
+und [Units](https://models.interlis.ch/refhb23/Units-20120220.ili) um dann am Ende den kleinen Teil unseres
+Beispielmodells abzubilden.
+
+![](img/example_metamodel.png)
+
+Unser Beispielmodell kann also in ca. 70 Zeilen XML beschrieben werden. Die restlichen ca. 800 Zeilen XML
+beschreiben den Unterbau, der für unser Modell nötig ist. Das sind Koordinatensysteme (WGS84), Einheiten (Units.bar) und
+natürlich die ganzen Typen (Text, Integer, Foat) mit ihren Beschränkungen.
+
+Wir haben also mit einem Metamodell die komplette Hierarchie des Bauplanes zur Verfügung und müssen uns nicht
+mehr darum kümmern die Inhalte der anderen Modelle irgendwie aus dem Netz zu laden. Dies wurde bei der
+Kompilierung durch `ìli2c` vom *ili* ins *imd* bereits erledigt.
+
+#### Pseudoimplementierung
 
 In welche Richtung es gehen könnte, lässt sich in der [Pseudoimplementierung](example/example.pseudo.py) gut
 sehen. Wir repräsentieren Elemente aus INTERLIS in korrespondierende Gegenstücke in Python. Am gezeigten
@@ -382,6 +409,26 @@ stand. Der vorgestellte Ansatz ist universeller Natur. Dennoch muss unbedingt mi
 wenn andere Modell-/Datenkombinationen ausprobiert werden. Zusätzlich sei nochmal erwähnt, dass aktuell nur
 Attributtypen TextType und keine Assoziationen umgesetzt sind. Das heisst, dass je nach Modell das Resultat
 ziemlich dünn erscheint.
+
+### Verwendete Daten/Modelle
+
+Wie bereits beschrieben wurden 3 Testsätze zufällig aus einem lokalen Fundus gewählt. Diese Sätze bestehen immer
+aus einem INTERLIS-Modell (ili), dem davon abgeleiteten Metamodell (imd) und einem Beispieldatensatz (xtf).
+
+Die 3 Datensätze sind:
+
+| INTERLIS-Modell                                                                          | Metamodell                                                                                         | Datensatz                                                                       |
+|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [Planungszonen_V1_1.ili](./data/Planungszonen_V1_1.ili)                                  | [Planungszonen_V1_1.imd](./data/Planungszonen_V1_1.imd)                                            | [ch.Planungszonen.sh.mgdm.v1_1.xtf](./data/ch.Planungszonen.sh.mgdm.v1_1.xtf)   |
+| [SO_AFU_ABBAUSTELLEN_Publikation_20221103.ili](./data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.ili) | [SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd](./data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd) | [ch.so.afu.abbaustellen.xtf](./data/ch.so.afu.abbaustellen.xtf)                 |
+| [OeREBKRMtrsfr_V2_0.ili](./data/OeREBKRMtrsfr_V2_0.ili) | [OeREBKRMtrsfr_V2_0.imd](./data/OeREBKRMtrsfr_V2_0.imd) | [ch.bazl.kataster-belasteter-standorte-zivilflugplaetze_v2_0.oereb.xtf](.data/ch.bazl.kataster-belasteter-standorte-zivilflugplaetze_v2_0.oereb.xtf) |
+
+
+Die Erstellung eines Metamodells aus einem INTERLIS-Modell heraus kann mit `ìli2c` wie folgt erreicht werden:
+
+```shell
+java -jar <path-to-ili2c>/ili2c.jar -oIMD16 data/OeREBKRMtrsfr_V2_0.ili --out data/OeREBKRMtrsfr_V2_0.imd
+```
 
 ### Beispiel 1
 
