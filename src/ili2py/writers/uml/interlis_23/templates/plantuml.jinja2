@@ -1,0 +1,18 @@
+@startuml
+left to right direction
+{% for key in index -%}
+    {% if isinstance(index[key], class_type) and index[key].kind in ['Class', 'Structure'] -%}
+        {% if index[key].abstract %}abstract {% endif %}class {{ index[key].tid }}{
+            {% for attr in index[key].attr_or_params -%}
+            {{ attr.name }} : {{ attr.type.ref.replace('.', '_').replace('.TYPE', '') }}
+            {% endfor %}
+        }
+        {% if index[key].referenced_super -%}
+            {{ index[key].referenced_super.tid }} <|-- {{ index[key].tid }}
+        {% endif -%}
+    {% endif -%}
+    {% if isinstance(index[key], class_type) and index[key].kind == 'Association' and len(index[key].roles) == 2 %}
+        {{ index[key].roles[0].associated_class.tid }} "{{ render_multiplicity(index[key].roles[0].multiplicity.multiplicity) }}" {% if index[key].roles[0].strongness == 'Comp' -%}*{% elif index[key].roles[0].strongness == 'Aggr' -%}o{%- endif %}--{% if index[key].roles[1].strongness == 'Comp' -%}*{% elif index[key].roles[1].strongness == 'Aggr' -%}o{%- endif %} "{{ render_multiplicity(index[key].roles[1].multiplicity.multiplicity) }}" {{ index[key].roles[1].associated_class.tid }}
+    {% endif %}
+{%- endfor %}
+@enduml

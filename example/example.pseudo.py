@@ -1,3 +1,4 @@
+
 class Reifen:
     def __init__(self, Hersteller, Bemerkung=None, Druck=None):
         self.validate_Hersteller(Hersteller)

@@ -8,6 +8,7 @@
 .coverage
 .DS_Store
 *__pycache__
+reqs.txt
 
 docs/_build/
 dist/
@@ -21,3 +22,6 @@ dependency-graphs/
 test-results/
 uml-diagrams/
 pydoer-graphs/
+
+src/ili2py/generated
+generated

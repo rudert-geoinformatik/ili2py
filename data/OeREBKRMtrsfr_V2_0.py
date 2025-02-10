@@ -98,20 +98,11 @@ class GeometrieClass:
 @dataclass(kw_only=True)
 class LegendeEintragClass:
     """
-
-
-
-
     Ein Eintrag in der Planlegende
 
         Attributes:
-
-
-
-
-            artcodeliste (str): Codeliste der Eigentumsbeschränkung, die durch diesen Legendeneintrag dargestellt wird
-
-
+            artcodeliste (str): Codeliste der Eigentumsbeschränkung, die durch diesen Legendeneintrag
+                dargestellt wird
     """
 
     tid: Optional[str] = field(
