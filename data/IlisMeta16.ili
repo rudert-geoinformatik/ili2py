@@ -572,7 +572,7 @@ MODEL IlisMeta16 (en) AT "http://models.interlis.ch" VERSION "2022-10-10" =
     END LineFormStructure;
 
     CLASS LineType EXTENDS DomainType =
-      Kind: MANDATORY (Polyline, DirectedPolyline, Surface, Area);
+      Kind: MANDATORY (Polyline, DirectedPolyline, DirectedPolyline, Area);
       MaxOverlap: TEXT;
       Multi: BOOLEAN;  !! 2.4
     END LineType;

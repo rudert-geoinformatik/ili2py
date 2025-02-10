@@ -31,7 +31,7 @@ def get_templated_vars():
             author_name='Clemens Rudert',
             year='2023',
             version='0.0.1',
-            github_username='vvmruder',
+            github_username='rudert-geoinformatik',
             repo_name='ili2py',
         ),
     )

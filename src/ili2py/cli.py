@@ -4,24 +4,17 @@ import os
 import sys
 from dataclasses import asdict
 import json
-from pathlib import Path
+from ili2py import version
 
 import click
 
 from typing import Any
 from ili2py import __version__
-from xsdata.formats.dataclass.parsers import XmlParser
-from xsdata.models.config import GeneratorConfig, GeneratorOutput
-from xsdata.codegen.transformer import ResourceTransformer
-from xsdata.codegen.writer import CodeWriter
-from ili2py.interfaces.metamodel.ili import Transfer
-from xsdata.utils.click import model_options
-from xsdata.models.mixins import array_element, attribute, element
-from xsdata.formats.dataclass.parsers.config import ParserConfig
-from ili2py.interfaces.xsdata.generator import IMDGenerator
-
-from ili2py.readers import create_reader_classes
-from ili2py.readers_template import create_reader_classes as template_create_reader_classes
+from ili2py.readers.interlis_24.ilismeta16.xsdata import Reader as Imd16Reader
+from ili2py.readers.interlis_23.xtf.xsdata import Reader as Xtf23Reader
+from ili2py.writers.uml import create_uml_diagram
+from ili2py.writers.uml.interlis_23 import flavours
+from ili2py.writers.py import create_python_classes
 
 this_file_location = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
 
@@ -32,121 +25,105 @@ def version_msg():
     Get message about ili2py version, location
     and Python version.
     """
-    python_version = sys.version[:3]
-    message = u"ili2py %(version)s from {} (Python {})"
+    python_version = sys.version[:6]
     location = os.path.dirname(this_file_location)
-    return message.format(location, python_version)
+    message = f"ili2py {version} from {location} (Python {python_version})"
+    click.echo(message)
+
+@click.group()
+def cli():
+    version_msg()
 
 
-def imd(input_meta_model: str) -> Transfer:
-    ns_map = {}
-    parser = XmlParser()
-    parser.config = ParserConfig()
-    parser.config.fail_on_unknown_properties = False
-    metamodel = parser.parse(input_meta_model, Transfer, ns_map=ns_map)
-    return metamodel
-
-
-def xtf(input_data: str, model_name: str, metamodel: Transfer):
-    parser = XmlParser()
-    parser.config = ParserConfig()
-    parser.config.fail_on_unknown_properties = False
-    reader_classes = create_reader_classes(model_name, metamodel)
-    interlis_transfer = parser.parse(input_data, reader_classes)
-    return interlis_transfer
-
-
-def xsdata_hooked(input_meta_model: str):
-    config_file = Path(".xsdata.xml").resolve()
-    config = GeneratorConfig.read(config_file)
-    CodeWriter.generators.update({"imd": IMDGenerator})
-    config.output.format.value = "imd"
-    transformer = ResourceTransformer(config=config, print=True)
-    transformer.process([input_meta_model], cache=False)
-
-
-def xtf_reader_classes(model_name: str, metamodel: Transfer):
-    parser = XmlParser()
-    parser.config = ParserConfig()
-    parser.config.fail_on_unknown_properties = False
-    reader_classes = template_create_reader_classes(model_name, metamodel)
-    return reader_classes
-
-
-@click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
+@cli.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @click.version_option(__version__, u'-V', u'--version', message=version_msg())
 @click.option('-v', '--verbose', is_flag=True, help='Print debug information', default=False)
 @click.option('-i', '--imd', is_flag=False, help='full path to imd file')
 def imd_json(**kwargs: Any):
     """
-    parse an arbitrary metamodel to python and promote understood structure as json format
+    parse an arbitrary imd to python and promote understood structure as json format
     """
     path = kwargs.pop("imd")
     try:
-        click.echo(json.dumps(asdict(imd(path)), indent=2))
+        click.echo(json.dumps(asdict(Imd16Reader().read(path)), indent=2))
     except Exception as error:
         click.echo(error)
         sys.exit(1)
 
 
-@click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
+@cli.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @click.version_option(__version__, u'-V', u'--version', message=version_msg())
 @click.option('-v', '--verbose', is_flag=True, help='Print debug information', default=False)
 @click.option('-i', '--imd', is_flag=False, help='full path to imd file')
 @click.option('-x', '--xtf', is_flag=False, help='full path to xtf file')
-@click.option('-m', '--model', is_flag=False, help='model name')
 def xtf_json(**kwargs: Any):
     """
-    parse an arbitrary metamodel create an XTF Reader from it and promote data structure as json format
+    parse an arbitrary imd create an XTF Reader from it and promote data structure as json format
     """
     metamodel_path = kwargs.pop("imd")
     xtf_data_path = kwargs.pop("xtf")
-    model_name = kwargs.pop("model")
     try:
-        metamodel = imd(metamodel_path)
-        xtf_data = xtf(xtf_data_path, model_name, metamodel)
-        click.echo(json.dumps(asdict(xtf_data), indent=2))
+        # create a useable python object representation of metamodel
+        metamodel = Imd16Reader().read(metamodel_path)
+        # create a reader for XTF based on the metamodel
+        xtf_reader = Xtf23Reader(metamodel)
+        # read the xtf with the generated reader
+        xtf_data = xtf_reader.read(xtf_data_path)
+        xtf_dict = {}
+        for key in xtf_data:
+            xtf_dict[key] = asdict(xtf_data[key])
+        click.echo(json.dumps(xtf_dict, indent=2))
     except Exception as error:
         click.echo(error)
         sys.exit(1)
 
 
-@click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
+@cli.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @click.version_option(__version__, u'-V', u'--version', message=version_msg())
 @click.option('-v', '--verbose', is_flag=True, help='Print debug information', default=False)
 @click.option('-i', '--imd', is_flag=False, help='full path to imd file')
-@click.option('-m', '--model', is_flag=False, help='model name')
-def xtf_reader_classes_cli(**kwargs: Any):
+@click.option('-m', '--models', is_flag=False, help='model names separated by comma')
+@click.option('-o', '--output', is_flag=False, default=flavours[0], help=f'the desired flavour (one of {", ".join(flavours)})')
+def ili2py_uml(**kwargs: Any):
     """
-    parse an arbitrary metamodel create an XTF Reader from it and promote data structure as json format
+    parse an arbitrary imd and creates a UML diagram of selected flavour
     """
     metamodel_path = kwargs.pop("imd")
-    model_name = kwargs.pop("model")
+    model_names = kwargs.pop("models")
+    if model_names:
+        model_names = model_names.split(',')
+    flavour = kwargs.pop("output")
+    if flavour not in flavours:
+        click.echo(f'The output {flavour} is not allowed. It has to be one of {" ,".join(flavours)}')
+        sys.exit(2)
     try:
-        metamodel = imd(metamodel_path)
-        xtf_classes = xtf_reader_classes(model_name, metamodel)
+        metamodel = Imd16Reader().read(metamodel_path)
+        xtf_classes = create_uml_diagram(model_names, metamodel, flavour)
         click.echo(xtf_classes)
     except Exception as error:
         click.echo(error)
         sys.exit(1)
 
 
-@click.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
+@cli.command(context_settings=dict(help_option_names=[u'-h', u'--help']))
 @click.version_option(__version__, u'-V', u'--version', message=version_msg())
 @click.option('-v', '--verbose', is_flag=True, help='Print debug information', default=False)
 @click.option('-i', '--imd', is_flag=False, help='full path to imd file')
-def imd_xsdata(**kwargs: Any):
+@click.option('-f', '--folder_output', is_flag=False, help='Path to where the python package should be written')
+def ili2py_python_classes(**kwargs: Any):
     """
-    parse an arbitrary metamodel to python and promote understood structure as json format
+    parse an arbitrary imd and creates a UML diagram of selected flavour
     """
-    path = kwargs.pop("imd")
+    metamodel_path = kwargs.pop("imd")
+    output_path = kwargs.pop("folder_output")
     try:
-        xsdata_hooked(path)
+        metamodel = Imd16Reader().read(metamodel_path)
+        output = create_python_classes(metamodel, output_path)
+        click.echo(output)
     except Exception as error:
         click.echo(error)
         sys.exit(1)
 
 
 if __name__ == "__main__":  # pragma: no cover
-    xsdata_hooked("file:///home/kalle/projects/rudert-geoinformatik/ili2py/data/Planungszonen_V1_1.imd")
-    # pass
+    cli()
