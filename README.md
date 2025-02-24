@@ -3,7 +3,7 @@
 Your pythonic gateway to INTERLIS
 
 - [**Code**](https://github.com/rudert-geoinformatik/ili2py)
-- [**Docs**](https://ili2py.readthedocs.io/en/master/)
+- [**Docs**](https://rudert-geoinformatik.github.io/ili2py)
 - [**PyPI**](https://pypi.org/project/ili2py/)
 - [**CI**](https://github.com/rudert-geoinformatik/ili2py/actions/)
 
@@ -26,7 +26,8 @@ You need to have `Python` (>=3.11) installed.
 
 ## Quickstart
 
-Creates a local virtual environemtn to develop and test the code:
+### Local Development
+Creates a local virtual environment to develop and test the code:
 
 ```shell
 make dev
@@ -37,4 +38,18 @@ project root. Content of `generated` will be overwritten by re issue of the comm
 
 ```shell
 .venv/bin/python -m ili2py.cli ili2py-python-classes -i data/OeREBKRMtrsfr_V2_0.imd -f generated
+```
+
+### Running in Docker
+
+First build the docker image:
+
+```shell
+docker build --network host -t ili2py:latest .
+```
+
+Then run the app like this (sample command with target ili2py-python-classes):
+
+```shell
+docker run --rm --network host ili2py:latest ili2py-python-classes -i data/OeREBKRMtrsfr_V2_0.imd -f generated
 ```

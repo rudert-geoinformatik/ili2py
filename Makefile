@@ -12,7 +12,6 @@ PYTHON_PATH = $(shell which python3)
 PYTHON_VERSION = $(shell printf '%b' "import sys\nprint(f'{sys.version_info.major}.{sys.version_info.minor}')" | $$(which python3))
 PINNED_DEPS ?= reqs.txt
 
-
 # ********************
 # Variable definitions
 # ********************
@@ -84,6 +83,7 @@ clean:
 clean-all: clean
 	rm -rf $(VENV_PATH)
 	rm -rf src/$(PACKAGE).egg-info
+	rm -rf docs/site
 	rm -rf build
 	rm -rf dist
 
@@ -110,10 +110,6 @@ doc-html: $(DOC_REQUIREMENTS) docs/mkdocs.yml
 .PHONY: doc-serve
 doc-serve: $(DOC_REQUIREMENTS) docs/mkdocs.yml
 	$(VENV_BIN)/mkdocs serve -f docs/mkdocs.yml
-
-.PHONY: doc-gh-deploy
-doc-gh-deploy: $(DOC_REQUIREMENTS) docs/mkdocs.yml
-	$(VENV_BIN)/mkdocs gh-deploy -f docs/mkdocs.yml -d site --force
 
 .PHONY: updates
 updates: $(PIP_REQUIREMENTS)

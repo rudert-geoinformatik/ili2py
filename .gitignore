@@ -11,6 +11,7 @@
 reqs.txt
 
 docs/_build/
+docs/site
 dist/
 build/
 htmlcov/
