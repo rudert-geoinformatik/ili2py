@@ -6,3 +6,4 @@ venv/
 .coverage
 build
 docs
+.venv

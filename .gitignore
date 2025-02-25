@@ -26,3 +26,5 @@ pydoer-graphs/
 
 src/ili2py/generated
 generated
+test.puml
+src/ili2py/test.py

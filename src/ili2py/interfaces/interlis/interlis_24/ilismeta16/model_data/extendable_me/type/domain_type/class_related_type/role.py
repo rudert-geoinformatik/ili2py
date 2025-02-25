@@ -6,6 +6,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.
     ReferenceType
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.references import OrderedRef
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.serialization_elements import MultiplicityElement
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import IMD_META_BASE
 
 
 @dataclass
@@ -17,8 +18,8 @@ class Role(ReferenceType):
         Comp = auto()
 
     @dataclass
-    class _Multiplicity:
-        multiplicity: Optional[MultiplicityElement] = None
+    class _Multiplicity(IMD_META_BASE):
+        Multiplicity: Optional[MultiplicityElement] = None
 
     Strongness: StrongnessEnum
     Ordered: bool

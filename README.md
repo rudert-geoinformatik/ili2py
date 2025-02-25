@@ -37,7 +37,13 @@ The following command creates a python library corresponding to the passed imd i
 project root. Content of `generated` will be overwritten by re issue of the command.
 
 ```shell
-.venv/bin/python -m ili2py.cli ili2py-python-classes -i data/OeREBKRMtrsfr_V2_0.imd -f generated
+.venv/bin/python -m ili2py.cli ili2py-python-classes -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -f generated
+```
+
+The following command creates a UML Diagram (Mermaid).
+
+```shell
+.venv/bin/python -m ili2py.cli ili2py-uml -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o plantuml
 ```
 
 ### Running in Docker
@@ -45,11 +51,11 @@ project root. Content of `generated` will be overwritten by re issue of the comm
 First build the docker image:
 
 ```shell
-docker build --network host -t ili2py:latest .
+docker build -t ili2py:latest .
 ```
 
 Then run the app like this (sample command with target ili2py-python-classes):
 
 ```shell
-docker run --rm --network host ili2py:latest ili2py-python-classes -i data/OeREBKRMtrsfr_V2_0.imd -f generated
+docker run --rm -v $(pwd)/tests/data/models:/io/models ili2py:latest ili2py-python-classes -i /io/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -f /io/generated
 ```
