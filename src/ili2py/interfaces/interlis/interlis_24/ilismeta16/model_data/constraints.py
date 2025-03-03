@@ -10,7 +10,13 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.serialization_
 
 @dataclass
 class Constraint(MetaElement):
-    pass
+    # use the metadata.name to fetch the element from XML but store it
+    #   as `*_ref` instance variable to resolve soft reference to actual object
+    ToClass_ref: Ref = field(
+        metadata={
+            "name": "ToClass"
+        }
+    )
 
 
 @dataclass
@@ -19,14 +25,6 @@ class SimpleConstraint(Constraint):
         MandC = auto()
         LowPercC = auto()
         HighPercC = auto()
-
-    # use the metadata.name to fetch the element from XML but store it
-    #   as `*_ref` instance variable to resolve soft reference to actual object
-    ToClass_ref: Ref = field(
-        metadata={
-            "name": "ToClass"
-        }
-    )
     Kind: KindEnum
     LogicalExpression: CompoundExprElement = field(
         metadata={

@@ -2,11 +2,16 @@ site_name: ili2py Docs
 docs_dir: mkdocs
 
 nav:
-  - Home: index.md
+  - Welcome: index.md
+  - "Quick Start": quick_start.md
+  - "DEV Setup": dev_setup.md
+  - "Feature Status":
+    - "IlisMeta16": feature_status/ilismeta16.md
   - Installation: installation.md
   - Code:
-      - Classes:
-          - HasRef: HasRef.md # only as a mkdocstrings example for now
+      - Interfaces:
+          - "INTERLIS 2.4":
+              - "IlisMeta16": code/ilismeta16.md
 
 plugins:
   - search
@@ -15,7 +20,8 @@ plugins:
         default_handler: python
         handlers:
           python:
-            paths: [../../src]
+            paths:
+              - "../../src"
             options:
               show_submodules: true
               show_if_no_docstring: true
