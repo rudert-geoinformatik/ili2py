@@ -27,7 +27,11 @@ class ModelData:
             "namespace": imd_namespace_map["ili"]
         }
     )
-    Model: "Model"
+    Model: "Model" = field(
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
+    )
     # TODO: Keep an eye on requested list length (as of meta model docs list of sub_model has to
     #  be at least 1)
     SubModel: List["SubModel"] = field(
@@ -110,3 +114,4 @@ class ModelData:
     Unit: List["Unit"] = field(
         default_factory=list
     )
+    # TODO: Add Views

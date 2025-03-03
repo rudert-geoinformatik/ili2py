@@ -1,7 +1,9 @@
+import logging
 from dataclasses import dataclass, field
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import IMD_META_BASE, imd_namespace_map
 
+log = logging.getLogger(__name__)
 
 @dataclass
 class Ref:
@@ -47,10 +49,14 @@ class HasRef:
         """
         for attribute_name in self.__dir__():
             if isinstance(getattr(self, attribute_name), Ref):
-                referenced_element = index[getattr(self, attribute_name).ref]
-                new_attribute_name = attribute_name.replace('_ref', '')
-                setattr(self, new_attribute_name, referenced_element)
-                backref_name = f'{new_attribute_name}_backref'
-                if not hasattr(referenced_element, backref_name):
-                    setattr(referenced_element, backref_name, [])
-                getattr(referenced_element, backref_name).append(self)
+                reference = getattr(self, attribute_name).ref
+                if not index.get(reference, False):
+                    log.info(f'Element with tid <{reference}> was not found in index. It is highly possible that it is not implemented yet')
+                else:
+                    referenced_element = index[reference]
+                    new_attribute_name = attribute_name.replace('_ref', '')
+                    setattr(self, new_attribute_name, referenced_element)
+                    backref_name = f'{new_attribute_name}_backref'
+                    if not hasattr(referenced_element, backref_name):
+                        setattr(referenced_element, backref_name, [])
+                    getattr(referenced_element, backref_name).append(self)

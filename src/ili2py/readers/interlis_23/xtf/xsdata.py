@@ -2,7 +2,6 @@ from typing import AnyStr, IO
 from xsdata.formats.dataclass.parsers import XmlParser
 from xsdata.formats.dataclass.parsers.config import ParserConfig
 
-from data.Planungszonen_V1_1 import ns_map
 from ili2py.interfaces.interlis.interlis_23 import TRANSFER
 from ili2py.interfaces.interlis.interlis_23.generator import DataClassGenerator
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer

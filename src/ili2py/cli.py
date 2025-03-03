@@ -1,5 +1,5 @@
 """Main `ili2py` CLI."""
-
+import logging
 import os
 import sys
 from dataclasses import asdict
@@ -18,6 +18,7 @@ from ili2py.writers.py import create_python_classes
 
 this_file_location = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
 
+logger = logging.getLogger(__name__)
 
 def version_msg():
     """ili2py version, location and Python version.
@@ -32,6 +33,9 @@ def version_msg():
 
 @click.group()
 def cli():
+    logging.Formatter(fmt='%(levelname)-8s :: %(message)s')
+    logging.basicConfig(level=logging.INFO)
+    logger.info('Starting ili2py CLI')
     version_msg()
 
 

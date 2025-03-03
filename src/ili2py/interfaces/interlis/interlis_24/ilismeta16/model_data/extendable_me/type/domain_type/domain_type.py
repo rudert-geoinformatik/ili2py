@@ -113,6 +113,7 @@ class NumType(DomainType, HasRef):
             "name": "Unit"
         }
     )
+    # TODO: Implement RefSys attribute as association (called NumsRefSys in https://models.interlis.ch/core/IlisMeta16.ili)
 
 
 @dataclass(kw_only=True)

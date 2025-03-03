@@ -14,7 +14,7 @@ def find_model_data_by_name(name: str, model_data: List[ModelData]) -> int:
 
 def create_uml_diagram(model_names: List[str], transfer: ImdTransfer, flavour: str):
     # TODO: This is probably ugly (aka can we have mixed ili versions?
-    if transfer.datasection.ModelData[-1].Model.Version == '2.3':
+    if transfer.datasection.ModelData[-1].Model.iliVersion in ['2.3', '2.4']:
         return uml_diagram(transfer, model_names, flavour)
     else:
-        raise NotImplemented
+        raise NotImplementedError()

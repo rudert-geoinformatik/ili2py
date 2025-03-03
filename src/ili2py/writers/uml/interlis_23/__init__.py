@@ -20,23 +20,25 @@ direction = [
 ]
 
 
-def render_multiplicity(multiplicity: MultiplicityElement) -> str:
-    if multiplicity.min == 1 and multiplicity.max == 1:
+def render_multiplicity(multiplicity: MultiplicityElement) -> str|None:
+    if multiplicity is None:
+        return None
+    if multiplicity.Min == 1 and multiplicity.Max == 1:
         return '1'
-    elif multiplicity.min == 0 and multiplicity.max == 0:
+    elif multiplicity.Min == 0 and multiplicity.Max == 0:
         #Cardinality / Multiplicity '0' is not implemented in mermaid
         return '0'
-    elif multiplicity.min == 0 and multiplicity.max == 1:
+    elif multiplicity.Min == 0 and multiplicity.Max == 1:
         return '0..1'
-    elif multiplicity.min == 1 and multiplicity.max is None:
+    elif multiplicity.Min == 1 and multiplicity.Max is None:
         return '1..*'
-    elif multiplicity.min == 0 and multiplicity.max is None:
+    elif multiplicity.Min == 0 and multiplicity.Max is None:
         # Cardinality / Multiplicity '0..*' is not implemented in mermaid directly we deliver empty string
         return "0..*"
-    elif multiplicity.min is None and multiplicity.max is None:
+    elif multiplicity.Min is None and multiplicity.Max is None:
         return '*'
     else:
-        return f'{multiplicity.min}..{multiplicity.max}'
+        return f'{multiplicity.Min}..{multiplicity.Max}'
 
 
 def uml_diagram(metamodel: ImdTransfer, model_names: List[str], flavour: str):

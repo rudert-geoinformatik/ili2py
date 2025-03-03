@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 namespace_map = {
@@ -13,10 +13,12 @@ class ILI_META_BASE:
 
 @dataclass
 class Model:
-    class Meta(ILI_META_BASE):
-        pass
 
-    model: str
+    model: str = field(
+        metadata={
+            "namespace": namespace_map["ili"]
+        }
+    )
 
 
 @dataclass
