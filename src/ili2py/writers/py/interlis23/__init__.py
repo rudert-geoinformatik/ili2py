@@ -1,14 +1,11 @@
 import re
 import os
-import subprocess
-import uuid
 
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.helper import index_modeldata
-from xsdata.codegen.exceptions import CodegenError
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.extendable_me import \
     AttrOrParam
@@ -66,14 +63,13 @@ def reader_classes(metamodel: ImdTransfer, output_path: str) -> str:
     index = index_modeldata(metamodel)
     tpl_dir = Path(__file__).parent.joinpath("templates")
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
-    output_classes = []
     for model_data in metamodel.datasection.ModelData:
         output_file = create_file(output_path, model_data.Model.Name, '__init__.py')
         model_doc_text = ['from dataclasses import dataclass', '', '"""']
         for item in model_data.Model.Documentation:
             model_doc_text = model_doc_text + [line.lstrip() for line in item.DocText.Text.split('\n')]
         model_doc_text.append('"""')
-        model_doc_text = model_doc_text +['', '']
+        model_doc_text = model_doc_text + ['', '']
         imports = []
         for class_item in model_data.Class:
             output = env.get_template("class.jinja2").render(
@@ -107,50 +103,6 @@ def reader_classes(metamodel: ImdTransfer, output_path: str) -> str:
                     model_doc_text = model_doc_text + ["@dataclass"] + output.split('\n')
             model_doc_text = render_imports(imports) + model_doc_text
             output_file.write_text('\n'.join(model_doc_text))
-    file_path = Path(f"/tmp/{str(uuid.uuid4())}.py")
-    with open(f'/tmp/debug.py', mode="w+") as f:
-        f.write('\n'.join(output_classes))
-    commands = [
-        [
-            "ruff",
-            "format",
-            "--stdin-filename",
-            str(file_path),
-            "--line-length",
-            str(80),
-        ],
-        [
-            "ruff",
-            "check",
-            "--stdin-filename",
-            str(file_path),
-            "--line-length",
-            str(80),
-            "--config",
-            str(Path(__file__).parent / "ruff.toml"),
-            "--fix",
-            "--unsafe-fixes",
-            "--exit-zero",
-        ],
-    ]
-    try:
-        src_code_encoded = output.encode()
-        for command in commands:
-            result = subprocess.run(
-                command,
-                input=src_code_encoded,
-                capture_output=True,
-                check=True,
-            )
-            src_code_encoded = result.stdout
-
-        return src_code_encoded.decode()
-    except subprocess.CalledProcessError as e:
-        details = e.stderr.decode().replace("error: ", "").strip()
-        print(f"Ruff command failed: {details}")
-        source = code_excerpt(details, src_code_encoded.decode())
-        raise CodegenError("Ruff failed", details=details, source=source)
-
 
 def code_excerpt(details: str, src_code: str) -> str:
     """Extract source code excerpt from the error details message."""
