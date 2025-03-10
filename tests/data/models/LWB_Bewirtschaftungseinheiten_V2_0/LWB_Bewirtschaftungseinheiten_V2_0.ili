@@ -1,0 +1,136 @@
+INTERLIS 2.3;
+
+!! Version    | Who   | Modification
+!!----------------------------------------------------------------------------------------
+!! 2023-01-01 | BLW   | Attribut AV_Parzelle entfernt, Constraint auf Zone_Ausland,
+!!                    | neues Attribut BUR_Nr, Flaeche neu Multipolygon, LV03 entfernt,
+!!                    | CLASS Bezugsjahr neu in TOPIC Landw_Betrieb, neue Version 2.0
+!! 2023-03-17 | BLW   | Constraint der Klasse BE_Bewirtschaftungseinheit und die Kardinalitäten von Bezugsjahr zu BE_Bewirtschaftungseinheit und BE_Produktionsstaette korrigiert
+
+!!@ technicalContact=mailto:info@blw.admin.ch
+!!@ IDGeoIV=153.6
+!!@ furtherInformation=https://www.blw.admin.ch/blw/de/home/politik/datenmanagement/geografisches-informationssystem-gis/landwirtschaftliche-kulturflaechen.html
+MODEL LWB_Bewirtschaftungseinheiten_V2_0 (de)
+AT "https://models.geo.admin.ch/BLW/"
+VERSION "2023-03-17"  =
+  IMPORTS CHAdminCodes_V1,LWB_Landwirtschaftliche_Zonengrenzen_Kataloge_V2_0,CoordSys;
+
+  TOPIC Landw_Betrieb =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+    DEPENDS ON LWB_Landwirtschaftliche_Zonengrenzen_Kataloge_V2_0.LZ_Kataloge;
+
+    REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
+      OBJECTS OF GeoCartesian2D: CHLV95
+      OBJECTS OF GeoHeight: SwissOrthometricAlt;
+
+    DOMAIN
+      /** Fläche um +50km Ausland erweitert
+       */
+      lwbCoord2 = COORD
+        2410000.000 .. 2920000.000 [INTERLIS.m] {CHLV95[1]},
+        995000.000 .. 1360000.000  [INTERLIS.m] {CHLV95[2]},
+        ROTATION 2 -> 1;
+
+      /** Fläche ohne Kreisbogen
+       */
+      Surface = SURFACE WITH (STRAIGHTS) VERTEX lwbCoord2 WITHOUT OVERLAPS > 0.001;
+
+    STRUCTURE PolygonStructure =
+      Polygon : Surface;
+    END PolygonStructure;
+
+    STRUCTURE MultiPolygon =
+      Polygons : BAG {1..*} OF PolygonStructure;
+    END MultiPolygon;
+
+    CLASS Bezugsjahr =
+      Bezugsjahr : MANDATORY INTERLIS.GregorianYear;
+    END Bezugsjahr;
+
+    CLASS BE_Betrieb =
+      /** Position (XY-Koordinaten) der Hauptproduktionsstätte
+       */
+      Punkt : MANDATORY lwbCoord2;
+      /** Kantonale Betriebsnummer
+       */
+      Betriebsnummer : MANDATORY TEXT*25;
+      Betriebsname : TEXT*100;
+      /** Betriebs- und Unternehmensregister Nummer
+       */
+      BUR_Nr : TEXT*20;
+    END BE_Betrieb;
+
+    CLASS BE_Bewirtschaftungseinheit =
+      /** Die Bewirtschaftungseinheiten sind seit V2_0 Multipart Polygone. Zwischen den einzelnen Bewirtschaftungseinheiten sind Lücken erlaubt (d.h. die Schweiz ist nicht lückenlos abgedeckt).
+       */
+      Flaeche : MANDATORY MultiPolygon;
+      Identifikator : TEXT*50;
+      /** Angabe, ob die Daten definitiven Status haben oder nicht.
+       */
+      Ist_Definitiv : MANDATORY BOOLEAN;
+      /** BFS-Gemeindenummer
+       */
+      Gemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      Zone_Ausland : LWB_Landwirtschaftliche_Zonengrenzen_Kataloge_V2_0.LZ_Kataloge.LZ_Katalog_TypRef;
+      /** Zone_Ausland darf nur den Wert 77 (Angestammte Fläche im Ausland) oder 79 (Nicht angestammte Fläche im Ausland) haben
+       */
+      MANDATORY CONSTRAINT NOT (DEFINED (Zone_Ausland)) OR (Zone_Ausland->Reference->LZ_Code == 77 OR Zone_Ausland->Reference->LZ_Code == 79);
+    END BE_Bewirtschaftungseinheit;
+
+    /** Als Produktionsstätte gilt eine Einheit von Land, Gebäuden und Einrichtungen, die räumlich als solche erkennbar und getrennt von anderen Produktionsstätten ist.
+     */
+    CLASS BE_Produktionsstaette =
+      /** Position (XY-Koordinaten) der Produktionsstätte
+       */
+      Punkt : MANDATORY lwbCoord2;
+      /** Offizielle Nummer der Produktionsstätte analog zur Betriebsnummer
+       */
+      PS_Nummer : MANDATORY TEXT*25;
+      /** Bezeichnung der Produktionsstätte
+       */
+      PS_Name : TEXT*100;
+      /** Betriebs- und Unternehmensregister Nummer
+       */
+      BUR_Nr : TEXT*20;
+    END BE_Produktionsstaette;
+
+    ASSOCIATION BezugsjahrBE_Betrieb =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      Betrieb -- {1..*} BE_Betrieb;
+    END BezugsjahrBE_Betrieb;
+
+    ASSOCIATION BezugsjahrBE_Bewirtschaftungseinheit =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      Bewirtschaftungseinheit -- {0..*} BE_Bewirtschaftungseinheit;
+    END BezugsjahrBE_Bewirtschaftungseinheit;
+
+    ASSOCIATION BezugsjahrBE_Produktionsstaette =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      Produktionsstaette -- {0..*} BE_Produktionsstaette;
+    END BezugsjahrBE_Produktionsstaette;
+
+    /** Eine Bewirtschaftungseinheit ist immer genau einem Betrieb zugordnet.
+     */
+    ASSOCIATION EinheitBetrieb =
+      Betrieb -<#> {1} BE_Betrieb;
+      Bewirtschaftungseinheit -- {0..*} BE_Bewirtschaftungseinheit;
+    END EinheitBetrieb;
+
+    /** Eine Produktionsstätte ist immer einem Betrieb zugeordnet.
+     */
+    ASSOCIATION ProdstBetrieb =
+      Betrieb -<#> {1} BE_Betrieb;
+      Produktionsstaette -- {0..*} BE_Produktionsstaette;
+    END ProdstBetrieb;
+
+    /** Eine Bewirtschaftungseinheit kann nebst dem Betrieb auch einer Produktionsstätte zugeordnet werden.
+     */
+    ASSOCIATION EinheitProdst =
+      Produktionsstaette -- {0..1} BE_Produktionsstaette;
+      Bewirtschaftungseinheit -- {0..*} BE_Bewirtschaftungseinheit;
+    END EinheitProdst;
+
+  END Landw_Betrieb;
+
+END LWB_Bewirtschaftungseinheiten_V2_0.

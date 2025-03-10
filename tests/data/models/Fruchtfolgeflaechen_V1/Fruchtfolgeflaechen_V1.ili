@@ -1,0 +1,106 @@
+INTERLIS 2.3;
+
+/** Minimales Geodatenmodell "Fruchtfolgeflächen"
+ *  Geobasisdatensatz Nr. 68
+ *  TRANSLATION OF-Modelle: SurfacesDAssolement_V1.ili, SuperficiPerLAvvicendamentoDelleColture_V1.ili
+ */
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2016-04-15 | KOGIS | Geometry definition adapted
+!! 2019-08-23 | KOGIS | Data type of "Bezeichnung" adapted
+
+!!@ technicalContact=mailto:info@are.admin.ch
+!!@ IDGeoIV=68
+!!@ furtherInformation=https://www.are.admin.ch/mgm
+MODEL Fruchtfolgeflaechen_LV03_V1 (de)
+AT "https://models.geo.admin.ch/ARE/"
+VERSION "2019-08-23"  =
+  IMPORTS GeometryCHLV03_V1;
+
+  DOMAIN
+
+    Gebietseinteilung = AREA WITH (STRAIGHTS, ARCS) VERTEX GeometryCHLV03_V1.Coord2 WITHOUT OVERLAPS > 0.05;
+
+  TOPIC TransferMetadaten =
+
+    CLASS TransferMetadaten =
+      Datenstand : MANDATORY INTERLIS.XMLDate;
+      Vergleichsmassstab : TEXT*30;
+      Herkunft : TEXT*30;
+      Amt : MANDATORY TEXT*250;
+      AmtImWeb : URI;
+    END TransferMetadaten;
+
+  END TransferMetadaten;
+
+  TOPIC Geobasisdaten =
+
+    CLASS Qualitaet_kantonal =
+      Code : MANDATORY TEXT*20;
+      Bezeichnung : MANDATORY TEXT*100;
+      Bemerkung : TEXT*250;
+    END Qualitaet_kantonal;
+
+    CLASS Fruchtfolgeflaeche =
+      Geometrie : MANDATORY Fruchtfolgeflaechen_LV03_V1.Gebietseinteilung;
+      Anrechenbar : MANDATORY 0.00 .. 1.00;
+      Bemerkung : TEXT*250;
+    END Fruchtfolgeflaeche;
+
+    ASSOCIATION Assoziation_FFF_Qualitaet(FINAL) =
+      FFF_Qualitaet -- {0..*} Fruchtfolgeflaeche;
+      Qualitaet_FFF -- {0..1} Qualitaet_kantonal;
+    END Assoziation_FFF_Qualitaet;
+
+  END Geobasisdaten;
+
+END Fruchtfolgeflaechen_LV03_V1.
+
+
+!!@ technicalContact=mailto:info@are.admin.ch
+!!@ IDGeoIV=68
+!!@ furtherInformation=https://www.are.admin.ch/mgm
+MODEL Fruchtfolgeflaechen_LV95_V1 (de)
+AT "https://models.geo.admin.ch/ARE/"
+VERSION "2019-08-23"  =
+  IMPORTS GeometryCHLV95_V1;
+
+  DOMAIN
+
+    Gebietseinteilung = AREA WITH (STRAIGHTS, ARCS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS >0.05;
+
+  TOPIC TransferMetadaten =
+
+    CLASS TransferMetadaten =
+      Datenstand : MANDATORY INTERLIS.XMLDate;
+      Vergleichsmassstab : TEXT*30;
+      Herkunft : TEXT*30;
+      Amt : MANDATORY TEXT*250;
+      AmtImWeb : URI;
+    END TransferMetadaten;
+
+  END TransferMetadaten;
+
+  TOPIC Geobasisdaten =
+
+    CLASS Qualitaet_kantonal =
+      Code : MANDATORY TEXT*20;
+      Bezeichnung : MANDATORY TEXT*100;
+      Bemerkung : TEXT*250;
+    END Qualitaet_kantonal;
+
+    CLASS Fruchtfolgeflaeche =
+      Geometrie : MANDATORY Fruchtfolgeflaechen_LV95_V1.Gebietseinteilung;
+      Anrechenbar : MANDATORY 0.00 .. 1.00;
+      Bemerkung : TEXT*250;
+    END Fruchtfolgeflaeche;
+
+    ASSOCIATION Assoziation_FFF_Qualitaet(FINAL) =
+      FFF_Qualitaet -- {0..*} Fruchtfolgeflaeche;
+      Qualitaet_FFF -- {0..1} Qualitaet_kantonal;
+    END Assoziation_FFF_Qualitaet;
+
+  END Geobasisdaten;
+
+END Fruchtfolgeflaechen_LV95_V1.

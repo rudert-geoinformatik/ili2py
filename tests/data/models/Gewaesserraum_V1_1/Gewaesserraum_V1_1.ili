@@ -1,0 +1,103 @@
+INTERLIS 2.3;
+
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ IDGeoIV=190.1
+MODEL Gewaesserraum_V1_1 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2022-06-28"  =
+  IMPORTS GeometryCHLV95_V1,CHAdminCodes_V1,LocalisationCH_V1,InternationalCodes_V1;
+
+  TOPIC GewR =
+
+   DOMAIN
+
+    DokumentTyp = (
+      Rechtsvorschrift,
+      GesetzlicheGrundlage,
+      Hinweis
+    );
+
+    RechtsstatusArt = (
+      inKraft,
+      AenderungMitVorwirkung,
+      AenderungOhneVorwirkung
+    );
+
+    /** Flächen ohne Kreisbogen */
+    Polygon = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+
+    STRUCTURE LocalisedUri =
+      Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+      Text : MANDATORY URI;
+    END LocalisedUri;
+    
+    STRUCTURE MultilingualUri =
+      LocalisedText : BAG {1..*} OF LocalisedUri;
+      UNIQUE (LOCAL) LocalisedText:Language;
+    END MultilingualUri;
+
+    STRUCTURE LocalisedBlob =
+      Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+      Blob : MANDATORY BLACKBOX BINARY;
+    END LocalisedBlob;
+
+    STRUCTURE MultilingualBlob =
+      LocalisedBlob : BAG {1..*} OF LocalisedBlob;
+      UNIQUE (LOCAL) LocalisedBlob:Language;
+    END MultilingualBlob;
+
+    /** Klasse für den Gewässerraum */
+    CLASS GewR =
+      Geometrie : MANDATORY Polygon;
+      Kanton : MANDATORY CHAdminCodes_V1.CHCantonCode;
+      Objektnummer : MANDATORY TEXT*36;
+      Gewaessername : TEXT*256;
+      Rechtsstatus : MANDATORY RechtsstatusArt;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+      Verzicht : BOOLEAN;
+      UNIQUE Kanton, Objektnummer;
+    END GewR;
+
+    CLASS Dokument =
+      Typ : MANDATORY DokumentTyp;
+      Titel : MANDATORY LocalisationCH_V1.MultilingualText;
+      Abkuerzung : LocalisationCH_V1.MultilingualText;
+      OffizielleNr : LocalisationCH_V1.MultilingualText;
+      NurInGemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      TextImWeb : MultilingualUri;
+      Dokument : MultilingualBlob;
+      AuszugIndex : MANDATORY -1000 .. 1000;
+      Rechtsstatus : MANDATORY RechtsstatusArt;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+      MANDATORY CONSTRAINT DEFINED(TextImWeb) OR DEFINED(Dokument);
+    END Dokument;
+
+    CLASS Amt =
+      Name : MANDATORY LocalisationCH_V1.MultilingualText;
+      AmtImWeb : URI;
+      UID : TEXT*12;
+      Zeile1 : TEXT*80;
+      Zeile2 : TEXT*80;
+      Strasse : TEXT*100;
+      Hausnr : TEXT*7;
+      PLZ : TEXT*4;
+      Ort : TEXT*40;
+      UNIQUE UID;
+    END Amt;
+
+    ASSOCIATION DokumentGewR =
+      Dokument -- {0..*} Dokument;
+      GewR -- {0..*} GewR;
+    END DokumentGewR;
+
+    ASSOCIATION AmtDokument =
+      Amt -- {1} Amt;
+      Dokument -<> {0..*} Dokument;
+    END AmtDokument;
+
+  END GewR;
+
+END Gewaesserraum_V1_1.

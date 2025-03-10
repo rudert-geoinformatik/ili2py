@@ -1,0 +1,141 @@
+INTERLIS 2.3;
+
+!! Version    | Who   | Modification
+!!----------------------------------------------------------------------------------------
+!! 2023-01-01 | BLW   | Attribute Punkt und Status entfernt, LV03 entfernt, CLASS Bezugsjahr neu in TOPIC Foerderflaechen, neue Version 2.0,
+!!                    | IDGeoIV 153.4 wird gestrichen, Flaeche ist neu Multipolygon, LNF_Code bekommt Datentyp Zahl
+!! 2023-03-17 | BLW   | Kardinalitäten von Bezugsjahr zu BFF_Qualitaet_II und BFF_Vernetzung korrigiert
+
+!!@ technicalContact=mailto:info@blw.admin.ch
+!!@ IDGeoIV=153.3
+!!@ furtherInformation=https://www.blw.admin.ch/blw/de/home/politik/datenmanagement/geografisches-informationssystem-gis/landwirtschaftliche-kulturflaechen.html
+MODEL LWB_Biodiversitaetsfoerderflaechen_Qualitaet_II_und_Vernetzung_V2_0 (de)
+AT "https://models.geo.admin.ch/BLW/"
+VERSION "2023-03-17"  =
+  IMPORTS CoordSys;
+
+  TOPIC Foerderflaechen =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+
+    REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
+      OBJECTS OF GeoCartesian2D: CHLV95
+      OBJECTS OF GeoHeight: SwissOrthometricAlt;
+
+    DOMAIN
+      /** Fläche um +50km Ausland erweitert
+       */
+      lwbCoord2 = COORD
+        2410000.000 .. 2920000.000 [INTERLIS.m] {CHLV95[1]},
+        995000.000 .. 1360000.000  [INTERLIS.m] {CHLV95[2]},
+        ROTATION 2 -> 1;
+
+      /** Fläche ohne Kreisbogen
+       */
+      Surface = SURFACE WITH (STRAIGHTS) VERTEX lwbCoord2 WITHOUT OVERLAPS > 0.001;
+
+    STRUCTURE PolygonStructure =
+      Polygon : Surface;
+    END PolygonStructure;
+
+    STRUCTURE MultiPolygon =
+      Polygons : BAG {1..*} OF PolygonStructure;
+    END MultiPolygon;
+
+    /** Für dieses Jahr haben die Daten in diesem Modell Gültigkeit
+     */
+    CLASS Bezugsjahr =
+      Bezugsjahr : MANDATORY INTERLIS.GregorianYear;
+    END Bezugsjahr;
+
+    /** Perimeter der Qualitätsflächen, Standorte der für die biologische Qualität berücksichtigten Bäume.
+     */
+    CLASS BFF_Qualitaet_II =
+      Flaeche : MANDATORY MultiPolygon;
+      /** Enthält die eindeutige kantonale ID der Fläche / Kultur. Die ID muss mit der «cultureId»
+       * in den Strukturdaten (AGIS) identisch sein. Bei Vertragsflächen darf sich die ID innerhalb der
+       * Vertragsdauer nicht ändern.
+       */
+      Identifikator : TEXT*50;
+      /** Angabe, ob die Daten definitiven Status haben oder nicht. Über die Referenz zum
+       * Bearbeitungsstatus kann optional eine präzisere Angabe gemacht werden.
+       */
+      Ist_Definitiv : MANDATORY BOOLEAN;
+      /** Gibt an, ob eine bewirtschaftete Fläche aufgrund von Ausschlusskriterien nicht beitragsberechtigt ist.
+       */
+      Beitragsberechtigt : MANDATORY BOOLEAN;
+      /** Code gemäss Nutzungskatalog
+       * Code gemäss Nutzungskatalog. Das Attribut muss angegeben werden.
+       */
+      LNF_Code : MANDATORY 0 .. 9999;
+      /** Anzahl Bäume, wenn diese als Fläche erfasst sind.
+       */
+      Anzahl_Baeume : 0 .. 10000;
+      /** Für Vertragsflächen
+       */
+      Verpflichtung_Von : INTERLIS.GregorianYear;
+      /** Für Vertragsflächen
+       */
+      Verpflichtung_Bis : INTERLIS.GregorianYear;
+      /** FORMAT INTERLIS.XMLDate "2010-01-01" .. "2110-01-01"
+       */
+      Schnittzeitpunkt : INTERLIS.XMLDate;
+      /** Gibt an, ob für eine Fläche eine schriftliche Nutzungs- und Schutzvereinbarung besteht, Normalfall: nein.
+       */
+      NHG : MANDATORY BOOLEAN;
+      /** Gibt an, wie viel Prozent der Fläche als bewirtschaftet angerechnet werden können.
+       */
+      Bewirtschaftungsgrad : MANDATORY 0 .. 100;
+      /** Für die Biodiversitätsförderflächen der Qualitätsstufe II ist der Qualitätsanteil für jede Teilfläche anzugeben.
+       * Dieser legt den beitragsberechtigten Prozentanteil einer Fläche fest.
+       */
+      Qualitaetsanteil : MANDATORY 0 .. 100;
+    END BFF_Qualitaet_II;
+
+    /** Perimeter der Vernetzungsflächen, Standorte der für die Vernetzung berücksichtigten Bäume.
+     */
+    CLASS BFF_Vernetzung =
+      Flaeche : MANDATORY MultiPolygon;
+      /** Enthält die eindeutige kantonale ID der Fläche / Kultur. Die ID muss mit der «cultureId»
+       * in den Strukturdaten (AGIS) identisch sein. Bei Vertragsflächen darf sich die ID innerhalb der
+       * Vertragsdauer nicht ändern.
+       */
+      Identifikator : TEXT*50;
+      /** Angabe, ob die Daten definitiven Status haben oder nicht. Über die Referenz zum
+       * Bearbeitungsstatus kann optional eine präzisere Angabe gemacht werden.
+       */
+      Ist_Definitiv : MANDATORY BOOLEAN;
+      /** Gibt an, ob eine bewirtschaftete Fläche aufgrund von Ausschlusskriterien nicht beitragsberechtigt ist.
+       */
+      Beitragsberechtigt : MANDATORY BOOLEAN;
+      /** Code gemäss Nutzungskatalog
+       * Code gemäss Nutzungskatalog. Das Attribut muss angegeben werden.
+       */
+      LNF_Code : MANDATORY 0 .. 9999;
+      /** Anzahl Bäume, wenn diese als Fläche erfasst sind.
+       */
+      Anzahl_Baeume : 0 .. 10000;
+      /** Für Vertragsflächen
+       */
+      Verpflichtung_Von : INTERLIS.GregorianYear;
+      /** Für Vertragsflächen
+       */
+      Verpflichtung_Bis : INTERLIS.GregorianYear;
+      /** FORMAT INTERLIS.XMLDate "2010-01-01" .. "2110-01-01"
+       */
+      Schnittzeitpunkt : INTERLIS.XMLDate;
+    END BFF_Vernetzung;
+
+    ASSOCIATION BezugsjahrBFF_Qualitaet_II =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      BFF_Qualitaet_II -- {0..*} BFF_Qualitaet_II;
+    END BezugsjahrBFF_Qualitaet_II;
+
+    ASSOCIATION BezugsjahrBFF_Vernetzung =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      BFF_Vernetzung -- {0..*} BFF_Vernetzung;
+    END BezugsjahrBFF_Vernetzung;
+
+  END Foerderflaechen;
+
+END LWB_Biodiversitaetsfoerderflaechen_Qualitaet_II_und_Vernetzung_V2_0.

@@ -1,0 +1,29 @@
+INTERLIS 2.3;
+
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ IDGeoIV=190.1
+MODEL Gewaesserraum_LegendeEintrag_V1_1 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2022-06-28"  =
+  IMPORTS LocalisationCH_V1;
+
+  !!@ limitedTo = "ch.admin.bafu.gewaesserraum_codetexte_v1_1"
+  TOPIC LegendeEintrag =
+
+   DOMAIN
+
+    ArtCode = (
+      Gewaesserraum,
+      Verzicht
+    );
+
+    CLASS LegendeEintrag =
+      Symbol : MANDATORY BLACKBOX BINARY;
+      LegendeText : MANDATORY LocalisationCH_V1.MultilingualText;
+      ArtCode : MANDATORY ArtCode;
+    END LegendeEintrag;
+
+  END LegendeEintrag;
+
+END Gewaesserraum_LegendeEintrag_V1_1.

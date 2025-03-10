@@ -1,0 +1,76 @@
+INTERLIS 2.3;
+
+!! Version    | Who   | Modification
+!!----------------------------------------------------------------------------------------
+!! 2023-01-01 | BLW   | LV03 entfernt, CLASS Bezugsjahr neu in TOPIC Perimeter, neue Version 2.0,
+!!                    | Kataloge kein eigenes MODEL mehr
+!! 2023-03-17 | BLW   | OID AS INTERLIS.UUIDOID für die Katalogeinträge gelöscht
+
+!!@ technicalContact=mailto:info@blw.admin.ch
+!!@ furtherInformation=https://www.blw.admin.ch/blw/de/home/politik/datenmanagement/geografisches-informationssystem-gis/landwirtschaftliche-kulturflaechen.html
+!!@ IDGeoIV=153.5
+MODEL LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0 (de)
+AT "https://models.geo.admin.ch/BLW/"
+VERSION "2023-03-17"  =
+  IMPORTS CatalogueObjects_V1,LocalisationCH_V1,CoordSys;
+
+  TOPIC Kataloge
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    /** dynamische Liste aller Flaechen-Typen
+     */
+    CLASS PLS_Katalog_Typ
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Typ : MANDATORY LocalisationCH_V1.MultilingualText;
+    END PLS_Katalog_Typ;
+
+    STRUCTURE PLSTypRef
+    EXTENDS CatalogueObjects_V1.Catalogues.MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) PLS_Katalog_Typ;
+    END PLSTypRef;
+
+  END Kataloge;
+
+  TOPIC Perimeter =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+    DEPENDS ON LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0.Kataloge;
+
+    REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
+      OBJECTS OF GeoCartesian2D: CHLV95
+      OBJECTS OF GeoHeight: SwissOrthometricAlt;
+
+    DOMAIN
+      /** Fläche um +50km Ausland erweitert
+       */
+      lwbCoord2 = COORD
+        2410000.000 .. 2920000.000 [INTERLIS.m] {CHLV95[1]},
+        995000.000 .. 1360000.000  [INTERLIS.m] {CHLV95[2]},
+        ROTATION 2 -> 1;
+
+      /** Fläche ohne Kreisbogen
+       */
+      Surface = SURFACE WITH (STRAIGHTS) VERTEX lwbCoord2 WITHOUT OVERLAPS > 0.001;
+
+    /** Für dieses Jahr haben die Daten in diesem Modell Gültigkeit
+     */
+    CLASS Bezugsjahr =
+      Bezugsjahr : MANDATORY INTERLIS.GregorianYear;
+    END Bezugsjahr;
+
+    /** Perimeter der LN und Sömmerungsflächen
+     */
+    CLASS PLS_Flaeche =
+      Flaeche : MANDATORY Surface;
+      Identifikator : TEXT*50;
+      Typ : MANDATORY LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0.Kataloge.PLSTypRef;
+    END PLS_Flaeche;
+
+    ASSOCIATION BezugsjahrPLS_Flaeche =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      Flaeche -- {1..*} PLS_Flaeche;
+    END BezugsjahrPLS_Flaeche;
+
+  END Perimeter;
+
+END LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0.

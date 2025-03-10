@@ -1,0 +1,179 @@
+INTERLIS 2.3;
+
+!! Version    | Who   | Modification
+!!----------------------------------------------------------------------------------------
+!! 2023-01-01 | BLW   | Weitreichende Überarbeitung des Modells, CLASS LNF_Num_Nutzung entfernt,
+!!                    | folgende Attribute wurden entfernt: Punkte, Groesse, Status, LQ_Bemerkungen,
+!!                    | Einzelkulturbeitrag wurde als Attribut entfernt und in die Programme (Katalog) aufgenommen,
+!!                    | Bezugsjahr neu im TOPIC Nutzung, LV03 entfernt, neu Multipolygon,
+!!                    | CONSTRAINT zwischen Gueltigkeitsdauer der Katalogeintraege (Nutzungsart und Programm) und dem Bezugsjahr,
+!!                    | Katalog kein eigenes MODEL mehr, Programme bekommen klassenübergreifenden Constraint
+!! 2023-03-17 | BLW   | OID AS INTERLIS.UUIDOID für die Katalogeinträge gelöscht
+
+!!@ technicalContact=mailto:info@blw.admin.ch
+!!@ IDGeoIV=153.1
+!!@ furtherInformation=https://www.blw.admin.ch/blw/de/home/politik/datenmanagement/geografisches-informationssystem-gis/landwirtschaftliche-kulturflaechen.html
+MODEL LWB_Nutzungsflaechen_V2_0 (de)
+AT "https://models.geo.admin.ch/BLW/"
+VERSION "2023-03-17"  =
+  IMPORTS Units,LWB_Bewirtschaftungseinheiten_V2_0,CatalogueObjects_V1,LocalisationCH_V1,CoordSys;
+
+  /** LNF_Kataloge: Die stabile BID stellt sicher, dass auf die richtige Katalogsversion referenziert wird.
+   */
+  TOPIC LNF_Kataloge
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    /** Liste aller Nutzungen gemäss Konsens Nutzungskatalog
+     */
+    CLASS LNF_Katalog_Nutzungsart
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      LNF_Code : MANDATORY 0 .. 9999;
+      Nutzung : MANDATORY LocalisationCH_V1.MultilingualText;
+      /** Ja: überlagernde Nutzung, Nein: normale Nutzung
+       */
+      Ist_Ueberlagernd : MANDATORY BOOLEAN;
+      Hauptkategorie : MANDATORY LocalisationCH_V1.MultilingualText;
+      /** Ist_BFF_QI ist Biodiversitätsförderfläche Qualität I
+       */
+      Ist_BFF_QI : MANDATORY BOOLEAN;
+      Ist_Spezialkultur : MANDATORY BOOLEAN;
+      /** Gilt für neue LNF_Codes: Das Jahr ab dem der LNF_Code eingeführt wurde, wird durch einen Constraint über das Bezugsjahr geprüft.
+       */
+      Gueltig_Von : INTERLIS.GregorianYear;
+      /** Gilt für alte LNF_Codes: Das Jahr bis zu dem der LNF_Code gilt, wird durch einen Constraint über das Bezugsjahr geprüft.
+       */
+      Gueltig_Bis : INTERLIS.GregorianYear;
+      UNIQUE LNF_Code;
+    END LNF_Katalog_Nutzungsart;
+
+    /** Liste von Bundesprogrammen, die zu speziellen Beiträgen berechtigt.
+     */
+    CLASS LNF_Katalog_Programm
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Code : MANDATORY TEXT*50;
+      Programm : MANDATORY LocalisationCH_V1.MultilingualText;
+      /** Gilt für neue Programme: Das Jahr ab dem das Programm eingeführt wurde, wird durch einen Constraint über das Bezugsjahr geprüft.
+       */
+      Gueltig_Von : INTERLIS.GregorianYear;
+      /** Gilt für alte Programme: Das Jahr bis zu dem das Programm gilt, wird durch einen Constraint über das Bezugsjahr geprüft.
+       */
+      Gueltig_Bis : INTERLIS.GregorianYear;
+    END LNF_Katalog_Programm;
+
+    STRUCTURE LNF_Katalog_NutzungsartRef
+    EXTENDS CatalogueObjects_V1.Catalogues.MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) LNF_Katalog_Nutzungsart;
+    END LNF_Katalog_NutzungsartRef;
+
+    STRUCTURE LNF_Katalog_ProgrammRef
+    EXTENDS CatalogueObjects_V1.Catalogues.MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) LNF_Katalog_Programm;
+    END LNF_Katalog_ProgrammRef;
+
+  END LNF_Kataloge;
+
+  TOPIC Nutzung =
+    OID AS INTERLIS.UUIDOID;
+    DEPENDS ON LWB_Nutzungsflaechen_V2_0.LNF_Kataloge,LWB_Bewirtschaftungseinheiten_V2_0.Landw_Betrieb;
+
+    REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
+      OBJECTS OF GeoCartesian2D: CHLV95
+      OBJECTS OF GeoHeight: SwissOrthometricAlt;
+
+    DOMAIN
+      /** Fläche um +50km Ausland erweitert
+       */
+      lwbCoord2 = COORD
+        2410000.000 .. 2920000.000 [INTERLIS.m] {CHLV95[1]},
+        995000.000 .. 1360000.000  [INTERLIS.m] {CHLV95[2]},
+        ROTATION 2 -> 1;
+
+      /** Fläche ohne Kreisbogen
+       */
+      Surface = SURFACE WITH (STRAIGHTS) VERTEX lwbCoord2 WITHOUT OVERLAPS > 0.001;
+
+    STRUCTURE PolygonStructure =
+      Polygon : Surface;
+    END PolygonStructure;
+
+    STRUCTURE MultiPolygon =
+      Polygons : BAG {1..*} OF PolygonStructure;
+    END MultiPolygon;
+
+    /** Für dieses Jahr haben die Daten in diesem Modell Gültigkeit
+     */
+    CLASS Bezugsjahr =
+      Bezugsjahr : MANDATORY INTERLIS.GregorianYear;
+    END Bezugsjahr;
+
+    /** Landwirtschaftliche Nutzung (geometrisch zwingend als Fläche erfasst)
+     */
+    CLASS LNF_Nutzung =
+      Flaeche : MANDATORY MultiPolygon;
+      /** Sprechender Identifikator, mit Hilfe welchem verschiedene involvierte Personen über diese Fläche sprechen können. Enthält die eindeutige kantonale ID der Fläche / Kultur. Die ID muss mit der «cultureId» in den Strukturdaten (AGIS) identisch sein.
+       */
+      Identifikator : MANDATORY TEXT*50;
+      /** Angabe, ob die Daten definitiven Status haben oder nicht. Über die Referenz zum Bearbeitungsstatus kann optional eine präzisere Angabe gemacht werden.
+       */
+      Ist_Definitiv : MANDATORY BOOLEAN;
+      /** Gibt an, ob für diese Fläche Beiträge beantragt werden können. Dies ist z. B. auf Waffenplätzen oder Bauland nicht gegeben.
+       */
+      Beitragsberechtigt : MANDATORY BOOLEAN;
+      /** Gibt an, ob eine Nutzungsfläche im Beitragsjahr genutzt wird oder nicht.
+       */
+      Nutzung_im_Beitragsjahr : MANDATORY BOOLEAN;
+      /** Anzahl der Bäume, falls diese als Fläche erfasst sind.
+       */
+      Anzahl_Baeume : 0 .. 10000 [Units.CountedObjects];
+      /** Für Vertragsflächen
+       */
+      Verpflichtung_Von : INTERLIS.GregorianYear;
+      /** Für Vertragsflächen
+       */
+      Verpflichtung_Bis : INTERLIS.GregorianYear;
+      Schnittzeitpunkt : INTERLIS.XMLDate;
+      /** Gibt an, ob für eine Fläche eine schriftliche Nutzungs- und Schutzvereinbarung besteht.
+       */
+      NHG : MANDATORY BOOLEAN;
+      /** Gibt an, ob die Fläche im Bezugsjahr bewirtschaftet wird oder nicht, bzw. wieviel Prozent der Fläche als bewirtschaftet angerechnet werden können.
+       */
+      Bewirtschaftungsgrad : MANDATORY 0 .. 100 [Units.Percent];
+      Nutzungsart : MANDATORY LWB_Nutzungsflaechen_V2_0.LNF_Kataloge.LNF_Katalog_NutzungsartRef;
+      Programm : BAG {1..*} OF LWB_Nutzungsflaechen_V2_0.LNF_Kataloge.LNF_Katalog_ProgrammRef;
+    END LNF_Nutzung;
+
+    /** Eine landwirtschaftliche Nutzung hängt an der Bewirtschaftungeinheit
+     */
+    ASSOCIATION LNF_NutzungBE_Bewirtschaftungseinheit =
+      Bewirtschaftungseinheit (EXTERNAL) -- {1} LWB_Bewirtschaftungseinheiten_V2_0.Landw_Betrieb.BE_Bewirtschaftungseinheit;
+      Nutzung -- {0..*} LNF_Nutzung;
+    END LNF_NutzungBE_Bewirtschaftungseinheit;
+
+    ASSOCIATION BezugsjahrLNF_Nutzung =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      Nutzung -- {1..*} LNF_Nutzung;
+    END BezugsjahrLNF_Nutzung;
+
+    /** Prüfung ob Bezugsjahr der Daten in die Gültigkeitsdauer der LNF_Codes fällt
+     */
+    CONSTRAINTS OF LNF_Nutzung =
+      MANDATORY CONSTRAINT
+        (NOT (DEFINED (Nutzungsart->Reference->Gueltig_Von)) OR Nutzungsart->Reference->Gueltig_Von <= Bezugsjahr->Bezugsjahr)
+        AND (NOT (DEFINED (Nutzungsart->Reference->Gueltig_Bis)) OR Nutzungsart->Reference->Gueltig_Bis >= Bezugsjahr->Bezugsjahr);
+    END;
+
+    /** Für die Gültigkeitsprüfung von Programmen muss die BAG OF Struktur aufgelöst werden
+     */
+    VIEW InspectionOfProgramm
+      INSPECTION OF LNF_Nutzung_Programm ~ LWB_Nutzungsflaechen_V2_0.Nutzung.LNF_Nutzung -> Programm; =
+    ATTRIBUTE
+      ALL OF LNF_Nutzung_Programm;
+      Bezugsjahr := PARENT->Bezugsjahr->Bezugsjahr;
+        MANDATORY CONSTRAINT
+            (NOT (DEFINED (LNF_Nutzung_Programm->Reference->Gueltig_Von)) OR LNF_Nutzung_Programm->Reference->Gueltig_Von <= Bezugsjahr)
+            AND (NOT (DEFINED (LNF_Nutzung_Programm->Reference->Gueltig_Bis)) OR LNF_Nutzung_Programm->Reference->Gueltig_Bis >= Bezugsjahr);
+    END InspectionOfProgramm;
+
+  END Nutzung;
+
+END LWB_Nutzungsflaechen_V2_0.
