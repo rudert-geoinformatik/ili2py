@@ -13,7 +13,7 @@ ILI file.
 
 | Construct                | ili Kind       | Implemented | Code                                                                                                                                         | Comment |
 |--------------------------|----------------|:-----------:|----------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| ModelData.DocText        | STRUCTURE      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.abstract_element.DocTextElement)                       |         |
+| ModelData.DocText        | STRUCTURE      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.abstract_element.DocTextElement)                       |    Important     |
 | ModelData.MetaElement    | CLASS ABSTRACT |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.meta_element.MetaElement)                              |         |
 | ModelData.MetaAttribute  | CLASS          |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.abstract_element.MetaAttributeElement)                 |         |
 | ModelData.MetaAttributes | ASSOCIATION    |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.abstract_element.MetaAttributeElement.MetaElement_ref) |         |
