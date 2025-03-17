@@ -4,7 +4,8 @@ RUN apt-get update && \
     apt-get install -y \
         openjdk-21-jre \
         curl \
-        unzip
+        unzip \
+        make
 
 # install & setup ili2c
 ARG ILI2C_VERSION=5.6.3
@@ -18,7 +19,8 @@ RUN curl -o /tmp/ili2c-${ILI2C_VERSION}.zip https://downloads.interlis.ch/ili2c/
   chmod +x /usr/bin/ili2c && \
   echo "alias ili2c='/usr/bin/ili2c'" >> /root/.bashrc
 
-ADD prepare_meta_models.sh /usr/bin/prepare_meta_models
-RUN chmod +x /usr/bin/prepare_meta_models
+ADD . /io
 
-ENTRYPOINT ["prepare_meta_models"]
+ENTRYPOINT ["make"]
+
+WORKDIR /io
