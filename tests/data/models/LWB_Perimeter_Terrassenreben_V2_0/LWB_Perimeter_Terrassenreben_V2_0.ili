@@ -1,0 +1,56 @@
+INTERLIS 2.3;
+
+!! Version    | Who   | Modification
+!!----------------------------------------------------------------------------------------
+!! 2023-01-01 | BLW   | LV03 entfernt, CLASS Bezugsjahr neu in TOPIC Terrassenreben, neue Version 2.0,
+!!                    | Erstellungsdatum in Aenderungsdatum umbenannt
+
+!!@ technicalContact=mailto:info@blw.admin.ch
+!!@ furtherInformation=https://www.blw.admin.ch/blw/de/home/politik/datenmanagement/geografisches-informationssystem-gis/landwirtschaftliche-kulturflaechen.html.html
+!!@ IDGeoIV=153.2
+MODEL LWB_Perimeter_Terrassenreben_V2_0 (de)
+AT "https://models.geo.admin.ch/BLW/"
+VERSION "2023-01-01"  =
+  IMPORTS CoordSys;
+
+  TOPIC Terrassenreben =
+    OID AS INTERLIS.UUIDOID;
+
+    REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
+      OBJECTS OF GeoCartesian2D: CHLV95
+      OBJECTS OF GeoHeight: SwissOrthometricAlt;
+
+    DOMAIN
+      /** Fläche um +50km Ausland erweitert
+       */
+      lwbCoord2 = COORD
+        2410000.000 .. 2920000.000 [INTERLIS.m] {CHLV95[1]},
+        995000.000 .. 1360000.000  [INTERLIS.m] {CHLV95[2]},
+        ROTATION 2 -> 1;
+
+      /** Fläche ohne Kreisbogen
+       */
+      Surface = SURFACE WITH (STRAIGHTS) VERTEX lwbCoord2 WITHOUT OVERLAPS > 0.001;
+
+    /** Für dieses Jahr haben die Daten in diesem Modell Gültigkeit
+     */
+    CLASS Bezugsjahr =
+      Bezugsjahr : MANDATORY INTERLIS.GregorianYear;
+    END Bezugsjahr;
+
+    /** Perimeter der Terrassenreben
+     */
+    CLASS PT_Flaeche =
+      Flaeche : MANDATORY Surface;
+      Identifikator : TEXT*50;
+      Aenderungsdatum : MANDATORY INTERLIS.XMLDate;
+    END PT_Flaeche;
+
+    ASSOCIATION BezugsjahrFlaeche =
+      Bezugsjahr -<#> {1} Bezugsjahr;
+      Flaeche -- {1..*} PT_Flaeche;
+    END BezugsjahrFlaeche;
+
+  END Terrassenreben;
+
+END LWB_Perimeter_Terrassenreben_V2_0.
