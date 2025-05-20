@@ -1,0 +1,133 @@
+INTERLIS 2.3;
+!!==============================================================================
+!!@ Title               = "Waldfeststellungen";
+!!@ shortDescription    = "Modell zur Erfassung der Wald- und Stockgrenzen aufgrund von Waldfeststellungen. Die Waldgrenzen aufgrund von Rodungen werden im Thema A188 erfasst.";
+!!@ technicalContact    = "mailto:geoportal@sz.ch";
+!!@ furtherInformation  = "https://www.sz.ch";
+!!@ Themennummer        = "A057";
+!!@ Compiler-Version    = "ili2c-5.5.3-6c54f443006d3ca72d3e5a2392e7d5a2f75b6e8b";
+!!------------------------------------------------------------------------------
+!!      Version     | wer | was
+!! Datum      | Nr  |     |
+!!------------------------------------------------------------------------------
+!! 2023-09-08 | 2.0 | Kep | - Zusammenlegung der Modelle
+!!                              - statische Waldgrenzen,
+!!                              - Stockgrenzen und
+!!                              - Waldfeststellungen
+!!                          - Einführung OID
+!!                          - Anpassungen aufgrund des neuen ÖREB-Rahmenmodells (Bereich der statischen Waldgrenze)
+!!                          - Überführung von Domains in Kataloge
+!! 2017-01-11 |  -  | Kep | Geometrie ausschliesslich mit STRAIGHTS
+!! 2016-10-26 |  -  | Kep | Erstfassung
+!!==============================================================================
+MODEL SZ_Waldfeststellungen_V2 (de)
+  AT "https://models.geo.sz.ch"
+  VERSION "2023-09-08" =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+
+  DOMAIN
+    Punkt =
+      COORD 2672000.000 .. 2719000.000 [m]
+           ,1193000.000 .. 1232000.000 [m]
+           ,ROTATION 2 -> 1;
+
+    Linie =
+      POLYLINE WITH (STRAIGHTS) VERTEX Punkt;
+
+    Einzelflaeche =
+      SURFACE WITH (STRAIGHTS) VERTEX Punkt WITHOUT OVERLAPS > 0.050;
+
+!!------------------------------------------------------------------------------
+  TOPIC Stammdaten =
+!!------------------------------------------------------------------------------
+    CLASS Katalogeintrag (ABSTRACT) =
+      OID AS UUIDOID;
+      Code       :  MANDATORY  TEXT*255;
+      Name       :  MANDATORY  TEXT*255;
+      SortierNr  :  MANDATORY -999999 .. 999999;
+      Bemerkung  :             TEXT*1000;
+    END Katalogeintrag;
+
+    CLASS Verbindlichkeit EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Verbindlichkeit;
+
+    CLASS Typ =
+      OID AS UUIDOID;
+      Code        :  MANDATORY  TEXT*255;
+      Name        :  MANDATORY  TEXT*255;
+      Abkuerzung  :  MANDATORY  TEXT*12;
+      SortierNr   :  MANDATORY -999999 .. 999999;
+      Bemerkung   :  MANDATORY  TEXT*1000;
+      Symbol      :  MANDATORY  BLACKBOX BINARY;
+      UNIQUE Code;
+      UNIQUE Name;
+      UNIQUE Abkuerzung;
+    END Typ;
+
+  END Stammdaten;
+
+!!------------------------------------------------------------------------------
+  TOPIC Fachdaten =
+    DEPENDS ON SZ_Waldfeststellungen_V2.Stammdaten;
+!!------------------------------------------------------------------------------
+    CLASS Waldgrenze =
+      OID AS UUIDOID;
+      erfasstVon             :  MANDATORY  TEXT*100;
+      erfasstAm              :  MANDATORY  XMLDateTime;
+      geaendertVon           :  MANDATORY  TEXT*100;
+      geaendertAm            :  MANDATORY  XMLDateTime;
+      Waldabstand            :  MANDATORY  0 .. 50;
+      Nebenbautenabstand     :  MANDATORY  0 .. 50;
+      Rodungsnummer          :             TEXT*25;
+      Begruendungsverfahren  :             TEXT*36;
+      Aufhebungsverfahren    :             TEXT*36;
+      Bemerkung              :             MTEXT*1000;
+      Geometrie              :  MANDATORY  Linie;
+    END Waldgrenze;
+
+    CLASS Wirkbereich =
+      OID AS UUIDOID;
+      erfasstVon    :  MANDATORY  TEXT*100;
+      erfasstAm     :  MANDATORY  XMLDateTime;
+      geaendertVon  :  MANDATORY  TEXT*100;
+      geaendertAm   :  MANDATORY  XMLDateTime;
+      Bemerkung     :             MTEXT*1000;
+      Geometrie     :  MANDATORY  Einzelflaeche;
+    END Wirkbereich;
+
+    CLASS Stockgrenze =
+      OID AS UUIDOID;
+      erfasstVon    :  MANDATORY  TEXT*100;
+      erfasstAm     :  MANDATORY  XMLDateTime;
+      geaendertVon  :  MANDATORY  TEXT*100;
+      geaendertAm   :  MANDATORY  XMLDateTime;
+      Bemerkung     :             MTEXT*1000;
+      Geometrie     :  MANDATORY  Linie;
+    END Stockgrenze;
+
+    ASSOCIATION Waldgrenze__Stockgrenze =
+      rWaldgrenze   --  {0..1}  Waldgrenze;
+      rStockgrenze  --  {0..1}  Stockgrenze;
+    END Waldgrenze__Stockgrenze;
+
+    ASSOCIATION Waldgrenze__Wirkbereich =
+      rWaldgrenze   -<#>  {1}     Waldgrenze;
+      rWirkbereich  --    {0..1}  Wirkbereich;
+    END Waldgrenze__Wirkbereich;
+
+    ASSOCIATION Typ__Waldgrenze =
+      rTyp (EXTERNAL)  --  {1}     SZ_Waldfeststellungen_V2.Stammdaten.Typ;
+      rWaldgrenze      --  {0..*}  Waldgrenze;
+    END Typ__Waldgrenze;
+
+    ASSOCIATION Verbindlichkeit__Waldgrenze =
+      rVerbindlichkeit (EXTERNAL)  --  {1}     SZ_Waldfeststellungen_V2.Stammdaten.Verbindlichkeit;
+      rWaldgrenze                  --  {0..*}  Waldgrenze;
+    END Verbindlichkeit__Waldgrenze;
+
+  END Fachdaten;
+
+END SZ_Waldfeststellungen_V2.

@@ -1,0 +1,169 @@
+INTERLIS 2.4;
+!!==============================================================================
+!!@ Title               = "kantonales Datenmodell zum Bearbeiten des Themas Waldreservate";
+!!@ shortDescription    = "Dieses Modell beschreibt die Waldreservate. Es erweitert das Bundesmodell (ID 160.1) mit den kantonalen Mehranforderungen und wird bei der Datenbearbeitung verwendet";
+!!@ technicalContact    = "mailto:geoportal@sz.ch";
+!!@ furtherInformation  = "https://www.sz.ch";
+!!@ Themennummer        = "A117";
+!!@ iliCompilerVersion  = "ili2c-5.6.3-720ae8bf5621734004b9d234fde4d2fe9556b943";
+!!------------------------------------------------------------------------------
+!!      Version     | wer | was
+!! Datum      | Nr  |     |
+!!------------------------------------------------------------------------------
+!! 2025-02-10 | 3.0 | Kep | Anpassungen aufgrund Bundesmodell 2.0
+!!                           - Klasse "Schutzziel" hinzugefügt (Stammdaten)
+!!                           - Standardattribute auf die Klassen Waldreservat und  hinzugefügt
+!!                             Achtung: Code "AndereNPA/NPLAufwertung" wird zu "AndereNPA_NPLAufwertung"
+!!                           - Attribut Waldreservat.FlaecheGIS entfernt
+!!                           - Umbenennung Waldreservat.FlaecheVertrag ==> Waldreservat.Vertragsflaeche
+!!                           - Hinzufügen der Attribute gemäss MGDM Bund
+!!                           - Migration auf INTERLIS 2.4
+!! 2023-07-18 | 2.1 | Kep | Entfernung der Klasse "Lieferinhalt"
+!! 2021-10-04 | 2.0 | Kep | Anpassung aufgrund neuem Rahmenmodell; zudem:
+!!                           - Angaben zu Forstrevier, Forstkreis und Grundstücke entfernt;
+!!                             Diese Informationen werden im Rahmen einer Analyse berechnet
+!!                             und den Waldreserfaten zugeordnet.
+!! 2019-05-27 | 1.0 | Kep | Erstfassung
+!!==============================================================================
+MODEL SZ_Waldreservate_V3 (de)
+  AT "http://models.geo.sz.ch"
+  VERSION "2025-02-10" =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+
+  DOMAIN
+    Punkt =
+      COORD 2672000.000 .. 2719000.000 [m]
+           ,1193000.000 .. 1232000.000 [m]
+           ,ROTATION 2 -> 1;
+
+    Polygon = SURFACE WITH (STRAIGHTS) VERTEX Punkt WITHOUT OVERLAPS > 0.001;
+
+!!------------------------------------------------------------------------------
+  TOPIC Stammdaten =
+!!------------------------------------------------------------------------------
+    CLASS Katalogeintrag (ABSTRACT) =
+      OID AS UUIDOID;
+      Code       :  MANDATORY  TEXT*255;
+      Name       :  MANDATORY  TEXT*255;
+      SortierNr  :  MANDATORY -999999 .. 999999;
+      Bemerkung  :             TEXT*1000;
+    END Katalogeintrag;
+
+    CLASS Prioritaet EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Prioritaet;
+
+    CLASS Reservatstyp EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Reservatstyp;
+
+    CLASS Rechtsstatus EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Rechtsstatus;
+
+    CLASS Schutzziel EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Schutzziel;
+
+    CLASS MCPFE_Klasse =
+      OID AS UUIDOID;
+      Code       :  MANDATORY  TEXT*12;
+      Name       :  MANDATORY  TEXT*255;
+      SortierNr  :  MANDATORY -999999 .. 999999;
+      Symbol     :  MANDATORY  BLACKBOX BINARY;
+      UNIQUE Code;
+      UNIQUE Name;
+    END MCPFE_Klasse;
+
+  END Stammdaten;
+
+!!------------------------------------------------------------------------------
+  TOPIC Fachdaten =
+    DEPENDS ON SZ_Waldreservate_V3.Stammdaten;
+!!------------------------------------------------------------------------------
+    CLASS Waldreservat =
+      OID AS UUIDOID;
+      Kennung          :  MANDATORY  TEXT*30;
+      erfasstVon       :  MANDATORY  TEXT*100;
+      erfasstAm        :  MANDATORY  XMLDateTime;
+      geaendertVon     :  MANDATORY  TEXT*100;
+      geaendertAm      :  MANDATORY  XMLDateTime;
+      Name             :  MANDATORY  TEXT*80;
+      Vertragsname     :  MANDATORY  TEXT*250;
+      Vertragspartner  :  MANDATORY  TEXT*250;
+      Vertragsbeginn   :             XMLDate;
+      Vertragsende     :             XMLDate;
+      Vertragsflaeche  :  MANDATORY  0.0 .. 999999.0;
+      Doklink          :             URI;
+      Bemerkung        :             MTEXT*1000;
+      UNIQUE Kennung;
+    END Waldreservat;
+
+    CLASS Gebiet =
+      OID AS UUIDOID;
+      Kennung           :  MANDATORY  TEXT*30;
+      erfasstVon        :  MANDATORY  TEXT*100;
+      erfasstAm         :  MANDATORY  XMLDateTime;
+      geaendertVon      :  MANDATORY  TEXT*100;
+      geaendertAm       :  MANDATORY  XMLDateTime;
+      istNFAfinanziert  :  MANDATORY  BOOLEAN;
+      Bemerkung         :             MTEXT*1000;
+      Geometrie         :  MANDATORY  Polygon;
+      UNIQUE Kennung;
+    END Gebiet;
+
+    ASSOCIATION Waldreservat__Gebiet =
+      rWaldreservat  -<#>  {1}     Waldreservat;
+      rGebiet        --    {0..*}  Gebiet;
+    END Waldreservat__Gebiet;
+
+    ASSOCIATION Reservatstyp__Waldreservat =
+      rReservatstyp (EXTERNAL)  --  {1}     SZ_Waldreservate_V3.Stammdaten.Reservatstyp;
+      rWaldreservat             --  {0..*}  Waldreservat;
+    END Reservatstyp__Waldreservat;
+
+    ASSOCIATION Rechtsstatus__Waldreservat =
+      rRechtsstatus (EXTERNAL)  --  {1}     SZ_Waldreservate_V3.Stammdaten.Rechtsstatus;
+      rWaldreservat             --  {0..*}  Waldreservat;
+    END Rechtsstatus__Waldreservat;
+
+    ASSOCIATION Prioritaet__Gebiet =
+      rPrioritaet (EXTERNAL)  --  {1}     SZ_Waldreservate_V3.Stammdaten.Prioritaet;
+      rGebiet                 --  {0..*}  Gebiet;
+    END Prioritaet__Gebiet;
+
+    ASSOCIATION Schutzziel__Gebiet =
+      rSchutzziel (EXTERNAL)  --  {1..*}  SZ_Waldreservate_V3.Stammdaten.Schutzziel;
+      rGebiet                 --  {0..*}  Gebiet;
+      Bemerkung               :           MTEXT*255;
+    END Schutzziel__Gebiet;
+
+    ASSOCIATION MCPFE_Klasse__Gebiet =
+      rMCPFE_Klasse (EXTERNAL)  --  {1}     SZ_Waldreservate_V3.Stammdaten.MCPFE_Klasse;
+      rGebiet                   --  {0..*}  Gebiet;
+    END MCPFE_Klasse__Gebiet;
+
+  END Fachdaten;
+
+!!------------------------------------------------------------------------------
+  TOPIC TransferMetadaten =
+    DEPENDS ON SZ_Waldreservate_V3.Stammdaten;
+!!------------------------------------------------------------------------------
+    CLASS Datenbestand =
+      Stand      :  MANDATORY  XMLDate;
+      Bemerkung  :             MTEXT*1000;
+    END Datenbestand;
+
+    ASSOCIATION Datenbestand__Datenbestand =
+      rDatenbestandSingleton   -<#>  {1}  Datenbestand;
+      rDatenbestand            --    {1}  Datenbestand;
+    END Datenbestand__Datenbestand;
+
+  END TransferMetadaten;
+
+END SZ_Waldreservate_V3.
