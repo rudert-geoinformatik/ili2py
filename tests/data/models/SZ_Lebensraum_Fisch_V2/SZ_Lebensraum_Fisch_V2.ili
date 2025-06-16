@@ -1,0 +1,146 @@
+INTERLIS 2.3;
+!!==============================================================================
+!!@ Title               = "Lebensraum Fisch";
+!!@ shortDescription    = "Dieses Modell beschreibt den Lebensraum von Fischen in Fliess- und Standgewässern";
+!!@ technicalContact    = "mailto:geoportal@sz.ch";
+!!@ furtherInformation  = "https://www.sz.ch";
+!!@ Themennummer        = "A049";
+!!@ iliCompilerVersion  = "ili2c-5.3.0-90a8da73b8eb7696cb50ce8ae0ee5b422d33fba7";
+!!------------------------------------------------------------------------------
+!! Todo: - - -
+!!------------------------------------------------------------------------------
+!!      Version     | wer | was
+!! Datum      | Nr  |     |
+!!------------------------------------------------------------------------------
+!! 2023-06-21 | 2.0 | kep | Abschluss und Veröffentlichung
+!! 2021-02-01 | 2.0 | TH  | Ersterfassung (wurde nicht veröffentlicht)
+!!==============================================================================
+MODEL SZ_Lebensraum_Fisch_V2 (de)
+  AT "https://models.geo.sz.ch"
+  VERSION "2023-06-21" =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+  
+  DOMAIN
+    Punkt =
+      COORD 2672000.000 .. 2719000.000 [m]
+           ,1193000.000 .. 1232000.000 [m]
+           ,ROTATION 2 -> 1;
+
+    Polygon = AREA WITH (STRAIGHTS) VERTEX Punkt WITHOUT OVERLAPS > 0.001;
+
+!!------------------------------------------------------------------------------
+  TOPIC Stammdaten =
+!!------------------------------------------------------------------------------
+    CLASS Katalogeintrag (ABSTRACT) =
+      OID AS UUIDOID;
+      Name       :  MANDATORY  TEXT*255;           !! für die Benutzer lesbarer Name
+      Code       :  MANDATORY  TEXT*255;           !! Zeichenumfang gemaess Referenzhandbuch
+      SortierNr  :  MANDATORY -999999 .. 999999;   !! bestimmt die Reihenfolge des Eintrags: tiefste Nr. erscheint zu oberst
+      Bemerkung  :             TEXT*1000;
+    END Katalogeintrag;
+
+    CLASS Lebensraumeignung EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Lebensraumeignung;
+
+    CLASS Fischregion EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Fischregion;
+
+    CLASS Fischart =
+      OID AS UUIDOID;
+      Code       :  MANDATORY  TEXT*255;           !! Zeichenumfang gemaess Referenzhandbuch
+      Name_deu   :  MANDATORY  TEXT*255;
+      Name_lat   :  MANDATORY  TEXT*255;
+      SortierNr  :  MANDATORY -999999 .. 999999;   !! bestimmt die Reihenfolge des Eintrags: tiefste Nr. erscheint zu oberst
+      Bemerkung  :             TEXT*1000;
+      UNIQUE Code;
+    END Fischart;
+
+  END Stammdaten;
+
+!!------------------------------------------------------------------------------
+  TOPIC Fachinformationen =
+    DEPENDS ON SZ_Lebensraum_Fisch_V2.Stammdaten;
+!!------------------------------------------------------------------------------
+    CLASS Eignung_Fluss =
+      OID AS UUIDOID;
+      Achsgeometrie      :  MANDATORY  TEXT*8;           !! Wert muss mit Achsgeometrie.Kennung der Referenzgeometrie übereinstimmen (Themen-Nr: A041)
+      LinearpositionVon  :  MANDATORY  0.0 .. 999999.9;
+      LinearpositionBis  :  MANDATORY  0.0 .. 999999.9;
+      Bemerkung          :             TEXT*1000;
+      MANDATORY CONSTRAINT (LinearpositionBis >= LinearpositionVon);
+    END Eignung_Fluss;
+
+    CLASS Fischregion_Fluss =
+      OID AS UUIDOID;
+      Achsgeometrie      :  MANDATORY  TEXT*8;           !! Wert muss mit Achsgeometrie.Kennung der Referenzgeometrie übereinstimmen (Themen-Nr: A041)
+      LinearpositionVon  :  MANDATORY  0.0 .. 999999.9;
+      LinearpositionBis  :  MANDATORY  0.0 .. 999999.9;
+      Bemerkung          :             TEXT*1000;
+      MANDATORY CONSTRAINT (LinearpositionBis >= LinearpositionVon);
+    END Fischregion_Fluss;
+
+    CLASS Eignung_See =
+      OID AS UUIDOID;
+      Bemerkung  :             TEXT*1000;
+      Geometrie  :  MANDATORY  Polygon;
+    END Eignung_See;
+
+    CLASS Fischregion_See =
+      OID AS UUIDOID;
+      Bemerkung  :             TEXT*1000;
+      Geometrie  :  MANDATORY  Polygon;
+    END Fischregion_See;
+
+    ASSOCIATION Lebensraumeignung__Eignung_Fluss =
+      rLebensraumeignung (EXTERNAL)  --  {1}     SZ_Lebensraum_Fisch_V2.Stammdaten.Lebensraumeignung;
+      rEignung_Fluss                 --  {0..*}  Eignung_Fluss;
+    END Lebensraumeignung__Eignung_Fluss;
+
+    ASSOCIATION Fischregion__Fischregion_Fluss =
+      rFischregion (EXTERNAL)  --  {1}     SZ_Lebensraum_Fisch_V2.Stammdaten.Fischregion;
+      rFischregion_Fluss       --  {0..*}  Fischregion_Fluss;
+    END Fischregion__Fischregion_Fluss;
+
+    ASSOCIATION Lebensraumeignung__Fischregion_Fluss =
+      rLebensraumeignung (EXTERNAL)  --  {1}     SZ_Lebensraum_Fisch_V2.Stammdaten.Lebensraumeignung;
+      rFischregion_Fluss             --  {0..*}  Fischregion_Fluss;
+    END Lebensraumeignung__Fischregion_Fluss;
+
+    ASSOCIATION Fischart__Fischregion_Fluss =
+      rFischart (EXTERNAL)  --  {1..*}  SZ_Lebensraum_Fisch_V2.Stammdaten.Fischart;
+      rFischregion_Fluss    --  {0..*}  Fischregion_Fluss;
+    END Fischart__Fischregion_Fluss;
+
+    ASSOCIATION Lebensraumeignung__Eignung_See =
+      rLebensraumeignung (EXTERNAL)  --  {1}     SZ_Lebensraum_Fisch_V2.Stammdaten.Lebensraumeignung;
+      rEignung_See                   --  {0..*}  Eignung_See;
+    END Lebensraumeignung__Eignung_See;
+
+    ASSOCIATION Fischregion__Fischregion_See =
+      rFischregion (EXTERNAL)  --  {1}     SZ_Lebensraum_Fisch_V2.Stammdaten.Fischregion;
+      rFischregion_See         --  {0..*}  Fischregion_See;
+    END Fischregion__Fischregion_See;
+
+    ASSOCIATION Fischart__Fischregion_See =
+      rFischart (EXTERNAL)  --  {1..*}  SZ_Lebensraum_Fisch_V2.Stammdaten.Fischart;
+      rFischregion_See      --  {0..*}  Fischregion_See;
+    END Fischart__Fischregion_See;
+
+  END Fachinformationen;
+
+!!------------------------------------------------------------------------------
+  TOPIC Metadaten =
+!!------------------------------------------------------------------------------
+    CLASS Datenstand =
+      Stand_Fachdaten      :  MANDATORY  XMLDate;
+      Stand_Referenzdaten  :  MANDATORY  XMLDate;  !! dies bedingt, dass die Referenzdaten mit einem Datum gekennzeichnet werden
+    END Datenstand;
+
+  END Metadaten;
+
+END SZ_Lebensraum_Fisch_V2.
