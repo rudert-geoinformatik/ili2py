@@ -76,7 +76,7 @@ ILI file.
 | 37 | ModelData.ExplicitAssocAcc    | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
 | 38 | ModelData.AssocAccOrigin      | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
 | 39 | ModelData.AssocAccTarget      | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
-| 40 | ModelData.AssocAcc            | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
+| 40 | ModelData.AssocAcc            | ASSOCIATION    |      ✅      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
 
 ## Information for easy transfer
 
