@@ -187,11 +187,11 @@ ILI file.
 
 | id | Construct                 | ili Kind    | Mandatory v1 | Implemented | Code | Comment              |
 |----|---------------------------|-------------|:-----------:|:-----------:|------|----------------------|
-| 91 | ModelData.View            | CLASS       |      ❌      |      ❌      |      | Not implemented yet. |
-| 92 | ModelData.RenamedBaseView | CLASS       |      ❌      |      ❌      |      | Not implemented yet. |
-| 93 | ModelData.BaseViewDef     | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
-| 94 | ModelData.BaseViewRef     | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
-| 95 | ModelData.DerivedAssoc    | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
+| 91 | ModelData.View            | CLASS       |      ✅      |      ❌      |      | Not implemented yet. |
+| 92 | ModelData.RenamedBaseView | CLASS       |      ✅      |      ❌      |      | Not implemented yet. |
+| 93 | ModelData.BaseViewDef     | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
+| 94 | ModelData.BaseViewRef     | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
+| 95 | ModelData.DerivedAssoc    | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
 
 ## Expressions, factors
 
