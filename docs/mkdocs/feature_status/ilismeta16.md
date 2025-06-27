@@ -240,7 +240,7 @@ ILI file.
 
 | id  | Construct                           | ili Kind  | Mandatory v1 | Implemented | Code | Comment              |
 |-----|-------------------------------------|-----------|:-----------:|:-----------:|------|----------------------|
-| 124 | ModelTranslation.DocTextTranslation | STRUCTURE |      ❌      |      ❌      |      | Not implemented yet. |
-| 125 | ModelTranslation.METranslation      | STRUCTURE |      ❌      |      ❌      |      | Not implemented yet. |
-| 126 | ModelTranslation.Translation        | CLASS     |      ❌      |      ❌      |      | Not implemented yet. |
+| 124 | ModelTranslation.DocTextTranslation | STRUCTURE |      ✅      |      ❌      |      | Not implemented yet. |
+| 125 | ModelTranslation.METranslation      | STRUCTURE |      ✅      |      ❌      |      | Not implemented yet. |
+| 126 | ModelTranslation.Translation        | CLASS     |      ✅      |      ❌      |      | Not implemented yet. |
 
