@@ -167,10 +167,10 @@ ILI file.
 |----|-----------------------------|-------------|:-----------:|:-----------:|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------|
 | 79 | ModelData.EnumType          | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.domain_type.domain_type.EnumType) |                      |
 | 80 | ModelData.EnumNode          | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.extendable_me.EnumNode)                |                      |
-| 81 | ModelData.TopNode           | ASSOCIATION |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
-| 82 | ModelData.SubNode           | ASSOCIATION |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
-| 83 | ModelData.EnumTreeValueType | CLASS       |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
-| 84 | ModelData.TreeValueTypeOf   | ASSOCIATION |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 81 | ModelData.TopNode           | ASSOCIATION |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 82 | ModelData.SubNode           | ASSOCIATION |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 83 | ModelData.EnumTreeValueType | CLASS       |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 84 | ModelData.TreeValueTypeOf   | ASSOCIATION |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
 
 ## Line types
 
