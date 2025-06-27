@@ -221,8 +221,8 @@ ILI file.
 | 112 | ModelData.SimpleConstraint    | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.constraints.SimpleConstraint) |                      |
 | 113 | ModelData.ExistenceConstraint | CLASS       |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
 | 114 | ModelData.ExistenceDef        | ASSOCIATION |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
-| 115 | ModelData.UniqueConstraint    | CLASS       |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
-| 116 | ModelData.SetConstraint       | CLASS       |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
+| 115 | ModelData.UniqueConstraint    | CLASS       |      ✅      |      ❌      |                                                                                                                     | Not implemented yet. |
+| 116 | ModelData.SetConstraint       | CLASS       |      ✅      |      ❌      |                                                                                                                     | Not implemented yet. |
 
 ## Graphic
 
