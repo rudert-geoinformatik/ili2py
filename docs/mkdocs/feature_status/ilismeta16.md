@@ -136,9 +136,9 @@ ILI file.
 
 | id | Construct            | ili Kind    | Mandatory v1 | Implemented | Code | Comment              |
 |----|----------------------|-------------|:-----------:|:-----------:|------|----------------------|
-| 65 | ModelData.AnyOIDType | CLASS       |      ❌      |      ❌      |      | Not implemented yet. |
-| 66 | ModelData.ObjectOID  | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
-| 67 | ModelData.BasketOID  | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
+| 65 | ModelData.AnyOIDType | CLASS       |      ✅      |      ❌      |      | Not implemented yet. |
+| 66 | ModelData.ObjectOID  | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
+| 67 | ModelData.BasketOID  | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
  
 ## Functions
 
