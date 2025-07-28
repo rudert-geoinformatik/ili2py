@@ -76,7 +76,7 @@ ILI file.
 | 37 | ModelData.ExplicitAssocAcc    | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
 | 38 | ModelData.AssocAccOrigin      | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
 | 39 | ModelData.AssocAccTarget      | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
-| 40 | ModelData.AssocAcc            | ASSOCIATION    |      ❌      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
+| 40 | ModelData.AssocAcc            | ASSOCIATION    |      ✅      |      ❌      |                                                                                                                                                                              | Not implemented yet. Tested models does not seem to contain it. |
 
 ## Information for easy transfer
 
@@ -128,7 +128,7 @@ ILI file.
 | 59 | ModelData.NumUnit        | ASSOCIATION |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.domain_type.domain_type.NumType.Unit_ref)         |                      |
 | 60 | ModelData.CoordType      | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.domain_type.domain_type.CoordType)                |                      |
 | 61 | ModelData.AxisSpec       | ASSOCIATION |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.domain_type.domain_type.AxisSpec)                 |                      |
-| 62 | ModelData.NumsRefSys     | ASSOCIATION |      ❌      |      ❌      |                                                                                                                                                            | Not implemented yet. |
+| 62 | ModelData.NumsRefSys     | ASSOCIATION |      ✅      |      ❌      |                                                                                                                                                            | Not implemented yet. |
 | 63 | ModelData.FormattedType  | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.domain_type.domain_type.FormattedType)            |                      |
 | 64 | ModelData.StructOfFormat | ASSOCIATION |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.domain_type.domain_type.FormattedType.Struct_ref) |                      |
 
@@ -136,9 +136,9 @@ ILI file.
 
 | id | Construct            | ili Kind    | Mandatory v1 | Implemented | Code | Comment              |
 |----|----------------------|-------------|:-----------:|:-----------:|------|----------------------|
-| 65 | ModelData.AnyOIDType | CLASS       |      ❌      |      ❌      |      | Not implemented yet. |
-| 66 | ModelData.ObjectOID  | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
-| 67 | ModelData.BasketOID  | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
+| 65 | ModelData.AnyOIDType | CLASS       |      ✅      |      ❌      |      | Not implemented yet. |
+| 66 | ModelData.ObjectOID  | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
+| 67 | ModelData.BasketOID  | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
  
 ## Functions
 
@@ -167,10 +167,10 @@ ILI file.
 |----|-----------------------------|-------------|:-----------:|:-----------:|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------|
 | 79 | ModelData.EnumType          | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.domain_type.domain_type.EnumType) |                      |
 | 80 | ModelData.EnumNode          | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.extendable_me.EnumNode)                |                      |
-| 81 | ModelData.TopNode           | ASSOCIATION |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
-| 82 | ModelData.SubNode           | ASSOCIATION |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
-| 83 | ModelData.EnumTreeValueType | CLASS       |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
-| 84 | ModelData.TreeValueTypeOf   | ASSOCIATION |      ❌      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 81 | ModelData.TopNode           | ASSOCIATION |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 82 | ModelData.SubNode           | ASSOCIATION |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 83 | ModelData.EnumTreeValueType | CLASS       |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
+| 84 | ModelData.TreeValueTypeOf   | ASSOCIATION |      ✅      |      ❌      |                                                                                                                                            | Not implemented yet. |
 
 ## Line types
 
@@ -187,11 +187,11 @@ ILI file.
 
 | id | Construct                 | ili Kind    | Mandatory v1 | Implemented | Code | Comment              |
 |----|---------------------------|-------------|:-----------:|:-----------:|------|----------------------|
-| 91 | ModelData.View            | CLASS       |      ❌      |      ❌      |      | Not implemented yet. |
-| 92 | ModelData.RenamedBaseView | CLASS       |      ❌      |      ❌      |      | Not implemented yet. |
-| 93 | ModelData.BaseViewDef     | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
-| 94 | ModelData.BaseViewRef     | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
-| 95 | ModelData.DerivedAssoc    | ASSOCIATION |      ❌      |      ❌      |      | Not implemented yet. |
+| 91 | ModelData.View            | CLASS       |      ✅      |      ❌      |      | Not implemented yet. |
+| 92 | ModelData.RenamedBaseView | CLASS       |      ✅      |      ❌      |      | Not implemented yet. |
+| 93 | ModelData.BaseViewDef     | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
+| 94 | ModelData.BaseViewRef     | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
+| 95 | ModelData.DerivedAssoc    | ASSOCIATION |      ✅      |      ❌      |      | Not implemented yet. |
 
 ## Expressions, factors
 
@@ -221,8 +221,8 @@ ILI file.
 | 112 | ModelData.SimpleConstraint    | CLASS       |      ✅      |      ✅      | [Link](/code/ilismeta16/#ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.constraints.SimpleConstraint) |                      |
 | 113 | ModelData.ExistenceConstraint | CLASS       |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
 | 114 | ModelData.ExistenceDef        | ASSOCIATION |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
-| 115 | ModelData.UniqueConstraint    | CLASS       |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
-| 116 | ModelData.SetConstraint       | CLASS       |      ❌      |      ❌      |                                                                                                                     | Not implemented yet. |
+| 115 | ModelData.UniqueConstraint    | CLASS       |      ✅      |      ❌      |                                                                                                                     | Not implemented yet. |
+| 116 | ModelData.SetConstraint       | CLASS       |      ✅      |      ❌      |                                                                                                                     | Not implemented yet. |
 
 ## Graphic
 
@@ -240,7 +240,7 @@ ILI file.
 
 | id  | Construct                           | ili Kind  | Mandatory v1 | Implemented | Code | Comment              |
 |-----|-------------------------------------|-----------|:-----------:|:-----------:|------|----------------------|
-| 124 | ModelTranslation.DocTextTranslation | STRUCTURE |      ❌      |      ❌      |      | Not implemented yet. |
-| 125 | ModelTranslation.METranslation      | STRUCTURE |      ❌      |      ❌      |      | Not implemented yet. |
-| 126 | ModelTranslation.Translation        | CLASS     |      ❌      |      ❌      |      | Not implemented yet. |
+| 124 | ModelTranslation.DocTextTranslation | STRUCTURE |      ✅      |      ❌      |      | Not implemented yet. |
+| 125 | ModelTranslation.METranslation      | STRUCTURE |      ✅      |      ❌      |      | Not implemented yet. |
+| 126 | ModelTranslation.Translation        | CLASS     |      ✅      |      ❌      |      | Not implemented yet. |
 
