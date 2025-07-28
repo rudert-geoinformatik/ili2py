@@ -1,0 +1,184 @@
+INTERLIS 2.3;
+
+/** Minimales Geodatenmodell
+ * Laermempfindlichkeitsstufen (in Nutzungszonen)
+ * Geobasisdatensatz Nr. 145
+ * TRANSLATION OF-Modelle: DegreDeSensibiliteAuBruit_V1_2.ili, GradiDiSensibilitaAlRumore_V1_2.ili
+ */
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2023-03-20 | ARE   | - DOMAIN Gebietseinteilung ersetzt durch Einzelflaeche
+!!                    | - CLASS Laermempfindlichkeit_Zonenflaeche: Geometrie vom Typ Einzelflaeche (SURFACE)
+!!                    | - CLASS Laermempfindlichkeit_Zonenflaeche: CONSTRAINT zur Gewährleistung der AREA-Topologie
+!!                    | - CLASS Typ: Attribut Code, Feldlänge 40 Zeichen
+!!------------------------------------------------------------------------------
+!! 2021-11-19 | KOGIS | Localisation_V1 replaced by LocalisationCH_V1
+!!------------------------------------------------------------------------------
+!! 2021-09-01 | ARE   | Version 1.2
+!!                    | Anpassungen an das ÖREB-Rahmenmodell Version 2.0 vom 14.04.2021
+!!                    | - DOMAIN RechtsStatus angepasst, DokumentTyp neu
+!!                    | - STRUCTURE LocalisedBlob und MultilingualBlob neu
+!!                    | - CLASS Laermempfindlichkeit_Zonengrenze: neues Attribut publiziertBis
+!!                    | - CLASS Dokument angepasst an ÖREB-Rahmenmodell
+!!                    | - CLASS Amt angepasst an ÖREB-Rahmenmodell
+!!                    | Weitere technische Anpassungen
+!!                    | - ASSOCIATION Geometrie_Dokument zusätzlich eingefügt, um eine direkte Verknüpfung von Geometrie und Dokument zu ermöglichen
+!!                    | - TOPIC Geobasisdaten neu mit BASKET OID vom Typ TypeID
+!!                    | - CLASS Datenbestand: Attribut BasketID neu vom Typ TypeID, neues Meta-Attribut zur Überprüfung der ID
+!!------------------------------------------------------------------------------
+
+!!@ technicalContact=mailto:info@are.admin.ch
+!!@ furtherInformation=https://www.are.admin.ch/mgm
+!!@ IDGeoIV=145
+MODEL Laermempfindlichkeitsstufen_V1_2 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2023-03-20"  =
+  IMPORTS CHAdminCodes_V1,InternationalCodes_V1,LocalisationCH_V1,GeometryCHLV95_V1;
+
+  DOMAIN
+
+    ES = (
+      Keine_ES,
+      ES_I,
+      ES_II,
+      ES_III,
+      ES_IV
+    );
+
+    Einzelflaeche = SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.05;
+
+    TypeID = OID TEXT*60;
+
+    Verbindlichkeit = (
+      Nutzungsplanfestlegung,
+      orientierend,
+      hinweisend,
+      wegleitend
+    );
+
+    RechtsStatus = (
+      inKraft,
+      AenderungMitVorwirkung,
+      AenderungOhneVorwirkung
+    );
+
+    DokumentTyp = (
+      Rechtsvorschrift,
+      GesetzlicheGrundlage,
+      Hinweis
+    );
+
+  STRUCTURE LocalisedUri =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Text : MANDATORY URI;
+  END LocalisedUri;
+
+  STRUCTURE MultilingualUri =
+    LocalisedText : BAG {1..*} OF Laermempfindlichkeitsstufen_V1_2.LocalisedUri;
+    UNIQUE (LOCAL) LocalisedText: Language;
+  END MultilingualUri;
+
+  STRUCTURE LocalisedBlob =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Blob : MANDATORY BLACKBOX BINARY;
+  END LocalisedBlob;
+
+  STRUCTURE MultilingualBlob =
+    LocalisedBlob : BAG {1..*} OF Laermempfindlichkeitsstufen_V1_2.LocalisedBlob;
+    UNIQUE (LOCAL) LocalisedBlob: Language;
+  END MultilingualBlob;
+
+  TOPIC Rechtsvorschriften =
+
+    CLASS Dokument =
+      Typ : MANDATORY Laermempfindlichkeitsstufen_V1_2.DokumentTyp;
+      Titel : MANDATORY LocalisationCH_V1.MultilingualText;
+      Abkuerzung : LocalisationCH_V1.MultilingualText;
+      OffizielleNr : LocalisationCH_V1.MultilingualText;
+      NurInGemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      TextImWeb : Laermempfindlichkeitsstufen_V1_2.MultilingualUri;
+      Dokument : Laermempfindlichkeitsstufen_V1_2.MultilingualBlob;
+      AuszugIndex : MANDATORY -1000 .. 1000;
+      Rechtsstatus : MANDATORY Laermempfindlichkeitsstufen_V1_2.RechtsStatus;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+    END Dokument;
+
+  END Rechtsvorschriften;
+
+  TOPIC Geobasisdaten =
+    BASKET OID AS TypeID;
+    DEPENDS ON Laermempfindlichkeitsstufen_V1_2.Rechtsvorschriften;
+
+    CLASS Laermempfindlichkeit_Zonenflaeche =
+      Geometrie : MANDATORY Laermempfindlichkeitsstufen_V1_2.Einzelflaeche;
+      Rechtsstatus : MANDATORY Laermempfindlichkeitsstufen_V1_2.RechtsStatus;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+      Bemerkungen : MTEXT;
+    SET CONSTRAINT WHERE Rechtsstatus == #inKraft:
+      INTERLIS.areAreas(ALL, UNDEFINED, >> Geometrie);
+    END Laermempfindlichkeit_Zonenflaeche;
+
+    CLASS Typ =
+      Code : MANDATORY TEXT*40;
+      Bezeichnung : MANDATORY TEXT*80;
+      Abkuerzung : TEXT*10;
+      Empfindlichkeitsstufe : MANDATORY Laermempfindlichkeitsstufen_V1_2.ES;
+      Aufgestuft : BOOLEAN;
+      Verbindlichkeit : MANDATORY Laermempfindlichkeitsstufen_V1_2.Verbindlichkeit;
+      Bemerkungen : MTEXT;
+      Symbol : BLACKBOX BINARY;
+      MANDATORY CONSTRAINT
+        NOT (Aufgestuft == #true) OR (Empfindlichkeitsstufe == #ES_II OR Empfindlichkeitsstufe == #ES_III);
+    END Typ;
+
+    ASSOCIATION Geometrie_Dokument =
+      Geometrie (EXTERNAL) -- {0..*} Laermempfindlichkeit_Zonenflaeche;
+      Dokument (EXTERNAL) -- {0..*} Laermempfindlichkeitsstufen_V1_2.Rechtsvorschriften.Dokument;
+    END Geometrie_Dokument;
+
+    ASSOCIATION Typ_Dokument =
+      Typ (EXTERNAL) -- {0..*} Typ;
+      Dokument (EXTERNAL) -- {0..*} Laermempfindlichkeitsstufen_V1_2.Rechtsvorschriften.Dokument;
+    END Typ_Dokument;
+
+    ASSOCIATION Typ_Geometrie =
+      Geometrie -- {0..*} Laermempfindlichkeit_Zonenflaeche;
+      Typ -<> {1} Typ;
+    END Typ_Geometrie;
+
+  END Geobasisdaten;
+
+  TOPIC TransferMetadaten =
+
+    CLASS Amt =
+      Name : MANDATORY LocalisationCH_V1.MultilingualText;
+      AmtImWeb : Laermempfindlichkeitsstufen_V1_2.MultilingualUri;
+      UID : TEXT*12;
+      Zeile1 : TEXT*80;
+      Zeile2 : TEXT*80;
+      Strasse : TEXT*100;
+      Hausnr : TEXT*7;
+      PLZ : TEXT*4;
+      Ort : TEXT*40;
+      UNIQUE UID;
+    END Amt;
+
+    CLASS Datenbestand =
+      !!@ basketRef=Laermempfindlichkeitsstufen_V1_2.Geobasisdaten
+      BasketID : MANDATORY TypeID;
+      Stand : MANDATORY INTERLIS.XMLDate;
+      Lieferdatum : INTERLIS.XMLDate;
+      Bemerkungen : TEXT*20;
+    END Datenbestand;
+
+    ASSOCIATION zustStelle_Daten =
+      ZustaendigeStelle (EXTERNAL) -<> {1} Amt;
+      Datenbestand -- {0..*} Datenbestand;
+    END zustStelle_Daten;
+
+  END TransferMetadaten;
+
+END Laermempfindlichkeitsstufen_V1_2.

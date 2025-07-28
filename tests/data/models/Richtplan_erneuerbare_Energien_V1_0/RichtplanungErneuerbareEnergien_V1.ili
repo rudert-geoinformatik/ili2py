@@ -1,0 +1,121 @@
+INTERLIS 2.3;
+
+/** !!-----------------------------------------------------------------------------
+ * !! Version    | Wer | Aenderung
+ * !!------------------------------------------------------------------------------
+ * !! 2020-11-30 | CJ  | Finale Version
+ */
+
+!!@ technicalContact=mailto:info@bfe.admin.ch
+!!@ furtherInformation=https://www.bfe.admin.ch/geoinformation
+
+MODEL RichtplanungErneuerbareEnergien_V1 (de)
+AT "https://models.geo.admin.ch/BFE/"
+VERSION "2020-11-30"  =
+  IMPORTS GeometryCHLV95_V1,CHAdminCodes_V1,CatalogueObjects_V1;
+
+  STRUCTURE PointStructure =
+    Point : GeometryCHLV95_V1.Coord2;
+  END PointStructure;
+
+  STRUCTURE MultiPoint =
+    Points : BAG {1..*} OF RichtplanungErneuerbareEnergien_V1.PointStructure;
+  END MultiPoint;
+
+  DOMAIN
+
+    Text = TEXT*255;
+
+    Objektart = (
+      Ausgangslage,
+      Richtplaninhalt(
+        Vororientierung,
+        Zwischenergebnis,
+        Festsetzung,
+        Unbekannt
+      )
+    );
+
+  TOPIC Katalog_Energieform
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    CLASS Energieform
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Energieform : MANDATORY RichtplanungErneuerbareEnergien_V1.Text;
+    END Energieform;
+
+    STRUCTURE EnergieformRef
+    EXTENDS CatalogueObjects_V1.Catalogues.MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Energieform;
+    END EnergieformRef;
+
+  END Katalog_Energieform;
+
+  TOPIC Katalog_Aussageart
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    CLASS Aussageart
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Aussageart : MANDATORY RichtplanungErneuerbareEnergien_V1.Text;
+    END Aussageart;
+
+    STRUCTURE AussageartRef
+    EXTENDS CatalogueObjects_V1.Catalogues.MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Aussageart;
+    END AussageartRef;
+
+  END Katalog_Aussageart;
+
+  TOPIC Objekte =
+    DEPENDS ON RichtplanungErneuerbareEnergien_V1.Katalog_Energieform;
+
+    CLASS Objekt (ABSTRACT) =
+      Energieform : MANDATORY RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.EnergieformRef;
+      Objektbezeichnung : RichtplanungErneuerbareEnergien_V1.Text;
+      Beschrieb : RichtplanungErneuerbareEnergien_V1.Text;
+      Objektart : RichtplanungErneuerbareEnergien_V1.Objektart;
+      Genehmigungsdatum : INTERLIS.XMLDate;
+      BeschlussdatumKanton : INTERLIS.XMLDate;
+      Kanton : MANDATORY CHAdminCodes_V1.CHCantonCode;
+      Weblink : URI;
+      Bemerkungen : RichtplanungErneuerbareEnergien_V1.Text;
+    END Objekt;
+
+    CLASS Flaeche
+    EXTENDS Objekt =
+      Geometrie : MANDATORY GeometryCHLV95_V1.MultiSurface;
+    END Flaeche;
+
+    CLASS Linie
+    EXTENDS Objekt =
+      Geometrie : MANDATORY GeometryCHLV95_V1.MultiLine;
+    END Linie;
+
+    CLASS Punkt
+    EXTENDS Objekt =
+      Geometrie : MANDATORY RichtplanungErneuerbareEnergien_V1.MultiPoint;
+    END Punkt;
+
+  END Objekte;
+
+  TOPIC TransferMetadaten =
+    DEPENDS ON RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart;
+
+    CLASS Kanton =
+      Kanton : MANDATORY CHAdminCodes_V1.CHCantonCode;
+      Windenergie : BAG {1..2} OF RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.AussageartRef;
+      Wasserkraft : BAG {1..2} OF RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.AussageartRef;
+      Geothermie : BAG {1..2} OF RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.AussageartRef;
+      Biomasse : BAG {1..2} OF RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.AussageartRef;
+      Solarenergie : BAG {1..2} OF RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.AussageartRef;
+      Geometrie : MANDATORY GeometryCHLV95_V1.MultiSurface;
+    END Kanton;
+
+    CLASS Datenbestand =
+      Stand : MANDATORY INTERLIS.XMLDate;
+      Bemerkungen : RichtplanungErneuerbareEnergien_V1.Text;
+    END Datenbestand;
+
+  END TransferMetadaten;
+
+END RichtplanungErneuerbareEnergien_V1.
