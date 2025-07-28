@@ -1,0 +1,184 @@
+INTERLIS 2.3;
+
+!! Version    | Wer   | Änderung
+!!------------------------------------------------------------------------------
+!! 2024-05-06 | BAFU  | Korrektur Tippfehler Attribut Massnahme_WeitereBemerkungen, Constraint bei Stand_Abgeschlossen
+!! 2025-01-27 | BAFU  | Attribut MassnahmenNL_Typ: Begrenzung auf 6 Massnahmen gelöscht; Beschreibungen als MTEXT definiert
+!!==============================================================================
+
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ IDGeoIV=185.1
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+MODEL Rodungen_V1_1 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2025-01-27"  =
+  IMPORTS GeometryCHLV95_V1,LocalisationCH_V1;
+
+  TOPIC Rodungen =
+
+    DOMAIN
+
+    /* Flächen ohne Kreisbogen */
+    Polygon = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+
+    /** Aufzaehlung der verschiedenen Typen, codiert */
+    ObjektTyp = (
+      G1,
+      G2,
+      G3,
+      G4
+    );
+
+    MassnahmeNLTyp = (
+      M1,
+      M2,
+      M3,
+      M4,
+      M5,
+      M6,
+      M7,
+      M8,
+      M9
+    );
+
+    ErsatzMassnahmenNL = (
+      N1,
+      N2,
+      N3
+    );
+
+    RodungszweckTyp = (
+      R1,
+      R2,
+      R3,
+      R4,
+      R5,
+      R6,
+      R7,
+      R8,
+      R9,
+      R10,
+      R11,
+      R12,
+      R13,
+      R14,
+      R15,
+      R16,
+      R17,
+      R18,
+      R19,
+      R20
+    );
+
+    StandTyp = (
+      S1,
+      S2,
+      S3
+    );
+
+    ErsatzVerzicht = (
+      V1,
+      V2,
+      V3,
+      V4
+    );
+
+    ZustaendigkeitsTyp = (
+      Z1,
+      Z2
+    );
+
+    STRUCTURE MassnahmeNLTyp_ = value : MANDATORY MassnahmeNLTyp; END MassnahmeNLTyp_;
+    STRUCTURE ErsatzMassnahmenNL_ = value : MANDATORY ErsatzMassnahmenNL; END ErsatzMassnahmenNL_;
+    STRUCTURE ErsatzVerzicht_ = value : MANDATORY ErsatzVerzicht; END ErsatzVerzicht_;
+    STRUCTURE URI_ = value : MANDATORY URI; END URI_;
+
+    /* Klasse zur Beschreibung der effektiven Geometrie */
+    STRUCTURE Objekt =
+      Punkt : GeometryCHLV95_V1.Coord2;
+      Polygon : Polygon;
+      Objekt_Typ : MANDATORY ObjektTyp;
+      MassnahmenNL_Typ : MassnahmeNLTyp;
+      MassnahmenNL_Beschreibung : MTEXT*500;
+    MANDATORY CONSTRAINT DEFINED (Punkt) OR DEFINED (Polygon);
+    END Objekt;
+
+    /* Klasse zur Beschreibung der Rodungsbewilligung */
+    CLASS Rodungsbewilligung =
+      Nr_Kanton : MANDATORY TEXT*20;
+      Nr_Bund : TEXT*20;
+      Vorhaben : MANDATORY MTEXT*500;
+      Ersatz_Real : MANDATORY BOOLEAN;
+      Ersatz_MassnahmenNL : BAG {0..*} OF ErsatzMassnahmenNL_;
+      Ersatz_Verzicht : BAG {0..*} OF ErsatzVerzicht_;
+      Zustaendigkeit : MANDATORY ZustaendigkeitsTyp;
+      Flaeche_Rodung_def : MANDATORY 0.00 .. 9999999.99;
+      Flaeche_Rodung_temp : MANDATORY 0.00 .. 9999999.99;
+      Flaeche_Fruehere_Rodung15Jahre : 0.00 .. 9999999.99;
+      Flaeche_Ersatz_Real : MANDATORY 0.00 .. 9999999.99;
+      Flaeche_Ersatz_Verzicht : MANDATORY 0.00 .. 9999999.99;
+      Flaeche_Ersatz_MassnahmenNL : 0.00 .. 9999999.99;
+      MassnahmenNL_Typ : BAG {0..*} OF MassnahmeNLTyp_;
+      MassnahmenNL_Beschreibung : MTEXT*500;
+      FlaecheMassnahmeNL_ImWaldareal : 0.00 .. 9999999.99;
+      FlaecheMassnahmeNL_AusserhalbWaldareal : 0.00 .. 9999999.99;
+      MassnahmeNL_Pool : BOOLEAN;
+      Massnahme_WeitereBemerkungen : MTEXT*500;
+      Rodungszweck : MANDATORY RodungszweckTyp;
+      Rodungszweck_Bemerkungen : MTEXT*500;
+      Frist_Rodung : MANDATORY INTERLIS.XMLDate;
+      Frist_Rodung_Bemerkung : MTEXT*500;
+      Frist_Ersatz : MANDATORY INTERLIS.XMLDate;
+      Frist_Ersatz_Bemerkung : MTEXT*500;
+      Ausgleich : BOOLEAN;
+      Stand_Abgeschlossen : MANDATORY StandTyp;
+      Datum_Abgeschlossen : INTERLIS.XMLDate;
+      Verfuegung_Datum : MANDATORY INTERLIS.XMLDate;
+      Verfuegung_URL : BAG {0..*} OF URI_;
+      Weitere_Referenzen : MTEXT*500;
+      Schwerpunkt : GeometryCHLV95_V1.Coord2;
+      Objekte: BAG {0..*} OF Objekt;
+      MANDATORY CONSTRAINT DEFINED (Schwerpunkt) OR DEFINED (Objekte);
+      /** Datum_Abgeschlossen ist zu erfassen, sofern Attribut Stand_Abgeschlossen nicht S3 («Nein») ist */
+      MANDATORY CONSTRAINT NOT (Stand_Abgeschlossen == #S1) OR (DEFINED (Datum_Abgeschlossen));
+    END Rodungsbewilligung;
+
+    /** Hilfsklassen für die mehrsprachige Beschreibung der verschiedenen Aufzählungen, bzw. der konkreten Aufzählungswerte */
+    CLASS ErsatzMassnahmenNLBeschreibung =
+      Typ : MANDATORY ErsatzMassnahmenNL;
+      Beschreibung : MANDATORY LocalisationCH_V1.MultilingualText;
+    END ErsatzMassnahmenNLBeschreibung;
+
+    CLASS ErsatzVerzichtBeschreibung =
+      Typ : MANDATORY ErsatzVerzicht;
+      Beschreibung : MANDATORY LocalisationCH_V1.MultilingualText;
+    END ErsatzVerzichtBeschreibung;
+
+    CLASS MassnahmeNLTypBeschreibung =
+      Typ : MANDATORY MassnahmeNLTyp;
+      Beschreibung : MANDATORY LocalisationCH_V1.MultilingualText;
+    END MassnahmeNLTypBeschreibung;
+
+    CLASS RodungszweckTypBeschreibung =
+      Typ : MANDATORY RodungszweckTyp;
+      Beschreibung : MANDATORY LocalisationCH_V1.MultilingualText;
+    END RodungszweckTypBeschreibung;
+
+    CLASS ZustaendigkeitsTypBeschreibung =
+      Typ : MANDATORY ZustaendigkeitsTyp;
+      Beschreibung : MANDATORY LocalisationCH_V1.MultilingualText;
+    END ZustaendigkeitsTypBeschreibung;
+
+    CLASS StandTypBeschreibung =
+      Typ : MANDATORY StandTyp;
+      Beschreibung : MANDATORY LocalisationCH_V1.MultilingualText;
+    END StandTypBeschreibung;
+
+    CLASS ObjektTypBeschreibung =
+      Typ : MANDATORY ObjektTyp;
+      Beschreibung : MANDATORY LocalisationCH_V1.MultilingualText;
+    END ObjektTypBeschreibung;
+
+  END Rodungen;
+
+END Rodungen_V1_1.

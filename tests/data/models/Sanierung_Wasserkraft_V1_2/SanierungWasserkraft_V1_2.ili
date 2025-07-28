@@ -1,0 +1,729 @@
+INTERLIS 2.3;
+
+!!==============================================================================
+!! SanierungWasserkraft_V1_2.ili
+!!------------------------------------------------------------------------------
+!!
+!! GeoIV, Anhang 1
+!! ===============
+!! Identifikator GeoIV                       : 192
+!! Bezeichnung GeoIV                         : Planung und Berichterstattung der Sanierung Wasserkraft
+!! Zuständige Stelle (Fachstelle des Bundes) : Kantone (BAFU)
+!! Zugangsberechtigungsstufe                 : A
+!!
+!! Zusatzinformationen
+!! ===================
+!! Identifikator                             : 192.1
+!! Bezeichnung Geobasisdatensatz             : Planung und Berichterstattung der Sanierung Wasserkraft
+!!------------------------------------------------------------------------------
+!!
+!! Version    | Nr  | Änderung
+!!------------------------------------------------------------------------------
+!! 2013-11-26 | 1.0 | Bereinigte Schlussfassung nach Anhörung
+!! 2015-05-26 | 1.0 | KOGIS: TOPIC-Dependency added
+!! 2015-08-12 | 1.0 | KOGIS: TOPIC-Dependency specified
+!! 2019-02-06 | 1.1 | Anpassungen der Kardinalitäten für Berichterstattung
+!! 2019-02-18 | 1.1 | KOGIS: IMPORTS-Statement corrected
+!! 2019-03-04 | 1.1 | BAFU: Korrektur Kardinatilät bei Assoziation Einzugsgebiet - Anlagen
+!! 2023-03-07 | 1.2 | BAFU: Ergänzungen/Anpassungen im Katalog gemäss Umsetzungsprojekt
+!!                          Ergänzungen in Wertebereichen bei den Attributen Lockwasser, Durchlassbreite, Betriebswasser, Einstiegsposition in der Klasse Fischaufstieg gemäss Umsetzungsprojekt
+!!                          LV03 gelöscht
+!!==============================================================================
+
+!!@ technicalContact = mailto:gis@bafu.admin.ch
+!!@ IDGeoIV = 192.1
+!!@ furtherInformation = https://www.bafu.admin.ch/geodatenmodelle
+
+MODEL SanierungWasserkraft_V1_2 (de) AT "https://models.geo.admin.ch/BAFU/" VERSION "2023-03-07" =
+
+  IMPORTS CatalogueObjects_V1;
+  IMPORTS WasserBase_Codelisten_V1_1;
+  IMPORTS WasserBase_LV95_V1_1;
+  IMPORTS Units;
+  IMPORTS CHAdminCodes_V1;
+  IMPORTS GeometryCHLV95_V1;
+
+  TOPIC Catalogs EXTENDS CatalogueObjects_V1.Catalogues =
+!!==============================================================================
+
+    !! Lookup Tabellen (Kataloge)
+    CLASS SanPhase EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! z.B. Strategische Planung Kanton Zwischenbericht, Massnahmenumsetzung, geplant, verfügt
+    END SanPhase;
+
+    STRUCTURE SanPhaseRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) SanPhase;
+    END SanPhaseRef;
+
+    CLASS FinanzZust EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! z.B. eingereicht, zugestimmt, abgelehnt
+    END FinanzZust;
+
+    STRUCTURE FinanzZustRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FinanzZust;
+    END FinanzZustRef;
+
+    CLASS NrTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! z.B. WASTA, Schutzbautenkataster Abt. Gefahrenprävention, ASTRA, SBB, andere
+    END NrTyp;
+
+    STRUCTURE NrTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) NrTyp;
+    END NrTypRef;
+
+    CLASS AnlageTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! z.B. Speicherkraftwerk, Laufkraftwerk
+    END AnlageTyp;
+
+    STRUCTURE AnlageTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) AnlageTyp;
+    END AnlageTypRef;
+
+    CLASS TypS EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! z.B. Wasserrückgabe, Wasserentnahme, Stauanlage
+    END TypS;
+
+    STRUCTURE TypSRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) TypS;
+    END TypSRef;
+
+    CLASS TypG EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! z.B. Wehranlage, Sperre, Blockrampe
+    END TypG;
+
+    STRUCTURE TypGRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) TypG;
+    END TypGRef;
+
+    CLASS Fischregion EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! z.B. Forellenregion, kein Fischgewässer
+    END Fischregion;
+
+    STRUCTURE FischregionRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Fischregion;
+    END FischregionRef;
+
+    CLASS Potenzial EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! gering, mittel, gross
+    END Potenzial;
+
+    STRUCTURE PotenzialRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Potenzial;
+    END PotenzialRef;
+
+    CLASS Beeintraechtigung EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! gering, mittel, gross
+    END Beeintraechtigung;
+
+    STRUCTURE BeeintrRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Beeintraechtigung;
+    END BeeintrRef;
+
+    CLASS BewZustand EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! ist, soll
+    END BewZustand;
+
+    STRUCTURE BewZustandRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) BewZustand;
+    END BewZustandRef;
+
+    CLASS BewTiefe EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Notausgang, Abkürzung, ...
+    END BewTiefe;
+
+    STRUCTURE BewTiefeRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) BewTiefe;
+    END BewTiefeRef;
+
+    CLASS WasserQuali EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Stufen gem. MSK Chem-phys Erhebungen, Nährstoffe
+    END WasserQuali;
+
+    STRUCTURE WasserQualiRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) WasserQuali;
+    END WasserQualiRef;
+
+    CLASS Oekomorph EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Stufen gem. MSK Ökomorphologie Stufe F
+    END Oekomorph;
+
+    STRUCTURE OekomorphRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Oekomorph;
+    END OekomorphRef;
+
+    CLASS MassnArt EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! baulich, betrieblich
+    END MassnArt;
+
+    STRUCTURE MassnArtRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) MassnArt;
+    END MassnArtRef;
+
+    CLASS MassnTypG EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Aufhebung Anlageteil, Gerinneaufweitung, ...
+    END MassnTypG;
+
+    STRUCTURE MassnTypGRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) MassnTypG;
+    END MassnTypGRef;
+
+    CLASS MassnTypS EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Direktableitung, antizyklische Turbinierung, ...
+    END MassnTypS;
+
+    STRUCTURE MassnTypSRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) MassnTypS;
+    END MassnTypSRef;
+
+    CLASS MassnStatus EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! möglich, vorgesehen, in Planung, realisiert, ...
+    END MassnStatus;
+
+    STRUCTURE MassnStatusRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) MassnStatus;
+    END MassnStatusRef;
+
+    CLASS BerechHyd EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! HYDMOD, andere
+    END BerechHyd;
+
+    STRUCTURE BerechHydRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) BerechHyd;
+    END BerechHydRef;
+
+    CLASS QuelleHyd EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! HYDMOD, andere
+    END QuelleHyd;
+
+    STRUCTURE QuelleHydRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) QuelleHyd;
+    END QuelleHydRef;
+
+    CLASS Rechtsgrundlage EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Konzession, andere, ...
+    END Rechtsgrundlage;
+
+    STRUCTURE RechtRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Rechtsgrundlage;
+    END RechtRef;
+
+    CLASS HindernisTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Talsperre, Stauwehr, ...
+    END HindernisTyp;
+
+    STRUCTURE HindernisTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) HindernisTyp;
+    END HindernisTypRef;
+
+    CLASS FunktionsTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Ausleitkraftwerk, Dotierkraftwerk, ...
+    END FunktionsTyp;
+
+    STRUCTURE FunktionsTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FunktionsTyp;
+    END FunktionsTypRef;
+
+    CLASS FassungsTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Seitenentnahme, Sohlentnahme, ...
+    END FassungsTyp;
+
+    STRUCTURE FassungsTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FassungsTyp;
+    END FassungsTypRef;
+
+    CLASS TurbinenTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Pelton, Francis, ...
+    END TurbinenTyp;
+
+    STRUCTURE TurbinenTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) TurbinenTyp;
+    END TurbinenTypRef;
+
+    CLASS FAufstiegTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Beckenpass, Schlitzpass, ...
+    END FAufstiegTyp;
+
+    STRUCTURE FAufTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FAufstiegTyp;
+    END FAufTypRef;
+
+    CLASS FunktKontrolle EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Keine, Reuse, Video, ...
+    END FunktKontrolle;
+
+    STRUCTURE FunktKontrRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FunktKontrolle;
+    END FunktKontrRef;
+
+    CLASS FunktionskontrolleResultat EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Genügend, ungenügend, unbekannt
+    END FunktionskontrolleResultat;
+
+    STRUCTURE FunktResRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FunktionskontrolleResultat;
+    END FunktResRef;
+
+    CLASS Anordnung EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Gewässerseite, Gesamtgewässer, ...
+    END Anordnung;
+
+    STRUCTURE AnordnungRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Anordnung;
+    END AnordnungRef;
+
+    CLASS Einstiegswinkel EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! >90, 70-90, ...
+    END Einstiegswinkel;
+
+    STRUCTURE EinstWinkelRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Einstiegswinkel;
+    END EinstWinkelRef;
+
+    CLASS SohlSubstrat EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! gross, Störsteine, ...
+    END SohlSubstrat;
+
+    STRUCTURE SohlSubstratRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) SohlSubstrat;
+    END SohlSubstratRef;
+
+    CLASS WartungBeurteilung EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! gut, schlecht
+    END WartungBeurteilung;
+
+    STRUCTURE WartungRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) WartungBeurteilung;
+    END WartungRef;
+
+    CLASS Expertenmeinung EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! gut, befriedigend, ...
+    END Expertenmeinung;
+
+    STRUCTURE ExpertMeinRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Expertenmeinung;
+    END ExpertMeinRef;
+
+    CLASS FAbstiegTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Oberflächennaher Bypass, anderer, ...
+    END FAbstiegTyp;
+
+    STRUCTURE FAbTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FAbstiegTyp;
+    END FAbTypRef;
+
+    CLASS Schutzsystem EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+    !! Rechen, Louver, ...
+    END Schutzsystem;
+
+    STRUCTURE SchutzSystRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Schutzsystem;
+    END SchutzSystRef;
+
+  END Catalogs;                                             !! topic
+
+  DOMAIN
+!!==============================================================================
+    !! Trimodaler Wert
+    YNU  = (ja, nein, unklar_zurueckgestellt);
+
+    !! Fachbereich
+    dFachbereich  = (F, G, S);                                      !! Fischgängigkeit, Geschiebe, Schwall-Sunk
+
+  TOPIC San =
+    DEPENDS ON Catalogs,WasserBase_LV95_V1_1.Gewaesser;
+!!==============================================================================
+
+    STRUCTURE SchnelltestS =
+    !!=============================================
+      F1             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      F4             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      F5             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      B1             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      B2             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      B4             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      H1             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      A1             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+    END SchnelltestS;
+
+    STRUCTURE Grundbewertung =
+    !!=============================================
+      AttSchnelltest : MANDATORY SchnelltestS;                               !! Attribute des Schnelltests
+      F2             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      F3             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      B3             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+      Q1             :           0..5;                                       !! Zustandsklasse gemäss Indikator
+    END Grundbewertung;
+
+    STRUCTURE WertGanglinie =
+    !!=============================================
+      Wert  : MANDATORY 0.000 .. 500.000;                                    !! Wert
+      Datum :           INTERLIS.XMLDate;                                    !! Messzeitpunkt
+    END WertGanglinie;
+
+    STRUCTURE SanFAllgemein =
+    !!=============================================
+      FunktKontrTyp      :           SanierungWasserkraft_V1_2.Catalogs.FunktKontrRef;  !! Typ Überprüfung der Funktion
+      FunktKontrResultat :           SanierungWasserkraft_V1_2.Catalogs.FunktResRef;    !! Resultat der Funktionskontrolle
+      Bemerkung          :           TEXT;                                   !! Zusätzliche Bemerkungen. Verweis auf Bericht Funktionskontrolle möglich.
+      Betriebsdauer      :           0 .. 365;                               !! Anzahl Tage pro Jahr, an welchen die Funktion vollumfänglich gewährleistet ist
+      Wartung            :           SanierungWasserkraft_V1_2.Catalogs.WartungRef;     !! Beurteilung vor Ort
+      Expertenmeinung    :           SanierungWasserkraft_V1_2.Catalogs.ExpertMeinRef;  !! Beurteilung anhand Erfahrung und Aufnahmen
+      Sanierung          : MANDATORY YNU;                                    !! ja, nein, zurückgestellt
+      SanierungEntscheid :           TEXT;                                   !! Erläuterung des Resultats
+    END SanFAllgemein;
+
+    !! Fischvorkommen für SanF
+    !!=============================================
+    CLASS FischVorkommen =
+      Fischregion        :           SanierungWasserkraft_V1_2.Catalogs.FischregionRef;
+      Bachforelle        :           BOOLEAN;
+      Seeforelle         :           BOOLEAN;
+      Lachs              :           BOOLEAN;
+      Aesche             :           BOOLEAN;
+      Barbe              :           BOOLEAN;
+      Aal                :           BOOLEAN;
+      Nase               :           BOOLEAN;
+      Groppe             :           BOOLEAN;
+      Vorranggewaesser   :           BOOLEAN;                                !! bezüglich Fischarten
+    END FischVorkommen;
+
+    !! Anlage (Zentrale)
+    !!=============================================
+    CLASS Anlage =
+      Ort                : MANDATORY GeometryCHLV95_V1.Coord3;                                 !! Ort der Anlage, liegt nicht zwingend an einem Gewässerlauf
+      Name               : MANDATORY TEXT*256;                               !! identifizierende Kurzbezeichnung des Anlageteils
+      AnlageNr           :           TEXT*256;                               !! z.B. WASTA Nr., pro Kanton eindeutig; MANDATORY bei F, G, nicht aber bei S
+      AnlageNrQuelle     :           SanierungWasserkraft_V1_2.Catalogs.NrTypRef;       !! z.B. WASTA, Schutzbautenkataster Abt. Gefahrenprävention, ASTRA, SBB, andere
+      Typ                : MANDATORY SanierungWasserkraft_V1_2.Catalogs.AnlageTypRef;   !! Anlagetyp
+      InhaberName        : MANDATORY TEXT*256;                               !! Name des Inhabers, Betreibers, Nutzungsberechtigten
+      InhaberAdresse     :           TEXT*256;                               !! Adresse des Inhabers
+    END Anlage;
+
+    !! Anlageteil für alle Teilbereiche
+    !!=============================================
+    CLASS AnlageTeil =
+      Ort                :           WasserBase_LV95_V1_1.Gewaesser.StrOrt;         !! Ort des Anlageteils am Fliessgewässer, inkl. fak. Höhe über Meer
+      Bezeichnung        :           TEXT*256;                               !! identifizierende Kurzbezeichnung des Anlageteils
+      Ortsname           :           TEXT*256;                               !! Ortschafts- oder Flurname
+     END AnlageTeil;
+
+    !! Anlageteilzusatz für Fischhindernis
+    !!=============================================
+    CLASS ATFischhindernis =
+      Hindernishoehe     :           0.0 .. 100.0 [INTERLIS.m];              !! Fallhöhe zwischen Ober- und Unterwasser (maximale Hindernishöhe)
+      Rechtsgrundlage    : MANDATORY SanierungWasserkraft_V1_2.Catalogs.RechtRef;       !! Rechtliche Basis Wasserkraftnutzung
+      Ablaufdatum        :           INTERLIS.XMLDate;                       !! Ablaufdatum der Konzession
+      HindernisTyp       : MANDATORY SanierungWasserkraft_V1_2.Catalogs.HindernisTypRef;!! Bezeichnung des Hindernisses
+      FunktionsTyp       :           SanierungWasserkraft_V1_2.Catalogs.FunktionsTypRef;!! hauptsächlicher Funktionstyp
+      FassungsTyp        :           SanierungWasserkraft_V1_2.Catalogs.FassungsTypRef; !! hauptsächlicher Fassungstyp
+      TurbinenTyp        :           SanierungWasserkraft_V1_2.Catalogs.TurbinenTypRef; !! Turbinentyp
+      AusbauWassermenge  :           0 .. 10000;                             !! Maximal mögliche Entnahmemenge gemäss Konzession [m3/sec]
+      Leistung           :           0 .. 1000000;                           !! Installierte Leistung [kW]
+      HindernisAufwaerts :           0 .. 1000 [INTERLIS.m];                 !! Distanz zum nächsten unpassierbaren Hindernis flussaufwärts
+      HindernisAbwaerts  :           0 .. 1000 [INTERLIS.m];                 !! Distanz zum nächsten unpassierbaren Hindernis flussabwärts
+    END ATFischhindernis;
+
+    !! Anlageteilzusatz für SchwallSunk
+    !!=============================================
+    CLASS ATSchwallSunk =
+      Typ                :           SanierungWasserkraft_V1_2.Catalogs.TypSRef;        !! Wasserrückgabe, Wasserentnahme, Stauanlage
+      AusbauWassermenge  :           0 .. 10000;                             !! max. Abflussmenge [m3/s], welche in Fliessgewässer fliessen kann
+      SSmoeglich         :           BOOLEAN;                                !! nach GSchG
+      WesentlBeeintr     : MANDATORY YNU;                                    !! ja/nein/unklar
+    END ATSchwallSunk;
+
+    !! Anlageteilzusatz für Geschiebe
+    !!=============================================
+    CLASS ATGeschiebe =
+      Typ                :           SanierungWasserkraft_V1_2.Catalogs.TypGRef;        !! Anlagenteil entspricht dem massgebenden Teil des Anlagentyps. Bsp.: Bei Kraftwerk interessiert einzig die Wehranlage
+    END ATGeschiebe;
+
+    !! Sanierungsmassnahmen
+    !!=============================================
+    !! Fischaufstieg (SanF)
+    !!=============================================
+    CLASS Fischaufstieg =
+      Typ                : MANDATORY SanierungWasserkraft_V1_2.Catalogs.FAufTypRef;     !! Typ Aufstiegshilfe
+      AttributeAllg      : MANDATORY SanFAllgemein;                          !! gemeinsame Attribute von Auf- und Abstieg
+      LaengeFAH          :           0 .. 10000 [INTERLIS.m];                !! Gesamtlänge vom Einstieg bis zum Ausstieg
+      GefaelleFAH        :           0 ..   200 [Units.Percent];             !! Neigung Fischaufstiegshilfe
+      Anordnung          :           SanierungWasserkraft_V1_2.Catalogs.AnordnungRef;   !! Position im Gewässer
+      Einstiegsposition  :           0.00 .. 1000.00 [INTERLIS.m];           !! Position Einstieg FAH
+      Einstiegswinkel    :           SanierungWasserkraft_V1_2.Catalogs.EinstWinkelRef; !! Mündungswinkel ins Fliessgewässer (Messung anhand Plangrundlagen)
+      Beckenlaenge       :           0.00 ..   10.00 [INTERLIS.m];           !! Länge des kleinsten Beckens
+      Beckenbreite       :           0.00 ..   10.00 [INTERLIS.m];           !! Breite des schmalsten Beckens
+      Wassertiefe        :           0.00 ..    5.00 [INTERLIS.m];           !! minimale für Fische relevante Wassertiefe
+      Durchlassbreite    :           0.00 ..   20.00 [INTERLIS.m];           !! minimale für Fische relevante Breite bei Durchlässen
+      Betriebswasser     :           0    .. 20000;                          !! minimale Betriebswassermenge [l/sec]
+      SaisonaleAbstufung :           BOOLEAN;                                !! vorhanden = TRUE
+      Lockwasser         :           0    ..  5000;                          !! l/sec zusätzliche Lockwassermenge
+      Leitstroemung      :           0    ..   100 [Units.Percent];          !! Anteil Leitströmung in Bezug auf Ausbauwassermenge
+      WasserspiegelDiff  :           0.00 ..    10.00 [INTERLIS.m];          !! maximale Wasserspiegeldifferenz zwischen Beckenstrukturen
+      DurchlassGeschw    :           0.0  ..    10.0 [Units.ms];             !! maximale Fliessgeschwindigkeit in FAH
+      MaxLeistungsdichte :           0.0  .. 10000.0;                        !! maximale Leistungsdichte. Gilt nicht für Borstenfischpass [W/m3]
+      Sohlsubstrat       :           SanierungWasserkraft_V1_2.Catalogs.SohlSubstratRef;!! Vorherrschender Typ
+      Sohlanschluss      :           BOOLEAN;                                !! gewährleistet = TRUE
+      Ruhebecken         :           0 .. 100;                               !! Anzahl Ruhebecken
+      AusgangGefahr      :           BOOLEAN;                                !! keine direkte Gefahr = FALSE
+    END Fischaufstieg;
+
+    !! Fischabstieg (SanF)
+    !!=============================================
+    CLASS Fischabstieg =
+      Typ                : MANDATORY SanierungWasserkraft_V1_2.Catalogs.FAbTypRef;      !! Typ Abstiegshilfe
+      AttributeAllg      : MANDATORY SanFAllgemein;                          !! gemeinsame Attribute von Auf- und Abstieg
+      Schutzsystem       :           SanierungWasserkraft_V1_2.Catalogs.SchutzSystRef;  !! Typ Schutzanlage resp. Leitsystem
+      Abstand            :           0    .. 100    [Units.mm];              !! Stabweite oder Öffnung Schutzanlage
+      AnstroemGeschw     :           0.00 ..  10.00 [Units.ms];              !! Anströmgeschwindigkeit Fischschutzanlage
+      Tosbecken          :           BOOLEAN;                                !! vorhanden = TRUE
+      TosbeckenTiefe     :           0.0  ..  10.0  [INTERLIS.m];            !! Tiefe des Tosbeckens
+      Wehrueberfall      :           0 .. 365;                               !! jährliche Nutzwassermenge pro Abflusskurve Gewässer in Anzahl Tagen
+    END Fischabstieg;
+
+    !! MassnahmeSchwallSunk (SanS)
+    !!=============================================
+    CLASS MassnahmeSchwallSunk =
+      Ort                : MANDATORY WasserBase_LV95_V1_1.Gewaesser.StrOrt;         !! Punkt, Linie oder Polygon
+      Bezeichnung        : MANDATORY TEXT*256;                               !! Bezeichnung der Massnahme
+      Art                : MANDATORY SanierungWasserkraft_V1_2.Catalogs.MassnArtRef;    !! baulich, betrieblich
+      Typ                : MANDATORY SanierungWasserkraft_V1_2.Catalogs.MassnTypSRef;   !! Massnamentyp
+      Umfang             :           TEXT*256;                               !! Beschreibung des Umfangs der Massnahme
+      Status             : MANDATORY SanierungWasserkraft_V1_2.Catalogs.MassnStatusRef; !! in Planung, realisiert, ...
+      FristPlanung       :           2000 .. 2500 [INTERLIS.Y];              !! Frist der Massnahmenplanung, erforderlich für Schlussbericht
+      FristUmsetzung     :           2000 .. 2500 [INTERLIS.Y];              !! Frist der Massnahmenumsetzung, erforderlich für Schlussbericht
+      AbstimmungEZGeb    :           BOOLEAN;                                !! kantonsübergreifender Koordination notwendig?
+      AbstimmungAndere   :           BOOLEAN;                                !! mit anderen Massn. zum Schutz der nat. Lebensr. und vor Hochwasser
+    END MassnahmeSchwallSunk;
+
+    !! MassnahmeGeschiebe (SanG)
+    !!=============================================
+    CLASS MassnahmeGeschiebe =
+      Ort                : MANDATORY WasserBase_LV95_V1_1.Gewaesser.StrOrt;         !! Punkt, Linie oder Polygon
+      Bezeichnung        : MANDATORY TEXT*256;                               !! Bezeichnung der Massnahme
+      Art                : MANDATORY SanierungWasserkraft_V1_2.Catalogs.MassnArtRef;    !! baulich, betrieblich
+      Typ                : MANDATORY SanierungWasserkraft_V1_2.Catalogs.MassnTypGRef;   !! Massnamentyp
+      Status             : MANDATORY SanierungWasserkraft_V1_2.Catalogs.MassnStatusRef; !! in Planung, realisiert, ...
+      FristPlanung       :           2000 .. 2500 [INTERLIS.Y];              !! Frist der Massnahmenplanung
+      FristUmsetzung     :           2000 .. 2500 [INTERLIS.Y];              !! Frist der Massnahmenumsetzung
+      AbstimmungEZGeb    :           BOOLEAN;                                !! kantonsübergreifender Koordination notwendig?
+      AbstimmungAndere   :           BOOLEAN;                                !! mit anderen Massn. zum Schutz der nat. Lebensr. und vor Hochwasser
+    END MassnahmeGeschiebe;
+
+    !! Sanierung einer Anlage
+    !!=============================================
+    CLASS Sanierung =
+      Fachbereich        : MANDATORY dFachbereich;                           !! F, G oder S, für den diese Sanierungsinfos gelten
+      ZustBehoerde       :           CHAdminCodes_V1.CHCantonCode;                           !! Kanton der zuständigen Behörde, falls Feld LEER ist der Bund zuständig
+      ZustFachstelle     : MANDATORY TEXT*256;                               !! Verantwortliche kantonale Fachstelle
+      Phase              : MANDATORY SanierungWasserkraft_V1_2.Catalogs.SanPhaseRef;    !! Phase der Sanierung (Zwischenbericht, Schlussbericht, ..., Umsetzung, geplant, verfügt)
+      BesoVerhGrund      :           TEXT;                                   !! Begründung eines besonderen Verhältnisses
+      BesoVerhFristAng   :           INTERLIS.XMLDate;                       !! Frist bis wann Angaben eingereicht werden müssen
+      BesoVerhFristVerf  :           INTERLIS.XMLDate;                       !! Frist bis wann die Sanierung ausgeführt sein muss (obligatorisch für Schlussbericht)
+      Sanierungspflicht  :           YNU;                                    !! ja/nein/unklar_zurückgestellt (obligatorisch für Schlussbericht)
+      FinanzZustand      :           SanierungWasserkraft_V1_2.Catalogs.FinanzZustRef;  !! Zustand der Finanzierung
+      SanVerfuegDat      :           INTERLIS.XMLDate;                       !! Datum der Sanierungsverfügung (obligatorisch für Schlussbericht)
+    END Sanierung;
+
+    !! Gewässerabschnitt Schwall-Sunk
+    !!=============================================
+    CLASS GewaesserAbschnittS =
+      Abschnitt          : MANDATORY WasserBase_LV95_V1_1.Gewaesser.StrOrt;         !! Geometrie oder lineare Adressierung des Gewässerabschnitts
+    END GewaesserAbschnittS;
+
+    !! Gewässerabschnitt Geschiebe
+    !!=============================================
+    CLASS GewaesserAbschnittG =
+      Abschnitt          : MANDATORY WasserBase_LV95_V1_1.Gewaesser.StrOrt;         !! Geometrie oder lineare Adressierung des Gewässerabschnitts
+    END GewaesserAbschnittG;
+
+    !! Hydrologie
+    !!=============================================
+    CLASS Hydrologie =
+      Bezeichnung        :           TEXT*256;                               !!
+      Erhebungszeitpunkt :           TEXT*256;                               !!
+      Abflussganglinie   :           LIST {0 ..*} OF WertGanglinie;          !! Stützwerte der Ganglinie
+      Berechnungsmethode :           SanierungWasserkraft_V1_2.Catalogs.BerechHydRef;   !! HYDMOD, andere
+      Datenquelle        :           SanierungWasserkraft_V1_2.Catalogs.QuelleHydRef;   !! Messstation, Extrapolation, ...
+      SSVerhaeltnis      :           1.0 .. 100.0;                           !!
+      SSAmplitude        :           0.0 .. 10000.0;                         !! [m3/s]
+      MaxSchwall         :           0.0 .. 10000.0;                         !! Abfluss [m3/s]
+      MinSunk            :           0.0 .. 10000.0;                         !! Abfluss [m3/s]
+      RatePegelAendSchw  :           0.0 .. 100.0;                           !! Pegelanstiegsrate [cm/min]
+      RatePegelAendSunk  :           0.0 .. 100.0;                           !! Pegelrückgangsrate [cm/min]
+    END Hydrologie;
+
+    !! Bewertung Schwall-Sunk
+    !!=============================================
+    CLASS BewertungS =
+      Bewertungszustand  : MANDATORY SanierungWasserkraft_V1_2.Catalogs.BewZustandRef;  !! ist/soll
+      OrtMesspunkt       :           WasserBase_LV95_V1_1.Gewaesser.StrOrt;         !! ein Punkt
+      Oekomorphologie    :           SanierungWasserkraft_V1_2.Catalogs.OekomorphRef;   !! Stufen gem. MSK Ökomorphologie Stufe F
+      Wasserqualitaet    :           SanierungWasserkraft_V1_2.Catalogs.WasserQualiRef; !! Stufen gem. MSK Chem-phys Erhebungen, Nährstoffe
+      Bewertung          :           SanierungWasserkraft_V1_2.Catalogs.BewTiefeRef;    !! Notausgang, Abkürzung, ...
+      WesentlBeeintr     : MANDATORY YNU;                                    !! ja/nein/unklar
+      GradBeeintr        :           SanierungWasserkraft_V1_2.Catalogs.BeeintrRef;     !! sehr stark, stark, mittel
+      OekologPotenzial   :           SanierungWasserkraft_V1_2.Catalogs.PotenzialRef;   !! gering, mittel, gross
+      BegrNotausgang     :           TEXT;                                   !! Begründung falls Notausgang
+      BegrAbkuerzung     :           TEXT;                                   !! Begründung falls Abkürzung
+      Schnelltest        :           SchnelltestS;                           !! Zustandsklassen für Schnelltest
+      Grundbewertung     :           Grundbewertung;                         !! Alle Zustandsklassen
+
+      MANDATORY CONSTRAINT                                                   !! eines der vier muss definiert sein
+           DEFINED(BegrNotausgang)
+        OR DEFINED(BegrAbkuerzung)
+        OR DEFINED(Schnelltest)
+        OR DEFINED(Grundbewertung);
+    END BewertungS;
+
+    !! Bewertung Geschiebe
+    !!=============================================
+    CLASS BewertungG =
+      Bewertungszustand  : MANDATORY SanierungWasserkraft_V1_2.Catalogs.BewZustandRef;  !! ist/soll
+      GradBeeintr        :           SanierungWasserkraft_V1_2.Catalogs.BeeintrRef;     !! sehr stark bis keine
+      WesentlBeeintr     : MANDATORY YNU;                                    !! Beeinträchtigung Geschiebe
+      WesentlBeeintrGW   :           YNU;                                    !! Beeinträchtigung Grundwasser
+      WesentlBeeintrHWS  :           YNU;                                    !! Beeinträchtigung Hochwasserschutz
+      OekologPotenzial   :           SanierungWasserkraft_V1_2.Catalogs.PotenzialRef;   !! gering, mittel, gross
+      AufwertPotenzial   :           0..5;                                   !! Anzahl Aufwertungsstufen
+    END BewertungG;
+
+    !! Einzugsgebiet
+    !!=============================================
+    CLASS Einzugsgebiet =
+      Gebiet             : MANDATORY GeometryCHLV95_V1.Area;                 !! Polygon des Einzugsgebiets
+      GebietsNummer      :           TEXT*256;             !! z.B. Einzugsgebietsnummer gemäss Einzugsgebietsgliederung Schweiz oder kant. Planungseinheit
+    END Einzugsgebiet;
+
+
+    !! Beziehungen zwischen den Klassen
+    !!=============================================
+    !! Wasserkraftwerk (Anlage) - Anlageteil - Baugruppen
+    !!=============================================
+    ASSOCIATION Einzugsgebiet_Anlage =
+      rGebiet -<> {0..*}    Einzugsgebiet;
+      rAnlage --  {0..*} Anlage;
+    END Einzugsgebiet_Anlage;
+
+    ASSOCIATION Anlage_AnlageTeil =
+      rKontroller -<> {1..*} Anlage;                  !! n:m Beziehung
+      rSubsystem  --  {1..*} AnlageTeil;
+    END Anlage_AnlageTeil;
+
+    ASSOCIATION Anlage_Sanierung =
+      rBauwerk   -- {1}    Anlage;
+      rSanierung -- {1..3} Sanierung;                 !! eine pro Fachbereich
+    END Anlage_Sanierung;
+
+    ASSOCIATION AnlageTeil_ATFischhindernis =
+      rBauwerk      -<#> {1}    AnlageTeil;
+      rSanFunktionF --   {0..*} ATFischhindernis;
+    END AnlageTeil_ATFischhindernis;
+
+    ASSOCIATION AnlageTeil_ATSchwallSunk =
+      rBauwerk      -<#> {1}    AnlageTeil;
+      rSanFunktionS --   {0..*} ATSchwallSunk;
+    END AnlageTeil_ATSchwallSunk;
+
+    ASSOCIATION AnlageTeil_ATGeschiebe =
+      rBauwerk      -<#> {1}    AnlageTeil;
+      rSanFunktionG --   {0..*} ATGeschiebe;
+    END AnlageTeil_ATGeschiebe;
+
+    !! Baugruppe Schwall-Sunk
+    !!=============================================
+    ASSOCIATION ATSchwallSunk_Hydrologie =
+      rBauwerk   -- {0..1}    ATSchwallSunk;
+      rInspektor -- {0..*} Hydrologie;                !! mehrere hydrologische Beschreibungen sind möglich
+    END ATSchwallSunk_Hydrologie;
+
+    ASSOCIATION ATSchwallSunk_GewAbsch =
+      rBauwerk     -- {1..*} ATSchwallSunk;           !! n:m Beziehung
+      rBetroffener -- {0..*} GewaesserAbschnittS;
+    END ATSchwallSunk_GewAbsch;
+
+    ASSOCIATION ATSchwallSunk_Massnahme =
+      rSVerursacher  -<> {1..*} ATSchwallSunk;        !! n:m Beziehung
+      rMassnahme     --  {0..*} MassnahmeSchwallSunk;
+    END ATSchwallSunk_Massnahme;
+
+    ASSOCIATION GewAbsch_BewertungS =
+      rBetroffener -- {1}    GewaesserAbschnittS;
+      rBewertung   -- {1..*} BewertungS;              !! mehrere sind möglich (Zwischen- und Schlussbericht)
+    END GewAbsch_BewertungS;
+
+    ASSOCIATION Bewertung_Hydrologie =
+      rBewertung -- {0..1}    BewertungS;
+      rInspektor -- {0..*} Hydrologie;                !! eventuell eine hydrologische Beschreibung
+    END Bewertung_Hydrologie;
+
+    !! Baugruppe Fischhindernis
+    !!=============================================
+    ASSOCIATION Hindernis_Fischaufstieg =
+      rHindernisAuf -<> {1}    ATFischhindernis;
+      rAufstieg     --  {0..*} Fischaufstieg;
+    END Hindernis_Fischaufstieg;
+
+    ASSOCIATION Hindernis_Fischabstieg =
+      rHindernisAb -<> {1} ATFischhindernis;
+      rAbstieg     --  {0..*} Fischabstieg;
+    END Hindernis_Fischabstieg;
+
+    ASSOCIATION Hindernis_FischVorkommen =
+      rHindernis -<> {1} ATFischhindernis;
+      rFauna     --  {1} FischVorkommen;
+    END Hindernis_FischVorkommen;
+
+    !! Baugruppe Geschiebe
+    !!=============================================
+    ASSOCIATION ATGeschiebe_GewAbsch =
+      rBauwerk     -- {1..*} ATGeschiebe;             !! n:m Beziehung
+      rBetroffener -- {0..*} GewaesserAbschnittG;
+    END ATGeschiebe_GewAbsch;
+
+    ASSOCIATION ATGeschiebe_Massnahme =
+      rGVerursacher -<> {1..*} ATGeschiebe;           !! n:m Beziehung
+      rMassnahme    --  {0..*} MassnahmeGeschiebe;
+    END ATGeschiebe_Massnahme;
+
+    ASSOCIATION GewAbsch_BewertungG =
+      rBetroffener -- {1}    GewaesserAbschnittG;
+      rBewertung   -- {1..*} BewertungG;              !! mehrere sind möglich (Zwischen- und Schlussbericht)
+    END GewAbsch_BewertungG;
+
+  END San;                                            !! topic
+
+END SanierungWasserkraft_V1_2.                   !! model

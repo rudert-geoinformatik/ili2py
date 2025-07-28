@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- File Rodungen_Codetexte_V1_1.xml VERSION="2025-01-27" (https://models.geo.admin.ch/BAFU/) -->
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3">
+  <HEADERSECTION SENDER="BAFU" VERSION="2.3">
+    <MODELS>
+      <MODEL NAME="LocalisationCH_V1" VERSION="2011-08-30" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="CoordSys" VERSION="2015-11-24" URI="http://www.interlis.ch/models"/>
+      <MODEL NAME="Units" VERSION="2012-02-20" URI="http://www.interlis.ch/models"/>
+      <MODEL NAME="GeometryCHLV95_V1" VERSION="2017-12-04" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="Rodungen_V1_1" VERSION="2025-01-27" URI="https://models.geo.admin.ch/BAFU/"/>
+    </MODELS>
+  </HEADERSECTION>
+  <DATASECTION>
+    <Rodungen_V1_1.Rodungen BID="ch.admin.bafu.rodungen_codetexte_v1_1">
+      <Rodungen_V1_1.Rodungen.ObjektTypBeschreibung TID="G1">
+        <Typ>G1</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Rodung temporär</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Défrichement temporaire</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Dissodamento temporaneo</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ObjektTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.ObjektTypBeschreibung TID="G2">
+        <Typ>G2</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Rodung definitiv</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Défrichement définitif</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Dissodamento definitivo</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ObjektTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.ObjektTypBeschreibung TID="G3">
+        <Typ>G3</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Realersatz</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Compensation en nature</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Compensazione in natura</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ObjektTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.ObjektTypBeschreibung TID="G4">
+        <Typ>G4</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>MassnahmenNL</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Mesures NP</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Misure N+P</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ObjektTypBeschreibung>
+
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M1">
+        <Typ>M1</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Vernetzung</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Mise en réseau</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Connessione in rete</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M2">
+        <Typ>M2</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Revitalisierung / Renaturierung</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Revitalisation / renaturation</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Rivitalizzazione /rinaturazione</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M3">
+        <Typ>M3</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Waldrand</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Lisière</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Margini forestali</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M4">
+        <Typ>M4</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Biotope</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Biotope</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Biotopi</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M5">
+        <Typ>M5</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Selven</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Selves</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Selve</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M6">
+        <Typ>M6</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Waldreservate</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Réserves forestières</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Riserve forestali</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M7">
+        <Typ>M7</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Schaffung oder Erhaltung andere besondere Standorte</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Création ou conservation d’autres stations particulière</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Creazione o conservazione di stazioni particolari</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M8">
+        <Typ>M8</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Aufwertung des Landschaftsbildes</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Valorisation du paysage</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Valorizzazione del paesaggio</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung TID="M9">
+        <Typ>M9</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Andere</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Autres</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Altro</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.MassnahmeNLTypBeschreibung>
+
+      <Rodungen_V1_1.Rodungen.ErsatzMassnahmenNLBeschreibung TID="N1">
+        <Typ>N1</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Nein</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Non</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>No</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ErsatzMassnahmenNLBeschreibung>
+      <Rodungen_V1_1.Rodungen.ErsatzMassnahmenNLBeschreibung TID="N2">
+        <Typ>N2</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ja: Rodung in Gebiet mit zunehmender Waldfläche (Art. 7 Abs. 2 Bst. a WaG)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Oui : défrichement dans les régions où la surface forestière augmente (art. 7, al. 2, let. a, LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sì: dissodamento nelle zone con superficie forestale in crescita (art. 7 cpv. 2 lett. a LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ErsatzMassnahmenNLBeschreibung>
+      <Rodungen_V1_1.Rodungen.ErsatzMassnahmenNLBeschreibung TID="N3">
+        <Typ>N3</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ja: Rodung in Gebiet mit gleichbleibender Waldfläche (Art 7 Abs. 2 Bst. b WaG)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Oui : défrichement dans les régions où la surface forestière reste stable (art. 7, al. 2, let. b, LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sì: dissodamento nelle zone con superficie forestale costante (art. 7 cpv. 2 lett. b LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ErsatzMassnahmenNLBeschreibung>
+
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R1">
+        <Typ>R1</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Strassenverkehr</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Circulation routièret</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Circolazione stradale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R2">
+        <Typ>R2</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Schienenverkehr</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Trafic ferroviaire</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Traffico ferroviario / Ferrovie</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R3">
+        <Typ>R3</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Schifffahrt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Navigation</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Navigazione</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R4">
+        <Typ>R4</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Luftfahrt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Aviation</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Aviazione / Navigazione aerea</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R5">
+        <Typ>R5</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Erzeugung, Übertragung und Lagerung von Energie</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Production, fourniture et stockage d’énergie</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Produzione, trasmissione e stoccaggio di energia</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R6">
+        <Typ>R6</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Anlagen und Leitungen zur Grundwasserfassung oder Grundwasseranreicherung</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Installations et conduites servant au captage des eaux souterraines ou à l’alimentation artificielle des eaux souterraines</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Impianti e condotte di captazione delle acque sotterranee o del ravvenamento della falda</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R7">
+        <Typ>R7</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Rohstoffe (insbesondere: Kies- und Sandgruben, Steinbrüche und andere nicht der Energiegewinnung dienende Materialentnahmen aus dem Boden)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Matériaux (notamment gravières, sablières, gravières et autres sites d’extraction de matériaux ne servant pas à la production d’énergie)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Materie prime (in particolare cave di sabbia e di ghiaia, cave e altri prelievi di materiale dal suolo che non servono alla produzione energetica)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R8">
+        <Typ>R8</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Entsorgung</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Elimination des déchets</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Smaltimento dei rifiuti</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R9">
+        <Typ>R9</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Kombinierte Rodungszwecke: Rohstoffe und Entsorgung</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Buts de défrichement combinés : matériaux et élimination </Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Scopi di dissodamento combinati: materie prime e smaltimento</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R10">
+        <Typ>R10</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Sport / Tourismus und Freizeit</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Sport / Tourisme et loisirs</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sport / turismo e tempo libero</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R11">
+        <Typ>R11</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Hochbau</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Bâtiment</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Edilizia</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R12">
+        <Typ>R12</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Rückgewinnung von Landwirtschaftlichem Kulturland (Art. 7 Abs. 3 Bst. a WaG)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Récupération de terres agricoles (art. 7, al. 3, let. a, LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Recupero di terreni agricoli (art. 7 cpv. 3 lett. a LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R13">
+        <Typ>R13</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Wasserbau / Gewässerkorrektionen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Aménagement de cours d’eau / Correction de cours d’eau</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sistemazione / correzione di corsi d’acqua</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R14">
+        <Typ>R14</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Revitalisierungen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Revitalisations</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Rivitalizzazioni</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R15">
+        <Typ>R15</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Kombinierte Rodungszwecke: Gewässerkorrektionen und Revitalisierungen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Buts de défrichement combinés : correction de cours d’eau et revitalisations</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Scopi di dissodamento combinati: correzione di corsi d’acqua e rivitalizzazioni</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R16">
+        <Typ>R16</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Erhaltung und Aufwertung von Biotopen (Art. 7 Abs. 3 Bst. c WaG)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Préservation et valorisation de biotopes (art. 7, al. 3, let. c, LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Conservazione e rivalorizzazione dei biotopi (art. 7 cpv. 3 lett. c LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R17">
+        <Typ>R17</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Industrielle Betriebe, Einkaufszentren, Fachmärkte, Güterumschlagsplätze und Verteilzentren</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Entreprises industrielles, centres commerciaux, commerces spécialisés, places de transbordement et centres de distribution</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Impianti industriali, centri commerciali, mercati specializzati, piazze di trasbordo e centri di smistamento</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R18">
+        <Typ>R18</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ortsfeste Funkanlagen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Installations fixes de radiocommunication </Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Impianti fissi di radiocomunicazione</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R19">
+        <Typ>R19</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Militärische Bauten und Anlagen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Ouvrages et installations militaires</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Costruzioni e impianti militari</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung TID="R20">
+        <Typ>R20</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Verschiedenes</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Divers</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Diversi</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.RodungszweckTypBeschreibung>
+
+    <Rodungen_V1_1.Rodungen.StandTypBeschreibung TID="S1">
+        <Typ>S1</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ja: Rodung und Rodungsersatz realisiert</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Oui : défrichement et mesure de compensation réalisés</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Oui : défrichement et mesure de compensation réalisés</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.StandTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.StandTypBeschreibung TID="S2">
+        <Typ>S2</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ja: Nichtgebrauch der Rodung (Rodungsersatz entfällt)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Oui : l’autorisation de défricher ne sera pas utilisée (mesure de compensation caduque)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sì: permesso di dissodamento non consumato (il rimboschimento compensativo decade)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.StandTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.StandTypBeschreibung TID="S3">
+        <Typ>S3</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Nein, noch nicht abgeschlossen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Non, pas encore achevé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>No, non concluso</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.StandTypBeschreibung>
+
+      <Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung TID="V1">
+        <Typ>V1</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Nein</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Non</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>No</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung>
+      <Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung TID="V2">
+        <Typ>V2</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ja: Rückgewinnung landwirtschaftliches Kulturland (Art. 7 Abs. 3 Bst. a WaG)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Oui : récupération de terres agricoles (art. 7, al. 3, let. a, LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sì: recupero di terreni agricoli (art. 7 cpv. 3 lett. a LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung>
+      <Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung TID="V3">
+        <Typ>V3</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ja: Hochwasserschutz / Gewässerrevitalisierung (Art 7 Abs. 3 Bst. b WaG)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Oui : protection contre les crues / revitalisation des eaux (art. 7, al. 3, let. b, LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sì: protezione contro le piene (rivitalizzazione delle acque (art. 7 cpv. 3 lett. b LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung>
+      <Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung TID="V4">
+        <Typ>V4</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ja: Erhalt und Aufwertung von Biotopen (Art. 7 Abs. 3 Bst. c WaG)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Oui : préservation et valorisation de biotopes (art. 7, al. 3, let. c, LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Sì: conservazione e rivalorizzazione dei biotopi (art. 7 cpv. 3 lett. c LFo)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ErsatzVerzichtBeschreibung>
+
+      <Rodungen_V1_1.Rodungen.ZustaendigkeitsTypBeschreibung TID="Z1">
+        <Typ>Z1</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Kanton</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Canton</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Cantone</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ZustaendigkeitsTypBeschreibung>
+      <Rodungen_V1_1.Rodungen.ZustaendigkeitsTypBeschreibung TID="Z2">
+        <Typ>Z2</Typ>
+        <Beschreibung>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Bund</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Confédération</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Confederazione</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Beschreibung>
+      </Rodungen_V1_1.Rodungen.ZustaendigkeitsTypBeschreibung>
+
+    </Rodungen_V1_1.Rodungen>
+  </DATASECTION>
+</TRANSFER>
+

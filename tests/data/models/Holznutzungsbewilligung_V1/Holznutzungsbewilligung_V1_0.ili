@@ -1,0 +1,62 @@
+INTERLIS 2.4;
+
+!! Version    | Who  | Modification
+!!----------------------------------------------------------------------------------------
+!! 2025-07-03 | BAFU | Erweiterung Wertebereich bei Bew_Menge_Total, Bew_Menge_LBH, Bew_Menge_NDH
+  
+!!@ technicalContact = mailto:gis@bafu.admin.ch
+!!@ furtherInformation = https://www.bafu.admin.ch/geodatenmodelle
+!!@ IDGeoIV = ""
+MODEL Holznutzungsbewilligung_V1_0 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2025-07-03"  =
+  IMPORTS GeometryCHLV95_V2, Localisation_V2, CatalogueObjects_V2, CHAdminCodes_V2, InternationalCodes_V2;
+
+  TOPIC Codelisten
+  EXTENDS CatalogueObjects_V2.Catalogues =
+  
+  CLASS Bewilligte_Holzart_Catalogue 
+    EXTENDS CatalogueObjects_V2.Catalogues.Item =
+      Code : MANDATORY TEXT;
+      Definition : MANDATORY Localisation_V2.MultilingualText;
+  END Bewilligte_Holzart_Catalogue;
+
+  END Codelisten; 
+
+  TOPIC Holznutzung =
+  DEPENDS ON Codelisten;
+  
+  DOMAIN
+  
+  !! Auswahlliste für allgemeine Holzart, Unterscheidung in Laubholz (LBH), Nadelholz (NDH) oder beide Holzarten (beide)
+  AllgHolzart = (LBH,NDH,beide);
+
+  !! Klasse zur Beschreibung der bewilligten Menge pro Holzart
+    STRUCTURE MengeHolzart =
+      Bew_Menge_Holzart: MANDATORY 0.000 .. 999999.000; !! m3
+      Bewilligte_Holzart: MANDATORY REFERENCE TO (EXTERNAL) Holznutzungsbewilligung_V1_0.Codelisten.Bewilligte_Holzart_Catalogue;
+    END MengeHolzart;
+
+  !! Klasse für die eingetliche Holznutzungsbewilligung
+  CLASS Holznutzungsbewilligung =
+    Flaeche: MANDATORY GeometryCHLV95_V2.MultiSurfaceWithoutArcs;
+    EGRID: BAG {1..*} OF TEXT*50;
+    Erzeugungsland: MANDATORY InternationalCodes_V2.CountryCode_ISO3166_1;
+    Datenherr: MANDATORY CHAdminCodes_V2.CHCantonCode;
+    Gemeinde: BAG {1..*} OF CHAdminCodes_V2.CHMunicipalityCode;
+    Revier: BAG {1..*} OF TEXT*100;
+    Bewilligende_Behoerde: MANDATORY TEXT*100;
+    Bew_erteilt_am: MANDATORY INTERLIS.XMLDate;
+    Bew_gueltig_bis: MANDATORY INTERLIS.XMLDate;
+    Bew_Menge_Total: MANDATORY 0.000 .. 999999.000; !! m3
+    Bestaetigung_Legalitaet: MANDATORY BOOLEAN;
+    AllgHolzart: AllgHolzart;
+    Bew_Menge_LBH: 0.000 .. 999999.000; !! m3
+    Bew_Menge_NDH:0.000 .. 999999.000; !! m3
+    MengeHolzart: BAG {0..*} OF MengeHolzart;
+    Kantonale_Referenz: TEXT*30;
+  END Holznutzungsbewilligung;
+
+  END Holznutzung;
+
+END Holznutzungsbewilligung_V1_0.
