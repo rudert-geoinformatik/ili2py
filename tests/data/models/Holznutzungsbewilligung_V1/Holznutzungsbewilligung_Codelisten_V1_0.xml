@@ -1,0 +1,2354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ili:transfer xmlns:ili="http://www.interlis.ch/xtf/2.4/INTERLIS" xmlns:geom="http://www.interlis.ch/geometry/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Holznutzungsbewilligung_V1_0="http://www.interlis.ch/xtf/2.4/Holznutzungsbewilligung_V1_0" xmlns:Localisation_V2="http://www.interlis.ch/xtf/2.4/Localisation_V2">
+  <ili:headersection>
+    <ili:models>
+      <ili:model>Holznutzungsbewilligung_V1_0</ili:model>
+      <ili:model>Localisation_V2</ili:model>
+    </ili:models>
+    <ili:sender>ili2pg-5.1.0-58fc980cc6639b2c16a3cff8a0fa19ef1484b11c</ili:sender>
+  </ili:headersection>
+  <ili:datasection>
+    <Holznutzungsbewilligung_V1_0:Codelisten ili:bid="ch.admin.bafu.Holznutzungsbewilligung_V1_0">
+    
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1001">
+        <Holznutzungsbewilligung_V1_0:Code>Q146992</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Tanne</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Sapin blanc</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Abete bianco</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Abies alba</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1002">
+        <Holznutzungsbewilligung_V1_0:Code>Q158785</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Feldahorn</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Érable champêtre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Acero oppio; Loppio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Acer campestre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1003">
+        <Holznutzungsbewilligung_V1_0:Code>Q163822</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Schneeballblättriger Ahorn</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Érable à feuilles d'obier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Acero alpino</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Acer opalus</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1004">
+        <Holznutzungsbewilligung_V1_0:Code>Q26745</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Spitzahorn</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Érable plane</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Acero riccio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Acer platanoides</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1005">
+        <Holznutzungsbewilligung_V1_0:Code>Q156944</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Bergahorn</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Érable sycomore</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Acero di monte</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Acer pseudoplatanus</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1006">
+        <Holznutzungsbewilligung_V1_0:Code>Q26899</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Rosskastanie</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Marronnier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ippocastano</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Aesculus hippocastanum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1007">
+        <Holznutzungsbewilligung_V1_0:Code>Q159570</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Götterbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Ailante</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ailanto</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ailanthus altissima</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1008">
+        <Holznutzungsbewilligung_V1_0:Code>Q156904</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Schwarzerle</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Aulne glutineux</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ontano comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Alnus glutinosa</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1009">
+        <Holznutzungsbewilligung_V1_0:Code>Q157641</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Grauerle</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Aulne blanc</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ontano bianco</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Alnus incana</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1010">
+        <Holznutzungsbewilligung_V1_0:Code>Q163978</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Alpenerle</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Aulne vert</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ontano verde</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Alnus viridis</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1011">
+        <Holznutzungsbewilligung_V1_0:Code>Q156895</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Hängebirke</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Bouleau pendant</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Betulla verrucosa</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Betula pendula</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1012">
+        <Holznutzungsbewilligung_V1_0:Code>Q157624</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Moorbirke</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Bouleau pubescent</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Betulla pubescente</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Betula pubescens</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1013">
+        <Holznutzungsbewilligung_V1_0:Code>Q158776</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Hagebuche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Charme</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Carpino comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Carpinus betulus</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="10014">
+        <Holznutzungsbewilligung_V1_0:Code>Q22699</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Kastanie</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Châtaignier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Castagno comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Castanea sativa</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1015">
+        <Holznutzungsbewilligung_V1_0:Code>Q623489</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Atlaszeder</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cèdre de l'Atlas</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Cedro dell’Atlante</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Cedrus atlantica</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1016">
+        <Holznutzungsbewilligung_V1_0:Code>Q61105</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Libanonzeder</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cèdre du Liban</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Cedro del Libano</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Cedrus libani</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1017">
+        <Holznutzungsbewilligung_V1_0:Code>Q255375</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Zürgelbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Micocoulier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Bagolaro</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Celtis australis</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1018">
+        <Holznutzungsbewilligung_V1_0:Code>Q161360</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Lawsons Zypresse</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cyprès de Lawson</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Cipresso di Lawson</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Chamaecyparis lawsoniana</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1019">
+        <Holznutzungsbewilligung_V1_0:Code>Q158722</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Kampferbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Camphrier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Canfora</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Cinnamomum camphora</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1020">
+        <Holznutzungsbewilligung_V1_0:Code>Q4116450</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Drüsiger Kampferbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cannelier glanduleux</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Cinnamomo ghiandoloso</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Cinnamomum glanduliferum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1021">
+        <Holznutzungsbewilligung_V1_0:Code>Q148939</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Baumhasel</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Noisetier de Byzance</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Nocciolo di Costantinopoli</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Corylus colurna</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1022">
+        <Holznutzungsbewilligung_V1_0:Code>Q771101</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Lotuspflaume</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Plaqueminier lotier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Albero di Sant' Andrea; Loto falso</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Diospyros lotus</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1023">
+        <Holznutzungsbewilligung_V1_0:Code>Q146149</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Buche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Hêtre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Faggio comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Fagus sylvatica</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1024">
+        <Holznutzungsbewilligung_V1_0:Code>Q36146</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Feige</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Figuier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Fico</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ficus carica</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1025">
+        <Holznutzungsbewilligung_V1_0:Code>Q156907</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Esche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Frêne commun</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Frassino comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Fraxinus excelsior</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1026">
+        <Holznutzungsbewilligung_V1_0:Code>Q161421</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Blumenesche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Frêne à fleurs</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Frassino da manna</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Fraxinus ornus</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1027">
+        <Holznutzungsbewilligung_V1_0:Code>Q192190</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Stechpalme</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Houx</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Agrifoglio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ilex aquifolium</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1028">
+        <Holznutzungsbewilligung_V1_0:Code>Q852572</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Schwarznuss</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Noyer noir</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Noce nero</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Juglans nigra</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1029">
+        <Holznutzungsbewilligung_V1_0:Code>Q46871</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Nussbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Noyer royal</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Noce comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Juglans regia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1030">
+        <Holznutzungsbewilligung_V1_0:Code>Q26325</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Gewöhnlicher Wacholder</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Genévrier commun</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ginepro comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Juniperus communis</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1031">
+        <Holznutzungsbewilligung_V1_0:Code>Q3497019</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Alpen-Goldregen</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cytise des Alpes</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Maggiociondolo di montagna</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Laburnum alpinum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1032">
+        <Holznutzungsbewilligung_V1_0:Code>Q147939</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Goldregen</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cytise faux ébénier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Maggiociondolo comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Laburnum anagyroides</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1033">
+        <Holznutzungsbewilligung_V1_0:Code>Q146048</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Lärche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Mélèze d'Europe</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Larice comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Larix decidua</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1034">
+        <Holznutzungsbewilligung_V1_0:Code>Q147439</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Japanlärche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Mélèze du Japon</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Larice del Giappone</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Larix kaempferi</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1035">
+        <Holznutzungsbewilligung_V1_0:Code>Q26006</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Edellorbeer</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Laurier noble</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Alloro; Lauro</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Laurus nobilis</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1036">
+        <Holznutzungsbewilligung_V1_0:Code>Q732933</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Baum-Liguster</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Troène de Chine</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ligustro lucido</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ligustrum lucidum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1037">
+        <Holznutzungsbewilligung_V1_0:Code>Q158783</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Tulpenbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Tulipier de Virginie</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Liriodendro; Albero dei tulipani</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Liriodendron tulipifera</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1038">
+        <Holznutzungsbewilligung_V1_0:Code>Q47161</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Wildapfel</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Pommier sauvage</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Melo selvatico</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Malus sylvestris</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1039">
+        <Holznutzungsbewilligung_V1_0:Code>Q37083</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Ölbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Olivier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Olivo</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Olea europaea</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1040">
+        <Holznutzungsbewilligung_V1_0:Code>Q55915014</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Hopfenbuche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Charme houblon</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Carpino nero</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ostrya carpinifolia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1041">
+        <Holznutzungsbewilligung_V1_0:Code>Q157393</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Blauglockenbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Paulownia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Paulownia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Paulownia tomentosa</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1042">
+        <Holznutzungsbewilligung_V1_0:Code>Q145992</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Fichte</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Épicéa</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Abete rosso; Peccio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Picea abies</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1043">
+        <Holznutzungsbewilligung_V1_0:Code>Q147278</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Arve</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Arolle</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pino cembro; Cirmolo</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pinus cembra</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1044">
+        <Holznutzungsbewilligung_V1_0:Code>Q147475</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Legföhre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Pin couché</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pino mugo; Parancio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pinus mugo</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1045">
+        <Holznutzungsbewilligung_V1_0:Code>Q145954</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Schwarzföhre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Pin noir</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pino nero; Pino austriaco</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pinus nigra</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1046">
+        <Holznutzungsbewilligung_V1_0:Code>Q157230</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Strobe</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Pin Weymouth</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pino strobo</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pinus strobus</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1047">
+        <Holznutzungsbewilligung_V1_0:Code>Q133128</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Waldföhre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Pin sylvestre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pino silvestre; Pino rosso</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pinus sylvestris aggr.</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1048">
+        <Holznutzungsbewilligung_V1_0:Code>Q149548</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Bergföhre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Pin à crochets</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pino uncinato</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pinus uncinata</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1049">
+        <Holznutzungsbewilligung_V1_0:Code>Q161374</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Platanus x hispanica</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Platane</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Platane d'Espagne</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Platano di Spagna</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1050">
+        <Holznutzungsbewilligung_V1_0:Code>Q146269</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Silberpappel</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Peuplier blanc</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pioppo bianco; Gattice</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Populus alba</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1051">
+        <Holznutzungsbewilligung_V1_0:Code>Q147064</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Schwarzpappel</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Peuplier noir</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pioppo nero</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Populus nigra</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1052">
+        <Holznutzungsbewilligung_V1_0:Code>Q146110</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Zitterpappel</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Tremble</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pioppo tremulo</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Populus tremula</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1053">
+        <Holznutzungsbewilligung_V1_0:Code>Q165137</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Kirschbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cerisier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ciliegio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Prunus avium</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1054">
+        <Holznutzungsbewilligung_V1_0:Code>Q161920</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Felsenkirsche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Merisier odorant</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Ciliegio canino</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Prunus mahaleb</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1055">
+        <Holznutzungsbewilligung_V1_0:Code>Q165424</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Traubenkirsche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Merisier à grappes</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pado; Ciliegio a grappoli</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Prunus padus</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1056">
+        <Holznutzungsbewilligung_V1_0:Code>Q158987</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Herbst-Traubenkirsche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Merisier tardif</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pruno autunnale</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Prunus serotina</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1057">
+        <Holznutzungsbewilligung_V1_0:Code>Q156687</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Douglasie</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Douglas</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Abete di Douglas</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pseudotsuga menziesii</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1058">
+        <Holznutzungsbewilligung_V1_0:Code>Q149332</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Wildbirne</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Poirier sauvage</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Pero selvatico</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Pyrus pyraster</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1059">
+        <Holznutzungsbewilligung_V1_0:Code>Q157277</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Zerreiche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Chêne chevelu</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercia cerro</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercus cerris</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1060">
+        <Holznutzungsbewilligung_V1_0:Code>Q218155</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Steineiche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Chêne vert</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Leccio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercus ilex</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1061">
+        <Holznutzungsbewilligung_V1_0:Code>Q158608</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Traubeneiche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Chêne sessile</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercia rovere</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercus petraea</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1062">
+        <Holznutzungsbewilligung_V1_0:Code>Q161415</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Flaumeiche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Chêne pubescent</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercia pubescente; Roverella</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercus pubescens</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1063">
+        <Holznutzungsbewilligung_V1_0:Code>Q165145</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Stieleiche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Chêne pédonculé</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercia comune; Farnia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercus robur</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1064">
+        <Holznutzungsbewilligung_V1_0:Code>Q147525</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Roteiche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Chêne rouge</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercia rossa</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercus rubra</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1065">
+        <Holznutzungsbewilligung_V1_0:Code>Q156137</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Korkeiche</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Chêne-liège</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercia da sughero; Sughera</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Quercus suber</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1066">
+        <Holznutzungsbewilligung_V1_0:Code>Q148986</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Rhus typhina</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Essigbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Sumac vinaigrier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Sommacco maggiore</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1067">
+        <Holznutzungsbewilligung_V1_0:Code>Q157417</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Robinie</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Robinier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Robinia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Robinia pseudoacacia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1068">
+        <Holznutzungsbewilligung_V1_0:Code>Q156918</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Weissweide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Saule blanc</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Salice comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Salix alba</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1069">
+        <Holznutzungsbewilligung_V1_0:Code>Q159565</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Salweide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Saule marsault</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Salice delle capre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Salix caprea</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1070">
+        <Holznutzungsbewilligung_V1_0:Code>Q159476</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Reifweide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Saule pruineux</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Salice dafnoide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Salix daphnoides</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1071">
+        <Holznutzungsbewilligung_V1_0:Code>Q159484</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Lavendelweide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Saule drapé</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Salice ripaiolo</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Salix elaeagnos</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1072">
+        <Holznutzungsbewilligung_V1_0:Code>Q18119933</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Bruchweide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Saule fragile</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Salice fragile</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Salix euxina</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1073">
+        <Holznutzungsbewilligung_V1_0:Code>Q1216192</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Stinkweide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Saule fétide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Salice fetido</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Salix foetida</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1074">
+        <Holznutzungsbewilligung_V1_0:Code>Q39708</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Purpurweide</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Osier rouge</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Salice rosso</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Salix purpurea L.</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1075">
+        <Holznutzungsbewilligung_V1_0:Code>Q157960</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Mehlbeere</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Alisier blanc</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbo montano; Farinaccio</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbus aria</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1076">
+        <Holznutzungsbewilligung_V1_0:Code>Q146198</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Vogelbeere</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbier des oiseleurs</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbo degli ucellatori</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbus aucuparia</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1077">
+        <Holznutzungsbewilligung_V1_0:Code>Q159558</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Speierling</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Cormier</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbo comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbus domestica</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1078">
+        <Holznutzungsbewilligung_V1_0:Code>Q163550</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Mougeots Mehlbeere</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbier de Mougeot</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbo di Mougeot</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbus mougeotii</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1079">
+        <Holznutzungsbewilligung_V1_0:Code>Q147459</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Elsbeere</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Alisier torminal</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbo torminale</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbus torminalis</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1080">
+        <Holznutzungsbewilligung_V1_0:Code>Q163774</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Breitblättriger Mehlbeerbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbier à larges feuilles</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbo maggiore</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Sorbus x latifolia (Lam.) Pers.</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1081">
+        <Holznutzungsbewilligung_V1_0:Code>Q179729</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Eibe</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>If</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Tasso comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Taxus baccata</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1082">
+        <Holznutzungsbewilligung_V1_0:Code>Q147468</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Riesen-Lebensbaum</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Thuya d'Occident</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Tuia occidentale</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Thuja occidentalis</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1083">
+        <Holznutzungsbewilligung_V1_0:Code>Q158746</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Winterlinde</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Tilleul à petites feuilles</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Tiglio selvatico</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Tilia cordata</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1084">
+        <Holznutzungsbewilligung_V1_0:Code>Q156831</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Sommerlinde</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Tilleul à larges feuilles</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Tiglio nostrano</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Tilia platyphyllos</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1085">
+        <Holznutzungsbewilligung_V1_0:Code>Q161382</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Silberlinde</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Tilleul argenté</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Tiglio tomentoso</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Tilia tomentosa</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1086">
+        <Holznutzungsbewilligung_V1_0:Code>Q158383</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Hanfpalme</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Palmier à chanvre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Palma di Fortune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Trachycarpus fortunei</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1087">
+        <Holznutzungsbewilligung_V1_0:Code>Q147498</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Bergulme</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Orme de montagne</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Olmo di montagna</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ulmus glabra</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1088">
+        <Holznutzungsbewilligung_V1_0:Code>Q147492</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Flatterulme</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Orme lisse</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Olmo bianco</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ulmus laevis</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1089">
+        <Holznutzungsbewilligung_V1_0:Code>Q147487</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>Feldulme</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>Orme champêtre</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>Olmo comune</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>Ulmus minor</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+      
+      <Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue ili:tid="1099">
+        <Holznutzungsbewilligung_V1_0:Code>Q99999</Holznutzungsbewilligung_V1_0:Code>
+        <Holznutzungsbewilligung_V1_0:Definition>
+          <Localisation_V2:MultilingualText>
+            <Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>de</Localisation_V2:Language>
+                <Localisation_V2:Text>andere</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>fr</Localisation_V2:Language>
+                <Localisation_V2:Text>autres</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>it</Localisation_V2:Language>
+                <Localisation_V2:Text>altri</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+              <Localisation_V2:LocalisedText>
+                <Localisation_V2:Language>la</Localisation_V2:Language>
+                <Localisation_V2:Text>alii</Localisation_V2:Text>
+              </Localisation_V2:LocalisedText>
+            </Localisation_V2:LocalisedText>
+          </Localisation_V2:MultilingualText>
+        </Holznutzungsbewilligung_V1_0:Definition>
+      </Holznutzungsbewilligung_V1_0:Bewilligte_Holzart_Catalogue>    
+                  
+    </Holznutzungsbewilligung_V1_0:Codelisten>  
+  </ili:datasection>
+</ili:transfer>

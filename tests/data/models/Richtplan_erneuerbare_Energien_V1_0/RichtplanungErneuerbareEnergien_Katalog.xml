@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3">
+  <HEADERSECTION SENDER="ili2fme-5.11.1-20150707" VERSION="2.3">
+    <MODELS>
+      <MODEL NAME="InternationalCodes_V1" VERSION="2011-08-30" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="Units" VERSION="2012-02-20" URI="http://www.interlis.ch/models"/>
+      <MODEL NAME="CoordSys" VERSION="2015-11-24" URI="http://www.interlis.ch/models"/>
+      <MODEL NAME="CHAdminCodes_V1" VERSION="2018-02-19" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="GeometryCHLV95_V1" VERSION="2017-12-04" URI="http://www.geo.admin.ch"/>
+      <MODEL NAME="RichtplanungErneuerbareEnergien_V1" VERSION="2020-11-30" URI="https://models.geo.admin.ch/BFE/"/>
+    </MODELS>
+  </HEADERSECTION>
+  <DATASECTION>
+    <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform BID="b01">
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef01">
+        <Energieform>Windenergie</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef02">
+        <Energieform>Wasserkraft</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef03">
+        <Energieform>Solarenergie</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef04">
+        <Energieform>Geothermie</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef05">
+        <Energieform>Biomasse, Holz</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef06">
+        <Energieform>Biomasse, andere</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef07">
+        <Energieform>Ausschlussgebiet, Windenergie</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef08">
+        <Energieform>Ausschlussgebiet, Wasserkraft</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef09">
+        <Energieform>Ausschlussgebiet, Solarenergie</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef10">
+        <Energieform>Ausschlussgebiet, Geothermie</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform TID="ef11">
+        <Energieform>Ausschlussgebiet, Biomasse</Energieform>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform.Energieform>
+    </RichtplanungErneuerbareEnergien_V1.Katalog_Energieform>
+    <RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart BID="b02">
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart TID="aa01">
+        <Aussageart>Konkrete Projekte</Aussageart>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart TID="aa02">
+        <Aussageart>Allgemeine Aussagen mit Gebietsbezeichnung</Aussageart>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart TID="aa03">
+        <Aussageart>Allgemeine Aussagen ohne Gebietsbezeichnung</Aussageart>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart>
+      <RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart TID="aa04">
+        <Aussageart>Keine Aussagen</Aussageart>
+      </RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart.Aussageart>
+    </RichtplanungErneuerbareEnergien_V1.Katalog_Aussageart>
+  </DATASECTION>
+</TRANSFER>

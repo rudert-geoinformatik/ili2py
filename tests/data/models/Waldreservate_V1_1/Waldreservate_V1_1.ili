@@ -1,0 +1,113 @@
+INTERLIS 2.3;
+
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+!!@ IDGeoIV=160.1
+MODEL Waldreservate_Codelisten_V1_1 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2017-05-09"  =
+  IMPORTS LocalisationCH_V1,CatalogueObjects_V1;
+
+  /* Modell für externe Codelisten, die anschliessend importiert werden in die Modelle *_LV03* und *_LV95* */  
+  TOPIC Codelisten
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    CLASS MCPFE_Class_Catalogue
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Code : MANDATORY TEXT*8;
+      Description : MANDATORY LocalisationCH_V1.MultilingualText;
+    END MCPFE_Class_Catalogue;
+
+    STRUCTURE MCPFE_Class_CatRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+      Reference (EXTENDED) : REFERENCE TO (EXTERNAL) MCPFE_Class_Catalogue;
+    END MCPFE_Class_CatRef;
+
+  END Codelisten;
+  
+END Waldreservate_Codelisten_V1_1.
+
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+!!@ IDGeoIV=160.1
+MODEL Waldreservate_LV03_V1_1 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2017-05-09"  =
+  IMPORTS Units,GeometryCHLV03_V1,Waldreservate_Codelisten_V1_1;
+
+
+  TOPIC Waldreservate =
+    DEPENDS ON Waldreservate_Codelisten_V1_1.Codelisten;
+
+    DOMAIN
+
+    /* Flächen ohne Kreisbogen */
+      Polygon = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV03_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+
+  /* Klasse für das gesamte Waldreservat */
+    CLASS Waldreservat =
+      ObjNummer : MANDATORY TEXT*30;
+      Name : MANDATORY TEXT*80;
+      Obj_GesFlaeche : MANDATORY 0.0 .. 999999.0 [Units.ha];
+      Obj_GISFlaeche : 0.0 .. 999999.0 [Units.ha];
+    END Waldreservat;
+
+  /* Klasse für die Waldreservat-Teilgebiete */
+    CLASS Waldreservat_Teilobjekt =
+      Teilobj_Nr : MANDATORY TEXT*30;
+      MCPFE_Class : MANDATORY Waldreservate_Codelisten_V1_1.Codelisten.MCPFE_Class_CatRef;
+      Obj_GISTeilobjekt : MANDATORY 0.0 .. 999999.0 [Units.ha];
+      Geo_Obj : MANDATORY Polygon;
+    END Waldreservat_Teilobjekt;
+
+    ASSOCIATION WaldreservatWaldreservat_Teilobjekt =
+      WR_Teilobjekt -- {1..*} Waldreservat_Teilobjekt;
+      WR -<#> {1} Waldreservat;
+    END WaldreservatWaldreservat_Teilobjekt;
+
+  END Waldreservate;
+
+END Waldreservate_LV03_V1_1.
+
+
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+!!@ IDGeoIV=160.1
+MODEL Waldreservate_LV95_V1_1 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2017-05-09"  =
+  IMPORTS Units,GeometryCHLV95_V1,Waldreservate_Codelisten_V1_1;
+
+
+  TOPIC Waldreservate =
+    DEPENDS ON Waldreservate_Codelisten_V1_1.Codelisten;
+
+    DOMAIN
+
+    /* Flächen ohne Kreisbogen */
+      Polygon = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+
+  /* Klasse für das gesamte Waldreservat */
+    CLASS Waldreservat =
+      ObjNummer : MANDATORY TEXT*30;
+      Name : MANDATORY TEXT*80;
+      Obj_GesFlaeche : MANDATORY 0.0 .. 999999.0 [Units.ha];
+      Obj_GISFlaeche : 0.0 .. 999999.0 [Units.ha];
+    END Waldreservat;
+
+  /* Klasse für die Waldreservat-Teilgebiete */
+    CLASS Waldreservat_Teilobjekt =
+      Teilobj_Nr : MANDATORY TEXT*30;
+      MCPFE_Class : MANDATORY Waldreservate_Codelisten_V1_1.Codelisten.MCPFE_Class_CatRef;
+      Obj_GISTeilobjekt : MANDATORY 0.0 .. 999999.0 [Units.ha];
+      Geo_Obj : MANDATORY Polygon;
+    END Waldreservat_Teilobjekt;
+
+    ASSOCIATION WaldreservatWaldreservat_Teilobjekt =
+      WR_Teilobjekt -- {1..*} Waldreservat_Teilobjekt;
+      WR -<#> {1} Waldreservat;
+    END WaldreservatWaldreservat_Teilobjekt;
+
+  END Waldreservate;
+
+END Waldreservate_LV95_V1_1.

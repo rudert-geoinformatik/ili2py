@@ -1,0 +1,172 @@
+INTERLIS 2.3;
+
+/** Minimales Geodatenmodell
+ * Statische Waldgrenzen
+ * Geobasisdatensatz Nr. 157
+ * TRANSLATION OF-Modelle: LimitesDeLaForet_V1_2.ili, MarginiDellaForesta_V1_2.ili
+ */
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2023-03-20 | ARE   | CLASS Typ: Attribut Code, Feldlänge 40 Zeichen
+!!------------------------------------------------------------------------------
+!! 2021-11-19 | KOGIS | Localisation_V1 replaced by LocalisationCH_V1
+!!------------------------------------------------------------------------------
+!! 2021-09-01 | ARE   | Version 1.2
+!!                    | Anpassungen an das ÖREB-Rahmenmodell Version 2.0 vom 14.04.2021
+!!                    | - DOMAIN RechtsStatus angepasst, DokumentTyp neu
+!!                    | - STRUCTURE LocalisedBlob und MultilingualBlob neu
+!!                    | - CLASS Waldgrenze_Linie: neues Attribut publiziertBis
+!!                    | - CLASS Dokument angepasst an ÖREB-Rahmenmodell
+!!                    | - CLASS Amt angepasst an ÖREB-Rahmenmodell
+!!                    | Weitere technische Anpassungen
+!!                    | - ASSOCIATION Geometrie_Dokument zusätzlich eingefügt, um eine direkte Verknüpfung von Geometrie und Dokument zu ermöglichen
+!!                    | - TOPIC Geobasisdaten neu mit BASKET OID vom Typ TypeID
+!!                    | - CLASS Datenbestand: Attribut BasketID neu vom Typ TypeID, neues Meta-Attribut zur Überprüfung der ID
+!!------------------------------------------------------------------------------
+
+!!@ technicalContact=mailto:info@are.admin.ch
+!!@ furtherInformation=https://www.are.admin.ch/mgm
+!!@ IDGeoIV=157
+MODEL Waldgrenzen_V1_2 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2023-03-20"  =
+  IMPORTS CHAdminCodes_V1,InternationalCodes_V1,LocalisationCH_V1,GeometryCHLV95_V1;
+
+  DOMAIN
+
+    Art_Waldgrenze = (
+      in_Bauzonen,
+      ausserhalb_Bauzonen
+    );
+
+    Verbindlichkeit = (
+      Nutzungsplanfestlegung,
+      Orientierend,
+      Hinweisend,
+      Wegleitend
+    );
+
+    TypeID = OID TEXT*60;
+
+    RechtsStatus = (
+      inKraft,
+      AenderungMitVorwirkung,
+      AenderungOhneVorwirkung
+    );
+
+    DokumentTyp = (
+      Rechtsvorschrift,
+      GesetzlicheGrundlage,
+      Hinweis
+    );
+
+  STRUCTURE LocalisedUri =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Text : MANDATORY URI;
+  END LocalisedUri;
+
+  STRUCTURE MultilingualUri =
+    LocalisedText : BAG {1..*} OF Waldgrenzen_V1_2.LocalisedUri;
+    UNIQUE (LOCAL) LocalisedText: Language;
+  END MultilingualUri;
+
+  STRUCTURE LocalisedBlob =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Blob : MANDATORY BLACKBOX BINARY;
+  END LocalisedBlob;
+
+  STRUCTURE MultilingualBlob =
+    LocalisedBlob : BAG {1..*} OF Waldgrenzen_V1_2.LocalisedBlob;
+    UNIQUE (LOCAL) LocalisedBlob: Language;
+  END MultilingualBlob;
+
+  TOPIC Rechtsvorschriften =
+
+    CLASS Dokument =
+      Typ : MANDATORY Waldgrenzen_V1_2.DokumentTyp;
+      Titel : MANDATORY LocalisationCH_V1.MultilingualText;
+      Abkuerzung : LocalisationCH_V1.MultilingualText;
+      OffizielleNr : LocalisationCH_V1.MultilingualText;
+      NurInGemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      TextImWeb : Waldgrenzen_V1_2.MultilingualUri;
+      Dokument : Waldgrenzen_V1_2.MultilingualBlob;
+      AuszugIndex : MANDATORY -1000 .. 1000;
+      Rechtsstatus : MANDATORY Waldgrenzen_V1_2.RechtsStatus;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+    END Dokument;
+
+  END Rechtsvorschriften;
+
+  TOPIC Geobasisdaten =
+    BASKET OID AS TypeID;
+    DEPENDS ON Waldgrenzen_V1_2.Rechtsvorschriften;
+
+    CLASS Typ =
+      Code : MANDATORY TEXT*40;
+      Bezeichnung : MANDATORY TEXT*80;
+      Abkuerzung : TEXT*10;
+      Verbindlichkeit : MANDATORY Waldgrenzen_V1_2.Verbindlichkeit;
+      Bemerkungen : MTEXT;
+      Art : MANDATORY Waldgrenzen_V1_2.Art_Waldgrenze;
+      Symbol : BLACKBOX BINARY;
+    END Typ;
+
+    CLASS Waldgrenze_Linie =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+      Rechtsstatus : MANDATORY Waldgrenzen_V1_2.RechtsStatus;
+      Bemerkungen : MTEXT;
+    END Waldgrenze_Linie;
+
+    ASSOCIATION Geometrie_Dokument =
+      Geometrie (EXTERNAL) -- {0..*} Waldgrenze_Linie;
+      Dokument (EXTERNAL) -- {0..*} Waldgrenzen_V1_2.Rechtsvorschriften.Dokument;
+    END Geometrie_Dokument;
+
+    ASSOCIATION Typ_Dokument =
+      Typ (EXTERNAL) -- {0..*} Typ;
+      Dokument (EXTERNAL) -- {0..*} Waldgrenzen_V1_2.Rechtsvorschriften.Dokument;
+    END Typ_Dokument;
+
+    ASSOCIATION Typ_Geometrie =
+      Geometrie -- {0..*} Waldgrenze_Linie;
+      WG -<> {1} Typ;
+    END Typ_Geometrie;
+
+  END Geobasisdaten;
+
+  TOPIC TransferMetadaten =
+    DEPENDS ON Waldgrenzen_V1_2.Geobasisdaten;
+
+    CLASS Amt =
+      Name : MANDATORY LocalisationCH_V1.MultilingualText;
+      AmtImWeb : Waldgrenzen_V1_2.MultilingualUri;
+      UID : TEXT*12;
+      Zeile1 : TEXT*80;
+      Zeile2 : TEXT*80;
+      Strasse : TEXT*100;
+      Hausnr : TEXT*7;
+      PLZ : TEXT*4;
+      Ort : TEXT*40;
+      UNIQUE UID;
+    END Amt;
+
+    CLASS Datenbestand =
+      !!@ basketRef=Waldgrenzen_V1_2.Geobasisdaten
+      BasketID : MANDATORY TypeID;
+      Stand : MANDATORY INTERLIS.XMLDate;
+      Lieferdatum : INTERLIS.XMLDate;
+      Bemerkungen : MTEXT;
+    END Datenbestand;
+
+    ASSOCIATION Datenbestand_zustStelle =
+      zustaendigeStelle -<> {1} Amt;
+      Datenbestand -- {0..*} Datenbestand;
+    END Datenbestand_zustStelle;
+
+  END TransferMetadaten;
+
+END Waldgrenzen_V1_2.

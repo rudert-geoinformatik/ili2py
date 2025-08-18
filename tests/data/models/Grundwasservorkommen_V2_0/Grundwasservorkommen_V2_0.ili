@@ -1,0 +1,87 @@
+INTERLIS 2.4;
+  
+!!============================================================== 
+!! Eidgenoessisches Departement für Umwelt,
+!! Verkehr, Energie und Kommunikation UVEK
+!! Bundesamt für Umwelt BAFU
+!! Abteilung Wasser
+!! 3003 Bern
+!! www.bafu.admin.ch
+!!
+!! Geobasisdatensatz Nr. 139.1 Grundwasservorkommen 
+!! 
+!!============================================================== 
+!! Revision History
+!! 2016-11-22    verabschiedete Version
+!! 2024-10-15    Version 2.0, verabschiedet
+!!============================================================== 
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+!!@ IDGeoIV="139.1"
+
+
+MODEL Grundwasservorkommen_V2_0 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2024-10-15"  =
+
+  IMPORTS GeometryCHLV95_V2;
+
+  DOMAIN
+
+    CHAltitude  = -200.0 ..   5000.0 [INTERLIS.m];
+
+  TOPIC Grundwasservorkommen =
+
+    CLASS Grundwasserleiter_Lockergestein =
+      Geometrie_Flaeche :  GeometryCHLV95_V2.SurfaceWithoutArcs;
+      Geometrie_Linie : GeometryCHLV95_V2.MultiDirectedLineWithoutArcs;
+      Identifikator: TEXT*100;
+      Status : MANDATORY (nachgewiesen_bekannt, vermutet, unbestimmt);
+      Ueberlagerung : MANDATORY (weitere_oberhalb, primaeres_erstes, zweites, drittes, weitere_unterhalb, unbestimmt);  
+      Druckverhaeltnis : MANDATORY (frei, gespannt, artesisch, teilweise_gespannt, unbestimmt);
+      Bezeichnung:  TEXT*500;
+      Maechtigkeit : MANDATORY (gering, gering_0_bis_5, gering_2_bis_5, mittel, mittel_5_bis_10, gross, sehr_gross, unbestimmt);
+      Lage : MANDATORY (Talsohle, oberhalb_Talsohle, unbestimmt);
+      MANDATORY CONSTRAINT DEFINED (Geometrie_Flaeche) OR DEFINED (Geometrie_Linie);
+    END Grundwasserleiter_Lockergestein;
+
+    CLASS Grundwasserleiter_Festgestein =
+      Geometrie_Flaeche :  GeometryCHLV95_V2.SurfaceWithoutArcs;
+      Geometrie_Linie : GeometryCHLV95_V2.MultiDirectedLineWithoutArcs;
+      Identifikator: TEXT*100;
+      Status : MANDATORY (nachgewiesen_bekannt, vermutet, unbestimmt);
+      Ueberlagerung : MANDATORY (weitere_oberhalb, primaeres_erstes, zweites, drittes, weitere_unterhalb, unbestimmt);
+      Druckverhaeltnis : MANDATORY (frei, gespannt, artesisch, teilweise_gespannt, unbestimmt);      
+      Typ : MANDATORY (Karst_stark_heterogen, 
+                       Karst_schwach_heterogen, 
+                       Karst_unbestimmt, 
+                       Kluft_stark_heterogen, 
+                       Kluft_schwach_heterogen, 
+                       Kluft_unbestimmt);
+      Erfassung : MANDATORY (Ausstreichen, Geometrie_Untergrund, Einzugsgebiet, Wasservorkommen, unbestimmt);
+      Maechtigkeit : MANDATORY (gering, mittel, gross, unbestimmt);
+      Ergiebigkeit : MANDATORY (ergiebig, 
+                                weniger_ergiebig, 
+                                nicht_oder_lokal_kaum_ergiebig, 
+                                unbestimmt);
+      MANDATORY CONSTRAINT DEFINED (Geometrie_Flaeche) OR DEFINED (Geometrie_Linie);
+    END Grundwasserleiter_Festgestein;
+
+    CLASS Isohypse =
+      Grundwasserstand : MANDATORY (Niedrigstwasserstand, Niedrigwasserstand, Mittelwasserstand, Hochwasserstand, Hoechsthochwasserstand, unbestimmt);
+      Druckniveau : MANDATORY (frei, gespannt, artesisch, unbestimmt);
+      Kote : MANDATORY CHAltitude;
+      Geometrie : MANDATORY GeometryCHLV95_V2.DirectedLineWithoutArcs;
+    END Isohypse;
+
+    CLASS Geringdurchlaessige_Deckschicht =
+      Geometrie : MANDATORY GeometryCHLV95_V2.SurfaceWithoutArcs;
+    END Geringdurchlaessige_Deckschicht;
+
+    CLASS Quellhorizont =
+      Geometrie : MANDATORY GeometryCHLV95_V2.DirectedLineWithoutArcs;
+    END Quellhorizont;
+
+  END Grundwasservorkommen;
+
+END Grundwasservorkommen_V2_0.

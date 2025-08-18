@@ -1,0 +1,1877 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Version    | Who   | Modification
+=======================================================================================
+2023-06-23 | BAFU  | Anpassungen an ILI-File V1_2, neue Bewertung eingeführt
+2023-10-17 | BAFU  | Korrektur OID in Katalog Bewertung_2
+2024-01-11 | BAFU  | Korrektur bei TID 1101: DE-Wert "nicht bestimmt" das Komma gelöscht
+
+File Revitalisierung_Fliessgewaesser_Catalogues_V1_2.xml VERSION="2024-01-11" (https://models.geo.admin.ch/BAFU/)
+-->
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <HEADERSECTION VERSION="2.3" SENDER="BAFU">
+    <MODELS>
+      <MODEL NAME="Units" URI="http://interlis.ch/models" VERSION="2012-02-20"/>
+      <MODEL NAME="CoordSys" URI="http://www.interlis.ch/models" VERSION="2015-11-24"/>
+      <MODEL NAME="LocalisationCH_V1" URI="http://www.geo.admin.ch" VERSION="2011-08-30"/>
+      <MODEL NAME="CatalogueObjects_V1" URI="http://www.geo.admin.ch" VERSION="2011-08-30"/>
+      <MODEL NAME="GeometryCHLV95_V1" URI="http://www.geo.admin.ch" VERSION="2015-11-12"/>
+      <MODEL NAME="CHAdminCodes_V1" URI="http://models.geo.admin.ch" VERSION="2018-02-19"/>
+      <MODEL NAME="WasserBase_Codelisten_V1_1" URI="https://models.geo.admin.ch/BAFU/" VERSION="2019-02-06"/>
+      <MODEL NAME="WasserBase_LV95_V1_1" URI="https://models.geo.admin.ch/BAFU/" VERSION="2019-02-06"/>
+      <MODEL NAME="Revitalisierung_Fliessgewaesser_V1_2" URI="https://models.geo.admin.ch/BAFU/" VERSION="2024-01-30"/>
+    </MODELS>
+  </HEADERSECTION>
+  <DATASECTION>
+    <Revitalisierung_Fliessgewaesser_V1_2.Catalogs BID="ch.admin.bafu.revitalisierung_fliessgewaesser_catalogues_V1_2">
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial TID="1001">
+        <ItemId OID="461ff699-e6c5-42c2-b0a1-e90d13c7354c"/>
+        <Code>AbsturzMaterial1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>natürlich, kein</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Naturel, aucun</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>naturale, nessuno</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial TID="1002">
+        <ItemId OID="566a8b3f-0c19-4056-aa5a-e0f154707db3"/>
+        <Code>AbsturzMaterial2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Holz</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Bois</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>legno</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial TID="1003">
+        <ItemId OID="f3035c8f-cb8c-46f5-8ff4-b23453082ca1"/>
+        <Code>AbsturzMaterial3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Fels, Steinblöcke</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Rocher blocs de rocher</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>roccia, blocchi di pietra</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial TID="1004">
+        <ItemId OID="c9b38e57-e15c-439b-bbf9-86737b2c8b01"/>
+        <Code>AbsturzMaterial4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Beton, Steinpflästerung</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Béton, pavage de pierres</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>calcestruzzo, rivestimento in pietra</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial TID="1005">
+        <ItemId OID="85bb6ea7-c693-4503-828d-34145c6d1fad"/>
+        <Code>AbsturzMaterial5</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>andere, unbekannt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Autre, inconnu</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>altro, sconosciuto</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.AbsturzMaterial>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Absturztyp TID="2001">
+        <ItemId OID="78b3c02f-90c1-4caa-a5ed-8c619a7df2c2"/>
+        <Code>Absturztyp1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt, kein</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Absturztyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Absturztyp TID="2002">
+        <ItemId OID="94b48d8e-1492-480c-b9eb-a843fba6d503"/>
+        <Code>Absturztyp2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>natürlich</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Naturel</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>naturale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Absturztyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Absturztyp TID="2003">
+        <ItemId OID="eb87b4f6-3861-4032-b064-1c3f963f8a96"/>
+        <Code>Absturztyp3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>künstlich</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Artificiel</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>artificiale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Absturztyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3001">
+        <ItemId OID="9752a460-98c1-4d67-b869-d5bbdd901b91"/>
+        <Code>Bauwerktyp1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3002">
+        <ItemId OID="0ab9219f-a803-4a39-bc4a-e946707a46e9"/>
+        <Code>Bauwerktyp2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Sohlrampe, sehr rauh aufgelöst</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Rampe très rugueuse disjointe</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>rampa di blocchi, superficie molto ruvida, non collegata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3003">
+        <ItemId OID="9beb49d6-7789-4d49-bc85-d817255af543"/>
+        <Code>Bauwerktyp3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Sohlrampe glatt, wenig rauh</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Rampe lisse, peu rugueuse</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>rampa di blocchi, superficie liscia, poco ruvida</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3004">
+        <ItemId OID="0a5f6c1b-9fe9-4b6c-9b6f-dedff7f3b67d"/>
+        <Code>Bauwerktyp4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Stauwehr</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Digue de rétention – réservoir</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>sbarramento</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3005">
+        <ItemId OID="9e004d4a-5ad7-4a02-9a1a-37f6375c5f48"/>
+        <Code>Bauwerktyp5</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Streichwehr</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Déversoir latéral</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>stramazzo laterale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3006">
+        <ItemId OID="e3ebf650-8943-44c2-8853-f98f358bed75"/>
+        <Code>Bauwerktyp6</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Tirolerwehr</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Prise tyrolienne</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>presa d’acqua</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3007">
+        <ItemId OID="109f655a-f8ae-47e0-a4b6-5f00bb37a423"/>
+        <Code>Bauwerktyp7</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Talsperre</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Barrage</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>diga</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3008">
+        <ItemId OID="6fdcf4c6-377a-4937-bceb-b8fdeb7f5e4c"/>
+        <Code>Bauwerktyp8</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Fischpass</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Echelle à poissons</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>scala per pesci</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3009">
+        <ItemId OID="3c10f9f9-fd23-4f0e-80cb-c1be328941f1"/>
+        <Code>Bauwerktyp9</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Geschieberückhaltesperre</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Barrière à sédiments</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>briglia di contenimento</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3010">
+        <ItemId OID="13385906-a8fc-43d5-84cb-1c94700e6ce9"/>
+        <Code>Bauwerktyp10</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Schleuse</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Ecluse</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>chiusa</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3011">
+        <ItemId OID="88b45e82-83e6-4055-a217-46a3b5fbf149"/>
+        <Code>Bauwerktyp11</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Durchlass</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Passage en tuyau</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>tombinone</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3012">
+        <ItemId OID="d433b6cc-fad6-42ab-85f3-9b97453a96d3"/>
+        <Code>Bauwerktyp12</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Brücke</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Pont</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>ponte</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3013">
+        <ItemId OID="5ed8f7f2-c2e5-40ad-965f-0c24ce97a436"/>
+        <Code>Bauwerktyp13</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Seitenentnahme ohne Wehr</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Prélèvement latéral sans ouvrage</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>prelievo laterale senza sbarramento</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp TID="3014">
+        <ItemId OID="7a52aab4-6bd4-4b74-a364-ba3bbdccf94a"/>
+        <Code>Bauwerktyp14</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Furt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Gué</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>guado</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bauwerktyp>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1 TID="4001">
+        <ItemId OID="d7ffe524-6a97-4b2a-973e-0d086224af2a"/>
+        <Code>Bewertung_1_1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1 TID="4002">
+        <ItemId OID="2922f257-d475-48b6-b98c-ff933533258a"/>
+        <Code>Bewertung_1_2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>gering, kein</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>faible, nulle</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>piccolo, nessuno </Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1 TID="4003">
+        <ItemId OID="e5e3c526-f63e-4f98-8b94-1ed4edc04e7a"/>
+        <Code>Bewertung_1_3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>mittel</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>moyenne</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>medio</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1 TID="4004">
+        <ItemId OID="66c06a89-b610-4363-aaaf-88259604386a"/>
+        <Code>Bewertung_1_4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>gross</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>grandes</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>grande</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_1>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2 TID="4011">
+        <ItemId OID="ac90a3ff-9e5b-459e-938b-47bf6efe5c4c"/>
+        <Code>Bewertung_2_1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2 TID="4012">
+        <ItemId OID="3841ce22-eb5e-4162-a5fa-bccd242c98c1"/>
+        <Code>Bewertung_2_2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>gering, kein</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>faible, nul</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>basso, nessuno</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2 TID="4013">
+        <ItemId OID="f31e2708-b28b-4923-a74c-8d9c35f6c7b6"/>
+        <Code>Bewertung_2_3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>mittel</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>moyen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>medio</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2 TID="4014">
+        <ItemId OID="99bba908-9b49-4a6e-80fa-7ce679ad81e8"/>
+        <Code>Bewertung_2_4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>hoch</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>élevé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>alto</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewertung_2>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs TID="5001">
+        <ItemId OID="11a6fb9f-0d80-4131-8e3a-68adace9f97d"/>
+        <Code>Bewuchs1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs TID="5002">
+        <ItemId OID="640f39bb-7a21-4ff6-99a3-20b1b328e93c"/>
+        <Code>Bewuchs2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>kein, gering</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Absent, faible</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>nessuno, rado</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs TID="5003">
+        <ItemId OID="b0943223-85cb-46ad-9831-b6b3571798c1"/>
+        <Code>Bewuchs3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>mässig, stark</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Moyen, fort</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>medio, denso</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs TID="5004">
+        <ItemId OID="94ae4040-d87e-4581-84a0-da9f3c689e6a"/>
+        <Code>Bewuchs4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>übermässig, wuchernd</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Très fort, prolifération</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>molto denso, proliferante</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Bewuchs>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschMat TID="6001">
+        <ItemId OID="92ab39b0-10af-4da0-bd31-9ab4b8aaca63"/>
+        <Code>BoeschMat1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschMat>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschMat TID="6002">
+        <ItemId OID="f9b54606-8368-4ac3-bed0-d23a49d5e5aa"/>
+        <Code>BoeschMat2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>durchlässig</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Perméable</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>permeabile</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschMat>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschMat TID="6003">
+        <ItemId OID="8871d658-9795-4fdc-9430-43d57656c062"/>
+        <Code>BoeschMat3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>undurchlässig</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Imperméable</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>impermeabile</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschMat>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau TID="7001">
+        <ItemId OID="6a4370ed-c24a-4ae9-be2e-89e577ff1096"/>
+        <Code>BoeschVerbau1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau TID="7002">
+        <ItemId OID="759ea326-787c-4352-9e00-dc2c6ff4b066"/>
+        <Code>BoeschVerbau2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>unverbaut</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Nul</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>nessuna</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau TID="7003">
+        <ItemId OID="302fc799-540b-47c1-a3ab-50b17a3171a7"/>
+        <Code>BoeschVerbau3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>punktuell (&lt;10%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Localisé (&lt;10%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>puntuale (&lt;10%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau TID="7004">
+        <ItemId OID="cb774661-d19a-4d05-98e5-e615fc60c107"/>
+        <Code>BoeschVerbau4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>mässig  (10-30%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Moyen (10-30%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>media (10-30 %)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau TID="7005">
+        <ItemId OID="0075db42-44dc-4ae0-ad88-e82a831370e7"/>
+        <Code>BoeschVerbau5</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>grössere (30-60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Important (30-60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>importante (30-60 %)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau TID="7006">
+        <ItemId OID="fb70a95e-1fc2-411b-b384-2a86c7c343c5"/>
+        <Code>BoeschVerbau6</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>überwiegend (&gt;60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Prépondérant (&gt;60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>prevalente (&gt;60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau TID="7007">
+        <ItemId OID="bf3b177f-93fb-4022-a1f3-7dfc797326e7"/>
+        <Code>BoeschVerbau7</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>vollständig (100%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Total (100%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>totale (100 %)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.BoeschVerbau>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse TID="8001">
+        <ItemId OID="51c3e288-5188-4cd3-b6c5-08252a80b363"/>
+        <Code>Klasse1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>natürlich, naturnah</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Naturel, presque naturel</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>naturale, prossimo allo stato naturale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse TID="8002">
+        <ItemId OID="632199fc-f3be-4749-9726-6ceeb55fda90"/>
+        <Code>Klasse2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>wenig beeinträchtigt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Peu modifié</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>poco compromesso</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse TID="8003">
+        <ItemId OID="519153ea-f64b-4724-9656-7663eff79039"/>
+        <Code>Klasse3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>stark beeinträchtigt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Fortement modifié</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>altamente compromesso</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse TID="8004">
+        <ItemId OID="7d4440f1-6e7b-49bc-851b-4ac259b036c0"/>
+        <Code>Klasse4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>naturfremd, künstlich</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Artificiel, peu naturel</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>poco naturale, artificiale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse TID="8005">
+        <ItemId OID="72250492-856e-4ff5-965f-be39662ba47e"/>
+        <Code>Klasse5</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>eingedolt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Mis sous terre</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>coperto</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse TID="8006">
+        <ItemId OID="07a79baf-dc07-4773-927a-088bbfc3e93d"/>
+        <Code>Klasse6</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Pas classifié</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Klasse>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9001">
+        <ItemId OID="ff8fb2a9-6ca8-4c91-94b6-2f4e7615843d"/>
+        <Code>Massnahme1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ausdolung</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Remise à ciel ouvert</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>ripristino dell’alveo a cielo aperto</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9002">
+        <ItemId OID="eb7838d0-3bf9-4727-b23e-314a022260d7"/>
+        <Code>Massnahme2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Gerinne aufweiten</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Elargissement du chenal</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>ampliamento del canale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9003">
+        <ItemId OID="028bd8cf-c2cc-41ef-8ae4-c1813ceef307"/>
+        <Code>Massnahme3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Mäander initiieren</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Initiation de méandres</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>formazione di meandri</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9004">
+        <ItemId OID="bf532637-6680-4643-ba21-bfd98fc1bee2"/>
+        <Code>Massnahme4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Sohlstruktur, Gerinnestruktur aufwerten</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Revalorisation de la structure du fond du lit/de la structure du chenal</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>valorizzazione della struttura dell’alveo, del canale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9005">
+        <ItemId OID="bc8302a3-b462-4c31-9f79-f1a941cfc7a8"/>
+        <Code>Massnahme5</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Uferstruktur aufwerten</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Revalorisation de la structure des berges</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>valorizzazione della struttura delle rive</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9006">
+        <ItemId OID="068495ad-0b77-4b5a-bdda-24a6b47746dc"/>
+        <Code>Massnahme6</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Auen revitalisieren</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Revitalisation des zones alluviales</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>rivitalizzazione delle zone golenali</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9007">
+        <ItemId OID="857dd5d9-7d9c-4b1e-8a6f-821a3ca157c1"/>
+        <Code>Massnahme7</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Gerinne verlegen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Déplacement du chenal</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>posa del canale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme TID="9008">
+        <ItemId OID="9b5edc24-1dea-4ecb-b6fa-446a776adc87"/>
+        <Code>Massnahme8</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Längsdurchgängigkeit herstellen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Rétablissement de la connectivité longitudinale</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>ripristino della continuità longitudinale</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Massnahme>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlMat TID="1101">
+        <ItemId OID="be5f688c-efac-4602-87fc-7117309d0864"/>
+        <Code>SohlMat1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlMat>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlMat TID="1102">
+        <ItemId OID="802cd6b3-680d-4953-8765-382ff0175136"/>
+        <Code>SohlMat2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Steinschüttung, Rauhbett</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Empierrement enrochement</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>blocco di pietra, fondo scabroso</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlMat>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlMat TID="1103">
+        <ItemId OID="b9c345c3-39e2-4eba-b174-d527e7d906d8"/>
+        <Code>SohlMat3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>andere, dicht</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Autre, imperméable</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>altro, impermeabile</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlMat>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb TID="1201">
+        <ItemId OID="0b51f7b7-b92e-45f2-9244-cc27a19be920"/>
+        <Code>SohlVerb1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb TID="1202">
+        <ItemId OID="773ab9a5-760d-45b4-86eb-8de396888153"/>
+        <Code>SohlVerb2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>keine</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Nul</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>nessuna</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb TID="1203">
+        <ItemId OID="577a101f-02f0-4eb5-8b1c-7d1c57e45e89"/>
+        <Code>SohlVerb3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>vereinzelt  (&lt;10%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Localisé (&lt;10%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>isolata (&lt;10%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb TID="1204">
+        <ItemId OID="74ec3fa6-1e6a-4a2a-8198-cc786b6347f3"/>
+        <Code>SohlVerb4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>mässig  (10-30%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Moyen (10-30%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>media (10-30 %)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb TID="1205">
+        <ItemId OID="ed2b25d6-d6b1-4276-ad0c-c4789442ecf7"/>
+        <Code>SohlVerb5</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>grössere  (30-60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Important (30-60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>importante (30-60 %)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb TID="1206">
+        <ItemId OID="0c592581-0b25-41c8-9ed6-712f549644e0"/>
+        <Code>SohlVerb6</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>überwiegend (&gt;60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Prépondérant (&gt;60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>prevalente (&gt;60%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb TID="1207">
+        <ItemId OID="4138880b-1447-4680-bed3-9b8fca13abec"/>
+        <Code>SohlVerb7</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>vollständig  (100%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Total (100%)</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>totale (100 %)</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.SohlVerb>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz TID="1301">
+        <ItemId OID="53addfef-68a6-400d-b88a-d44387016b23"/>
+        <Code>Totholz1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz TID="1302">
+        <ItemId OID="fe5fb17c-b2d2-45ad-95b1-2fe3da1a41c7"/>
+        <Code>Totholz2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Ansammlungen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Amas</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>accumuli</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz TID="1303">
+        <ItemId OID="50eb4da7-ed5f-40a3-9e84-01f2b215697a"/>
+        <Code>Totholz3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>zerstreut</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Disséminé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>sparso</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz TID="1304">
+        <ItemId OID="e57c1fc3-2ed6-4f11-9270-561e2c9143e6"/>
+        <Code>Totholz4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>kein, vereinzelt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Absent, localisé</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>nessuno, isolato</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Totholz>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer TID="1401">
+        <ItemId OID="0043d7b0-6c98-4e25-9afc-0520deb39034"/>
+        <Code>Ufer1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinate</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer TID="1402">
+        <ItemId OID="c830a227-cde2-4c2c-ae00-250db434d7cd"/>
+        <Code>Ufer2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>gewässergerecht</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Typique d’un cours d’eau</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>tipiche di un corso d’acqua</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer TID="1403">
+        <ItemId OID="a44b3fd8-4159-408c-9140-adf0038736ef"/>
+        <Code>Ufer3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>gewässerfremd</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Atypique d’un cours d’eau</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non tipiche di un corso d’acqua</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer TID="1404">
+        <ItemId OID="62579394-ad61-4d54-a3e5-b2a81c100e5e"/>
+        <Code>Ufer4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>künstlich</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Artificielle</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>artificiali</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.Ufer>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite TID="1501">
+        <ItemId OID="686d6c8b-72a7-449a-a8b5-5db2618db01e"/>
+        <Code>VarBreite1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite TID="1502">
+        <ItemId OID="061ebee3-acef-4c9e-acf8-7d22e3a61027"/>
+        <Code>VarBreite2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>ausgeprägt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Prononcée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>pronunciata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite TID="1503">
+        <ItemId OID="7ce384a8-4841-4d35-a55f-621dcb76f697"/>
+        <Code>VarBreite3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>eingeschränkt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Limitée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>limitata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite TID="1504">
+        <ItemId OID="d1cd2456-d282-4ab6-b6dc-5990c02c1511"/>
+        <Code>VarBreite4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>keine</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Nulle</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>nessuna</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarBreite>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe TID="1601">
+        <ItemId OID="2fb101b5-2535-4a80-ab81-d979244e1e59"/>
+        <Code>VarTiefe1</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>nicht bestimmt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Indéterminée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>non determinata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe TID="1602">
+        <ItemId OID="3413af85-d0a7-42cb-a8f6-b72185fd0e97"/>
+        <Code>VarTiefe2</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>ausgeprägt</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Prononcée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>pronunciata</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe TID="1603">
+        <ItemId OID="7c5695d9-2b65-43ae-b042-a14d0a1fad8d"/>
+        <Code>VarTiefe3</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>mässig</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Limitée</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>media</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe>
+      <Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe TID="1604">
+        <ItemId OID="70721fa8-52d5-427c-b897-a0dce2459e6f"/>
+        <Code>VarTiefe4</Code>
+        <Name>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>keine</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Nulle</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>nessuna</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Name>
+      </Revitalisierung_Fliessgewaesser_V1_2.Catalogs.VarTiefe>
+    </Revitalisierung_Fliessgewaesser_V1_2.Catalogs>
+  </DATASECTION>
+</TRANSFER>

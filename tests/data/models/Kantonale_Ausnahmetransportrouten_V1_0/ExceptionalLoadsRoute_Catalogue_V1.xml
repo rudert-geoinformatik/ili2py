@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- File ExceptionalLoadsRoute_Catalogue_V1.xml 2016-02-08 (http://models.geo.admin.ch/ASTRA) -->
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<!-- xsi:schemaLocation="http://models.geo.admin.ch/ASTRA/ExceptionalLoadsRoute_V1.xsd" -->
+  <HEADERSECTION VERSION="2.3" SENDER="ASTRA">
+    <MODELS>
+      <MODEL NAME="Units" URI="http://www.interlis.ch/models" VERSION="2012-02-20"/>
+      <MODEL NAME="CoordSys" URI="http://www.interlis.ch/models" VERSION="2015-11-24"/>
+      <MODEL NAME="CatalogueObjects_V1" URI="http://www.geo.admin.ch" VERSION="2011-08-30"/>
+      <MODEL NAME="CHAdminCodes_V1" URI="http://www.geo.admin.ch" VERSION="2011-08-30"/>
+      <MODEL NAME="GeometryCHLV03_V1" URI="http://www.geo.admin.ch" VERSION="2015-11-12"/>
+      <MODEL NAME="GeometryCHLV95_V1" URI="http://www.geo.admin.ch" VERSION="2015-11-12"/>
+      <MODEL NAME="ExceptionalLoadsCatalogues_V1" URI="http://models.geo.admin.ch/ASTRA/" VERSION="2017-02-08"/>
+      <MODEL NAME="ExceptionalLoadsRoute_LV03_V1" URI="http://models.geo.admin.ch/ASTRA/" VERSION="2017-02-08"/>
+      <MODEL NAME="ExceptionalLoadsRoute_LV95_V1" URI="http://models.geo.admin.ch/ASTRA/" VERSION="2017-02-08"/>
+    </MODELS>
+  </HEADERSECTION>
+  <DATASECTION>
+    <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue BID="b001">
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1001">
+        <Type>I.A</Type>
+        <RoadWidth>6.50</RoadWidth>
+        <RoadClearance>5.20</RoadClearance>
+        <TotalWeight>480</TotalWeight>
+        <AxisLoad>30</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1002">
+        <Type>I.B</Type>
+        <RoadWidth>6.50</RoadWidth>
+        <RoadClearance>5.20</RoadClearance>
+        <TotalWeight>320</TotalWeight>
+        <AxisLoad>20</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1003">
+        <Type>I.C</Type>
+        <RoadWidth>4.50</RoadWidth>
+        <RoadClearance>4.45</RoadClearance>
+        <TotalWeight>480</TotalWeight>
+        <AxisLoad>30</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1004">
+        <Type>II.A</Type>
+        <RoadWidth>5.00</RoadWidth>
+        <RoadClearance>5.20</RoadClearance>
+        <TotalWeight>240</TotalWeight>
+        <AxisLoad>20</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1005">
+        <Type>II.B</Type>
+        <RoadWidth>5.00</RoadWidth>
+        <RoadClearance>4.80</RoadClearance>
+        <TotalWeight>240</TotalWeight>
+        <AxisLoad>20</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1006">
+        <Type>II.C</Type>
+        <RoadWidth>4.50</RoadWidth>
+        <RoadClearance>4.45</RoadClearance>
+        <TotalWeight>240</TotalWeight>
+        <AxisLoad>20</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1007">
+        <Type>II.D</Type>
+        <RoadWidth>6.50</RoadWidth>
+        <RoadClearance>5.20</RoadClearance>
+        <TotalWeight>240</TotalWeight>
+        <AxisLoad>12</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1008">
+        <Type>II.E</Type>
+        <RoadWidth>6.50</RoadWidth>
+        <RoadClearance>4.80</RoadClearance>
+        <TotalWeight>240</TotalWeight>
+        <AxisLoad>12</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1009">
+        <Type>III</Type>
+        <RoadWidth>4.50</RoadWidth>
+        <RoadClearance>4.80</RoadClearance>
+        <TotalWeight>90</TotalWeight>
+        <AxisLoad>12</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1010">
+        <Type>IV.A</Type>
+        <RoadWidth>4.50</RoadWidth>
+        <RoadClearance>4.50</RoadClearance>
+        <TotalWeight>90</TotalWeight>
+        <AxisLoad>12</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+      <ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute TID="1011">
+        <Type>IV.B</Type>
+        <RoadWidth>4.50</RoadWidth>
+        <RoadClearance>4.50</RoadClearance>
+        <TotalWeight>50</TotalWeight>
+        <AxisLoad>12</AxisLoad>
+      </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue.TypeOfRoute>
+    </ExceptionalLoadsCatalogues_V1.TypeOfRouteCatalogue>
+  </DATASECTION>
+</TRANSFER>

@@ -1,0 +1,115 @@
+INTERLIS 2.3;
+
+!!@ technicalContact=mailto:geoinformation@bfe.admin.ch
+!!@ furtherInformation=https://www.bfe.admin.ch/geoinformation
+!!@ IDGeoIV=219.1
+
+MODEL ElektrischeAnlagenNennspannungUeber36kV_V1 (de)
+AT "https://models.geo.admin.ch/BFE/"
+VERSION "2021-03-31"  =
+  IMPORTS GeometryCHLV95_V1;
+
+  DOMAIN
+
+    Betriebsstatus = (
+      ausserBetrieb,
+      inBetrieb
+    );
+
+    Frequenz = (
+      F16_7Hz,
+      F50Hz,
+      Gleichstrom
+    );
+
+    ID = TEXT*100;
+
+    Lagegenauigkeit = (
+      genau,
+      ungenau
+    );
+
+    LeitungTyp = (
+      Freileitung,
+      Kabelleitung
+    );
+
+    MastTyp = (
+      Tragmast,
+      Abspannmast,
+      Endmast
+    );
+
+    Numerisch = 0 .. 9999;
+
+    Spannung = (
+      S380kV,
+      S220kV,
+      S150kV,
+      S132kV,
+      S130kV,
+      S125kV,
+      S110kV,
+      S66kV,
+      S65kV,
+      S60kV,
+      S50kV,
+      S36kV,
+      Andere
+    );
+
+    StationTyp = (
+      Frequenzumformwerk,
+      Kraftwerk,
+      Schaltstation,
+      Transformatorenstation,
+      Uebergangsbauwerk,
+      Unterwerk
+    );
+
+    StromnetzTyp = (
+      Allgemeinstrom,
+      Bahnstrom
+    );
+
+    Text = TEXT*500;
+
+  TOPIC ElektrischeAnlagen =
+
+    CLASS ElektrischeAnlage (ABSTRACT) =
+      ID : MANDATORY ID;
+      Bezeichnung : Text;
+      Eigentuemer : MANDATORY Text;
+      EigentumVollstaendig : MANDATORY BOOLEAN;
+      Lagegenauigkeit : MANDATORY Lagegenauigkeit;
+      StromnetzTyp : MANDATORY StromnetzTyp;
+    END ElektrischeAnlage;
+
+    CLASS Leitung
+    EXTENDS ElektrischeAnlage =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+      LeitungTyp : MANDATORY LeitungTyp;
+      Spannung : MANDATORY Spannung;
+      SpannungAndere : Numerisch;
+      Betriebsstatus : MANDATORY Betriebsstatus;
+      Frequenz : MANDATORY Frequenz;
+      MANDATORY CONSTRAINT NOT (Spannung == #Andere) OR DEFINED (SpannungAndere);
+    END Leitung;
+
+    CLASS Mast
+    EXTENDS ElektrischeAnlage =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      MastTyp : MANDATORY MastTyp;
+      Hoehe : Numerisch;
+    END Mast;
+
+    CLASS Station
+    EXTENDS ElektrischeAnlage =
+      GeometriePunkt : MANDATORY GeometryCHLV95_V1.Coord2;
+      GeometrieFlaeche : GeometryCHLV95_V1.Surface;
+      StationTyp : MANDATORY StationTyp;
+    END Station;
+
+  END ElektrischeAnlagen;
+
+END ElektrischeAnlagenNennspannungUeber36kV_V1.

@@ -1,0 +1,370 @@
+INTERLIS 2.3;
+
+!!==============================================================================
+!! InventarWasserentnahmen_V1_1.ili
+!!------------------------------------------------------------------------------
+!!
+!! GeoIV, Anhang 1
+!! ===============
+!! Identifikator GeoIV                       : 140
+!! Bezeichnung GeoIV                         : Inventar der bestehenden Wasserentnahmen
+!! Zuständige Stelle (Fachstelle des Bundes) : Kantone (BAFU)
+!! Zugangsberechtigungsstufe                 : A
+!!
+!! Zusatzinformationen
+!! ===================
+!! Identifikatoren                           : 140.1, 140.2
+!!------------------------------------------------------------------------------
+!!
+!! Version    | Nr  | Änderung
+!!------------------------------------------------------------------------------
+!! 2014-12-16 | 1.0 | Bereinigte Schlussfassung
+!! 2022-09-14 | 1.1 | BAFU: Anpassung an LV03/LV95, Korrekturen (auf Grund Umsetzungsprojekt)
+!!==============================================================================
+!!@ technicalContact = mailto:gis@bafu.admin.ch
+!!@ IDGeoIV = "140.1,140.2"
+!!@ furtherInformation = https://www.bafu.admin.ch/geodatenmodelle
+
+MODEL InventarWasserentnahmen_Catalogs_V1_1 (de) AT "https://models.geo.admin.ch/BAFU/" VERSION "2022-09-14" =
+
+  IMPORTS CatalogueObjects_V1;
+  IMPORTS WasserBase_Codelisten_V1_1;
+
+  TOPIC Catalogs EXTENDS CatalogueObjects_V1.Catalogues =
+!!==============================================================================
+
+    !!=============================================
+    !! Lookup Tabellen (Kataloge)
+    !!=============================================
+
+    CLASS Art EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! z.B. Wehr, Talsperre
+    END Art;
+
+    STRUCTURE ArtRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Art;
+    END ArtRef;
+
+    CLASS AufstiegTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! z.B. Beckenpass, Schlitzpass
+    END AufstiegTyp;
+
+    STRUCTURE AufstiegTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) AufstiegTyp;
+    END AufstiegTypRef;
+
+    CLASS DatenQuelle EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! z.B. Messstation, Schätzung
+    END DatenQuelle;
+
+    STRUCTURE DatenQuelleRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) DatenQuelle;
+    END DatenQuelleRef;
+
+    CLASS InventarStufe EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! Bund, Kanton
+    END InventarStufe;
+
+    STRUCTURE InventarStufeRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) InventarStufe;
+    END InventarStufeRef;
+
+    CLASS InventarTyp EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! z.B. Moor, Auengebiete
+    END InventarTyp;
+
+    STRUCTURE InventarTypRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) InventarTyp;
+    END InventarTypRef;
+
+    CLASS Nutzungsrecht EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! z.B. Konzession, Bewilligung
+    END Nutzungsrecht;
+
+    STRUCTURE NutzungsrechtRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Nutzungsrecht;
+    END NutzungsrechtRef;
+
+    CLASS RefPunkt EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! Wasserfassung, Anderer
+    END RefPunkt;
+
+    STRUCTURE RefPunktRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) RefPunkt;
+    END RefPunktRef;
+
+    CLASS Zustand EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! z.B. in Betrieb, im Bau
+    END Zustand;
+
+    STRUCTURE ZustandRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Zustand;
+    END ZustandRef;
+
+    CLASS Zweck EXTENDS WasserBase_Codelisten_V1_1.Catalogs.CatalogItem =
+    !!=============================================
+      !! z.B. Wasserkraftwerk, Bewässerung
+    END Zweck;
+
+    STRUCTURE ZweckRef EXTENDS MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Zweck;
+    END ZweckRef;
+
+  END Catalogs;                                                         !! topic
+
+END InventarWasserentnahmen_Catalogs_V1_1.                              !! model
+
+
+!!@ technicalContact = mailto:gis@bafu.admin.ch
+!!@ IDGeoIV = "140.1,140.2"
+!!@ furtherInformation = https://www.bafu.admin.ch/geodatenmodelle
+
+MODEL InventarWasserentnahmen_LV95_V1_1 (de) AT "https://models.geo.admin.ch/BAFU/" VERSION "2022-09-14" =
+
+  IMPORTS CHAdminCodes_V1;
+  IMPORTS WasserBase_LV95_V1_1;
+  IMPORTS InventarWasserentnahmen_Catalogs_V1_1;
+
+  DOMAIN
+!!==============================================================================
+    !! Trimodaler Wert
+    YNX = (Y, N, X);       !! ja, nein, keine Angabe
+
+  TOPIC Ent =
+    DEPENDS ON InventarWasserentnahmen_Catalogs_V1_1.Catalogs,WasserBase_LV95_V1_1.Gewaesser;
+
+!!==============================================================================
+    STRUCTURE StrGangLSec =                                             !! Monatswerte [l/s]
+    !!=============================================
+      Jan              :           0 .. 1000000;
+      Feb              :           0 .. 1000000;
+      Mar              :           0 .. 1000000;
+      Apr              :           0 .. 1000000;
+      Mai              :           0 .. 1000000;
+      Jun              :           0 .. 1000000;
+      Jul              :           0 .. 1000000;
+      Aug              :           0 .. 1000000;
+      Sep              :           0 .. 1000000;
+      Okt              :           0 .. 1000000;
+      Nov              :           0 .. 1000000;
+      Dez              :           0 .. 1000000;
+    END StrGangLSec;
+
+    STRUCTURE StrGangM3Sec =                                            !! Monatswerte [m3/s]
+    !!=============================================
+      Jan              :           0.000 .. 10000.000;
+      Feb              :           0.000 .. 10000.000;
+      Mar              :           0.000 .. 10000.000;
+      Apr              :           0.000 .. 10000.000;
+      Mai              :           0.000 .. 10000.000;
+      Jun              :           0.000 .. 10000.000;
+      Jul              :           0.000 .. 10000.000;
+      Aug              :           0.000 .. 10000.000;
+      Sep              :           0.000 .. 10000.000;
+      Okt              :           0.000 .. 10000.000;
+      Nov              :           0.000 .. 10000.000;
+      Dez              :           0.000 .. 10000.000;
+    END StrGangM3Sec;
+
+    STRUCTURE StrDatenquelleReferenzPeriode =
+    !!=============================================
+      StationName      :           TEXT*256;
+      StationBetreiber :           TEXT*256;
+      ReferenzBeginn   :           1800 .. 2500 [INTERLIS.Y];
+      ReferenzEnde     :           1800 .. 2500 [INTERLIS.Y];
+      Quelle           :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.DatenQuelleRef;
+    END StrDatenquelleReferenzPeriode;
+
+    CLASS OrtEntRue =                                                !! Ortsbeschreibung der Entnahme/Rückgabe
+    !!=============================================
+      Gewaesser        : MANDATORY TEXT*256;                         !! Gewässername
+      BezeichnungOrt   : MANDATORY TEXT*256;                         !! Bezeichnung bzw. Ort
+      Ort              : MANDATORY WasserBase_LV95_V1_1.Gewaesser.StrOrt;   !! Ort der Entnahme/Rückgabe
+      Hoehe            :           0.0 .. 4000.0;                    !! Höhe in m ü. M.
+    END OrtEntRue;
+
+    CLASS Entnahme =
+    !!=============================================
+      Kanton                         : MANDATORY CHAdminCodes_V1.CHCantonCode;       !! Kantonskürzel
+      KantonalerCode                 : MANDATORY TEXT*256;           !! Kantonaler Code, im Kanton eindeutig
+      AbsatzVO36                     : MANDATORY 1 ..3;
+      Zweck                          : MANDATORY InventarWasserentnahmen_Catalogs_V1_1.Catalogs.ZweckRef;
+      Art                            :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.ArtRef;
+      Zustand                        :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.ZustandRef;
+      ZustandReferenz                :           1800 .. 2500 [INTERLIS.Y];
+      Nutzungsberechtigte            : MANDATORY TEXT*256;
+      Stauhaltung                    :           TEXT*256;
+      Zentrale                       :           TEXT*256;
+      WASTA                          :           0 .. 999999;
+      NutzungsrechtTyp               : MANDATORY InventarWasserentnahmen_Catalogs_V1_1.Catalogs.NutzungsrechtRef;
+      NutzungsrechtBeginn            : MANDATORY 1800 .. 2500 [INTERLIS.Y];
+      NutzungsrechtEnde              : MANDATORY 1800 .. 2500 [INTERLIS.Y];
+      NutzungsrechtUmfang            : MANDATORY 0.000 .. 10000.000;
+      RWReferenzpunktTyp             :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.RefPunktRef;
+      RWReferenzpunktOrt             :           WasserBase_LV95_V1_1.Gewaesser.StrOrt;
+      RWGang                         :           InventarWasserentnahmen_LV95_V1_1.Ent.StrGangLSec;
+      RWJahr                         :           0 .. 100000000000;
+      AFBeeinflusst                  :           BOOLEAN;
+      AFGang                         :           InventarWasserentnahmen_LV95_V1_1.Ent.StrGangM3Sec;
+      AFDatenquelleReferenzPeriode   :           InventarWasserentnahmen_LV95_V1_1.Ent.StrDatenquelleReferenzPeriode;
+      Ausbauwassermenge              :           0.000 .. 10000.000;
+      AusbauwassermengeTage          :           0 .. 365 [INTERLIS.d];
+      WMGang                         :           InventarWasserentnahmen_LV95_V1_1.Ent.StrGangM3Sec;
+      WMDatenquelleReferenzPeriode   :           InventarWasserentnahmen_LV95_V1_1.Ent.StrDatenquelleReferenzPeriode;
+      Q347                           :           0 .. 1000000;
+      Q347DatenquelleReferenzPeriode :           InventarWasserentnahmen_LV95_V1_1.Ent.StrDatenquelleReferenzPeriode;
+      Q347Methode                    :           TEXT*256;
+      FischaufstiegVorhanden         :           YNX;
+      FischaufstiegTyp               :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.AufstiegTypRef;
+      Auflagen                       :           TEXT;
+      Bemerkungen                    :           TEXT;
+      InventarStufe                  :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.InventarStufeRef;
+      InventarTyp                    :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.InventarTypRef;
+    END Entnahme;
+
+    !! Beziehungen zwischen den Klassen
+    !!=============================================
+    ASSOCIATION Entnahme_EntnahmeOrt =
+      rEntnahme1   -<> {0..1} Entnahme;
+      rEntnahmeOrt --  {1} OrtEntRue;
+    END Entnahme_EntnahmeOrt;
+
+    ASSOCIATION Entnahme_RueckgabeOrt =
+      rEntnahme2    -- {0..*} Entnahme;
+      rRueckgabeOrt -- {0..*} OrtEntRue;
+    END Entnahme_RueckgabeOrt;
+
+    END Ent;                                         !! topic
+END InventarWasserentnahmen_LV95_V1_1.               !! model
+
+
+!!@ technicalContact = mailto:gis@bafu.admin.ch
+!!@ IDGeoIV = "140.1,140.2"
+!!@ furtherInformation = https://www.bafu.admin.ch/geodatenmodelle
+
+MODEL InventarWasserentnahmen_LV03_V1_1 (de) AT "https://models.geo.admin.ch/BAFU/" VERSION "2022-09-14" =
+
+  IMPORTS CHAdminCodes_V1;
+  IMPORTS WasserBase_LV03_V1_1;
+  IMPORTS InventarWasserentnahmen_Catalogs_V1_1;
+
+  DOMAIN
+!!==============================================================================
+    !! Trimodaler Wert
+    YNX = (Y, N, X);       !! ja, nein, keine Angabe
+
+  TOPIC Ent =
+    DEPENDS ON InventarWasserentnahmen_Catalogs_V1_1.Catalogs,WasserBase_LV03_V1_1.Gewaesser;
+
+!!==============================================================================
+    STRUCTURE StrGangLSec =                                             !! Monatswerte [l/s]
+    !!=============================================
+      Jan              :           0 .. 1000000;
+      Feb              :           0 .. 1000000;
+      Mar              :           0 .. 1000000;
+      Apr              :           0 .. 1000000;
+      Mai              :           0 .. 1000000;
+      Jun              :           0 .. 1000000;
+      Jul              :           0 .. 1000000;
+      Aug              :           0 .. 1000000;
+      Sep              :           0 .. 1000000;
+      Okt              :           0 .. 1000000;
+      Nov              :           0 .. 1000000;
+      Dez              :           0 .. 1000000;
+    END StrGangLSec;
+
+    STRUCTURE StrGangM3Sec =                                            !! Monatswerte [m3/s]
+    !!=============================================
+      Jan              :           0.000 .. 10000.000;
+      Feb              :           0.000 .. 10000.000;
+      Mar              :           0.000 .. 10000.000;
+      Apr              :           0.000 .. 10000.000;
+      Mai              :           0.000 .. 10000.000;
+      Jun              :           0.000 .. 10000.000;
+      Jul              :           0.000 .. 10000.000;
+      Aug              :           0.000 .. 10000.000;
+      Sep              :           0.000 .. 10000.000;
+      Okt              :           0.000 .. 10000.000;
+      Nov              :           0.000 .. 10000.000;
+      Dez              :           0.000 .. 10000.000;
+    END StrGangM3Sec;
+
+    STRUCTURE StrDatenquelleReferenzPeriode =
+    !!=============================================
+      StationName      :           TEXT*256;
+      StationBetreiber :           TEXT*256;
+      ReferenzBeginn   :           1800 .. 2500 [INTERLIS.Y];
+      ReferenzEnde     :           1800 .. 2500 [INTERLIS.Y];
+      Quelle           :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.DatenQuelleRef;
+    END StrDatenquelleReferenzPeriode;
+
+    CLASS OrtEntRue =                                                !! Ortsbeschreibung der Entnahme/Rückgabe
+    !!=============================================
+      Gewaesser        : MANDATORY TEXT*256;                         !! Gewässername
+      BezeichnungOrt   : MANDATORY TEXT*256;                         !! Bezeichnung bzw. Ort
+      Ort              : MANDATORY WasserBase_LV03_V1_1.Gewaesser.StrOrt;   !! Ort der Entnahme/Rückgabe
+      Hoehe            :           0.0 .. 4000.0;                    !! Höhe in m ü. M.
+    END OrtEntRue;
+
+    CLASS Entnahme =
+    !!=============================================
+      Kanton                         : MANDATORY CHAdminCodes_V1.CHCantonCode;       !! Kantonskürzel
+      KantonalerCode                 : MANDATORY TEXT*256;           !! Kantonaler Code, im Kanton eindeutig
+      AbsatzVO36                     : MANDATORY 1 ..3;
+      Zweck                          : MANDATORY InventarWasserentnahmen_Catalogs_V1_1.Catalogs.ZweckRef;
+      Art                            :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.ArtRef;
+      Zustand                        :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.ZustandRef;
+      ZustandReferenz                :           1800 .. 2500 [INTERLIS.Y];
+      Nutzungsberechtigte            : MANDATORY TEXT*256;
+      Stauhaltung                    :           TEXT*256;
+      Zentrale                       :           TEXT*256;
+      WASTA                          :           0 .. 999999;
+      NutzungsrechtTyp               : MANDATORY InventarWasserentnahmen_Catalogs_V1_1.Catalogs.NutzungsrechtRef;
+      NutzungsrechtBeginn            : MANDATORY 1800 .. 2500 [INTERLIS.Y];
+      NutzungsrechtEnde              : MANDATORY 1800 .. 2500 [INTERLIS.Y];
+      NutzungsrechtUmfang            : MANDATORY 0.000 .. 10000.000;
+      RWReferenzpunktTyp             :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.RefPunktRef;
+      RWReferenzpunktOrt             :           WasserBase_LV03_V1_1.Gewaesser.StrOrt;
+      RWGang                         :           InventarWasserentnahmen_LV03_V1_1.Ent.StrGangLSec;
+      RWJahr                         :           0 .. 100000000000;
+      AFBeeinflusst                  :           BOOLEAN;
+      AFGang                         :           InventarWasserentnahmen_LV03_V1_1.Ent.StrGangM3Sec;
+      AFDatenquelleReferenzPeriode   :           InventarWasserentnahmen_LV03_V1_1.Ent.StrDatenquelleReferenzPeriode;
+      Ausbauwassermenge              :           0.000 .. 10000.000;
+      AusbauwassermengeTage          :           0 .. 365 [INTERLIS.d];
+      WMGang                         :           InventarWasserentnahmen_LV03_V1_1.Ent.StrGangM3Sec;
+      WMDatenquelleReferenzPeriode   :           InventarWasserentnahmen_LV03_V1_1.Ent.StrDatenquelleReferenzPeriode;
+      Q347                           :           0 .. 1000000;
+      Q347DatenquelleReferenzPeriode :           InventarWasserentnahmen_LV03_V1_1.Ent.StrDatenquelleReferenzPeriode;
+      Q347Methode                    :           TEXT*256;
+      FischaufstiegVorhanden         :           YNX;
+      FischaufstiegTyp               :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.AufstiegTypRef;
+      Auflagen                       :           TEXT;
+      Bemerkungen                    :           TEXT;
+      InventarStufe                  :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.InventarStufeRef;
+      InventarTyp                    :           InventarWasserentnahmen_Catalogs_V1_1.Catalogs.InventarTypRef;
+    END Entnahme;
+
+    !! Beziehungen zwischen den Klassen
+    !!=============================================
+    ASSOCIATION Entnahme_EntnahmeOrt =
+      rEntnahme1   -<> {0..1} Entnahme;
+      rEntnahmeOrt --  {1} OrtEntRue;
+    END Entnahme_EntnahmeOrt;
+
+    ASSOCIATION Entnahme_RueckgabeOrt =
+      rEntnahme2    -- {0..*} Entnahme;
+      rRueckgabeOrt -- {0..*} OrtEntRue;
+    END Entnahme_RueckgabeOrt;
+
+    END Ent;                                         !! topic
+END InventarWasserentnahmen_LV03_V1_1.               !! model
+    

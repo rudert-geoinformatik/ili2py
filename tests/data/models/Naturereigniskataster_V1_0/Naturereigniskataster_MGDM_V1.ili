@@ -1,0 +1,1818 @@
+INTERLIS 2.3;
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2023-01-12 | BAFU  | Korrektur: CONSTRAINT (3) auskommentiert, weitere Details siehe ebenda
+!! 2023-05-31 | BAFU  | Korrektur: DI_W_UM_ABLAG_VOL_MG_MAO: MANDATORY entfernt,
+!!                      jedoch (25a) zu beachten (siehe ebenda).
+
+/** Dieses INTERLIS-Modell beschreibt den minimalen Teil des Datenmodells "Naturereigniskataster"
+ *  gemäss GeoIG (MGDM), Identifikator 167.1. Daneben existiert auch noch das umfassende INTERLIS-
+ *  Modell, welches sowohl den minimalen als auch den erweiterten Teil des Datenmodells enthält.
+ *
+ *  Allgemeine Hinweise:
+ *  - Die Domains DOUBLE und INTEGER sind nicht mit einschränkenden Wertebereichen definiert, damit
+ *    die Definition systemunabhängig ist. Es ist jedoch zu beachten, dass an keiner Stelle des MGDM
+ *    oder des umfassenden Modells aus fachlicher Sicht negative Zahlen vorkommen können. Es ist
+ *    möglich, dass zukünftig eine entsprechende Modellanpassung realisiert wird.
+ *  - Im Modell werden zahlreiche Constraints verwendet. Um sie bei Fehlermeldungen der INTERLIS-
+ *    Werkzeuge identifizieren zu können, sind die Constraints nummeriert und mit den hierfür notwen-
+ *    digen Meta-Attributen «!!@ cid» für den iG/Check und «!!@ name» für den ilivalidator versehen.
+ *  - Die Darstellung der vorliegenden ili-Datei ist auf eine Zeilenlänge von 100 Zeichen optimiert.
+ *  - Constraint (25a) ist nicht als MANDATORY CONSTRAINT ausformuliert, da hierfür eine View nötig
+ *    wäre. Inhaltlich ist er trotzdem zu beachten. Es geht darum, dass das Attribut
+ *    DI_W_UM_ABLAG_VOL_MG_MAO verpflichtend beim Teilprozess Übermurung ist, nicht jedoch für die
+ *    übbrigen Teilprozesse.
+ *
+ * ---
+ *
+ *  Ce modèle INTERLIS décrit la partie minimale du modèle de données "Cadastre des événements
+ *  naturels" conformément à la LGéo (MGDM), identificateur 167.1. Il existe également un modèle
+ *  INTERLIS plus complet, comprenant à la fois le modèle minimal et le modèle étendu du modèle de
+ *  données.
+ *
+ *  Informations générales:
+ *  - Les domaines DOUBLE et INTEGER ne sont pas définis avec des intervalls de la validité
+ *    restrictifs, de sorte que la définition est indépendante du système. Il convient toutefois de
+ *    noter que des chiffres négatifs ne peuvent survenir à aucun endroit dans le MGDM ou dans le
+ *    modèle global du point de vue technique. Il est possible qu'un ajustement correspondant du
+ *    modèle soit réalisé à l'avenir.
+ *  - Il y a des nombreuses contraintes dans le modèle. Afin de les identifier en cas de messages
+ *    d'erreur provenant des outils INTERLIS, les contraintes sont numérotées et associées aux
+ *    méta-attributs nécessaires "!!@ cid" pour l'iG/Check et "!!@ name" pour l'ilivalidator.
+ *  - La représentation du fichier ili actuel est optimisée pour une longueur de ligne de 100
+ *    caractères.
+ *  - La contrainte (25a) n'est pas formulée sous la forme d MANDATORY CONSTRAINT, car une "view"
+ *    serait nécessaire pour cela. Le contenu doit néanmoins être respecté. Le fait est que
+ *    l'attribut DI_W_UM_ABLAG_VOL_MG_MAO est obligatoire pour le processus partiel "lave
+ *    torrentielle", mais pas pour les autres processus partiels.
+ */
+
+!!@ furtherInformation=https://www.bafu.admin.ch/geodatenmodelle
+!!@ technicalContact=mailto:gis@bafu.admin.ch
+!!@ IDGeoIV=167.1
+
+CONTRACTED MODEL Naturereigniskataster_MGDM_LV95_V1 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2023-05-31"  =
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS Text;
+
+  DOMAIN
+
+    BEMERKUNGENTEXT =MTEXT*4000;
+
+    DATENHERR = (
+      AG,
+      AI,
+      AR,
+      BE,
+      BL,
+      BS,
+      FR,
+      GE,
+      GL,
+      GR,
+      JU,
+      LU,
+      NE,
+      NW,
+      OW,
+      SG,
+      SH,
+      SO,
+      SZ,
+      TG,
+      TI,
+      UR,
+      VD,
+      VS,
+      ZG,
+      ZH,
+      FL,
+      ASTRA,
+      SBB,
+      SOB,
+      SLF,
+      GIUZ,
+      VAW,
+      WSL,
+      BAFU
+    );
+
+    DOUBLE = -99999999.00000 .. 99999999.00000;  !! Negative Werte sind nicht zugelassen.
+                                                 !! Les valeurs négatives ne sont pas autorisées.
+    ERHEBUNGSART = (
+      an_Ort_und_Stelle,
+      Luftbild_Orthofoto,
+      vom_Gegenhang,
+      Rekonstruktion
+    );
+
+    EVIDENZ = (
+      erwiesen,
+      vermutet,
+      externe_Datenquelle      !! d. h. unbestimmt  ---  indéterminé
+    );
+
+    GUID = TEXT*38;
+
+    HAUPTPROZESS = (
+      Wasser,
+      Rutschung,
+      Sturz,
+      Lawine,
+      Einsturz_Absenkung,
+      Andere
+    );
+
+    INTEGER = -2147483648 .. 2147483647;       !! Negative Werte sind nicht zugelassen.
+                                               !! Les valeurs négatives ne sont pas autorisées.
+    MAO = (
+      Messwert_Feststellung,   !! M
+      Annahme_Schaetzung,      !! A
+      nicht_bestimmbar         !! O
+    );
+
+    MAOE = (
+      Messwert_Feststellung,   !! M
+      Annahme_Schaetzung,      !! A
+      nicht_bestimmbar,        !! O
+      externe_Datenquelle      !! E (d. h. unbestimmt  ---  indéterminé)
+    );
+
+    NORMALTEXT = TEXT*50;
+
+    PROZESSE_EA = (
+      Einsturz,
+      Absenkung
+    );
+
+    PROZESSE_L = (
+      nicht_spezifiziert,
+      Fliesslawine,
+      Staublawine,
+      Gleitschneelawine,
+      Schneegleiten
+    );
+
+    PROZESSE_R = (
+      nicht_spezifiziert,
+      spontane_Rutschung,
+      Hangmure,
+      reaktivierte_permanente_Rutschung
+    );
+
+    PROZESSE_S = (
+      nicht_spezifiziert,
+      Steinschlag,
+      Blockschlag,
+      Felssturz,
+      Bergsturz,
+      Eisschlag,
+      Gletschersturz
+    );
+
+    PROZESSE_W = (
+      nicht_spezifiziert,
+      Ueberschwemmung_ohne_Uebersarung,
+      Ueberschwemmung_mit_Uebersarung,
+      Uebermurung,
+      Ufererosion,
+      Oberflaechenabfluss,
+      Grundwasseraufstoss
+    );
+
+    S_ANZAHL = (
+      eins,
+      zwei_bis_zehn,
+      groesser_als_zehn
+    );
+
+    S_FORM = (
+      rechteckig,              !! (Quader  --  parallélépipède)
+      dreieckig,               !! (Prismatoid  --  prismatoïde)
+      gerundet
+    );
+
+    SC_ERHEBUNG = (
+      keine_Erhebung,
+      mit_Schaeden,
+      ohne_Schaeden
+    );
+
+    SC_GRAD = (
+      tot_zerstoert,
+      verletzt_beschaedigt,
+      unverletzt_betroffen
+    );
+
+    SC_KAT = (
+      Personen,
+      Tiere,
+      Wohngebaeude,
+      Industrie_Gewerbe_Hotel,
+      landwirtschaftliche_Oekonomiegebaeude,
+      oeffentliche_Gebaeude_und_Infrastruktur,
+      Kulturgueter,
+      Schutzbauten,
+      Masten,
+      Campingplaetze,
+      Nationalstrassen,
+      Hauptstrassen,
+      uebrige_Strassen,
+      Bahnlinien,
+      Transportanlagen,
+      Leitungen,
+      andere_Anzahl,
+      andere_Laenge
+    );
+
+    ST_GLETSCHERNAME = (       !! d. h. STandardisierter GLETSCHERNAME
+      ohne_Namen,                       !! |nom de glacier standardisé
+      Abberggletscher,
+      Aebeni_Flue_Firn,
+      Absturz,
+      Adlergletscher,
+      Allalingletscher,
+      Alpetligletscher,
+      Alpgnofer_Firn,
+      Alphubelgletscher,
+      Alpjergletscher,
+      Alplifirn,
+      Alpligletscher,
+      Aelprigengletscher,
+      Altels_Gletscher,
+      Ammertegletscher,
+      Anungletscher,
+      Arbengletscher,
+      Aerlengletscher,
+      Augstkummengletscher,
+      Baechenfirn_Gurtnellen_Fellital,
+      Baechenfirn_Gurtnellen_Gorneren,
+      Baechenfirn_Silenen,
+      Baechifirn,
+      Baechigletscher,
+      Baechistockfirn,
+      Baechligletscher,
+      Balfringletscher,
+      Balmhorngletscher,
+      Bas_Glacier_d_Arolla,
+      Beichgletscher,
+      Bella_Tola_Gletscher,
+      Bidergletscher,
+      Bietschgletscher,
+      Bifertengletscher,
+      Birchgletscher,
+      Birggletscher,
+      Bisgletscher,
+      Blasgletscher,
+      Blau_Gletscherli,
+      Blauberggletscher,
+      Blauschnee,
+      Blinnengletscher,
+      Blueemlisalpfirn,
+      Blueemlisalpgletscher,
+      Bocktschingelfirn,
+      Bodmergletscher,
+      Bortelgletscher,
+      Braendjigletscher,
+      Breithorngletscher_Lauterbrunnen,
+      Breithorngletscher_Zermatt,
+      Breithornplateau,
+      Brunegggletscher,
+      Brunnenfirn,
+      Brunnifirn,
+      Buuch,
+      Canalgletscher,
+      Chalchtalfirn,
+      Challifirn,
+      Chaltwassergletscher,
+      Chammgletscher,
+      Chelenfirn,
+      Chelengletscher,
+      Chesselfirn,
+      Chessjengletscher,
+      Chielouwenengletscher,
+      Chilchalpgletscher,
+      Chilchligletscher,
+      Chli_Gletscherli,
+      Chli_Sustlifirn,
+      Chline_Gletscher,
+      Chlitaler_Firn,
+      Chrinnengletscher,
+      Chueealpgletscher,
+      Chueebodengletscher,
+      Chueefadfirn,
+      Claridenfirn,
+      Dalagletscher,
+      Dammagletscher,
+      Daubenhorngletscher,
+      Diablons_Gletscher,
+      Diechtergletscher,
+      Dirrugletscher,
+      Dischliggletscher,
+      Distelgletscher,
+      Doldenhorngletscher,
+      Dome_du_Velan,
+      Driestgletscher,
+      Drosigletscherli,
+      Ducangletscher,
+      Eggfirn,
+      Eigergletscher,
+      Eiger_Haengegletscher,
+      Ewigschneefaeld,
+      Faeldbachgletscher,
+      Fallgletscher,
+      Fanellgletscher,
+      Faerichgletscher,
+      Feegletscher,
+      Fellelifirn,
+      Ferdengletscher,
+      Festigletscher,
+      Fieschergletscher,
+      Findelgletscher,
+      Finsteraargletscher,
+      Firenband_Attinghausen,
+      Firenband_Unterschaechen,
+      Firnalpelifirn,
+      Firnalpeligletscher,
+      Flachensteinfirn,
+      Fletschhorngletscher,
+      Flueegletscher,
+      Fruendengletscher,
+      Fulegletscher,
+      Furggengletscher,
+      Furgggletscher,
+      Gabelhorngletscher,
+      Galmigletscher,
+      Gaeltegletscher,
+      Galtiberggletscher,
+      Gamchigletscher,
+      Gamsagletscher,
+      Gaerstengletscher,
+      Gauligletscher,
+      Gelmergletscher,
+      Gerengletscher,
+      Ghiacciaio_de_la_Curciusa,
+      Ghiacciaio_de_Mucia,
+      Ghiacciaio_de_Stabi,
+      Ghiacciaio_del_Basodino,
+      Ghiacciaio_del_Cavagnoeoe,
+      Ghiacciaio_del_Corno,
+      Ghiacciaio_del_Monte_Rosa_Belvedere_I,
+      Ghiacciaio_del_Pizzo_Rosso,
+      Ghiacciaio_del_Pizzo_Rotondo,
+      Ghiacciaio_del_Tambo,
+      Ghiacciaio_di_Alto,
+      Ghiacciaio_di_Basso,
+      Ghiacciaio_di_Giumello,
+      Ghiacciaio_di_Lucendro,
+      Ghiacciaio_di_Pesciora,
+      Ghiacciaio_di_Piotta,
+      Ghiacciaio_di_Val_Torta,
+      Ghiacciaio_di_Valleggia,
+      Ghiacciaio_Grande_di_Croslina,
+      Ghiacciaio_Piccolo_di_Croslina,
+      Gibidumsee,
+      Giessengletscher,
+      Gigligletscher,
+      Glacier_d_Aget,
+      Glacier_d_Arpette,
+      Glacier_de_Bertol,
+      Glacier_de_Blanchen,
+      Glacier_de_Bocheresse,
+      Glacier_de_Boveire,
+      Glacier_de_Bricola,
+      Glacier_de_Chalin,
+      Glacier_de_Challand,
+      Glacier_de_Cheilon,
+      Glacier_de_Corbassiere,
+      Glacier_de_Crete_Seche,
+      Glacier_de_Darbonneire,
+      Glacier_de_Fenetre,
+      Glacier_de_Ferpecle,
+      Glacier_de_la_Chaux,
+      Glacier_de_la_Dent_Blanche,
+      Glacier_de_la_Fenive,
+      Glacier_de_la_Forcle,
+      Glacier_de_la_Grande_Lire,
+      Glacier_de_la_Luette,
+      Glacier_de_la_Mitre,
+      Glacier_de_l_A_Neuve,
+      Glacier_de_la_Plaine_Morte,
+      Glacier_de_la_Ruinette,
+      Glacier_de_la_Sale,
+      Glacier_de_la_Serpentine,
+      Glacier_de_la_Tchiffa,
+      Glacier_de_la_Trouye,
+      Glacier_de_la_Tsa,
+      Glacier_de_la_Tsessette,
+      Glacier_de_l_Aiguille,
+      Glacier_de_l_Aiguillette,
+      Glacier_de_l_Aouille,
+      Glacier_de_l_En_Darrey,
+      Glacier_d_Epicoune,
+      Glacier_de_l_Evole,
+      Glacier_de_Lire_Rose,
+      Glacier_de_l_Obergabelhorn,
+      Glacier_de_Merdere,
+      Glacier_de_Metail,
+      Glacier_de_Moiry,
+      Glacier_de_Moming,
+      Glacier_de_Montay,
+      Glacier_de_Mourti_Evolene,
+      Glacier_de_Mourti_Heremence,
+      Glacier_de_Paneirosse,
+      Glacier_de_Piece,
+      Glacier_de_Pierredar,
+      Glacier_de_Pieudet,
+      Glacier_de_Prafleuri,
+      Glacier_de_Prapio,
+      Glacier_de_Pro,
+      Glacier_de_Saleinaz,
+      Glacier_de_Soi,
+      Glacier_de_Sovereu,
+      Glacier_de_Tene_Glacier_du_Wildhorn,
+      Glacier_de_Tita_Naire,
+      Glacier_de_Tortin,
+      Glacier_de_Treutse_Bo,
+      Glacier_de_Tsanfleuron,
+      Glacier_de_Tsarmine,
+      Glacier_de_Tsena_Refien,
+      Glacier_de_Tsijiore_Nouve,
+      Glacier_de_Valsorey,
+      Glacier_de_Vouasson,
+      Glacier_de_Vuibe,
+      Glacier_de_Zinal,
+      Glacier_des_Angroniettes,
+      Glacier_des_Berons,
+      Glacier_des_Bouquetins_Anniviers,
+      Glacier_des_Bouquetins_Evolene,
+      Glacier_des_Diablerets,
+      Glacier_des_Douves_Blanches,
+      Glacier_des_Eaux_Froides,
+      Glacier_des_Ecoulaies,
+      Glacier_des_Etagnes,
+      Glacier_des_Follats,
+      Glacier_des_Fonds,
+      Glacier_des_Grands,
+      Glacier_des_Ignes,
+      Glacier_des_Louettes_Econdoue,
+      Glacier_des_Manzettes,
+      Glacier_des_Martinets,
+      Glacier_des_Ottans,
+      Glacier_des_Pantalons_Blancs,
+      Glacier_des_Petoudes,
+      Glacier_des_Planereuses,
+      Glacier_des_Plines,
+      Glacier_des_Ravines_Rousses,
+      Glacier_des_Rosses_Evolene,
+      Glacier_des_Rosses_Salvan,
+      Glacier_des_Tsauderys,
+      Glacier_d_Orchera,
+      Glacier_d_Orny,
+      Glacier_d_Otemma,
+      Glacier_du_Besso,
+      Glacier_du_Brenay,
+      Glacier_du_Brochet,
+      Glacier_du_Cret,
+      Glacier_du_Croissant,
+      Glacier_du_Culan,
+      Glacier_du_Dar,
+      Glacier_du_Darray,
+      Glacier_du_Dolent,
+      Glacier_du_Gietro,
+      Glacier_du_Grand_Combin,
+      Glacier_du_Grand_Cornier,
+      Glacier_du_Liapey,
+      Glacier_du_Meitin,
+      Glacier_du_Mont_Collon,
+      Glacier_du_Mont_Durand,
+      Glacier_du_Mont_Fort,
+      Glacier_du_Mont_Mine,
+      Glacier_du_Mont_Ruan,
+      Glacier_du_Mountet,
+      Glacier_du_Parrain,
+      Glacier_du_Petit_Combin,
+      Glacier_du_Petit_Mont_Collon,
+      Glacier_du_Petit_Mont_Fort,
+      Glacier_du_Pleureur,
+      Glacier_du_Sex_Rouge,
+      Glacier_du_Sonadon,
+      Glacier_du_Trient,
+      Glacier_du_Tseudet,
+      Glacier_du_Weisshorn,
+      Glacier_Durand,
+      Glacier_Inferieur_des_Aiguilles_Rouges,
+      Glacier_Noir,
+      Glacier_Pendant,
+      Glacier_Superieur_des_Aiguilles_Rouges,
+      Glaciers_de_la_Tour_Salliere,
+      Glaernischfirn,
+      Glasergletscher,
+      Glatscher_da_Casatscha,
+      Glatscher_da_Cavrein,
+      Glatscher_da_Curnera,
+      Glatscher_da_Fluaz,
+      Glatscher_da_Frisal,
+      Glatscher_da_Gaglianera,
+      Glatscher_da_Gannaretsch,
+      Glatscher_da_Gavirolas,
+      Glatscher_da_Giuv,
+      Glatscher_da_Gliems,
+      Glatscher_da_Lavaz,
+      Glatscher_da_Maighels,
+      Glatscher_da_Medel,
+      Glatscher_da_Mer,
+      Glatscher_da_Nalps,
+      Glatscher_da_Niemet,
+      Glatscher_da_Plattas,
+      Glatscher_da_Punteglias,
+      Glatscher_da_Puozas,
+      Glatscher_da_Strem,
+      Glatscher_da_Sut_Fuina,
+      Glatscher_da_Valdraus,
+      Glatscher_dalla_Greina,
+      Glatscher_dallas_Tuors,
+      Glatscher_Davos_la_Buora,
+      Glatscher_dil_Lai_Blau,
+      Glatscher_dil_Terri,
+      Glatscher_dil_Vorab_Vorabgletscher,
+      Glatscher_Puzzetta,
+      Glatschiu_dil_Segnas,
+      Glatt_Firn,
+      Gletscherhornfirn,
+      Golegg_Gletscher,
+      Gornergletscher,
+      Grand_Desert,
+      Grande_Pente,
+      Grassengletscher,
+      Grauhorngletscher,
+      Gredetschgletscher,
+      Grenzgletscher,
+      Grienbaergligletscher,
+      Griesgletscher,
+      Griessenfirn,
+      Griessengletscher,
+      Griessernugletscher,
+      Griessgletscher_Glarus_Sued,
+      Griessgletscher_Unterschaechen,
+      Groeebengletscher,
+      Gross_Schnee,
+      Grosser_Aletschfirn,
+      Grosser_Aletschgletscher,
+      Grossfirn,
+      Grossi_Tola,
+      Grueebugletscher,
+      Grueneggfirn,
+      Gspaltenhorngletscher,
+      Guefergletscher,
+      Guggigletscher,
+      Guggitaler_Schnee,
+      Gummigletscher,
+      Guppenfirn,
+      Gurschenfirn,
+      Guspisfirn,
+      Gutzgletscher,
+      Haelsifirn,
+      Hangendegletscher_Saas_Almagell,
+      Hangendegletscher_Wiler_Loetschen,
+      Hangendgletscher_Goms,
+      Hangendgletscher_Innertkirchen,
+      Hangfirn_Goeschenen,
+      Hangfirn_Silenen_Bristen,
+      Hangfirn_Silenen_Duessi,
+      Hangfirn_Wassen,
+      Haut_Glacier_d_Arolla,
+      Helsegletscher,
+      Hengsterengletscher,
+      Hillegletscher,
+      Hinder_Triftgletscher,
+      Hindra_Schmadrigletscher,
+      Hinter_Sulzgletscher,
+      Hinterer_Roetifirn,
+      Hobaerggletscher,
+      Hochfirn,
+      Hohbalmgletscher,
+      Hoehberggletscher,
+      Hohlaubgletscher_Saas_Almagell,
+      Hohlaubgletscher_Saas_Grund,
+      Hohlichtgletscher,
+      Hohwaenggletscher,
+      Holesteigletscher,
+      Holutriftgletscher,
+      Holzgletscher,
+      Homadgletscher,
+      Homattugletscher,
+      Hubelgletscher,
+      Huebschgletscher,
+      Huefifirn,
+      Im_Sumpf,
+      Inner_Talgletscher,
+      Innre_Baltschiedergletscher,
+      Innre_Stampbachgletscher,
+      Ischmeer,
+      Iswaendli,
+      Jegigletscher,
+      Joligletscher,
+      Joerigletscher,
+      Jungfraufirn,
+      Junggletscher,
+      Kanderfirn,
+      Kartigelfirn,
+      Kingletscher,
+      Klein_Matterhorngletscher,
+      Konkordiaplatz,
+      Kranzbergfirn,
+      La_Cudera,
+      Labyrinth,
+      Laggingletscher,
+      Lagginhorngletscher,
+      Laemmerengletscher,
+      Lang_Firn,
+      Laengfluegletscher,
+      Langgletscher,
+      Laentagletscher,
+      Lauteraargletscher,
+      Le_Biegnet,
+      Le_Corridor,
+      Le_Pleureur_NW_Flanke,
+      Leidhorngletscher,
+      Leitschachfirn,
+      Limmerengletscher,
+      Loibinbachgletscher,
+      Lorenzhorngletscher,
+      Loetschegletscher,
+      Maasplanggfirn,
+      Majinggletscher,
+      Maelligagletscher,
+      Matterhorngletscher,
+      Maettitalgletscher,
+      Mattwaldgletscher,
+      Mauvais_Glacier,
+      Mellichgletscher,
+      Merezebachgletscher,
+      Mettligletscher,
+      Milibachgletscher,
+      Minstigergletscher,
+      Mittaggletscher,
+      Mittelaletschgletscher,
+      Mittlerer_Breitlouwenengletscher,
+      Monte_Rosagletscher,
+      Morgenhorngletscher,
+      Mur_de_la_Cote,
+      Muttengletscher,
+      Muttgletscher,
+      Naessigletscher,
+      Nestgletscher,
+      Nollengletscher_Lauterbrunnen,
+      Nollengletscher_Saas_Almagell,
+      Noerdlicher_Breitlouwenengletscher,
+      Ober_Firenband,
+      Ober_Huefifirn,
+      Ober_Satzgletscher,
+      Oberaargletscher,
+      Oberaletschfirn,
+      Oberaletschgletscher,
+      Obere_Breithorngletscher,
+      Obere_Oeschinengletscher,
+      Obere_Stelligletscher,
+      Obere_Triftchessel,
+      Obere_Triftgletscher,
+      Oberer_Grindelwaldgletscher,
+      Oberer_Theodulgletscher,
+      Oberferdengletscher,
+      Obers_Ischmeer_Grindelwald_Agassizhorn,
+      Obers_Ischmeer_Grindelwald_Eiger,
+      Obertalgletscher,
+      Ofentalgletscher,
+      Oigstchummungletscher,
+      Paradiesgletscher,
+      Piotgletscher,
+      Pipjigletscher,
+      Pizolgletscher,
+      Plan_Neve_Bex,
+      Plan_Neve_Evionnaz,
+      Plan_Neve_Verossaz,
+      Plan_Rai,
+      Plateau_des_Maisons_Blanches,
+      Plateau_d_Herens,
+      Plateau_du_Couloir,
+      Plateau_du_Dejeuner,
+      Plateau_du_Trient,
+      Plateau_Rosa,
+      Raenfengletscher,
+      Rappegletscher,
+      Rautgletscher_Griessernuhorn,
+      Rezligletscher,
+      Rhonegletscher,
+      Riedgletscher,
+      Ritzgletscher,
+      Roggengletscher,
+      Rohrfirn,
+      Rosenlouwigletscher,
+      Rossbodegletscher,
+      Rossfirn,
+      Rossgletscher,
+      Rotblattgletscher,
+      Rotenbergfirn,
+      Rotfirn,
+      Rotfirngletscher,
+      Rothorngletscher_Kandersteg,
+      Rothorngletscher_Turtmann_Unterems,
+      Rothorngletscher_Zermatt,
+      Rottalgletscher_Lauterbrunnen,
+      Rottalgletscher_Saas_Almagell,
+      Ruchenfirn,
+      Ruetifirn,
+      Saasgletscher,
+      Sagl_dal_Vadret_Pers,
+      Salbitgletscher,
+      Sandfirn,
+      Sankt_Annafirn,
+      Sardonagletscher,
+      Sassfirn,
+      Scalettagletscher,
+      Schaligletscher,
+      Schingletscher,
+      Schlittchuechen,
+      Schlossberggletscher,
+      Schlossfirn,
+      Schmadrifirn,
+      Schmalgletscher,
+      Scholle,
+      Schoelligletscher,
+      Schoenbielgletscher,
+      Schoenbuehlgletscher,
+      Schoentaler_Firn,
+      Schreckfirn,
+      Schwarzberggletscher,
+      Schwaerzegletscher,
+      Schwarzgletscher,
+      Schwarzhorngletscher_Spluegen,
+      Schwarzhorngletscher_Zernez,
+      Schwarzwasserfirn,
+      Seegletscher,
+      Seewjinengletscher,
+      Seracs_du_Brenay,
+      Sewenzwaechten,
+      Sibilufluegletscher,
+      Sidelengletscher_Obergoms,
+      Sidelengletscher_Realp,
+      Silberhorngletscher,
+      Silbermulde,
+      Silleregletscher,
+      Silvrettagletscher,
+      Spannortgletscher,
+      Spillauibielfirn,
+      Spillauifirn,
+      Spitzalpelifirn,
+      Staefelfirn,
+      Staldenfirn,
+      Steghorngletscher,
+      Steigletscher,
+      Steilimigletscher,
+      Steinugletscher,
+      Stierberg_Haengegletscher,
+      Stockfirn,
+      Stockjigletscher,
+      Stoecklifirn,
+      Stoessenfirn,
+      Stotzig_Egg,
+      Strahlegggletscher,
+      Strubelgletscher,
+      Studergletscher,
+      Stuefesteigletscher,
+      Suedlicher_Breitlouwenengletscher,
+      Sulzgletscher,
+      Surettagletscher,
+      Sustenlochfirn,
+      Taleggligletscher,
+      Taellibodengletscher,
+      Taelligletscher,
+      Tambogletscher,
+      Taminser_Gletscher,
+      Tellingletscher,
+      Tennbachgletscher,
+      Tiefengletscher,
+      Tiefmattengletscher,
+      Tierberggletscher,
+      Tiertaelli,
+      Titlisgletscher,
+      Tobigergletscher,
+      Tossengrat_SE_Flanke,
+      Tournelon_Blanc_ENE_Flanke,
+      Triftgletscher_Fieschertal,
+      Triftgletscher_Innertkirchen_Obere_und_Undre_Triftgletscher_gemeinsam,
+      Triftgletscher_Saas_Grund,
+      Triftgletscher_Zermatt,
+      Triftjigletscher_Zermatt_Breithorn,
+      Triftjigletscher_Zermatt_Stockhorn,
+      Triftjiplateau,
+      Triftsack,
+      Tschingelfirn_Lauterbrunnen,
+      Tschingelfirn_Silenen,
+      Tschingelfirn_Wassen,
+      Tungelgletscher,
+      Turbegletscher,
+      Turtmanngletscher,
+      Uistre_Stampbachgletscher,
+      Undere_Oeschinengletscher,
+      Undere_Stelligletscher,
+      Unders_Ischmeer,
+      Undre_Triftgletscher,
+      Unnerbaechgletscher,
+      Unter_Satzfirn,
+      Unteraargletscher,
+      Unterer_Grindelwaldgletscher,
+      Unterer_Theodulgletscher,
+      Uratgletscher,
+      Uesser_Talgletscher,
+      Uessre_Baltschiedergletscher,
+      Vadrec_da_Fedoz,
+      Vadrec_da_Gallagiun,
+      Vadrec_da_la_Bles,
+      Vadrec_da_la_Bondasca,
+      Vadrec_da_la_Trubinasca,
+      Vadrec_da_l_Albigna,
+      Vadrec_dal_Cantun,
+      Vadrec_dal_Castel_Nord,
+      Vadrec_dal_Castel_Sud,
+      Vadrec_dal_Cengal,
+      Vadrec_dei_Rossi,
+      Vadrec_del_Forno,
+      Vadrecc_di_Bresciana,
+      Vadrecc_di_Camadra,
+      Vadrecc_di_Casletto,
+      Vadrecc_di_Sorda,
+      Vadret_Samnaun,
+      Vadret_Boval_Dadains,
+      Vadret_Boval_Dadour,
+      Vadret_Boval_d_Mez,
+      Vadret_Calderas,
+      Vadret_da_Canton,
+      Vadret_da_Chalaus,
+      Vadret_da_Fenga,
+      Vadret_da_Fex,
+      Vadret_da_Grialetsch,
+      Vadret_da_la_Fortezza,
+      Vadret_da_la_Sella,
+      Vadret_da_l_Alp_Ota,
+      Vadret_da_las_Maisas,
+      Vadret_da_Misaun,
+      Vadret_da_Morteratsch,
+      Vadret_da_Nuna,
+      Vadret_da_Palue,
+      Vadret_da_Piz_Platta,
+      Vadret_da_Porchabella,
+      Vadret_da_Radoent,
+      Vadret_da_Rosatsch,
+      Vadret_da_Roseg,
+      Vadret_da_Sarsura,
+      Vadret_da_Sassal_Mason,
+      Vadret_da_Sesvenna,
+      Vadret_da_Tasna,
+      Vadret_da_Tisch,
+      Vadret_da_Triazza,
+      Vadret_da_Tschierva,
+      Vadret_da_Varuna,
+      Vadret_da_Zuort,
+      Vadret_d_Agnel,
+      Vadret_dal_Cambrena,
+      Vadret_dal_Chapuetschin,
+      Vadret_dal_Corvatsch,
+      Vadret_dal_Giavioel,
+      Vadret_dal_Guez,
+      Vadret_dal_Murtel,
+      Vadret_dal_Tremoggia,
+      Vadret_dals_Aguagliouls,
+      Vadret_d_Arlas,
+      Vadret_d_Arpschella,
+      Vadret_d_Err,
+      Vadret_d_Es_cha,
+      Vadret_digl_Ela,
+      Vadret_d_Urezzas,
+      Vadret_Futschoel,
+      Vadret_Gluena,
+      Vadret_Gueglia,
+      Vadret_Lagrev,
+      Vadret_Laviner,
+      Vadret_Palued_Marscha,
+      Vadret_Pers,
+      Vadret_Pischa,
+      Vadret_Prievlus,
+      Vadret_Sagliains,
+      Vadret_Tiatscha,
+      Vadret_Traunter_Ovas,
+      Vadret_Tuoi,
+      Vadret_Vallorgia,
+      Vadret_Valtorta,
+      Vadret_Viluoch,
+      Vadrettin_da_Misaun,
+      Vadrettin_da_Tschierva,
+      Vadrettin_dal_Chapuetschin,
+      Vedreit_da_Camp,
+      Vedreit_dal_Duegueral,
+      Vedretta_di_Pizzo_Scalino,
+      Vernelagletscher,
+      Verstanclagletscher,
+      Vorder_Triftgletscher,
+      Vorderer_Roetifirn,
+      Vordra_Schmadrigletscher,
+      Waechselgletscher,
+      Wallenburfirn,
+      Walliser_Fiescherfirn,
+      Wannenhorngletscher,
+      Wannigletscher,
+      Weingartengletscher,
+      Weissmiesgletscher,
+      Wendengletscher,
+      Wetterlueckengletscher,
+      Wichelplanggfirn,
+      Wiissenbachgletscher,
+      Wildstrubelgletscher,
+      Windgaellenfirn,
+      Witenwasserengletscher,
+      Wysstalgletscher,
+      Zadrellgletscher,
+      Zapportgletscher,
+      Zenbaechengletscher,
+      Zmuttgletscher,
+      Zwillingsgletscher,
+      Zwischbergengletscher
+    );
+
+    STATUS = (                 !! in / à StorMe: BI_STATUS
+      in_Bearbeitung,
+      Freigabe_beantragt,
+      freigegeben,
+      in_Ueberarbeitung
+    );
+
+    TAGGENAUIGKEIT = (
+      Jahr,
+      Monat,
+      Tag
+    );
+
+    ZEITGENAUIGKEIT = (        !! in / à StorMe: DATUM_GENAUIGKEIT
+      unbekannt,
+      Jahrzehnt,
+      Jahr,
+      Monat,
+      Tag,
+      Stunde,
+      Minute
+    );
+
+!!    Beginn Definition Datumsformat
+        /** Definition von StorMeDate wie INTERLIS.Date,
+         *  aber mit erweitertem Wertebereich, d. h. ab Jahr 1000.
+         *
+         *  Allgemeiner Hinweis zum Datumsformat in INTERLIS:
+         *  Gemäss XML-Spezifikation muss Monat und Tag genau zweistellig sein,
+         *  also z. B. "2019-01-05".
+         *  Gemäss Anhang A im RefHB für INTERLIS 2.3 wäre "2019-1-5" auch gültig,
+         *  die Einleitung zu Kapitel 3 Transfer im RefHB besagt jedoch, dass sich der Transfer an
+         *  die XML-Spezifikation anlehnt. In INTERLIS 2.4 wurde die Definition abschliessend
+         *  analog der XML-Spezifikation eingeschränkt, so dass nur "2019-01-05" gültig ist.
+         *  Die Interlis-Prüfwerkzeuge lassen nur das Format "2019-01-05" zu.
+         *  ---
+         *  Définition de StorMeDate comme INTERLIS.DateTime,
+         *  mais avec une domaine de valeurs étendue, c'est-à-dire à partir de l'an 1000.
+         *
+         *  Note générale sur le format de la date dans INTERLIS :
+         *  Selon la spécification XML, le mois et le jour doivent avoir exactement deux chiffres,
+         *  comme par exemple "2019-01-05".
+         *  Selon l'annexe A du RefHB pour INTERLIS 2.3, "2019-1-5" serait également valable,
+         *  mais l'introduction du chapitre 3 Transfert dans le RefHB indique que le transfert est
+         *  basé sur la spécification XML. Dans INTERLIS 2.4, la définition a finalement été
+         *  restreinte par analogie à la spécification XML, de sorte que seul "2019-01-05" est
+         *  valable.
+         *  Les outils de test d'Interlis n'autorisent que le format "2019-01-05".
+         */
+
+    StorMeYear = 1000 .. 2999 [INTERLIS.Y];   !! Jahr 1000 als untere Grenze ist systembedingt (FME)
+                           !! Année 1000 comme limite inférieure est déterminée par le système (FME)
+    STRUCTURE StorMeDate_Struct =
+      Year: StorMeYear;
+      SUBDIVISION Month: 1 .. 12 [INTERLIS.M];
+      SUBDIVISION Day: 1 .. 31 [INTERLIS.d];
+    END StorMeDate_Struct;
+
+    STRUCTURE StorMeDateTime_Struct EXTENDS StorMeDate_Struct =
+      SUBDIVISION Hours: 0 .. 23 CIRCULAR [INTERLIS.h];
+      CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [INTERLIS.min];
+      CONTINUOUS SUBDIVISION Seconds: 0.000 .. 59.999 CIRCULAR [INTERLIS.s];
+    END StorMeDateTime_Struct;
+
+    DOMAIN StorMeTime = FORMAT BASED ON INTERLIS.UTC ( Hours/2 ":" Minutes ":" Seconds );
+    DOMAIN StorMeDate = FORMAT BASED ON StorMeDate_Struct ( Year "-" Month "-" Day );
+    DOMAIN StorMeDateTime EXTENDS StorMeDate = FORMAT BASED ON
+                          StorMeDateTime_Struct ( INHERITANCE "T" Hours/2 ":" Minutes ":" Seconds );
+!!    Ende Definition Datumsformat
+
+
+  TOPIC StorMe_MGDM =
+
+    CLASS BASISINFORMATION =             !! wird in umfassendem Modell erweitert -- sera étendu dans
+      BI_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;                !! |le modèle global
+      BI_SE_ID : Naturereigniskataster_MGDM_LV95_V1.GUID;
+      BI_DATENHERR : MANDATORY Naturereigniskataster_MGDM_LV95_V1.DATENHERR;
+      BI_STORME_NR : MANDATORY TEXT*16;  !!  (1) (3)
+        /** Der Aufbau der StorMe-Nr. ist im Objektkatalgog in der Modelldokumentation definiert.
+         * ---
+         *  La structure du numéro StorMe est définie dans le catalogue d'objets dans la
+         *  documentation du modèle.  */
+      BI_GEOMETRIE : MANDATORY GeometryCHLV95_V1.Coord2;
+      BI_HP_WASSER : MANDATORY BOOLEAN;  !! (2) (4)
+      BI_HP_RUTSCHUNG : MANDATORY BOOLEAN;  !! (2) (4)
+      BI_HP_STURZ : MANDATORY BOOLEAN;  !! (2) (4)
+      BI_HP_LAWINE : MANDATORY BOOLEAN;  !! (2) (4)
+      BI_HP_EINSTURZ_ABSENKUNG : MANDATORY BOOLEAN;  !! (2) (4)
+      BI_HP_ANDERE : MANDATORY BOOLEAN;  !! (2) (4)
+        /** Es muss mindestens ein Hauptprozess definiert sein.
+         *  ---
+         *  Au moins un processus principal doit être défini.  */
+      BI_MASSGEBENDER_PROZESS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.HAUPTPROZESS;  !! (3)
+        /** (3) Das Attribut BI_MASSGEBENDER_PROZESS muss mit dem Prozesskürzel der         !! |(4)
+         *    StorMe-Nr. übereinstimmen. (Bei Einsturz_Absenkung ist auch das Kürzel "R" möglich,
+         *    bedingt durch die Migration aus StorMe 2.0.)
+         *  (4) Ausserdem muss das entsprechende Attribut BI_HP_<Hauptprozess> den Wert "true"
+         *    aufweisen.
+         *  ---
+         *  (3) L'attribut BI_MASSGEBENDER_PROZESS doit correspondre au code de processus du numéro
+         *    StorMe. (En cas Einsturz_Absenkung, l'abréviation "R" est également possible, dû à la
+         *    migration de StorMe 2.0.)
+         *  (4) L'attribut correspondant BI_HP_<processus principal> doit également avoir la valeur
+         *    "true".  */
+      BI_DATUM : Naturereigniskataster_MGDM_LV95_V1.StorMeDateTime;  !! (5) (6)
+        /** (5) BI_DATUM: Format muss XML-Spezifikation enstrechen.
+         *  (6) BI_DATUM ist zwingend, falls BI_DATUM_GENAUIGKEIT != 'unbekannt' und leer, falls
+         *    BI_DATUM_GENAUIGKEIT == 'unbekannt'.
+         *  Hinweis:
+         *    Sekunden werden bei BI_DATUM nicht berücksichtigt.
+         * ---
+         *  (5) BI_DATUM: Le format doit être conforme à la spécification XML.
+         *  (6) BI_DATUM est obligatoire, si BI_DATUM_GENAUIGKEIT != 'unbekannt' et vide, si
+         *    BI_DATUM_GENAUIGKEIT == 'unbekannt'.
+         *  Remarque:
+         *    Les secondes ne sont pas considérées à BI_DATUM.  */
+      BI_DATUM_GENAUIGKEIT : MANDATORY Naturereigniskataster_MGDM_LV95_V1.ZEITGENAUIGKEIT;  !! (6)
+      BI_DAUER_TAG : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (7)
+      BI_DAUER_STD : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (7)
+      BI_DAUER_MIN : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (7)
+      BI_DAUER_MAO : Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (7)
+      BI_ERHEBUNGSART : Naturereigniskataster_MGDM_LV95_V1.ERHEBUNGSART;
+      BI_GLETSCHER : MANDATORY BOOLEAN;  !! (8)
+        /** BI_GLETSCHER ist true, falls BI_GLETSCHERNAME definiert,
+         *    und false, falls BI_GLETSCHERNAME leer.
+         *  ---
+         *  BI_GLETSCHER est true, si BI_GLETSCHERNAME est défini,
+         *    et false, si BI_GLETSCHERNAME est vide.  */
+      BI_NAME_LOKALITAET : Naturereigniskataster_MGDM_LV95_V1.NORMALTEXT;
+      BI_GEWAESSERNAME : Naturereigniskataster_MGDM_LV95_V1.NORMALTEXT;
+      BI_GLETSCHERNAME : Naturereigniskataster_MGDM_LV95_V1.ST_GLETSCHERNAME;  !! (8)
+        /** BI_GLETSCHERNAME ist zwingend, wenn BI_GLETSCHER == true,
+         *    und leer, falls BI_GLETSCHER == false.
+         *  ---
+         *  BI_GLETSCHERNAME  est obligatoire, si BI_GLETSCHER == true,
+         *    et vide, si BI_GLETSCHER == false.  */
+      BI_GEMEINDE : Naturereigniskataster_MGDM_LV95_V1.NORMALTEXT;
+        /** Das Attribut wird beim Import in StorMe 3.0 ignoriert, da die Information in StorMe 3.0
+         *    aus den Koordinaten generiert wird und im INTERLIS-Format nur für den Export aus
+         *    StorMe 3.0 und einen allfälligen weiteren Transfer benötigt wird.
+         *  ---
+         *  Cet attribut est ignoré lors de l'importation dans StorMe 3.0, car les informations
+         *    contenues dans StorMe 3.0 sont générées à partir des coordonnées. Dans le format
+         *    INTERLIS, ils ne sont nécessaires que pour l'exportation du StorMe 3.0 et pour un
+         *    éventuel transfert de données ultérieur.  */
+      BI_BEMERKUNGEN : Naturereigniskataster_MGDM_LV95_V1.BEMERKUNGENTEXT;
+      BI_STATUS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.STATUS;
+
+      UNIQUE BI_ID;
+      UNIQUE BI_STORME_NR;
+
+        !!@ cid = (1a)
+        !!@ name = (1a)
+        MANDATORY CONSTRAINT  !! (1a)
+            (((INTERLIS.len (BI_STORME_NR)) == 15) OR ((INTERLIS.len (BI_STORME_NR)) == 16));
+        !!@ cid = (1b)
+        !!@ name = (1b)
+        MANDATORY CONSTRAINT  !! (1b)
+            (((Text.indexOf (BI_STORME_NR, "AG", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "AI", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "AR", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "BE", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "BL", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "BS", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "FR", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "GE", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "GL", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "GR", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "JU", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "LU", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "NE", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "NW", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "OW", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "SG", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "SH", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "SO", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "SZ", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "TG", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "TI", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "UR", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "VD", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "VS", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "ZG", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "ZH", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "FL", 0)) == 0) OR
+            ((Text.indexOf (BI_STORME_NR, "EX", 0)) == 0) );
+        !!@ cid = (1c)
+        !!@ name = (1c)
+        MANDATORY CONSTRAINT  !! (1c)
+            ((Text.indexOf (BI_STORME_NR, "-", 0)) == 2);
+        !!@ cid = (1d)
+        !!@ name = (1d)
+        MANDATORY CONSTRAINT  !! (1d)
+            (((Text.indexOf (BI_STORME_NR, "-W-", 3)) == 7) OR
+            ((Text.indexOf (BI_STORME_NR, "-R-", 3)) == 7) OR
+            ((Text.indexOf (BI_STORME_NR, "-S-", 3)) == 7) OR
+            ((Text.indexOf (BI_STORME_NR, "-L-", 3)) == 7) OR
+            ((Text.indexOf (BI_STORME_NR, "-EA-", 3)) == 7) OR
+            ((Text.indexOf (BI_STORME_NR, "-A-", 3)) == 7));
+
+        !!@ cid = (2)
+        !!@ name = (2)
+        MANDATORY CONSTRAINT  !! (2)
+            ((BI_HP_WASSER) OR (BI_HP_RUTSCHUNG) OR (BI_HP_STURZ) OR (BI_HP_LAWINE) OR
+            (BI_HP_EINSTURZ_ABSENKUNG) OR (BI_HP_ANDERE));
+
+/** Für den folgenden am 12.1.2023 auskommentierten Constraint (3) gilt folgendes:
+ *  Die grundsätzliche Regel für die Erstellung der StorMe-Nummer (Buchstabenkürzel
+ *  entspricht dem 'massgeblichen Hauptprozess') besteht grundsätzlich weiterhin.
+ *  Ihre strikte Einhaltung wird jedoch nicht mehr überprüft für die Gültigkeit eines
+ *  modellkonformen Datensatzes.
+ *  La contrainte suivante (3), commentée le 12.1.2023, est soumise aux règles suivantes :
+ *  La règle principale pour la composition du numéro StorMe (l'abréviation correspond au
+ *  'processus principal déterminant') est en principe toujours valable.
+ *  Son strict respect n'est toutefois plus contrôlé pour la validité d'un enregistrement
+ *  de données conforme au modèle.
+ *
+ *      !!@ cid = (3)
+ *      !!@ name = (3)
+ *       MANDATORY CONSTRAINT  !! (3)
+ *          ((((Text.indexOf (BI_STORME_NR, "-W-", 3)) == 7) AND
+ *          (BI_MASSGEBENDER_PROZESS == #Wasser))
+ *          OR
+ *          (((Text.indexOf (BI_STORME_NR, "-R-", 3)) == 7) AND
+ *          (BI_MASSGEBENDER_PROZESS == #Rutschung))
+ *          OR
+ *          (((Text.indexOf (BI_STORME_NR, "-S-", 3)) == 7) AND
+ *          (BI_MASSGEBENDER_PROZESS == #Sturz))
+ *          OR
+ *          (((Text.indexOf (BI_STORME_NR, "-L-", 3)) == 7) AND
+ *          (BI_MASSGEBENDER_PROZESS == #Lawine))
+ *          OR
+ *          ((((Text.indexOf (BI_STORME_NR, "-EA-", 3)) == 7) OR
+ *          ((Text.indexOf (BI_STORME_NR, "-R-", 3)) == 7)) AND
+ *          (BI_MASSGEBENDER_PROZESS == #Einsturz_Absenkung))
+ *          OR
+ *          (((Text.indexOf (BI_STORME_NR, "-A-", 3)) == 7) AND
+ *          (BI_MASSGEBENDER_PROZESS == #Andere)));
+ */
+
+        !!@ cid = (4)
+        !!@ name = (4)
+        MANDATORY CONSTRAINT  !! (4)
+            (((BI_HP_WASSER) AND (BI_MASSGEBENDER_PROZESS == #Wasser)) OR
+            ((BI_HP_RUTSCHUNG) AND (BI_MASSGEBENDER_PROZESS == #Rutschung)) OR
+            ((BI_HP_STURZ) AND (BI_MASSGEBENDER_PROZESS == #Sturz)) OR
+            ((BI_HP_LAWINE) AND (BI_MASSGEBENDER_PROZESS == #Lawine)) OR
+            ((BI_HP_EINSTURZ_ABSENKUNG) AND (BI_MASSGEBENDER_PROZESS == #Einsturz_Absenkung)) OR
+            ((BI_HP_ANDERE) AND (BI_MASSGEBENDER_PROZESS == #Andere)));
+
+        !!@ cid = (5)
+        !!@ name = (5)
+        MANDATORY CONSTRAINT  !! (5)
+           ((Text.indexOf (BI_DATUM, "T", 0)) == 10);
+
+        !!@ cid = (6)
+        !!@ name = (6)
+        MANDATORY CONSTRAINT  !! (6)
+            DEFINED (BI_DATUM) AND (BI_DATUM_GENAUIGKEIT != #unbekannt) OR
+            NOT (DEFINED (BI_DATUM)) AND (BI_DATUM_GENAUIGKEIT == #unbekannt);
+
+         /** Falls BI_DAUER_TAG, BI_DAUER_STD und/oder BI_DAUER_MIN erfasst sind, ist zwingend auch
+          *    ein MAO-Code (mit Wert „Messwert_Feststellung“ oder „Annahme_Schaetzung“) anzugeben.
+          *  Falls keines der Attribute BI_DAUER_TAG, BI_DAUER_STD und BI_DAUER_MIN erfasst ist,
+          *    darf der MAO-Code nicht "Messwert_Feststellung" und nicht "Annahme_Schaetzung" sein.
+          *    BI_DAUER_MAO ist dann also "nicht_bestimmbar" oder nicht erfasst.
+          *  ---
+          *  Si on saisit BI_DAUER_TAG, BI_DAUER_STD et/ou BI_DAUER_MIN, il faut également saisir
+          *    un code MAO (avec la valeur "Messwert_Feststellung" ou "Annahme_.Schaetzung").
+          *  Si aucun des attributs BI_DAUER_TAG, BI_DAUER_STD et BI_DAUER_MIN n'est saisi, le code
+          *  MAO ne doit pas être "Messwert_Feststellung" ni "Annahme_Schaetzung". BI_DAUER_MAO est
+          *  alors "nicht_bestimmbar" ou non enregistré (c'est-à-dire vide).  */
+        !!@ cid = (7a)
+        !!@ name = (7a)
+        MANDATORY CONSTRAINT  !! (7a)
+            (NOT (DEFINED (BI_DAUER_TAG)) OR
+            ((BI_DAUER_MAO == #Messwert_Feststellung) OR (BI_DAUER_MAO == #Annahme_Schaetzung)))
+            AND
+            (NOT (DEFINED (BI_DAUER_STD)) OR
+            ((BI_DAUER_MAO == #Messwert_Feststellung) OR (BI_DAUER_MAO == #Annahme_Schaetzung)))
+            AND
+            (NOT (DEFINED (BI_DAUER_MIN)) OR
+            ((BI_DAUER_MAO == #Messwert_Feststellung) OR (BI_DAUER_MAO == #Annahme_Schaetzung)));
+        !!@ cid = (7b)
+        !!@ name = (7b)
+        MANDATORY CONSTRAINT  !! (7b)
+            ((DEFINED (BI_DAUER_TAG) OR DEFINED (BI_DAUER_STD) OR DEFINED (BI_DAUER_MIN)) OR
+            ((BI_DAUER_MAO != #Messwert_Feststellung) AND (BI_DAUER_MAO != #Annahme_Schaetzung)));
+
+        !!@ cid = (8)
+        !!@ name = (8)
+        MANDATORY CONSTRAINT  !! (8)
+            BI_GLETSCHER AND DEFINED (BI_GLETSCHERNAME) OR
+            NOT (BI_GLETSCHER) AND NOT (DEFINED (BI_GLETSCHERNAME));
+    END BASISINFORMATION;
+
+    CLASS DETAILINFORMATION (ABSTRACT) =
+      DI_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;
+      DI_BI_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;
+      DI_PR_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;
+
+      UNIQUE DI_ID;
+    END DETAILINFORMATION;
+
+    CLASS DETAILINFORMATION_A           !! wird in umfassendem Modell erweitert; Prozess Andere
+    EXTENDS DETAILINFORMATION =         !! |sera étendu dans le modèle global; processus autres
+    END DETAILINFORMATION_A;
+
+    CLASS DETAILINFORMATION_EA (ABSTRACT)   !! Prozesse Einsturz / Absenkung
+    EXTENDS DETAILINFORMATION =             !! |processus effondrement / affaissement
+    END DETAILINFORMATION_EA;
+
+    CLASS DETAILINFORMATION_EA_A      !! wird in umfassendem Modell erweitert; Prozess Absenkung
+    EXTENDS DETAILINFORMATION_EA =    !! |sera étendu dans le modèle global; processus affaissement
+      DI_EA_A_FLAECHE : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (9)
+      DI_EA_A_FLAECHE_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (9)
+         /** Beispielkommentar für alle MAO- und MAOE-Constraints. Der Übersichtlichkeit halber ist
+          *    er nur hier aufgeführt, an den anderen Stellen gilt es analog:
+          *  Teil (a) des Constraints:
+          *  Falls Attribut (hier DI_EA_A_FLAECHE) erfasst, ist zwingend ein MAO(E)-Code
+          *    (mit Wert "Messwert_Feststellung" oder "Annahme_Schaetzung") anzugeben.
+          *  Teil (b) des Constraints:
+          *  Falls Attribut (hier DI_EA_A_FLAECHE) nicht erfasst, darf MAO-Code nicht
+          *    "Messwert_Feststellung" und nicht "Annahme_Schaetzung" sein.
+          *    MAO-Code ist dann also "nicht_bestimmbar" (bei MAOE auch: "externe_Datenquelle")
+          *    oder nicht erfasst (letzeres nicht, falls MAO-Code MANDATORY).
+          *  ---
+          *  Exemple de commentaire pour toutes les contraintes MAO et MAOE. Par souci de clarté,
+          *    elle n'est mentionnée qu'ici, mais s'applique de la même manière aux autres
+          *    endroits :
+          *  Partie (a) de la contrainte :
+          *  Si l'attribut (dans ce cas DI_EA_A_FLAECHE) est saisi, un code MAO(E)-Code (avec la
+          *    valeur "Messwert_Feststellung" ou "Annahme_Schaetzung") doit être saisi.
+          *  Partie (b) de la contrainte :
+          *  Si l'attribut (ici DI_EA_A_FLAECHE) n'est pas saisi, le code MAO ne doit pas être
+          *    "Messwert_Feststellung" et pas "Annahme_Schaetzung".
+          *    Le code MAO est alors "nicht_bestimmbar" (pour MAOE aussi : "externe_Datenquelle") ou
+          *    non enregistré (ce dernier pas si le code MAO est obligatoire).  */
+
+        !!@ cid = (9a)
+        !!@ name = (9a)
+        MANDATORY CONSTRAINT  !! (9a)
+            NOT (DEFINED (DI_EA_A_FLAECHE)) OR ((DI_EA_A_FLAECHE_MAO == #Messwert_Feststellung)
+            OR (DI_EA_A_FLAECHE_MAO == #Annahme_Schaetzung));
+        !!@ name = (9b)
+        !!@ cid = (9b)
+        MANDATORY CONSTRAINT  !! (9b)
+            DEFINED (DI_EA_A_FLAECHE) OR ((DI_EA_A_FLAECHE_MAO != #Messwert_Feststellung)
+            AND (DI_EA_A_FLAECHE_MAO != #Annahme_Schaetzung));
+    END DETAILINFORMATION_EA_A;
+
+    CLASS DETAILINFORMATION_EA_E       !! wird in umfassendem Modell erweitert; Prozess Einsturz
+    EXTENDS DETAILINFORMATION_EA =     !! |sera étendu dans le modèle global; processus effondrement
+      DI_EA_E_FLAECHE : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (10)
+      DI_EA_E_FLAECHE_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (10)
+
+        !!@ cid = (10a)
+        !!@ name = (10a)
+        MANDATORY CONSTRAINT  !! (10a)
+            NOT (DEFINED (DI_EA_E_FLAECHE)) OR ((DI_EA_E_FLAECHE_MAO == #Messwert_Feststellung)
+            OR (DI_EA_E_FLAECHE_MAO == #Annahme_Schaetzung));
+        !!@ name = (10b)
+        !!@ cid = (10b)
+        MANDATORY CONSTRAINT  !! (10b)
+            DEFINED (DI_EA_E_FLAECHE) OR ((DI_EA_E_FLAECHE_MAO != #Messwert_Feststellung)
+            AND (DI_EA_E_FLAECHE_MAO != #Annahme_Schaetzung));
+    END DETAILINFORMATION_EA_E;
+
+    CLASS DETAILINFORMATION_L           !! wird in umfassendem Modell erweitert; Prozess Lawine
+    EXTENDS DETAILINFORMATION =         !! |sera étendu dans le modèle global; processus avalanche
+      DI_L_ABLAGERUNG_KUBATUR : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (11)
+      DI_L_ABLAGERUNG_KUBATUR_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (11)
+      DI_L_ABLAGERUNG_MAXHOEHE : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (12)
+      DI_L_ABLAGERUNG_MAXHOEHE_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (12)
+
+        !!@ cid = (11a)
+        !!@ name = (11a)
+        MANDATORY CONSTRAINT  !! (11a)
+            NOT (DEFINED (DI_L_ABLAGERUNG_KUBATUR)) OR ((DI_L_ABLAGERUNG_KUBATUR_MAO ==
+                                                         #Messwert_Feststellung)
+            OR (DI_L_ABLAGERUNG_KUBATUR_MAO == #Annahme_Schaetzung));
+        !!@ cid = (11b)
+        !!@ name = (11b)
+        MANDATORY CONSTRAINT  !! (11b)
+            DEFINED (DI_L_ABLAGERUNG_KUBATUR) OR ((DI_L_ABLAGERUNG_KUBATUR_MAO !=
+                                                   #Messwert_Feststellung)
+            AND (DI_L_ABLAGERUNG_KUBATUR_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (12a)
+        !!@ name = (12a)
+        MANDATORY CONSTRAINT  !! (12a)
+            NOT (DEFINED (DI_L_ABLAGERUNG_MAXHOEHE)) OR ((DI_L_ABLAGERUNG_MAXHOEHE_MAO ==
+                                                          #Messwert_Feststellung)
+            OR (DI_L_ABLAGERUNG_MAXHOEHE_MAO == #Annahme_Schaetzung));
+        !!@ cid = (12b)
+        !!@ name = (12b)
+        MANDATORY CONSTRAINT  !! (12b)
+            DEFINED (DI_L_ABLAGERUNG_MAXHOEHE) OR ((DI_L_ABLAGERUNG_MAXHOEHE_MAO !=
+                                                    #Messwert_Feststellung)
+            AND (DI_L_ABLAGERUNG_MAXHOEHE_MAO != #Annahme_Schaetzung));
+    END DETAILINFORMATION_L;
+
+    CLASS DETAILINFORMATION_R           !! wird in umfassendem Modell erweitert; Prozess Rutschung
+    EXTENDS DETAILINFORMATION =         !! |sera étendu dans le modèle global; processus glissement
+      DI_R_BEWEGTE_KUBATUR : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (13)
+      DI_R_BEWEGTE_KUBATUR_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (13)
+      DI_R_ABLAG_HOEHE : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (14)
+      DI_R_ABLAG_HOEHE_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (14)
+
+        !!@ cid = (13a)
+        !!@ name = (13a)
+        MANDATORY CONSTRAINT  !! (13a)
+            NOT (DEFINED (DI_R_BEWEGTE_KUBATUR)) OR ((DI_R_BEWEGTE_KUBATUR_MAO ==
+                                                      #Messwert_Feststellung)
+            OR (DI_R_BEWEGTE_KUBATUR_MAO == #Annahme_Schaetzung));
+        !!@ cid = (13b)
+        !!@ name = (13b)
+        MANDATORY CONSTRAINT  !! (13b)
+            DEFINED (DI_R_BEWEGTE_KUBATUR) OR ((DI_R_BEWEGTE_KUBATUR_MAO != #Messwert_Feststellung)
+            AND (DI_R_BEWEGTE_KUBATUR_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (14a)
+        !!@ name = (14a)
+        MANDATORY CONSTRAINT  !! (14a)
+            NOT (DEFINED (DI_R_ABLAG_HOEHE)) OR ((DI_R_ABLAG_HOEHE_MAO == #Messwert_Feststellung)
+            OR (DI_R_ABLAG_HOEHE_MAO == #Annahme_Schaetzung));
+        !!@ cid = (14b)
+        !!@ name = (14b)
+        MANDATORY CONSTRAINT  !! (14b)
+            DEFINED (DI_R_ABLAG_HOEHE) OR ((DI_R_ABLAG_HOEHE_MAO != #Messwert_Feststellung)
+            AND (DI_R_ABLAG_HOEHE_MAO != #Annahme_Schaetzung));
+    END DETAILINFORMATION_R;
+
+    CLASS DETAILINFORMATION_S           !! wird in umfassendem Modell erweitert; Prozess Sturz
+    EXTENDS DETAILINFORMATION =         !! |sera étendu dans le modèle global; processus chute
+      DI_S_ABLAGERUNG_KUBATUR : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (15)
+      DI_S_ABLAGERUNG_KUBATUR_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (15)
+      DI_S_ABLAGERUNG_ANZAHL : Naturereigniskataster_MGDM_LV95_V1.S_ANZAHL;  !! (16)
+      DI_S_ABLAGERUNG_ANZAHL_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (16)
+      DI_S_MAXBLOCK_DIM_A : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (17)
+      DI_S_MAXBLOCK_DIM_B : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (17)
+      DI_S_MAXBLOCK_DIM_C : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (17)
+      DI_S_MAXBLOCK_ABC_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (17)
+      DI_S_MAXBLOCK_FORM : Naturereigniskataster_MGDM_LV95_V1.S_FORM;  !! (18)
+      DI_S_MAXBLOCK_FORM_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (18)
+
+        !!@ cid = (15a)
+        !!@ name = (15a)
+        MANDATORY CONSTRAINT  !! (15a)
+            NOT (DEFINED (DI_S_ABLAGERUNG_KUBATUR)) OR ((DI_S_ABLAGERUNG_KUBATUR_MAO ==
+                                                         #Messwert_Feststellung)
+            OR (DI_S_ABLAGERUNG_KUBATUR_MAO == #Annahme_Schaetzung));
+        !!@ cid = (15b)
+        !!@ name = (15b)
+        MANDATORY CONSTRAINT  !! (15b)
+            DEFINED (DI_S_ABLAGERUNG_KUBATUR) OR ((DI_S_ABLAGERUNG_KUBATUR_MAO !=
+                                                   #Messwert_Feststellung)
+            AND (DI_S_ABLAGERUNG_KUBATUR_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (16a)
+        !!@ name = (16a)
+        MANDATORY CONSTRAINT  !! (16a)
+            NOT (DEFINED (DI_S_ABLAGERUNG_ANZAHL)) OR ((DI_S_ABLAGERUNG_ANZAHL_MAO ==
+                                                        #Messwert_Feststellung)
+            OR (DI_S_ABLAGERUNG_ANZAHL_MAO == #Annahme_Schaetzung));
+        !!@ cid = (16b)
+        !!@ name = (16b)
+        MANDATORY CONSTRAINT  !! (16b)
+            DEFINED (DI_S_ABLAGERUNG_ANZAHL) OR ((DI_S_ABLAGERUNG_ANZAHL_MAO !=
+                                                  #Messwert_Feststellung)
+            AND (DI_S_ABLAGERUNG_ANZAHL_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (17a)
+        !!@ name = (17a)
+        MANDATORY CONSTRAINT  !! (17a)
+            (NOT (DEFINED (DI_S_MAXBLOCK_DIM_A)) OR
+            ((DI_S_MAXBLOCK_ABC_MAO == #Messwert_Feststellung) OR
+            (DI_S_MAXBLOCK_ABC_MAO == #Annahme_Schaetzung)))
+            AND
+            (NOT (DEFINED (DI_S_MAXBLOCK_DIM_B)) OR
+            ((DI_S_MAXBLOCK_ABC_MAO == #Messwert_Feststellung) OR
+            (DI_S_MAXBLOCK_ABC_MAO == #Annahme_Schaetzung)))
+            AND
+            (NOT (DEFINED (DI_S_MAXBLOCK_DIM_C)) OR
+            ((DI_S_MAXBLOCK_ABC_MAO == #Messwert_Feststellung) OR
+            (DI_S_MAXBLOCK_ABC_MAO == #Annahme_Schaetzung)));
+        !!@ cid = (17b)
+        !!@ name = (17b)
+        MANDATORY CONSTRAINT  !! (17b)
+            (DEFINED (DI_S_MAXBLOCK_DIM_A) OR
+            ((DI_S_MAXBLOCK_ABC_MAO != #Messwert_Feststellung) AND
+            (DI_S_MAXBLOCK_ABC_MAO != #Annahme_Schaetzung)))
+            OR
+            (DEFINED (DI_S_MAXBLOCK_DIM_B) OR
+            ((DI_S_MAXBLOCK_ABC_MAO != #Messwert_Feststellung) AND
+            (DI_S_MAXBLOCK_ABC_MAO != #Annahme_Schaetzung)))
+            OR
+            (DEFINED (DI_S_MAXBLOCK_DIM_C) OR
+            ((DI_S_MAXBLOCK_ABC_MAO != #Messwert_Feststellung) AND
+            (DI_S_MAXBLOCK_ABC_MAO != #Annahme_Schaetzung)));
+
+        !!@ cid = (18a)
+        !!@ name = (18a)
+        MANDATORY CONSTRAINT  !! (18a)
+            NOT (DEFINED (DI_S_MAXBLOCK_FORM)) OR ((DI_S_MAXBLOCK_FORM_MAO ==
+                                                    #Messwert_Feststellung)
+            OR (DI_S_MAXBLOCK_FORM_MAO == #Annahme_Schaetzung));
+        !!@ cid = (18b)
+        !!@ name = (18b)
+        MANDATORY CONSTRAINT  !! (18b)
+            DEFINED (DI_S_MAXBLOCK_FORM) OR ((DI_S_MAXBLOCK_FORM_MAO != #Messwert_Feststellung)
+            AND (DI_S_MAXBLOCK_FORM_MAO != #Annahme_Schaetzung));
+    END DETAILINFORMATION_S;
+
+    CLASS DETAILINFORMATION_W (ABSTRACT)   !! Prozess Wasser
+    EXTENDS DETAILINFORMATION =
+    END DETAILINFORMATION_W;
+
+    CLASS DETAILINFORMATION_W_OG        !! wird erweitert; Oberflächenabfluss / Grundwasseraufstoss
+    EXTENDS DETAILINFORMATION_W =       !! |sera étendu; ruissellement / remontée de nappe
+      DI_W_OG_ABLAG_TIEFE_WASSER : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (19)
+      DI_W_OG_ABLAG_TIEFE_WASSER_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (19)
+
+        !!@ cid = (19a)
+        !!@ name = (19a)
+        MANDATORY CONSTRAINT  !! (19a)
+            NOT (DEFINED (DI_W_OG_ABLAG_TIEFE_WASSER)) OR ((DI_W_OG_ABLAG_TIEFE_WASSER_MAO ==
+                                                            #Messwert_Feststellung)
+           OR (DI_W_OG_ABLAG_TIEFE_WASSER_MAO == #Annahme_Schaetzung));
+        !!@ cid = (19b)
+        !!@ name = (19b)
+        MANDATORY CONSTRAINT  !! (19b)
+            DEFINED (DI_W_OG_ABLAG_TIEFE_WASSER) OR ((DI_W_OG_ABLAG_TIEFE_WASSER_MAO !=
+                                                      #Messwert_Feststellung)
+            AND (DI_W_OG_ABLAG_TIEFE_WASSER_MAO != #Annahme_Schaetzung));
+    END DETAILINFORMATION_W_OG;
+
+    CLASS DETAILINFORMATION_W_U         !! wird in umfassendem Modell erweitert; Prozess Ufererosion
+    EXTENDS DETAILINFORMATION_W =       !! |sera étendu dans le modèle global; processus érosion des
+    END DETAILINFORMATION_W_U;                                                            !! |berges
+
+    CLASS DETAILINFORMATION_W_UM     !! wird erweitert;  Überschwemmung / Übermurung
+    EXTENDS DETAILINFORMATION_W =    !! |sera étendu; inondation / débordements de lave torrentielle
+      DI_W_UM_AUSLOESUNG_GERINNEGEOMETRIE : MANDATORY BOOLEAN;  !! (20)
+      DI_W_UM_AUSLOESUNG_SCHWEMMGUT : MANDATORY BOOLEAN;  !! (20)
+      DI_W_UM_AUSLOESUNG_GESCHIEBE : MANDATORY BOOLEAN;  !! (20)
+      DI_W_UM_AUSLOESUNG_AUFLANDUNG : MANDATORY BOOLEAN;  !! (20)
+      DI_W_UM_AUSLOESUNG_DAMMBRUCH : MANDATORY BOOLEAN;  !! (20)
+      DI_W_UM_AUSLOESUNG_KANALISATION : MANDATORY BOOLEAN;  !! (20)
+      DI_W_UM_AUSLOESUNG_SEEAUSBRUCH : MANDATORY BOOLEAN;  !! (20) (21)
+      DI_W_UM_AUSLOESUNG_ANDERE : MANDATORY BOOLEAN;  !! (20)
+      DI_W_UM_AUSLOESUNG_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (20)
+        /** Falls alle Auslösungsattribute = 'false', dann muss DI_W_UM_AUSLOESUNG_MAO = 'O' sein,
+         *    ansonsten 'M' oder 'A'.
+         *  ---
+         *  Si tous les attributs de déclenchement (AUSLOESUNG) = 'false', alors
+         *    DI_W_UM_AUSLOESUNG_MAO = 'O', sinon 'M' ou 'A'.  */
+      DI_W_UM_SEEAUSBRUCH_VOL : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (21) (22)
+        /** Falls DI_W_UM_SEEAUSBRUCH_VOL definiert ist, muss DI_W_U_AUSLOESUNG_SEEAUSBRUCH 'true'
+         *    sein.
+         *  ---
+         *  Si DI_W_UM_UM_SEEAUSBRUCH_VOL est défini, DI_W_U_AUSLOESUNG_SEEAUSBRUCH doit être
+         *    'true'..  */
+      DI_W_UM_SEEAUSBRUCH_VOL_MAO : Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (22)
+      DI_W_UM_ABLAG_VOL_FEST : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (23)
+      DI_W_UM_ABLAG_VOL_FEST_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (23)
+      DI_W_UM_ABLAG_TIEFE_WASSER : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (24)
+      DI_W_UM_ABLAG_TIEFE_WASSER_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (24)
+      DI_W_UM_ABLAG_VOL_MG : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (25)
+      DI_W_UM_ABLAG_VOL_MG_MAO : Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (25) (25a)
+	    /** Das Attribut  !! CONSTRAINT (25a)
+         *  DI_W_UM_ABLAG_VOL_MG_MAO ist verpflichtend, falls das Attribut PR_W_PROZESS in der
+         *  Klasse PROZESSRAUM_W den Wert 'Uebermurung' aufweist.
+         *    ** ACHTUNG ** Dieser Constraint ist nicht ausformuliert!!
+         *  Hinweis:
+         *  Diese Bedingung ist nicht als MANDATORY CONSTRAINT formuliert, da zwei getrennte Klassen
+         *  betroffen sind. Somit wäre eine komplizierte INTERLIS-View nötig.
+         *  Die Bedingung muss trotzdem eingehalten werden!
+         *  ---
+         *  L'attribut  !! CONSTRAINT (25a)
+         *  DI_W_UM_ABLAG_VOL_MG_MAO est obligatoire si l'attribut PR_W_PROZESS de la classe
+         *  PROZESSRAUM_W a la valeur 'Uebermurung'.
+         *    ** ATTENTION ** Ce constraint n'est pas formulé !!
+         *  Remarque:
+         *  Cette condition n'est pas formulée en tant que MANDATORY CONSTRAINT, car deux classes
+         *  differentes sont concernées. À cause de cela, une "view" INTERLIS compliqué serait
+         *  nécessaire.
+         *  La condition doit être néanmoins respecté !  */
+      DI_W_UM_ABFLUSS_MAX : Naturereigniskataster_MGDM_LV95_V1.DOUBLE;  !! (26)
+      DI_W_UM_ABFLUSS_MAX_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAO;  !! (26)
+
+        !!@ cid = (20)
+        !!@ name = (20)
+        MANDATORY CONSTRAINT  !! (20)
+            ((NOT (DI_W_UM_AUSLOESUNG_GERINNEGEOMETRIE) AND
+            NOT (DI_W_UM_AUSLOESUNG_SCHWEMMGUT) AND
+            NOT (DI_W_UM_AUSLOESUNG_GESCHIEBE) AND
+            NOT (DI_W_UM_AUSLOESUNG_AUFLANDUNG) AND
+            NOT (DI_W_UM_AUSLOESUNG_DAMMBRUCH) AND
+            NOT (DI_W_UM_AUSLOESUNG_KANALISATION) AND
+            NOT (DI_W_UM_AUSLOESUNG_SEEAUSBRUCH) AND
+            NOT (DI_W_UM_AUSLOESUNG_ANDERE))
+            AND
+            ((DI_W_UM_AUSLOESUNG_MAO != #Messwert_Feststellung) AND
+            (DI_W_UM_AUSLOESUNG_MAO != #Annahme_Schaetzung)))
+            OR
+            (((DI_W_UM_AUSLOESUNG_GERINNEGEOMETRIE) OR (DI_W_UM_AUSLOESUNG_SCHWEMMGUT) OR
+            (DI_W_UM_AUSLOESUNG_GESCHIEBE) OR (DI_W_UM_AUSLOESUNG_AUFLANDUNG) OR
+            (DI_W_UM_AUSLOESUNG_DAMMBRUCH) OR (DI_W_UM_AUSLOESUNG_KANALISATION) OR
+            (DI_W_UM_AUSLOESUNG_SEEAUSBRUCH) OR (DI_W_UM_AUSLOESUNG_ANDERE))
+            AND
+            ((DI_W_UM_AUSLOESUNG_MAO == #Messwert_Feststellung) OR
+            (DI_W_UM_AUSLOESUNG_MAO == #Annahme_Schaetzung)));
+
+        !!@ cid = (21)
+        !!@ name = (21)
+        MANDATORY CONSTRAINT  !! (21)
+            (DI_W_UM_AUSLOESUNG_SEEAUSBRUCH) OR NOT (DEFINED (DI_W_UM_SEEAUSBRUCH_VOL));
+
+        !!@ cid = (22a)
+        !!@ name = (22a)
+        MANDATORY CONSTRAINT  !! (22a)
+            NOT (DEFINED (DI_W_UM_SEEAUSBRUCH_VOL)) OR ((DI_W_UM_SEEAUSBRUCH_VOL_MAO ==
+                                                         #Messwert_Feststellung)
+            OR (DI_W_UM_SEEAUSBRUCH_VOL_MAO == #Annahme_Schaetzung));
+        !!@ cid = (22b)
+        !!@ name = (22b)
+        MANDATORY CONSTRAINT  !! (22b)
+            DEFINED (DI_W_UM_SEEAUSBRUCH_VOL) OR ((DI_W_UM_SEEAUSBRUCH_VOL_MAO !=
+                                                   #Messwert_Feststellung)
+            AND (DI_W_UM_SEEAUSBRUCH_VOL_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (23a)
+        !!@ name = (23a)
+        MANDATORY CONSTRAINT  !! (23a)
+            NOT (DEFINED (DI_W_UM_ABLAG_VOL_FEST)) OR ((DI_W_UM_ABLAG_VOL_FEST_MAO ==
+                                                        #Messwert_Feststellung)
+            OR (DI_W_UM_ABLAG_VOL_FEST_MAO == #Annahme_Schaetzung));
+        !!@ cid = (23b)
+        !!@ name = (23b)
+        MANDATORY CONSTRAINT  !! (23b)
+            DEFINED (DI_W_UM_ABLAG_VOL_FEST) OR ((DI_W_UM_ABLAG_VOL_FEST_MAO !=
+                                                  #Messwert_Feststellung)
+            AND (DI_W_UM_ABLAG_VOL_FEST_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (24a)
+        !!@ name = (24a)
+        MANDATORY CONSTRAINT  !! (24a)
+            NOT (DEFINED (DI_W_UM_ABLAG_TIEFE_WASSER)) OR ((DI_W_UM_ABLAG_TIEFE_WASSER_MAO ==
+                                                            #Messwert_Feststellung)
+            OR (DI_W_UM_ABLAG_TIEFE_WASSER_MAO == #Annahme_Schaetzung));
+        !!@ cid = (24b)
+        !!@ name = (24b)
+        MANDATORY CONSTRAINT  !! (24b)
+            DEFINED (DI_W_UM_ABLAG_TIEFE_WASSER) OR ((DI_W_UM_ABLAG_TIEFE_WASSER_MAO !=
+                                                      #Messwert_Feststellung)
+            AND (DI_W_UM_ABLAG_TIEFE_WASSER_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (25a)
+        !!@ name = (25a)
+        MANDATORY CONSTRAINT  !! (25a)
+            NOT (DEFINED (DI_W_UM_ABLAG_VOL_MG)) OR ((DI_W_UM_ABLAG_VOL_MG_MAO ==
+                                                      #Messwert_Feststellung)
+            OR (DI_W_UM_ABLAG_VOL_MG_MAO == #Annahme_Schaetzung));
+        !!@ cid = (25b)
+        !!@ name = (25b)
+        MANDATORY CONSTRAINT  !! (25b)
+            DEFINED (DI_W_UM_ABLAG_VOL_MG) OR ((DI_W_UM_ABLAG_VOL_MG_MAO != #Messwert_Feststellung)
+            AND (DI_W_UM_ABLAG_VOL_MG_MAO != #Annahme_Schaetzung));
+
+        !!@ cid = (26a)
+        !!@ name = (26a)
+        MANDATORY CONSTRAINT  !! (26a)
+            NOT (DEFINED (DI_W_UM_ABFLUSS_MAX)) OR ((DI_W_UM_ABFLUSS_MAX_MAO ==
+                                                     #Messwert_Feststellung)
+            OR (DI_W_UM_ABFLUSS_MAX_MAO == #Annahme_Schaetzung));
+        !!@ cid = (26b)
+        !!@ name = (26b)
+        MANDATORY CONSTRAINT  !! (26b)
+            DEFINED (DI_W_UM_ABFLUSS_MAX) OR ((DI_W_UM_ABFLUSS_MAX_MAO != #Messwert_Feststellung)
+             AND (DI_W_UM_ABFLUSS_MAX_MAO != #Annahme_Schaetzung));
+       END DETAILINFORMATION_W_UM;
+
+    CLASS PROZESSRAUM (ABSTRACT) =
+      PR_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;
+      PR_BI_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;
+      PR_GEOMETRIE : MANDATORY GeometryCHLV95_V1.Surface;
+      PR_EVIDENZ : MANDATORY Naturereigniskataster_MGDM_LV95_V1.EVIDENZ;
+
+      UNIQUE PR_ID;
+    END PROZESSRAUM;
+
+    CLASS PROZESSRAUM_A                 !! wird in umfassendem Modell erweitert; Prozess Andere
+    EXTENDS PROZESSRAUM =               !! |sera étendu dans le modèle global; processus autres
+      PR_A_ANDERERPROZESS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.NORMALTEXT;
+    END PROZESSRAUM_A;
+
+    CLASS PROZESSRAUM_EA      !! wird in umfassendem Modell erweitert; Prozesse Einsturz / Absenkung
+    EXTENDS PROZESSRAUM =     !! |sera étendu dans le modèle global; effondrement / affaissement
+      PR_EA_PROZESS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.PROZESSE_EA;
+    END PROZESSRAUM_EA;
+
+    CLASS PROZESSRAUM_L                 !! wird in umfassendem Modell erweitert; Prozess Lawine
+    EXTENDS PROZESSRAUM =               !! |sera étendu dans le modèle global; processus avalanche
+      PR_L_PROZESS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.PROZESSE_L;
+    END PROZESSRAUM_L;
+
+    CLASS PROZESSRAUM_R                 !! wird in umfassendem Modell erweitert; Prozess Rutschung
+    EXTENDS PROZESSRAUM =               !! |sera étendu dans le modèle global; processus glissement
+      PR_R_PROZESS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.PROZESSE_R;
+    END PROZESSRAUM_R;
+
+    CLASS PROZESSRAUM_S                 !! wird in umfassendem Modell erweitert; Prozess Sturz
+    EXTENDS PROZESSRAUM =               !! |sera étendu dans le modèle global; processus chute
+      PR_S_PROZESS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.PROZESSE_S;
+    END PROZESSRAUM_S;
+
+    CLASS PROZESSRAUM_W                 !! wird in umfassendem Modell erweitert; Prozess Wasser
+    EXTENDS PROZESSRAUM =               !! |sera étendu dans le modèle global; processus eau
+      PR_W_PROZESS : MANDATORY Naturereigniskataster_MGDM_LV95_V1.PROZESSE_W;
+    END PROZESSRAUM_W;
+
+    CLASS SAMMELEREIGNIS =              !! wird in umfassendem Modell erweitert  --  sera étendu
+      SE_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;          !! | dans le modèle global
+      SE_DATENHERR : MANDATORY Naturereigniskataster_MGDM_LV95_V1.DATENHERR;
+      SE_NAME : MANDATORY Naturereigniskataster_MGDM_LV95_V1.NORMALTEXT;
+      SE_NR : MANDATORY TEXT*15;
+      SE_GEOMETRIE : MANDATORY GeometryCHLV95_V1.Coord2;
+      SE_DATUM : MANDATORY Naturereigniskataster_MGDM_LV95_V1.StorMeDate;  !! (27)
+        /** SE_DATUM: Format muss XML-Spezifikation enstrechen.
+         * ---
+         *  SE_DATUM: Le format doit être conforme à la spécification XML.  */
+      SE_DATUM_GENAUIGKEIT : MANDATORY Naturereigniskataster_MGDM_LV95_V1.TAGGENAUIGKEIT;
+      SE_HP_WASSER : MANDATORY BOOLEAN;
+      SE_HP_RUTSCHUNG : MANDATORY BOOLEAN;
+      SE_HP_STURZ : MANDATORY BOOLEAN;
+      SE_HP_LAWINE : MANDATORY BOOLEAN;
+      SE_HP_EINSTURZ_ABSENKUNG : MANDATORY BOOLEAN;
+      SE_HP_ANDERE : MANDATORY BOOLEAN;
+      SE_GEWAESSERNAME : Naturereigniskataster_MGDM_LV95_V1.NORMALTEXT;  !! (28)
+        /** Der Name ist anzugeben, wenn SE_HP_WASSER = true.
+         *  ---
+         *  Le nom doit être assigné, si SE_HP_WASSER = true.  */
+      SE_METEO_BEMERKUNGEN : Naturereigniskataster_MGDM_LV95_V1.BEMERKUNGENTEXT;
+      SE_SCHADEN_BEMERKUNGEN : Naturereigniskataster_MGDM_LV95_V1.BEMERKUNGENTEXT;
+      SE_PROZESS_BEMERKUNGEN : Naturereigniskataster_MGDM_LV95_V1.BEMERKUNGENTEXT;
+
+      UNIQUE SE_ID;
+
+        !!@ cid = (27)
+        !!@ name = (27)
+        MANDATORY CONSTRAINT  !! (27)
+           ((INTERLIS.len (SE_DATUM)) == 10);
+
+        !!@ cid = (28)
+        !!@ name = (28)
+        MANDATORY CONSTRAINT  !! (28)
+            NOT (SE_HP_WASSER) OR DEFINED (SE_GEWAESSERNAME);
+    END SAMMELEREIGNIS;
+
+    CLASS SCHADEN =                     !! wird in umfassendem Modell erweitert  --  sera étendu
+      SC_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;           !! |dans le modèle global
+      SC_BI_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;
+      SC_GEOMETRIE : MANDATORY GeometryCHLV95_V1.Coord2;
+      SC_MENSCH_TIER : MANDATORY Naturereigniskataster_MGDM_LV95_V1.SC_ERHEBUNG;
+      SC_SACHWERTE : MANDATORY Naturereigniskataster_MGDM_LV95_V1.SC_ERHEBUNG;
+      SC_INFRASTRUKTUR : MANDATORY Naturereigniskataster_MGDM_LV95_V1.SC_ERHEBUNG;
+      SC_LW_WALD : MANDATORY Naturereigniskataster_MGDM_LV95_V1.SC_ERHEBUNG;
+      SC_BEMERKUNGEN : Naturereigniskataster_MGDM_LV95_V1.BEMERKUNGENTEXT;
+      SC_MENSCHEN_TOT : Naturereigniskataster_MGDM_LV95_V1.SC_ERHEBUNG;
+      SC_MENSCHEN_VERLETZT : Naturereigniskataster_MGDM_LV95_V1.SC_ERHEBUNG;
+      SC_TIERE : Naturereigniskataster_MGDM_LV95_V1.SC_ERHEBUNG;
+        /** Die Attribute SS_MENSCHEN_TOT, SC_MENSCHEN_VERLETZT und SC_TIERE sind abgeleitete
+         *    Attribute und werden beim Import nach StorMe 3.0 ignoriert. Sie werden im
+         *    INTERLIS-Format nur für den Export aus StorMe 3.0 und einen allfälligen weiteren
+         *    Transfer benötigt.
+         *  ---
+         *  Les attributs SS_MENSCHEN_TOT, SC_MENSCHEN_VERLETZT et SC_TIERE sont des attributs
+         *    dérivés et sont ignorés pendant l'importation dans StorMe 3.0. Dans le format
+         *    INTERLIS, ils ne sont nécessaires que pour l'exportation du StorMe 3.0 et pour un
+         *    éventuel transfert ultérieur.  */
+
+      UNIQUE SC_ID;
+    END SCHADEN;
+
+    CLASS SCHADENSPEZIFIKATION =        !! keine Erweiterung im umfassenden Modell  --  pas d'exten-
+      SS_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;      !! |sion dans le modèle global
+      SS_SC_ID : MANDATORY Naturereigniskataster_MGDM_LV95_V1.GUID;
+      SS_KAT : MANDATORY Naturereigniskataster_MGDM_LV95_V1.SC_KAT;  !! (29)
+      SS_GRAD : MANDATORY Naturereigniskataster_MGDM_LV95_V1.SC_GRAD;  !! (29)
+      SS_QUANT : Naturereigniskataster_MGDM_LV95_V1.INTEGER;  !! (29)
+      SS_MAO : MANDATORY Naturereigniskataster_MGDM_LV95_V1.MAOE;  !! (29)
+        /** Falls SS_QUANT definiert ist, darf SS_MAO nicht 'O' sein.
+         *    (Dass SS_MAO nicht leer sein darf, ist bereits durch MANDATORY bei SS_MAO abgedeckt.)
+         *  Falls SS_QUANT leer ist, muss SS_MAO entweder 'O' oder 'E' sein.
+         *  ---
+         *  Si SS_QUANT est défini, SS_MAO ne doit pas être 'O'.
+         *    (Le fait que SS_MAO ne doit pas être vide est déjà couvert par MANDATORY pour SS_MAO.)
+         *  Si SS_QUANT est vide, SS_MAO doit être 'O' ou 'E'.  */
+
+      UNIQUE SS_ID;
+
+        !!@ cid = (29)
+        !!@ name = (29)
+        MANDATORY CONSTRAINT  !! (29)
+            (DEFINED (SS_QUANT) AND (SS_MAO != #nicht_bestimmbar))
+            OR
+            ((NOT (DEFINED (SS_QUANT))) AND
+            ((SS_MAO == #nicht_bestimmbar) OR (SS_MAO == #externe_Datenquelle)));
+    END SCHADENSPEZIFIKATION;
+
+    ASSOCIATION REL_BI_PR =
+      BI -- {1} BASISINFORMATION;
+      PR -- {0..*} PROZESSRAUM;
+      !!@ cid = (30a)
+      !!@ name = (30a)
+      MANDATORY CONSTRAINT  !! (30a)
+          DEFINED (PR) AND (PR->PR_BI_ID == BI->BI_ID);
+    END REL_BI_PR;
+
+    ASSOCIATION REL_BI_DI =
+      BI -- {1} BASISINFORMATION;
+      DI -- {0..*} DETAILINFORMATION;
+      !!@ cid = (30b)
+      !!@ name = (30b)
+      MANDATORY CONSTRAINT  !! (30b)
+          DEFINED (DI) AND (DI->DI_BI_ID == BI->BI_ID);
+    END REL_BI_DI;
+
+    ASSOCIATION REL_DI_PR =
+      DI -- {0..1} DETAILINFORMATION;
+      PR -- {1} PROZESSRAUM;
+      !!@ cid = (30c)
+      !!@ name = (30c)
+      MANDATORY CONSTRAINT  !! (30c)
+          DEFINED (DI) AND (DI->DI_PR_ID == PR->PR_ID);
+    END REL_DI_PR;
+
+    ASSOCIATION REL_BI_SC =
+      BI -- {1} BASISINFORMATION;
+      SC -- {0..*} SCHADEN;
+      !!@ cid = (30d)
+      !!@ name = (30d)
+      MANDATORY CONSTRAINT  !! (30d)
+          DEFINED (SC) AND (SC->SC_BI_ID == BI->BI_ID);
+    END REL_BI_SC;
+
+    ASSOCIATION REL_SC_SS =
+      SC -- {1} SCHADEN;
+      SS -- {0..*} SCHADENSPEZIFIKATION;
+      !!@ cid = (30e)
+      !!@ name = (30e)
+      MANDATORY CONSTRAINT  !! (30e)
+          DEFINED (SS) AND (SS->SS_SC_ID == SC->SC_ID);
+    END REL_SC_SS;
+
+    ASSOCIATION REL_SE_BI =
+      SE -- {0..1} SAMMELEREIGNIS;
+      BI -- {0..*} BASISINFORMATION;
+        /** Aus fachlicher Sicht müsste wäre {2..*} richtig, aus praktischen Gründen wird jedoch
+         *    {0..*} zugelassen.
+         *  ---
+         *  D'un point de vue technique, {2..*} serait correct, mais pour des raisons pratiques,
+         *    {0..*} est toléré.  */
+      !!@ cid = (30f)
+      !!@ name = (30f)
+      MANDATORY CONSTRAINT  !! (30f)
+          DEFINED (SE) AND (SE->SE_ID == BI->BI_SE_ID);
+    END REL_SE_BI;
+
+  END StorMe_MGDM;
+
+END Naturereigniskataster_MGDM_LV95_V1.
