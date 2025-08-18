@@ -1,0 +1,54 @@
+{%- for coord_type in coord_types %}
+@dataclass
+class {{ coord_type.name }}:
+    {%- if coord_type.doc %}
+    """
+    {{ "\n".join(coord_type.doc) }}
+    """
+    {%- endif %}
+    class Meta:
+        name = "COORD"
+{% for attribute in coord_type.attributes %}
+    {%- if attribute.reference_system %}
+    # {{ attribute.reference_system }}
+    {%- endif %}
+    {{ attribute.name }}: {{ attribute.type }} = field(
+        metadata={
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in attribute.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+    )
+{%- endfor %}
+    def assert_range(self):
+{%- if coord_type.range_assertions %}
+{%- for range_assertion in coord_type.range_assertions %}
+        assert {{ range_assertion }}
+{%- endfor %}
+{% else %}
+        pass
+{%- endif %}
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                {%- for item in coord_type.meta_attributes %}
+                    "{{ item.name }}": "{{ item.value }}",
+                {%- endfor %}
+            }
+        }
+
+class {{ coord_type.name }}ARC({{ coord_type.name }}):
+    """
+    This is an intermediate class which simplifies parsing of XTF later.
+    """
+    class Meta:
+        name = "ARC"
+    A1: float
+    A2: float
+    R: float
+{% endfor -%}

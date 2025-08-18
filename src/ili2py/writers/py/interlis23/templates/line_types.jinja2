@@ -1,0 +1,75 @@
+{%- for line_type in line_types %}
+@dataclass
+{%- if line_type.attribute.name in ["POLYLINE", "DIRECTEDPOLYLINE"]  %}
+class {{ line_type.name }}:
+
+    {%- if line_type.doc %}
+    """
+    {{ "\n".join(line_type.doc) }}
+    """
+    {%- endif %}
+    {{ line_type.attribute.name }}: list[{{ line_type.attribute.type }}] = field(
+        metadata={
+            "interlis": {
+                "meta_attributes": {
+
+                }
+            }
+        }
+    )
+{%- elif line_type.attribute.name in ["SURFACE", "AREA"] %}
+class {{ line_type.name }}:
+
+    {%- if line_type.doc or line_type.max_overlap%}
+    """
+    {%- if line_type.max_overlap %}
+    Max Overlap: {{ line_type.max_overlap }}
+    {%- endif  %}
+
+    {%- if line_type.doc %}
+    {{ "\n".join(line_type.doc) }}
+    {%- endif  %}
+
+    """
+    {%- endif %}
+
+    @dataclass
+    class {{ line_type.name }}BOUNDARY:
+
+        @dataclass
+        class {{ line_type.name }}POLYLINE:
+            {%- if line_type.arcs %}
+            POLYLINE: list[Union[{{ line_type.attribute.type }}, {{ line_type.attribute.type }}ARC]]
+            {%- else %}
+            POLYLINE: list[{{ line_type.attribute.type }}]
+            {%- endif  %}
+
+        BOUNDARY: list[{{ line_type.name }}POLYLINE]
+
+    SURFACE: list[{{ line_type.name }}BOUNDARY] = field(
+        metadata={
+            "interlis": {
+                "meta_attributes": {
+
+                }
+            }
+        }
+    )
+    @property
+    def max_overlap(self):
+        {%- if line_type.max_overlap %}
+        return {{ line_type.max_overlap }}
+        {% else %}
+        return None
+        {%- endif  %}
+{%- endif  %}
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                {%- for item in line_type.meta_attributes %}
+                    "{{ item.name }}": "{{ item.value }}",
+                {%- endfor %}
+            }
+        }
+{%- endfor %}

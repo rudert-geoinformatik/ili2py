@@ -14,7 +14,8 @@ class Constraint(MetaElement):
     #   as `*_ref` instance variable to resolve soft reference to actual object
     ToClass_ref: Ref = field(
         metadata={
-            "name": "ToClass"
+            "name": "ToClass",
+            "namespace": imd_namespace_map["IlisMeta16"],
         }
     )
 
@@ -25,10 +26,21 @@ class SimpleConstraint(Constraint):
         MandC = auto()
         LowPercC = auto()
         HighPercC = auto()
-    Kind: KindEnum
+    Kind: KindEnum = field(
+        default=None,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"],
+        }
+    )
     LogicalExpression: CompoundExprElement = field(
+        default=None,
         metadata={
             "namespace": imd_namespace_map["IlisMeta16"]
         }
     )
-    Percentage: Optional[float] = None
+    Percentage: Optional[float] = field(
+        default=None,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"],
+        }
+    )

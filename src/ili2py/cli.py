@@ -4,7 +4,6 @@ import os
 import sys
 from dataclasses import asdict
 import json
-from ili2py import version
 
 import click
 
@@ -18,7 +17,7 @@ from ili2py.writers.py import create_python_classes
 
 this_file_location = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(level="DEBUG")
 
 def version_msg():
     """ili2py version, location and Python version.
@@ -28,15 +27,13 @@ def version_msg():
     """
     python_version = sys.version[:6]
     location = os.path.dirname(this_file_location)
-    message = f"ili2py {version} from {location} (Python {python_version})"
-    click.echo(message)
+    message = f"ili2py from {location} (Python {python_version})"
+    return message
 
 @click.group()
 def cli():
-    logging.Formatter(fmt='%(levelname)-8s :: %(message)s')
-    logging.basicConfig(level=logging.INFO)
-    logger.info('Starting ili2py CLI')
-    version_msg()
+    logging.info('Starting ili2py CLI')
+    logging.info(version_msg())
 
 
 @cli.command(context_settings=dict(help_option_names=[u'-h', u'--help']))

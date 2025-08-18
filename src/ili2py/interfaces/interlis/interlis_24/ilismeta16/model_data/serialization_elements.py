@@ -1,7 +1,7 @@
 from dataclasses import field, dataclass
 from typing import Optional
 
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import imd_namespace_map, IMD_META_BASE
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import imd_namespace_map
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.expression.factor.factor import \
     Constant, UnitRef, UnitFunction
@@ -60,8 +60,18 @@ class UnitFunctionElement:
 
 
 @dataclass
-class MultiplicityElement(IMD_META_BASE):
+class MultiplicityElement():
 
     # TODO: *Optional* seems to be wrong regarding to ilismeta model
-    Min: Optional[int] = None
-    Max: Optional[int] = None
+    Min: Optional[int] = field(
+        default=None,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"],
+        }
+    )
+    Max: Optional[int] = field(
+        default=None,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"],
+        }
+    )

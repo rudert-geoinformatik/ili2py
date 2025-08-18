@@ -1,0 +1,75 @@
+{%- if classes %}
+from abc import ABC
+{% endif %}
+
+{%- for class_definition in classes %}
+@dataclass
+{% if class_definition.super_class %}
+class {{ class_definition.name }}({{ class_definition.super_class }}):
+{% elif class_definition.abstract %}
+class {{ class_definition.name }}(ABC):
+{% else %}
+class {{ class_definition.name }}:
+{%- endif %}
+    {%- if class_definition.doc %}
+    """
+    {{ " ".join(class_definition.doc) }}
+    {% if class_definition.attributes %}
+    Args:
+    {%- for attribute in class_definition.attributes %}
+        {{ attribute.name }}: {{ " ".join(attribute.doc) }}
+    {%- endfor %}
+    {%- endif %}
+    """
+    {%- endif -%}
+{%- if class_definition.attributes %}
+{% for attribute in class_definition.attributes %}
+    {%- if attribute.name == attribute.type %}
+    {{ attribute.name }}: "{{ attribute.type }}" = field(
+        metadata={
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in attribute.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+    )
+    {%- else %}
+    {{ attribute.name }}: {{ attribute.type }} = field(
+        metadata={
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in attribute.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+    )
+    {%- endif %}
+{%- endfor %}
+    def assert_range(self):
+{%- if class_definition.range_assertions %}
+{%- for range_assertion in class_definition.range_assertions %}
+        assert {{ range_assertion }}
+{%- endfor %}
+{% else %}
+        pass
+{%- endif %}
+{%- else %}
+    pass
+{%- endif  %}
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in class_definition.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+{% endfor -%}

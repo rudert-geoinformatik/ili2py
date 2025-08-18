@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install --upgrade pip && pip install .
+RUN pip install --upgrade pip && pip install --editable .
 
 ENTRYPOINT ["python", "-m", "ili2py.cli"]
 

@@ -1,0 +1,37 @@
+from typing import Union
+from dataclasses import dataclass, field
+from {{ module.library }} import INTERLIS
+{% for item in  module.imported_packages %}
+from {{ module.library }} import {{ item }}
+{% endfor %}
+{% for module_path, class_item in module.related_class_imports %}
+from {{ module.library }}.{{ module_path }} import {{ class_item }}
+{% endfor %}
+{%- if module.doc %}
+"""
+{{ "\n".join(module.doc) }}
+"""
+{%- endif %}
+
+metadata = {
+    "interlis": {
+        "meta_attributes": {
+            {% for item in module.meta_attributes %}
+                "{{ item.name }}": "{{ item.value }}",
+            {% endfor %}
+        }
+    }
+}
+
+{%- set enumerations=module.enumerations %}
+{%- include "enumerations.jinja2" %}
+
+{%- set coord_types=module.coord_types %}
+{%- include "coord_types.jinja2" %}
+{%- if module.line_types  %}
+{%- endif %}
+{%- set line_types=module.line_types %}
+{%- include "line_types.jinja2" %}
+
+{%- set classes=module.classes %}
+{%- include "classes.jinja2" %}

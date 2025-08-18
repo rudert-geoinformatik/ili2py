@@ -1,11 +1,11 @@
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.model_data import ModelData
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.model_data import ModelDataType
 from typing import List
 
 from ili2py.writers.uml.interlis_23 import uml_diagram
 
 
-def find_model_data_by_name(name: str, model_data: List[ModelData]) -> int:
+def find_model_data_by_name(name: str, model_data: List[ModelDataType]) -> int:
     for index, item in enumerate(model_data):
         if item.Model.Name == name:
             return index

@@ -1,0 +1,26 @@
+{%- if enumerations %}
+from enum import Enum
+{% endif %}
+
+{%- for enumeration in enumerations %}
+class {{ enumeration.name }}(Enum):
+    {%- if enumeration.doc %}
+    """
+    {{ "\n".join(enumeration.doc) }}
+    """
+    {%- endif -%}
+{% for value in enumeration.values %}
+    {{ value.upper().replace('.', '_') }} = "{{ value }}"
+{%- endfor %}
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in enumeration.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+{% endfor -%}
