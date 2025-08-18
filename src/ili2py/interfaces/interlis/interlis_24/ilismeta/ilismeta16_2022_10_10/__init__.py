@@ -1,0 +1,815 @@
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.actual_argument_type import (
+    ActualArgument,
+    ActualArgumentType,
+    ActualArgumentTypeExpression,
+    CompoundExpr,
+    CompoundExprType,
+    CompoundExprTypeSubExpressions,
+    EnumAssignment,
+    EnumAssignmentType,
+    EnumAssignmentTypeValueToAssign,
+    EnumMapping,
+    EnumMappingType,
+    EnumMappingTypeCases,
+    FunctionCall,
+    FunctionCallType,
+    FunctionCallTypeArguments,
+    UnaryExpr,
+    UnaryExprType,
+    UnaryExprTypeSubExpression,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.actual_argument_type_formal_argument import (
+    ActualArgumentTypeFormalArgument,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.actual_argument_type_object_classes import (
+    ActualArgumentTypeObjectClasses,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.allowed_in_basket import AllowedInBasket
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.allowed_in_basket_type import AllowedInBasketType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.allowed_in_basket_type_class_in_basket import (
+    AllowedInBasketTypeClassInBasket,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.allowed_in_basket_type_of_data_unit import (
+    AllowedInBasketTypeOfDataUnit,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.any_oidtype import AnyOidtype
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.any_oidtype_type import AnyOidtypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.aref_of import ArefOf
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.aref_of_type import ArefOfType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.aref_restriction import ArefRestriction
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.aref_restriction_type import ArefRestrictionType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.aref_restriction_type_aref import ArefRestrictionTypeAref
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.aref_restriction_type_type import ArefRestrictionTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.argument import Argument
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.argument_type import ArgumentType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.argument_type_1 import (
+    ArgumentType1,
+    ArgumentTypeType2,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.argument_type_function import ArgumentTypeFunction
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.argument_type_type_1 import ArgumentTypeType1
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc import AssocAcc
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc_origin import AssocAccOrigin
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc_origin_type import AssocAccOriginType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc_target import AssocAccTarget
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc_target_type import AssocAccTargetType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc_type import AssocAccType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc_type_assoc_acc import AssocAccTypeAssocAcc
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_acc_type_class import AssocAccTypeClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_role import AssocRole
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.assoc_role_type import AssocRoleType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attr_or_param import AttrOrParam
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attr_or_param_type import AttrOrParamType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attr_or_param_type_1 import (
+    AttrOrParamType1,
+    AttrOrParamTypeType2,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attr_or_param_type_attr_parent import AttrOrParamTypeAttrParent
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attr_or_param_type_derivates import AttrOrParamTypeDerivates
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attr_or_param_type_param_parent import AttrOrParamTypeParamParent
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attr_or_param_type_type_1 import AttrOrParamTypeType1
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attribute_const import AttributeConst
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attribute_const_type import AttributeConstType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attribute_const_type_attribute import AttributeConstTypeAttribute
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attribute_ref_type import AttributeRefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attribute_ref_type_type import AttributeRefTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.attribute_ref_type_type_of import AttributeRefTypeTypeOf
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.axis_spec import AxisSpec
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.axis_spec_type import AxisSpecType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.axis_spec_type_axis import AxisSpecTypeAxis
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.axis_spec_type_coord_type import AxisSpecTypeCoordType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_class import BaseClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_class_type import BaseClassType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_class_type_base_class import BaseClassTypeBaseClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_class_type_crt import BaseClassTypeCrt
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_type import BaseType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_type_type import BaseTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_view_def import BaseViewDef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_view_def_type import BaseViewDefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_view_ref import BaseViewRef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.base_view_ref_type import BaseViewRefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.blackbox_type import BlackboxType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.blackbox_type_type import BlackboxTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.boolean_type import BooleanType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.boolean_type_type import BooleanTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_attr import ClassAttr
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_attr_type import ClassAttrType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_const import ClassConst
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_const_type import ClassConstType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_const_type_class import ClassConstTypeClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_constraint import ClassConstraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_constraint_type import ClassConstraintType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_mod import Class
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_param import ClassParam
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_param_type import ClassParamType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_ref import ClassRef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_ref_type import ClassRefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_ref_type_ref import ClassRefTypeRef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_ref_type_type import ClassRefTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_related_type import ClassRelatedType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_related_type_type import ClassRelatedTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_restriction import ClassRestriction
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_restriction_type import ClassRestrictionType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_restriction_type_class_restriction import (
+    ClassRestrictionTypeClassRestriction,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_restriction_type_crtr import ClassRestrictionTypeCrtr
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_type import ClassType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_type_existence_constraint import (
+    ClassTypeExistenceConstraint,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_type_multiplicity import ClassTypeMultiplicity
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_type_oid import ClassTypeOid
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.class_type_view import ClassTypeView
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.concrete_for_generic import ConcreteForGeneric
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.concrete_for_generic_type import ConcreteForGenericType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.concrete_for_generic_type_concrete_domain import (
+    ConcreteForGenericTypeConcreteDomain,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.concrete_for_generic_type_generic_def import (
+    ConcreteForGenericTypeGenericDef,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.cond_sign_param_assignment import CondSignParamAssignment
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.cond_sign_param_assignment_type import (
+    CondSignParamAssignmentType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.cond_sign_param_assignment_type_assignments import (
+    CondSignParamAssignmentTypeAssignments,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.cond_sign_param_assignment_type_where import (
+    CondSignParamAssignmentTypeWhere,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.constant import Constant
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.constant_type import ConstantType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.constraint import Constraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.constraint_type import ConstraintType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.constraint_type_to_class import ConstraintTypeToClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.constraint_type_to_domain import ConstraintTypeToDomain
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.context import Context
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.context_type import ContextType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.coord_type import CoordType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.coord_type_type import CoordTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.data_unit import DataUnit
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.data_unit_type import DataUnitType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.data_unit_type_oid import DataUnitTypeOid
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.dependency import Dependency
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.dependency_type import DependencyType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.dependency_type_dependent import DependencyTypeDependent
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.dependency_type_using import DependencyTypeUsing
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.derived_assoc import DerivedAssoc
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.derived_assoc_type import DerivedAssocType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.doc_text import DocText
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.doc_text_translation import DocTextTranslation
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.doc_text_translation_type import DocTextTranslationType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.doc_text_type import DocTextType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.domain_constraint import DomainConstraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.domain_constraint_type import DomainConstraintType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.domain_type import DomainType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.domain_type_type import DomainTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.domain_type_type_context import DomainTypeTypeContext
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.drawing_rule import DrawingRule
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.drawing_rule_type import DrawingRuleType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.drawing_rule_type_class import DrawingRuleTypeClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.drawing_rule_type_graphic import DrawingRuleTypeGraphic
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.drawing_rule_type_rule import DrawingRuleTypeRule
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_assignment_type_max_enum_value import (
+    EnumAssignmentTypeMaxEnumValue,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_assignment_type_min_enum_value import (
+    EnumAssignmentTypeMinEnumValue,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_mapping_type_enum_value import EnumMappingTypeEnumValue
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_node import EnumNode
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_node_type import EnumNodeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_node_type_enum_type import EnumNodeTypeEnumType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_node_type_parent_node import EnumNodeTypeParentNode
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_tree_value_type import EnumTreeValueType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_tree_value_type_type import EnumTreeValueTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_tree_value_type_type_et import EnumTreeValueTypeTypeEt
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_type import EnumType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.enum_type_type import EnumTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.existence_constraint import ExistenceConstraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.existence_constraint_type import ExistenceConstraintType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.existence_constraint_type_attr import ExistenceConstraintTypeAttr
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.existence_def import ExistenceDef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.existence_def_type import ExistenceDefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.explicit_assoc_acc import ExplicitAssocAcc
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.explicit_assoc_acc_type import ExplicitAssocAccType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.explicit_assoc_access import ExplicitAssocAccess
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.explicit_assoc_access_type import ExplicitAssocAccessType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.explicit_assoc_access_type_assoc_acc_of import (
+    ExplicitAssocAccessTypeAssocAccOf,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.explicit_assoc_access_type_origin_role import (
+    ExplicitAssocAccessTypeOriginRole,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.explicit_assoc_access_type_target_role import (
+    ExplicitAssocAccessTypeTargetRole,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.expression import Expression
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.expression_type import ExpressionType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.extendable_me import ExtendableMe
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.extendable_metype import ExtendableMetype
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.extendable_metype_super import ExtendableMetypeSuper
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.factor import Factor
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.factor_type import FactorType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.formal_argument import FormalArgument
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.formal_argument_type import FormalArgumentType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.formatted_type import FormattedType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.formatted_type_type import FormattedTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.formatted_type_type_struct import FormattedTypeTypeStruct
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.function_call_type_function import FunctionCallTypeFunction
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.function_def import FunctionDef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.function_def_type import FunctionDefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.function_def_type_result_type import FunctionDefTypeResultType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.generic_def import GenericDef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.generic_def_type import GenericDefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic import Graphic
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic_base import GraphicBase
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic_base_type import GraphicBaseType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic_rule import GraphicRule
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic_rule_type import GraphicRuleType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic_type import GraphicType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic_type_base import GraphicTypeBase
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.graphic_type_where import GraphicTypeWhere
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.ili1_format import Ili1Format
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.ili1_format_type import Ili1FormatType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.ili1_transfer_element import Ili1TransferElement
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.ili1_transfer_element_type import Ili1TransferElementType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.ili1_transfer_element_type_ili1_ref_attr import (
+    Ili1TransferElementTypeIli1RefAttr,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.ili1_transfer_element_type_ili1_transfer_class import (
+    Ili1TransferElementTypeIli1TransferClass,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.import_mod import Import
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.import_type import ImportType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.import_type_imported_p import ImportTypeImportedP
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.import_type_importing_p import ImportTypeImportingP
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.inheritance import Inheritance
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.inheritance_type import InheritanceType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_attr import LineAttr
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_attr_type import LineAttrType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_coord import LineCoord
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_coord_type import LineCoordType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_form import LineForm
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_form_structure import LineFormStructure
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_form_structure_type import LineFormStructureType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_form_type import LineFormType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_form_type_structure import LineFormTypeStructure
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_type import LineType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_type_type import LineTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_type_type_coord_type import LineTypeTypeCoordType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.line_type_type_lastructure import LineTypeTypeLastructure
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.lines_form import LinesForm
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.lines_form_type import LinesFormType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.lines_form_type_line_form import LinesFormTypeLineForm
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.lines_form_type_line_type import LinesFormTypeLineType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.local_ftype import LocalFtype
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.local_ftype_type import LocalFtypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.local_type import LocalType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.local_type_type import LocalTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_attribute import MetaAttribute
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_attribute_type import MetaAttributeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_attribute_type_meta_element import (
+    MetaAttributeTypeMetaElement,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_attributes import MetaAttributes
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_attributes_type import MetaAttributesType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_basket_def import MetaBasketDef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_basket_def_type import MetaBasketDefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_basket_def_type_meta_data_topic import (
+    MetaBasketDefTypeMetaDataTopic,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_basket_members import MetaBasketMembers
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_basket_members_type import MetaBasketMembersType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_data_unit import MetaDataUnit
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_data_unit_type import MetaDataUnitType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_element import MetaElement
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_element_type import MetaElementType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_element_type_documentation import (
+    MetaElementTypeDocumentation,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_element_type_element_in_package import (
+    MetaElementTypeElementInPackage,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_object_class import MetaObjectClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_object_class_type import MetaObjectClassType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_object_def import MetaObjectDef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_object_def_type import MetaObjectDefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_object_def_type_class import MetaObjectDefTypeClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.meta_object_def_type_meta_basket_def import (
+    MetaObjectDefTypeMetaBasketDef,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.metranslation import Metranslation
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.metranslation_type import MetranslationType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.metranslation_type_of import MetranslationTypeOf
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.metranslation_type_translated_doc import (
+    MetranslationTypeTranslatedDoc,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model import Model
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_data import ModelData
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_data_basket_oid import ModelDataBasketOid
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_data_basket_oidtype import ModelDataBasketOidtype
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_data_type import ModelDataType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_translation import ModelTranslation
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_translation_type import ModelTranslationType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_type import ModelType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.model_type_ili1_format import ModelTypeIli1Format
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.multi_value import MultiValue
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.multi_value_type import MultiValueType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.multi_value_type_multiplicity import MultiValueTypeMultiplicity
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.multiplicity import Multiplicity
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.multiplicity_type import MultiplicityType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.num_type import NumType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.num_type_type import NumTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.num_type_type_ref_sys import NumTypeTypeRefSys
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.num_type_type_unit import NumTypeTypeUnit
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.num_unit import NumUnit
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.num_unit_type import NumUnitType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.nums_ref_sys import NumsRefSys
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.nums_ref_sys_type import NumsRefSysType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.object_oid import ObjectOid
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.object_oidtype import ObjectOidtype
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.object_type import ObjectType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.object_type_type import ObjectTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.package import Package
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.package_elements import PackageElements
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.package_elements_type import PackageElementsType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.package_type import PackageType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.path_el import PathEl
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.path_el_type import PathElType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.path_el_type_ref import PathElTypeRef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.path_or_insp_factor import PathOrInspFactor
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.path_or_insp_factor_type import PathOrInspFactorType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.path_or_insp_factor_type_inspection import (
+    PathOrInspFactorTypeInspection,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.path_or_insp_factor_type_path_els import (
+    PathOrInspFactorTypePathEls,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.reference_type import ReferenceType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.reference_type_type import ReferenceTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.renamed_base_view import RenamedBaseView
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.renamed_base_view_type import RenamedBaseViewType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.renamed_base_view_type_base_view import (
+    RenamedBaseViewTypeBaseView,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.renamed_base_view_type_view import RenamedBaseViewTypeView
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.result_type import ResultType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.result_type_type import ResultTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.role import Role
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.role_type import RoleType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.role_type_association import RoleTypeAssociation
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.role_type_derivates import RoleTypeDerivates
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.role_type_multiplicity import RoleTypeMultiplicity
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.runtime_param_ref import RuntimeParamRef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.runtime_param_ref_type import RuntimeParamRefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.runtime_param_ref_type_runtime_param import (
+    RuntimeParamRefTypeRuntimeParam,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.set_constraint import SetConstraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.set_constraint_type import SetConstraintType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.set_constraint_type_constraint import SetConstraintTypeConstraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.set_constraint_type_where import SetConstraintTypeWhere
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sign_class import SignClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sign_class_type import SignClassType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sign_param_assignment import SignParamAssignment
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sign_param_assignment_type import SignParamAssignmentType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sign_param_assignment_type_assignment import (
+    SignParamAssignmentTypeAssignment,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sign_param_assignment_type_param import (
+    SignParamAssignmentTypeParam,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.simple_constraint import SimpleConstraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.simple_constraint_type import SimpleConstraintType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.simple_constraint_type_logical_expression import (
+    SimpleConstraintTypeLogicalExpression,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.struct_of_format import StructOfFormat
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.struct_of_format_type import StructOfFormatType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sub_model import SubModel
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sub_model_type import SubModelType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sub_node import SubNode
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.sub_node_type import SubNodeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.text_type import TextType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.text_type_type import TextTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.top_node import TopNode
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.top_node_type import TopNodeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.transfer_element import TransferElement
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.transfer_element_type import TransferElementType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.transfer_element_type_transfer_class import (
+    TransferElementTypeTransferClass,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.transfer_element_type_transfer_element import (
+    TransferElementTypeTransferElement,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.translation import Translation
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.translation_type import TranslationType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.translation_type_translations import TranslationTypeTranslations
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.tree_value_type_of import TreeValueTypeOf
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.tree_value_type_of_type import TreeValueTypeOfType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_mod import Type
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_related_type import TypeRelatedType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_related_type_type import TypeRelatedTypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_related_type_type_base_type import (
+    TypeRelatedTypeTypeBaseType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_restriction import TypeRestriction
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_restriction_type import TypeRestrictionType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_restriction_type_trtr import TypeRestrictionTypeTrtr
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_restriction_type_type_restriction import (
+    TypeRestrictionTypeTypeRestriction,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_type import TypeType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_type_lftparent import TypeTypeLftparent
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.type_type_ltparent import TypeTypeLtparent
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unique_constraint import UniqueConstraint
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unique_constraint_type import UniqueConstraintType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unique_constraint_type_unique_def import (
+    UniqueConstraintTypeUniqueDef,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unique_constraint_type_where import UniqueConstraintTypeWhere
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit import Unit
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit_function import UnitFunction
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit_function_type import UnitFunctionType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit_ref import UnitRef
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit_ref_type import UnitRefType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit_ref_type_unit import UnitRefTypeUnit
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit_type import UnitType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.unit_type_definition import UnitTypeDefinition
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.view import View
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.view_type import ViewType
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.view_type_formation_parameter import ViewTypeFormationParameter
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10.view_type_where import ViewTypeWhere
+
+__all__ = [
+    "ActualArgument",
+    "ActualArgumentType",
+    "ActualArgumentTypeExpression",
+    "CompoundExpr",
+    "CompoundExprType",
+    "CompoundExprTypeSubExpressions",
+    "EnumAssignment",
+    "EnumAssignmentType",
+    "EnumAssignmentTypeValueToAssign",
+    "EnumMapping",
+    "EnumMappingType",
+    "EnumMappingTypeCases",
+    "FunctionCall",
+    "FunctionCallType",
+    "FunctionCallTypeArguments",
+    "UnaryExpr",
+    "UnaryExprType",
+    "UnaryExprTypeSubExpression",
+    "ActualArgumentTypeFormalArgument",
+    "ActualArgumentTypeObjectClasses",
+    "AllowedInBasket",
+    "AllowedInBasketType",
+    "AllowedInBasketTypeClassInBasket",
+    "AllowedInBasketTypeOfDataUnit",
+    "AnyOidtype",
+    "AnyOidtypeType",
+    "ArefOf",
+    "ArefOfType",
+    "ArefRestriction",
+    "ArefRestrictionType",
+    "ArefRestrictionTypeAref",
+    "ArefRestrictionTypeType",
+    "Argument",
+    "ArgumentType",
+    "ArgumentType1",
+    "ArgumentTypeType2",
+    "ArgumentTypeFunction",
+    "ArgumentTypeType1",
+    "AssocAcc",
+    "AssocAccOrigin",
+    "AssocAccOriginType",
+    "AssocAccTarget",
+    "AssocAccTargetType",
+    "AssocAccType",
+    "AssocAccTypeAssocAcc",
+    "AssocAccTypeClass",
+    "AssocRole",
+    "AssocRoleType",
+    "AttrOrParam",
+    "AttrOrParamType",
+    "AttrOrParamType1",
+    "AttrOrParamTypeType2",
+    "AttrOrParamTypeAttrParent",
+    "AttrOrParamTypeDerivates",
+    "AttrOrParamTypeParamParent",
+    "AttrOrParamTypeType1",
+    "AttributeConst",
+    "AttributeConstType",
+    "AttributeConstTypeAttribute",
+    "AttributeRefType",
+    "AttributeRefTypeType",
+    "AttributeRefTypeTypeOf",
+    "AxisSpec",
+    "AxisSpecType",
+    "AxisSpecTypeAxis",
+    "AxisSpecTypeCoordType",
+    "BaseClass",
+    "BaseClassType",
+    "BaseClassTypeBaseClass",
+    "BaseClassTypeCrt",
+    "BaseType",
+    "BaseTypeType",
+    "BaseViewDef",
+    "BaseViewDefType",
+    "BaseViewRef",
+    "BaseViewRefType",
+    "BlackboxType",
+    "BlackboxTypeType",
+    "BooleanType",
+    "BooleanTypeType",
+    "ClassAttr",
+    "ClassAttrType",
+    "ClassConst",
+    "ClassConstType",
+    "ClassConstTypeClass",
+    "ClassConstraint",
+    "ClassConstraintType",
+    "Class",
+    "ClassParam",
+    "ClassParamType",
+    "ClassRef",
+    "ClassRefType",
+    "ClassRefTypeRef",
+    "ClassRefTypeType",
+    "ClassRelatedType",
+    "ClassRelatedTypeType",
+    "ClassRestriction",
+    "ClassRestrictionType",
+    "ClassRestrictionTypeClassRestriction",
+    "ClassRestrictionTypeCrtr",
+    "ClassType",
+    "ClassTypeExistenceConstraint",
+    "ClassTypeMultiplicity",
+    "ClassTypeOid",
+    "ClassTypeView",
+    "ConcreteForGeneric",
+    "ConcreteForGenericType",
+    "ConcreteForGenericTypeConcreteDomain",
+    "ConcreteForGenericTypeGenericDef",
+    "CondSignParamAssignment",
+    "CondSignParamAssignmentType",
+    "CondSignParamAssignmentTypeAssignments",
+    "CondSignParamAssignmentTypeWhere",
+    "Constant",
+    "ConstantType",
+    "Constraint",
+    "ConstraintType",
+    "ConstraintTypeToClass",
+    "ConstraintTypeToDomain",
+    "Context",
+    "ContextType",
+    "CoordType",
+    "CoordTypeType",
+    "DataUnit",
+    "DataUnitType",
+    "DataUnitTypeOid",
+    "Dependency",
+    "DependencyType",
+    "DependencyTypeDependent",
+    "DependencyTypeUsing",
+    "DerivedAssoc",
+    "DerivedAssocType",
+    "DocText",
+    "DocTextTranslation",
+    "DocTextTranslationType",
+    "DocTextType",
+    "DomainConstraint",
+    "DomainConstraintType",
+    "DomainType",
+    "DomainTypeType",
+    "DomainTypeTypeContext",
+    "DrawingRule",
+    "DrawingRuleType",
+    "DrawingRuleTypeClass",
+    "DrawingRuleTypeGraphic",
+    "DrawingRuleTypeRule",
+    "EnumAssignmentTypeMaxEnumValue",
+    "EnumAssignmentTypeMinEnumValue",
+    "EnumMappingTypeEnumValue",
+    "EnumNode",
+    "EnumNodeType",
+    "EnumNodeTypeEnumType",
+    "EnumNodeTypeParentNode",
+    "EnumTreeValueType",
+    "EnumTreeValueTypeType",
+    "EnumTreeValueTypeTypeEt",
+    "EnumType",
+    "EnumTypeType",
+    "ExistenceConstraint",
+    "ExistenceConstraintType",
+    "ExistenceConstraintTypeAttr",
+    "ExistenceDef",
+    "ExistenceDefType",
+    "ExplicitAssocAcc",
+    "ExplicitAssocAccType",
+    "ExplicitAssocAccess",
+    "ExplicitAssocAccessType",
+    "ExplicitAssocAccessTypeAssocAccOf",
+    "ExplicitAssocAccessTypeOriginRole",
+    "ExplicitAssocAccessTypeTargetRole",
+    "Expression",
+    "ExpressionType",
+    "ExtendableMe",
+    "ExtendableMetype",
+    "ExtendableMetypeSuper",
+    "Factor",
+    "FactorType",
+    "FormalArgument",
+    "FormalArgumentType",
+    "FormattedType",
+    "FormattedTypeType",
+    "FormattedTypeTypeStruct",
+    "FunctionCallTypeFunction",
+    "FunctionDef",
+    "FunctionDefType",
+    "FunctionDefTypeResultType",
+    "GenericDef",
+    "GenericDefType",
+    "Graphic",
+    "GraphicBase",
+    "GraphicBaseType",
+    "GraphicRule",
+    "GraphicRuleType",
+    "GraphicType",
+    "GraphicTypeBase",
+    "GraphicTypeWhere",
+    "Ili1Format",
+    "Ili1FormatType",
+    "Ili1TransferElement",
+    "Ili1TransferElementType",
+    "Ili1TransferElementTypeIli1RefAttr",
+    "Ili1TransferElementTypeIli1TransferClass",
+    "Import",
+    "ImportType",
+    "ImportTypeImportedP",
+    "ImportTypeImportingP",
+    "Inheritance",
+    "InheritanceType",
+    "LineAttr",
+    "LineAttrType",
+    "LineCoord",
+    "LineCoordType",
+    "LineForm",
+    "LineFormStructure",
+    "LineFormStructureType",
+    "LineFormType",
+    "LineFormTypeStructure",
+    "LineType",
+    "LineTypeType",
+    "LineTypeTypeCoordType",
+    "LineTypeTypeLastructure",
+    "LinesForm",
+    "LinesFormType",
+    "LinesFormTypeLineForm",
+    "LinesFormTypeLineType",
+    "LocalFtype",
+    "LocalFtypeType",
+    "LocalType",
+    "LocalTypeType",
+    "MetaAttribute",
+    "MetaAttributeType",
+    "MetaAttributeTypeMetaElement",
+    "MetaAttributes",
+    "MetaAttributesType",
+    "MetaBasketDef",
+    "MetaBasketDefType",
+    "MetaBasketDefTypeMetaDataTopic",
+    "MetaBasketMembers",
+    "MetaBasketMembersType",
+    "MetaDataUnit",
+    "MetaDataUnitType",
+    "MetaElement",
+    "MetaElementType",
+    "MetaElementTypeDocumentation",
+    "MetaElementTypeElementInPackage",
+    "MetaObjectClass",
+    "MetaObjectClassType",
+    "MetaObjectDef",
+    "MetaObjectDefType",
+    "MetaObjectDefTypeClass",
+    "MetaObjectDefTypeMetaBasketDef",
+    "Metranslation",
+    "MetranslationType",
+    "MetranslationTypeOf",
+    "MetranslationTypeTranslatedDoc",
+    "Model",
+    "ModelData",
+    "ModelDataBasketOid",
+    "ModelDataBasketOidtype",
+    "ModelDataType",
+    "ModelTranslation",
+    "ModelTranslationType",
+    "ModelType",
+    "ModelTypeIli1Format",
+    "MultiValue",
+    "MultiValueType",
+    "MultiValueTypeMultiplicity",
+    "Multiplicity",
+    "MultiplicityType",
+    "NumType",
+    "NumTypeType",
+    "NumTypeTypeRefSys",
+    "NumTypeTypeUnit",
+    "NumUnit",
+    "NumUnitType",
+    "NumsRefSys",
+    "NumsRefSysType",
+    "ObjectOid",
+    "ObjectOidtype",
+    "ObjectType",
+    "ObjectTypeType",
+    "Package",
+    "PackageElements",
+    "PackageElementsType",
+    "PackageType",
+    "PathEl",
+    "PathElType",
+    "PathElTypeRef",
+    "PathOrInspFactor",
+    "PathOrInspFactorType",
+    "PathOrInspFactorTypeInspection",
+    "PathOrInspFactorTypePathEls",
+    "ReferenceType",
+    "ReferenceTypeType",
+    "RenamedBaseView",
+    "RenamedBaseViewType",
+    "RenamedBaseViewTypeBaseView",
+    "RenamedBaseViewTypeView",
+    "ResultType",
+    "ResultTypeType",
+    "Role",
+    "RoleType",
+    "RoleTypeAssociation",
+    "RoleTypeDerivates",
+    "RoleTypeMultiplicity",
+    "RuntimeParamRef",
+    "RuntimeParamRefType",
+    "RuntimeParamRefTypeRuntimeParam",
+    "SetConstraint",
+    "SetConstraintType",
+    "SetConstraintTypeConstraint",
+    "SetConstraintTypeWhere",
+    "SignClass",
+    "SignClassType",
+    "SignParamAssignment",
+    "SignParamAssignmentType",
+    "SignParamAssignmentTypeAssignment",
+    "SignParamAssignmentTypeParam",
+    "SimpleConstraint",
+    "SimpleConstraintType",
+    "SimpleConstraintTypeLogicalExpression",
+    "StructOfFormat",
+    "StructOfFormatType",
+    "SubModel",
+    "SubModelType",
+    "SubNode",
+    "SubNodeType",
+    "TextType",
+    "TextTypeType",
+    "TopNode",
+    "TopNodeType",
+    "TransferElement",
+    "TransferElementType",
+    "TransferElementTypeTransferClass",
+    "TransferElementTypeTransferElement",
+    "Translation",
+    "TranslationType",
+    "TranslationTypeTranslations",
+    "TreeValueTypeOf",
+    "TreeValueTypeOfType",
+    "Type",
+    "TypeRelatedType",
+    "TypeRelatedTypeType",
+    "TypeRelatedTypeTypeBaseType",
+    "TypeRestriction",
+    "TypeRestrictionType",
+    "TypeRestrictionTypeTrtr",
+    "TypeRestrictionTypeTypeRestriction",
+    "TypeType",
+    "TypeTypeLftparent",
+    "TypeTypeLtparent",
+    "UniqueConstraint",
+    "UniqueConstraintType",
+    "UniqueConstraintTypeUniqueDef",
+    "UniqueConstraintTypeWhere",
+    "Unit",
+    "UnitFunction",
+    "UnitFunctionType",
+    "UnitRef",
+    "UnitRefType",
+    "UnitRefTypeUnit",
+    "UnitType",
+    "UnitTypeDefinition",
+    "View",
+    "ViewType",
+    "ViewTypeFormationParameter",
+    "ViewTypeWhere",
+]
