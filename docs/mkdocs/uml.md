@@ -29,6 +29,7 @@ Currently, known limitations are:
   by mermaid.
 - Potentially broken self references (awkward rendering of Cardinalities, strange positioning of connectors).
 - routing of connectors between classes is a bit flaky especially when it comes to larger diagrams
+- Some renderers do not allow '.' in names of namespaces! 
 
 ![](assets/img/mermaid_example.png)
 

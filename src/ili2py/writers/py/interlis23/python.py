@@ -136,7 +136,10 @@ class Attribute(Base):
         elif isinstance(imd_type, BooleanType):
             return "bool"
         elif isinstance(imd_type, ImdCoordType):
-            return imd_type.tid
+            if imd_type.name == "TYPE" and imd_type.super:
+                return imd_type.super.ref
+            else:
+                return imd_type.tid
         elif isinstance(imd_type, ImdLineType):
             return imd_type.tid
         elif isinstance(imd_type, MultiValue):

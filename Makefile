@@ -78,6 +78,7 @@ build: $(BUILD_DEPS)
 
 .PHONY: clean
 clean:
+	find ./src -name "*.pyc" -delete
 
 .PHONY: clean-all
 clean-all: clean

@@ -28,7 +28,8 @@ src/ili2py/generated
 generated
 test.puml
 src/ili2py/test.py
-uml/
+.generated_uml/
+.generated_py/
 
 test/data/*/*.py
 

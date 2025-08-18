@@ -7,7 +7,7 @@ direction {{ direction }}
 {%- for model_group in diagram.model_groups %}
 {%- if model_group.name in model_names %}
 {%- if model_group.classes %}
-namespace {{ model_group.oid }} {
+namespace {{ model_group.oid.replace('.', '_') }} {
     {%- for class_definition in model_group.classes  %}
     class {{ class_definition.oid.replace('.', '_') }}["{{ class_definition.name }}"]{
     {%- for attribute in class_definition.attributes %}
@@ -29,7 +29,7 @@ namespace {{ model_group.oid }} {
 {% endfor %}
 {%- for topic_group in model_group.topic_groups  %}
 {%- if topic_group.classes %}
-namespace {{ topic_group.oid }} {
+namespace {{ topic_group.oid.replace('.', '_') }} {
     {%- for class_definition in topic_group.classes  %}
     class {{ class_definition.oid.replace('.', '_') }}["{{ class_definition.name }}"]{
     {%- for attribute in class_definition.attributes %}
