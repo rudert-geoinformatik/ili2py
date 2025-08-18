@@ -1,5 +1,4 @@
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -7,27 +6,13 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
-from ili2py.mappers.python import Library
+from ili2py.writers import create_file
+from ili2py.writers.py.interlis23.python import Library
 
 ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
 
 
-def create_file(output_path: str, model_name: str, file_name: str):
-    output_file = Path(os.path.join(output_path, model_name, file_name))
-    output_file.parent.mkdir(exist_ok=True, parents=True)
-    return output_file
-
-
-def render_imports(imports: list[str]) -> list[str]:
-    rendered_imports = []
-    for import_path in imports:
-        import_path_elements = import_path.split(".")
-        import_target = import_path_elements.pop()
-        rendered_imports.append(f"from ..{'.'.join(import_path_elements)} import {import_target}")
-    return rendered_imports
-
-
-def reader_classes(library: Library, output_path: str) -> str:
+def reader_classes(library: Library, output_path: str):
     tpl_dir = Path(__file__).parent.joinpath("templates")
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
     library_content = env.get_template("library_init.jinja2").render(library=library)
@@ -79,66 +64,3 @@ def reader_classes(library: Library, output_path: str) -> str:
             check=True,
             env=env,
         )
-    # for model_data in metamodel.datasection.ModelData:
-    #     output_file = create_file(output_path, model_data.Model.Name, "__init__.py")
-    #     model_doc_text = ["from dataclasses import dataclass", "", '"""']
-    #     for item in model_data.Model.Documentation:
-    #         model_doc_text = model_doc_text + [
-    #             line.lstrip() for line in item.DocText.Text.split("\n")
-    #         ]
-    #     model_doc_text.append('"""')
-    #     model_doc_text = model_doc_text + ["", ""]
-    #     imports = []
-    #     for class_item in model_data.Class:
-    #         output = env.get_template("class.jinja2").render(
-    #             class_item=class_item,
-    #             index=index,
-    #             render_type=render_type,
-    #             imports=imports,
-    #             context=model_data.Model.Name,
-    #         )
-    #         model_doc_text = model_doc_text + ["@dataclass"] + output.split("\n")
-    #     model_doc_text = render_imports(imports) + model_doc_text
-    #     output_file.write_text("\n".join(model_doc_text))
-    #     for submodel in model_data.SubModel:
-    #         output_file = create_file(output_path, model_data.Model.Name, f"{submodel.Name}.py")
-    #         model_doc_text = ["from dataclasses import dataclass", "", '"""']
-    #         for item in submodel.Documentation:
-    #             model_doc_text = model_doc_text + [
-    #                 line.lstrip() for line in item.DocText.Text.split("\n")
-    #             ]
-    #         model_doc_text.append('"""')
-    #         model_doc_text = model_doc_text + ["", ""]
-    #         imports = []
-    #         # we access an attribute which is created at runtime
-    #         for ElementInPackage_item in submodel.ElementInPackage_backref:
-    #             if isinstance(ElementInPackage_item, Class):
-    #                 output = env.get_template("class.jinja2").render(
-    #                     class_item=ElementInPackage_item,
-    #                     index=index,
-    #                     render_type=render_type,
-    #                     imports=imports,
-    #                     context=f"{model_data.Model.Name}.{submodel.Name}",
-    #                 )
-    #                 model_doc_text = model_doc_text + ["@dataclass"] + output.split("\n")
-    #         model_doc_text = render_imports(imports) + model_doc_text
-    #         output_file.write_text("\n".join(model_doc_text))
-
-
-def code_excerpt(details: str, src_code: str) -> str:
-    """Extract source code excerpt from the error details message."""
-    match = re.search(r"(\d+):(\d+)", details)
-    if match:
-        line_number = int(match.group(1)) - 1
-        lines = src_code.split("\n")
-        start = max(0, line_number - 4)
-        end = min(len(lines), line_number + 4)
-
-        excerpt = ["\n"]
-        for index in range(start, end):
-            prepend = "--->" if index == line_number else "   "
-            excerpt.append(f"{prepend}{lines[index]}")
-
-        return "\n".join(excerpt)
-
-    return "NA"

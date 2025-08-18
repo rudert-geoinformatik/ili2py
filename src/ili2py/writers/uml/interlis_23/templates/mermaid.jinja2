@@ -1,21 +1,55 @@
+```mermaid
 ---
-title: {{ ','.join(model_names) }}
+title: {{ ', '.join(model_names) }}
 ---
 classDiagram
 direction {{ direction }}
-{% for key in index -%}
-    {% if isinstance(index[key], class_type) and index[key].kind == 'Class' %}
-        class {{ index[key].tid.replace('.', '_') }}{
-            {% if index[key].abstract %}<<Abstract>>{% endif %}
-            {% for attr in index[key].attr_or_params -%}
-            +{{ attr.type.ref.replace('.', '_').replace('.TYPE', '') }} {{ attr.name }}
-            {% endfor %}
-        }
-        {% if index[key].referenced_super %}
-            {{ index[key].referenced_super.tid.replace('.', '_') }} <|-- {{ index[key].tid.replace('.', '_') }}
-        {% endif %}
-    {% endif %}
-    {% if isinstance(index[key], class_type) and index[key].kind == 'Association' and len(index[key].roles) == 2%}
-        {{ index[key].roles[0].associated_class.tid.replace('.', '_') }} "{{ render_multiplicity(index[key].roles[0].multiplicity.multiplicity) }}" {% if index[key].roles[0].strongness == 'Comp' %}*{% elif index[key].roles[0].strongness == 'Aggr' %}o{% endif %}--{% if index[key].roles[1].strongness == 'Comp' %}*{% elif index[key].roles[1].strongness == 'Aggr' %}o{% endif %} "{{ render_multiplicity(index[key].roles[1].multiplicity.multiplicity) }}" {{ index[key].roles[1].associated_class.tid.replace('.', '_') }}
-    {% endif %}
+{%- for model_group in diagram.model_groups %}
+{%- if model_group.name in model_names %}
+{%- if model_group.classes %}
+namespace {{ model_group.oid }} {
+    {%- for class_definition in model_group.classes  %}
+    class {{ class_definition.oid.replace('.', '_') }}["{{ class_definition.name }}"]{
+    {%- for attribute in class_definition.attributes %}
+    {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
+    {%- endfor %}
+    }
+    {%- endfor %}
+}
+{% endif %}
+{%- for association in model_group.associations %}
+{{ association[0][0].replace('.', '_') }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0].replace('.', '_') }} : {{ association[2] }}
 {%- endfor %}
+{%- for class_definition in model_group.classes  %}
+{%- if class_definition.inherits_from %}
+{%- if class_definition.inherits_from.split('.')[0] in model_names  %}
+{{ class_definition.oid.replace('.', '_') }} --|> {{ class_definition.inherits_from.replace('.', '_') }}
+{%- endif %}
+{%- endif %}
+{% endfor %}
+{%- for topic_group in model_group.topic_groups  %}
+{%- if topic_group.classes %}
+namespace {{ topic_group.oid }} {
+    {%- for class_definition in topic_group.classes  %}
+    class {{ class_definition.oid.replace('.', '_') }}["{{ class_definition.name }}"]{
+    {%- for attribute in class_definition.attributes %}
+    {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
+    {%- endfor %}
+    }
+    {%- endfor %}
+}
+{%- endif %}
+{%- for association in topic_group.associations %}
+{{ association[0][0].replace('.', '_') }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0].replace('.', '_') }} : {{ association[2] }}
+{%- endfor %}
+{%- for class_definition in topic_group.classes  %}
+{%- if class_definition.inherits_from %}
+{%- if class_definition.inherits_from.split('.')[0] in model_names  %}
+{{ class_definition.oid.replace('.', '_') }} --|> {{ class_definition.inherits_from.replace('.', '_') }}
+{%- endif %}
+{%- endif %}
+{% endfor %}
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
+```

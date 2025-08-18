@@ -1,18 +1,52 @@
 @startuml
-left to right direction
-{% for key in index -%}
-    {% if isinstance(index[key], class_type) and index[key].Kind in ['Class', 'Structure'] -%}
-        {% if index[key].Abstract %}abstract {% endif %}class {{ index[key].tid }}{
-            {% for attr in index[key].AttrParent_backref -%}
-            {{ attr.Name }} : {{ attr.Type_ref.ref.replace('.', '_').replace('.TYPE', '') }}
-            {% endfor %}
-        }
-        {% if index[key].Super_ref -%}
-            {{ index[key].Super.tid }} <|-- {{ index[key].tid }}
-        {% endif -%}
-    {% endif -%}
-    {% if isinstance(index[key], class_type) and index[key].Kind == 'Association' and len(index[key].Association_backref) == 2 %}
-        {{ index[key].Association_backref[0].tid }} "{{ render_multiplicity(index[key].Association_backref[0].Multiplicity.Multiplicity) }}" {% if index[key].Association_backref[0].Strongness == 'Comp' -%}*{% elif index[key].Association_backref[0].Strongness == 'Aggr' -%}o{%- endif %}--{% if index[key].Association_backref[1].Strongness == 'Comp' -%}*{% elif index[key].Association_backref[1].Strongness == 'Aggr' -%}o{%- endif %} "{{ render_multiplicity(index[key].Association_backref[1].Multiplicity.Multiplicity) }}" {{ index[key].Association_backref[1].tid }}
-    {% endif %}
+skinparam linetype {{ linetype }}
+{{ direction }} direction
+{%- for model_group in diagram.model_groups %}
+{%- if model_group.name in model_names %}
+{%- if model_group.classes %}
+namespace {{ model_group.oid }} {
+    {%- for class_definition in model_group.classes  %}
+    class {{ class_definition.oid }}{
+        {%- for attribute in class_definition.attributes %}
+        {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
+        {%- endfor %}
+    }
+    {%- endfor %}
+}
+{% endif %}
+{%- for association in model_group.associations %}
+{{ association[0][0] }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0] }} : {{ association[2] }}
+{%- endfor %}
+{%- for class_definition in model_group.classes  %}
+{%- if class_definition.inherits_from %}
+{%- if class_definition.inherits_from.split('.')[0] in model_names  %}
+{{ class_definition.oid }} --|> {{ class_definition.inherits_from }}
+{%- endif %}
+{%- endif %}
+{% endfor %}
+{%- for topic_group in model_group.topic_groups  %}
+{%- if topic_group.classes %}
+namespace {{ topic_group.oid }} {
+    {%- for class_definition in topic_group.classes  %}
+    class {{ class_definition.oid }}{
+        {%- for attribute in class_definition.attributes %}
+        {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
+        {%- endfor %}
+    }
+    {%- endfor %}
+}
+{%- endif %}
+{%- for association in topic_group.associations %}
+{{ association[0][0] }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0] }} : {{ association[2] }}
+{%- endfor %}
+{%- for class_definition in topic_group.classes  %}
+{%- if class_definition.inherits_from %}
+{%- if class_definition.inherits_from.split('.')[0] in model_names  %}
+{{ class_definition.oid }} --|> {{ class_definition.inherits_from }}
+{%- endif %}
+{%- endif %}
+{% endfor %}
+{%- endfor %}
+{%- endif %}
 {%- endfor %}
 @enduml

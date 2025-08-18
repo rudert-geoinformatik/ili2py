@@ -56,6 +56,7 @@ dependencies = [
     "xsdata[cli,lxml,soap]==25.7",
     "black==25.1.0",
     "isort==6.0.1",
+    "click",
     "autoflake"
 ]
 optional-dependencies.dev = [

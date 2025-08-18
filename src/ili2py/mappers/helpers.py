@@ -24,6 +24,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     TransferElement,
     View,
     MetaAttribute,
+    SubModel,
 )
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import DataSection
 
@@ -76,6 +77,8 @@ class Index:
             the embedded reference, where the actual class might get additional attributes by the association
             definition. It explicitly is only used when association is one or zero on the side of the class in
             question.
+        element_in_package: Key is the tid of the package (Model, Submodel) and value is a list of tid's of
+            elements which are in the package.
     """
 
     def __init__(self, data_section: DataSection):
@@ -110,12 +113,18 @@ class Index:
         self.association_role: dict = {}
         self.association_to_class_ref_attributes: dict = {}
         self.association_as_class_ref_attributes: dict = {}
+        self.association_bucket: dict = {}
+        self.associated_classes: dict = {}
 
         self.types_bucket = {}
 
         self.types_specialized_bucket = {}
 
         self.metaelement_metaattributes: dict = {}
+
+        self.class_in_package: dict = {}
+        self.submodel_in_package: dict = {}
+        self.association_in_package: dict = {}
 
         for basket in data_section.ModelData:
             for element in basket.choice:
@@ -215,11 +224,24 @@ class Index:
 
     def handle_base_class(self, element: BaseClass):
         base_class_bucket = self.base_class[element.base_class.ref]
-        class_related_type_bucket = self.class_related_type[element.crt.ref]
-        if element.base_class.ref not in class_related_type_bucket:
-            class_related_type_bucket.append(element.base_class.ref)
+        self.class_related_type[element.crt.ref] = element.base_class.ref
         if element.crt.ref not in base_class_bucket:
             base_class_bucket.append(element.crt.ref)
+
+        # handle association unwrapping
+        base_class = self.index[element.base_class.ref]
+        class_related_type = self.index[element.crt.ref]
+        if isinstance(base_class, Class) and isinstance(class_related_type, Role):
+            # this is an association part
+            association = self.index[class_related_type.association.ref]
+            if association.tid not in self.association_bucket:
+                self.association_bucket[association.tid] = []
+            self.association_bucket[association.tid].append(
+                (class_related_type.tid, base_class.tid)
+            )
+            if base_class.tid not in self.associated_classes:
+                self.associated_classes[base_class.tid] = []
+            self.associated_classes[base_class.tid].append(association.tid)
 
     def handle_axis_spec(self, element: AxisSpec):
         coord_type_bucket = self.coord_type[element.coord_type.ref]
@@ -275,6 +297,10 @@ class Index:
                         self.imported_p[element.tid] = []
                     if element.tid not in self.importing_p:
                         self.importing_p[element.tid] = []
+                elif isinstance(element, SubModel):
+                    if element.element_in_package.ref not in self.submodel_in_package:
+                        self.submodel_in_package[element.element_in_package.ref] = []
+                    self.submodel_in_package[element.element_in_package.ref].append(element.tid)
 
                 elif isinstance(element, DataUnit):
                     if element.tid not in self.of_data_unit:
@@ -289,6 +315,16 @@ class Index:
                         self.ili1_transfer_class[element.tid] = []
                     if element.tid not in self.base_class:
                         self.base_class[element.tid] = []
+                    if element.kind == "Class":
+                        if element.element_in_package.ref not in self.class_in_package:
+                            self.class_in_package[element.element_in_package.ref] = []
+                        self.class_in_package[element.element_in_package.ref].append(element.tid)
+                    if element.kind == "Association":
+                        if element.element_in_package.ref not in self.association_in_package:
+                            self.association_in_package[element.element_in_package.ref] = []
+                        self.association_in_package[element.element_in_package.ref].append(
+                            element.tid
+                        )
 
                 elif isinstance(element, View):
                     if element.tid not in self.class_in_basket:
@@ -312,15 +348,15 @@ class Index:
                     if element.tid not in self.ili1_ref_attr:
                         self.ili1_ref_attr[element.tid] = []
                     if element.tid not in self.class_related_type:
-                        self.class_related_type[element.tid] = []
+                        self.class_related_type[element.tid] = None
 
                 elif isinstance(element, ClassRefType):
                     if element.tid not in self.class_related_type:
-                        self.class_related_type[element.tid] = []
+                        self.class_related_type[element.tid] = None
 
                 elif isinstance(element, ObjectType):
                     if element.tid not in self.class_related_type:
-                        self.class_related_type[element.tid] = []
+                        self.class_related_type[element.tid] = None
 
                 elif isinstance(element, CoordType):
                     if element.tid not in self.coord_type:
@@ -337,7 +373,7 @@ class Index:
     def prepare_association(self, association_class: Class):
         """
         The following preassumptions were made:
-            - 1:n is installed as class attribute to the referenced class with the 1 side, a backref attributte
+            - 1:n is installed as class attribute to the referenced class with the 1 side, a backref attribute
               is installed at the referenced class as a list, if the association itself has no attributes itself
             - m:n is created as extra class with the attributes and references to the tid's of the
               corresponding objects, same approach is implemented for any associaton which has additional
@@ -356,6 +392,7 @@ class Index:
         else:
             # association does not have associated classes
             # this is the case when association is just a subclass of another one
+            # TODO: currently we step only one level deep here, this has to be recursively deep!
             if association_class.super:
                 association_members = self.association_role[association_class.super.ref]
             else:
@@ -363,6 +400,7 @@ class Index:
         from_class = None
         attributes = []
         for member_ref in association_members:
+            # handling of embedded associations
             role: Role = self.index[member_ref]
             for linked_class in self.class_related_type[member_ref]:
                 # multiple classes can be linked with additional logical operator

@@ -1,20 +1,30 @@
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.model_data import ModelDataType
 from typing import List
 
-from ili2py.writers.uml.interlis_23 import uml_diagram
+from ili2py.mappers.helpers import Index
+from ili2py.writers import handle_model_versions
+from ili2py.writers.uml.interlis_23 import uml_diagram, Diagram
 
 
-def find_model_data_by_name(name: str, model_data: List[ModelDataType]) -> int:
-    for index, item in enumerate(model_data):
-        if item.Model.Name == name:
-            return index
-    raise AttributeError(f"No model found with name {name}")
-
-
-def create_uml_diagram(model_names: List[str], transfer: ImdTransfer, flavour: str):
-    # TODO: This is probably ugly (aka can we have mixed ili versions?
-    if transfer.datasection.ModelData[-1].Model.iliVersion in ['2.3', '2.4']:
-        return uml_diagram(transfer, model_names, flavour)
+def create_uml_diagram(
+    diagram: Diagram,
+    index: Index,
+    model_names: list[str],
+    flavour: str,
+    output_path: str,
+    direction: str | None = None,
+    linetype: str | None = None,
+):
+    ili_version = handle_model_versions(index)
+    if ili_version == "2.3":
+        uml_diagram(
+            diagram,
+            index,
+            model_names,
+            flavour,
+            output_path,
+            direction=direction,
+            linetype=linetype,
+        )
     else:
-        raise NotImplementedError()
+        raise NotImplementedError(f"ili version '{ili_version}' not supported")
