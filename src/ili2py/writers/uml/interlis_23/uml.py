@@ -76,7 +76,7 @@ class Attribute(Base):
             else:
                 return type_definition.name
         elif isinstance(type_definition, ImdBlackboxType):
-            return "BinaryBlackBox"
+            return "BlackBox"
         elif isinstance(type_definition, ImdNumType):
             return "Number"
         elif isinstance(type_definition, ImdBooleanType):

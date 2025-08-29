@@ -1,3 +1,5 @@
+from random import randint
+
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 from typing import List
@@ -62,6 +64,8 @@ def uml_diagram(
     output = env.get_template(f"{flavour}.jinja2").render(
         diagram=diagram,
         index=index,
+        len=len,
+        randint=randint,
         model_names=model_names,
         direction=selected_direction,
         linetype=selected_linetype,

@@ -12,7 +12,6 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     EnumTreeValueType,
     EnumType,
     FormattedType,
-    LineType,
     MetaElementTypeDocumentation,
     Model,
     ModelData,
@@ -111,9 +110,8 @@ class Attribute(Base):
     range_assertions: list[str] = field(default_factory=list)
     kind_assertions: list[str] = field(default_factory=list)
 
-    @classmethod
-    def decide_type(
-        cls,
+    @staticmethod
+    def handle_type_trail(
         imd_type: (
             TextType
             | FormattedType
@@ -123,25 +121,33 @@ class Attribute(Base):
             | MultiValue
             | EnumType
             | ImdCoordType
+            | ImdLineType
         ),
+        index: Index,
     ) -> str:
         if isinstance(imd_type, TextType):
             return "str"
         elif isinstance(imd_type, FormattedType):
-            return "str"
+            if imd_type.super and imd_type.name == "TYPE":
+                return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
+            else:
+                return "str"
         elif isinstance(imd_type, BlackboxType):
-            return "bytes"
+            return "str"
         elif isinstance(imd_type, NumType):
             return "float"
         elif isinstance(imd_type, BooleanType):
             return "bool"
         elif isinstance(imd_type, ImdCoordType):
             if imd_type.name == "TYPE" and imd_type.super:
-                return imd_type.super.ref
+                return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
             else:
                 return imd_type.tid
         elif isinstance(imd_type, ImdLineType):
-            return imd_type.tid
+            if imd_type.name == "TYPE" and imd_type.super:
+                return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
+            else:
+                return imd_type.tid
         elif isinstance(imd_type, MultiValue):
             return imd_type.base_type.ref
         elif isinstance(imd_type, EnumType):
@@ -150,9 +156,8 @@ class Attribute(Base):
         elif isinstance(imd_type, EnumTreeValueType):
             return imd_type.tid
         else:
-            raise NotImplementedError(
-                f"Type is not in base_type_dict and unknown otherwise {imd_type}"
-            )
+            logging.debug(f"Type was not handled correctly for UML preparation: {imd_type}")
+            return "UNKNOWN"
 
     @classmethod
     def construct_range_assertions(
@@ -204,10 +209,10 @@ class Attribute(Base):
             model = index.index[package.element_in_package.ref]
         else:
             model = package
-        mapped_type = cls.decide_type(referenced_type)
+        mapped_type = cls.handle_type_trail(referenced_type, index)
         attribute_name = imd_attr_or_param.name
         meta_attributes = cls.assemble_meta_attributes(index, imd_attr_or_param.tid)
-        final_type_name = cls.get_type_name(
+        final_type_name = Attribute.handle_type(
             mapped_type, imd_attr_or_param, referenced_class, model, referenced_type, sub_model
         )
         if isinstance(referenced_type, MultiValue):
@@ -222,7 +227,7 @@ class Attribute(Base):
         )
 
     @staticmethod
-    def get_type_name(
+    def handle_type(
         type_name,
         parent_attribute: AttrOrParam,
         parent_class: ImdClass,
@@ -237,7 +242,7 @@ class Attribute(Base):
                 if submodel:
                     if type_name_parts[1] == submodel.name:
                         # type is from the same submodel/module
-                        if type_name_parts[1] == parent_class.name:
+                        if type_name_parts[2] == parent_class.name:
                             # this is a class self reference
                             type_name = ".".join(type_name_parts[1:-1])
                             return f'"{type_name}"'
@@ -365,7 +370,7 @@ class CoordType(Base):
                         identifier=imd_axis.tid,
                         name=imd_axis.name,
                         doc=cls.doc_string(imd_axis.documentation),
-                        type=Attribute.decide_type(imd_axis),
+                        type=Attribute.handle_type_trail(imd_axis, index),
                         reference_system=reference_system,
                         range_assertions=CoordAttribute.construct_range_assertions(
                             imd_axis.name, imd_axis

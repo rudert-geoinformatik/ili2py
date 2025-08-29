@@ -40,7 +40,9 @@ namespace {{ topic_group.oid.replace('.', '_') }} {
 }
 {%- endif %}
 {%- for association in topic_group.associations %}
+{%- if index.index[association[0][0]].element_in_package.ref.split('.')[0] in model_names and index.index[association[1][0]].element_in_package.ref.split('.')[0] in model_names %}
 {{ association[0][0].replace('.', '_') }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0].replace('.', '_') }} : {{ association[2] }}
+{%- endif %}
 {%- endfor %}
 {%- for class_definition in topic_group.classes  %}
 {%- if class_definition.inherits_from %}

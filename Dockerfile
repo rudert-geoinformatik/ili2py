@@ -6,7 +6,6 @@ COPY . /app
 
 RUN pip install --upgrade pip && pip install --editable .
 
-ENTRYPOINT ["python", "-m", "ili2py.cli"]
+USER 1000
 
-# Default command to run when starting the container (example from README.md)
-CMD ["ili2py-python-classes", "-h"]
+ENTRYPOINT ["python", "-m", "ili2py.cli"]

@@ -15,7 +15,11 @@ namespace {{ model_group.oid }} {
 }
 {% endif %}
 {%- for association in model_group.associations %}
+{%- if len(association) == 3 %}
 {{ association[0][0] }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0] }} : {{ association[2] }}
+{%- else %}
+    note "Association <b>'{{ model_group.name }}.{{ association[-1] }}'</b>\n has more than 2 sides,\n this is currently not supported" as N{{ randint(1,10000) }}
+{%- endif %}
 {%- endfor %}
 {%- for class_definition in model_group.classes  %}
 {%- if class_definition.inherits_from %}
@@ -37,7 +41,13 @@ namespace {{ topic_group.oid }} {
 }
 {%- endif %}
 {%- for association in topic_group.associations %}
+{%- if len(association) == 3 %}
+{%- if index.index[association[0][0]].element_in_package.ref.split('.')[0] in model_names and index.index[association[1][0]].element_in_package.ref.split('.')[0] in model_names %}
 {{ association[0][0] }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0] }} : {{ association[2] }}
+{%- endif %}
+{%- else %}
+    note "Association <b>'{{ model_group.name }}.{{ topic_group.name }}.{{ association[-1] }}'</b>\n has more than 2 sides,\n this is currently not supported" as N{{ randint(1,10000) }}
+{%- endif %}
 {%- endfor %}
 {%- for class_definition in topic_group.classes  %}
 {%- if class_definition.inherits_from %}
