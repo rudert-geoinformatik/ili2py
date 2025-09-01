@@ -1,7 +1,7 @@
 import logging
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import Any, Tuple
+from typing import Any, Tuple, Optional, Union
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     AttrOrParam,
@@ -109,6 +109,7 @@ class Attribute(Base):
     type: str
     range_assertions: list[str] = field(default_factory=list)
     kind_assertions: list[str] = field(default_factory=list)
+    enumeration: Optional["Enumeration"] = field(default=None)
 
     @staticmethod
     def handle_type_trail(
@@ -124,7 +125,7 @@ class Attribute(Base):
             | ImdLineType
         ),
         index: Index,
-    ) -> str:
+    ) -> Union[str, "Enumeration"]:
         if isinstance(imd_type, TextType):
             return "str"
         elif isinstance(imd_type, FormattedType):
@@ -151,7 +152,15 @@ class Attribute(Base):
         elif isinstance(imd_type, MultiValue):
             return imd_type.base_type.ref
         elif isinstance(imd_type, EnumType):
-            tid = Enumeration.prepare_tid(imd_type.tid)
+            if imd_type.super:
+                tid = Enumeration.prepare_tid(imd_type.super.ref)
+            else:
+                if imd_type.element_in_package:
+                    # its a linked enumeration defined at package level
+                    tid = Enumeration.prepare_tid(imd_type.tid)
+                else:
+                    # its an enumeration defined directly at attribute level in the interlis model
+                    return Enumeration.from_imd(imd_type, index)
             return tid
         elif isinstance(imd_type, EnumTreeValueType):
             return imd_type.tid
@@ -224,6 +233,7 @@ class Attribute(Base):
             doc=cls.doc_string(imd_attr_or_param.documentation),
             range_assertions=cls.construct_range_assertions(attribute_name, referenced_type),
             meta_attributes=meta_attributes,
+            enumeration=mapped_type if isinstance(mapped_type, Enumeration) else None,
         )
 
     @staticmethod
@@ -234,7 +244,9 @@ class Attribute(Base):
         model: Model,
         referenced_type,
         submodel: SubModel | None = None,
-    ) -> str:
+    ) -> Union[str, "Enumeration"]:
+        if isinstance(type_name, Enumeration):
+            return f'"{parent_class.name}.{type_name.name}"'
         if "." in type_name:
             type_name_parts = type_name.split(".")
             if type_name_parts[0] == model.name:
@@ -273,6 +285,7 @@ class Class(Base):
     attributes: list[Attribute] = field(default_factory=list)
     abstract: bool = field(default=False)
     related_class_imports: list[Tuple[str, str]] = field(default_factory=list)
+    enumerations: list["Enumeration"] = field(default_factory=list)
 
     @classmethod
     def from_imd(cls, imd_class: ImdClass, imd_model_data: ModelData, index: Index):
@@ -446,7 +459,7 @@ class Value(Base):
     children: list["Value"] = field(default_factory=list)
 
     @classmethod
-    def from_imd(cls, imd_enum_node: EnumNode, imd_model_data: ModelData, index: Index):
+    def from_imd(cls, imd_enum_node: EnumNode, index: Index):
         return cls(
             identifier=imd_enum_node.tid,
             name=imd_enum_node.name,
@@ -470,25 +483,21 @@ class Enumeration(Base):
     tree: bool = field(default=False)
 
     @classmethod
-    def get_related_enum_nodes(
-        cls, imd_enum_node: EnumNode, imd_model_data: ModelData, index: Index
-    ):
+    def get_related_enum_nodes(cls, imd_enum_node: EnumNode, index: Index):
         related_enum_nodes = []
         for found_enum_node in index.types_bucket["EnumNode"]:
             if found_enum_node.parent_node is not None:
                 if found_enum_node.parent_node.ref == imd_enum_node.tid:
-                    child_enum_nodes = cls.get_related_enum_nodes(
-                        found_enum_node, imd_model_data, index
-                    )
-                    enum_value = Value.from_imd(found_enum_node, imd_model_data, index)
+                    child_enum_nodes = cls.get_related_enum_nodes(found_enum_node, index)
+                    enum_value = Value.from_imd(found_enum_node, index)
                     enum_value.children = child_enum_nodes
                     related_enum_nodes.append(enum_value)
         return related_enum_nodes
 
     @classmethod
-    def from_imd(cls, imd_enum_type: EnumType, imd_model_data: ModelData, index: Index):
+    def from_imd(cls, imd_enum_type: EnumType, index: Index):
         top_enum_node = index.index[f"{imd_enum_type.tid}.TOP"]
-        enum_hirarchie = cls.get_related_enum_nodes(top_enum_node, imd_model_data, index)
+        enum_hirarchie = cls.get_related_enum_nodes(top_enum_node, index)
         matched_imd_enum_tree_value_type = None
         for imd_enum_tree_value_type in index.types_bucket.get("EnumTreeValueType", []):
             if imd_enum_tree_value_type.et.ref == imd_enum_type.tid:
@@ -567,16 +576,7 @@ class Module(Base):
         for imd_enumeration in index.types_bucket["EnumType"]:
             if imd_enumeration.element_in_package:
                 if imd_enumeration.element_in_package.ref == imd_sub_model.tid:
-                    enumerations.append(
-                        Enumeration.from_imd(imd_enumeration, imd_model_data, index)
-                    )
-            else:
-                attr_type_parent = index.index[imd_enumeration.ltparent.ref]
-                attr_parent = index.index[attr_type_parent.attr_parent.ref]
-                if attr_parent.element_in_package.ref == imd_sub_model.tid:
-                    enumerations.append(
-                        Enumeration.from_imd(imd_enumeration, imd_model_data, index)
-                    )
+                    enumerations.append(Enumeration.from_imd(imd_enumeration, index))
         coord_types = []
         for imd_coord_type in cls.get_element_of_type_from_list(
             ImdCoordType, imd_model_data.choice
@@ -661,9 +661,7 @@ class Package(Base):
         for imd_enumeration in cls.get_element_of_type_from_list(EnumType, imd_model_data.choice):
             if imd_enumeration.element_in_package:
                 if imd_enumeration.element_in_package.ref == imd_model.tid:
-                    enumerations.append(
-                        Enumeration.from_imd(imd_enumeration, imd_model_data, index)
-                    )
+                    enumerations.append(Enumeration.from_imd(imd_enumeration, index))
         meta_attributes = cls.assemble_meta_attributes(index, imd_model.tid)
         return cls(
             identifier=imd_model.tid,

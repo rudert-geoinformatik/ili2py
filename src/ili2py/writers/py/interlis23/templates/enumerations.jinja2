@@ -1,7 +1,3 @@
-{%- if enumerations %}
-from enum import Enum
-{% endif %}
-
 {%- for enumeration in enumerations %}
 class {{ enumeration.name }}(Enum):
     {%- if enumeration.doc %}

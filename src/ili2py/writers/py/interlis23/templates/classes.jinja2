@@ -23,6 +23,13 @@ class {{ class_definition.name }}:
     """
     {%- endif -%}
 {%- if class_definition.attributes %}
+{%- for attribute in class_definition.attributes %}
+{%- if attribute.enumeration %}
+    {%- set enumerations=[attribute.enumeration] %}
+    {%- macro render_enumerations() %}{% include "enumerations.jinja2" %}{% endmacro %}
+    {{ render_enumerations() | indent(4, true) }}
+{%- endif %}
+{%- endfor %}
 {% for attribute in class_definition.attributes %}
     {%- if attribute.name == attribute.type %}
     {{ attribute.name }}: "{{ attribute.type }}" = field(
