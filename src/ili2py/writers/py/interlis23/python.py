@@ -19,6 +19,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     NumType,
     SubModel,
     TextType,
+    MetaElementType,
 )
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     Class as ImdClass,
@@ -107,9 +108,25 @@ class Attribute(Base):
     """Represents imd AttrOrParam"""
 
     type: str
-    range_assertions: list[str] = field(default_factory=list)
-    kind_assertions: list[str] = field(default_factory=list)
+    type_restrictions: str = field(default_factory=list)
     enumeration: Optional["Enumeration"] = field(default=None)
+    line_type: Optional["LineType"] = field(default=None)
+
+    @staticmethod
+    def check_float_kind(representation: str | None) -> bool:
+        """
+        Checks if a passed string of IMD16 number kinds can be interpreted as float.
+
+        Args:
+            representation: The numeric representation (e.g. 1000.00 or 1000 or -1000.000)
+
+        Returns:
+            True if it can be interpreted as float kind, False if not.
+        """
+        if representation:
+            return len(representation.split(".")) == 2
+        else:
+            return False
 
     @staticmethod
     def handle_type_trail(
@@ -125,51 +142,79 @@ class Attribute(Base):
             | ImdLineType
         ),
         index: Index,
-    ) -> Union[str, "Enumeration"]:
+    ) -> Tuple[str, bool]:
+        """
+        This method handles type resolution. When possible it returns a simple type name of Python (e.g. str,
+        int, bool, etc.). When it is not possible to return a simple type, the OID of the linked type will
+        be returned.
+
+        Args:
+            imd_type: The type which should be looked up
+            index: The index which can be used to look up the type and maybe follow the path till the acutal
+                type is found.
+
+        Returns:
+            The string representing the type and flag if returned string is a OID or not (might be looked up
+            in index).
+        """
         if isinstance(imd_type, TextType):
-            return "str"
+            return "str", False
         elif isinstance(imd_type, FormattedType):
             if imd_type.super and imd_type.name == "TYPE":
                 return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
             else:
-                return "str"
+                return "str", False
         elif isinstance(imd_type, BlackboxType):
-            return "str"
+            return "str", False
         elif isinstance(imd_type, NumType):
-            return "float"
+            float_kind = Attribute.check_float_kind(imd_type.min) or Attribute.check_float_kind(
+                imd_type.max
+            )
+            if float_kind:
+                return "float", False
+            else:
+                return "int", False
         elif isinstance(imd_type, BooleanType):
-            return "bool"
+            return "bool", False
         elif isinstance(imd_type, ImdCoordType):
             if imd_type.name == "TYPE" and imd_type.super:
                 return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
             else:
-                return imd_type.tid
+                return imd_type.tid, True
         elif isinstance(imd_type, ImdLineType):
             if imd_type.name == "TYPE" and imd_type.super:
                 return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
             else:
-                return imd_type.tid
+                return imd_type.tid, True
         elif isinstance(imd_type, MultiValue):
-            return imd_type.base_type.ref
+            return imd_type.base_type.ref, True
         elif isinstance(imd_type, EnumType):
-            if imd_type.super:
-                tid = Enumeration.prepare_tid(imd_type.super.ref)
+            if imd_type.name == "TYPE" and imd_type.super:
+                return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
             else:
-                if imd_type.element_in_package:
-                    # its a linked enumeration defined at package level
-                    tid = Enumeration.prepare_tid(imd_type.tid)
-                else:
-                    # its an enumeration defined directly at attribute level in the interlis model
-                    return Enumeration.from_imd(imd_type, index)
-            return tid
+                return imd_type.tid, True
         elif isinstance(imd_type, EnumTreeValueType):
-            return imd_type.tid
+            return imd_type.tid, True
         else:
-            logging.debug(f"Type was not handled correctly for UML preparation: {imd_type}")
-            return "UNKNOWN"
+            logging.debug(
+                f"Type was not handled correctly for Python-Class-Generation preparation: {imd_type}"
+            )
+            return "UNKNOWN", False
+
+    @staticmethod
+    def derive_precision(representation: str) -> int:
+        """
+        Derives the precision of a float string representation (e.g. "1000.00" -> 2).
+        Args:
+            representation: The string representing a float.
+
+        Returns:
+            The preciscion of the float.
+        """
+        return len(representation.split(".")[1])
 
     @classmethod
-    def construct_range_assertions(
+    def construct_type_restrictions(
         cls,
         attribute_name: str,
         imd_type: (
@@ -182,22 +227,67 @@ class Attribute(Base):
             | EnumType
             | ImdCoordType
         ),
-    ) -> list[str]:
+    ) -> str | None:
         if isinstance(imd_type, TextType):
-            range_assertions = []
             if imd_type.max_length is not None:
-                range_assertions.append(f"len(self.{attribute_name}) <= {imd_type.max_length}")
-            return range_assertions
+                return str({"max_length": imd_type.max_length})
         elif isinstance(imd_type, NumType):
-            range_assertions = []
+            type_restrictions = {}
+            float_kind = Attribute.check_float_kind(imd_type.min) or Attribute.check_float_kind(
+                imd_type.max
+            )
             if imd_type.min is not None:
-                range_assertions.append(f"self.{attribute_name} >= {imd_type.min}")
+                if float_kind:
+                    min = float(imd_type.min)
+                    type_restrictions["precision"] = Attribute.derive_precision(imd_type.min)
+                else:
+                    min = int(imd_type.min)
+                type_restrictions["min"] = min
             if imd_type.max is not None:
-                range_assertions.append(f"self.{attribute_name} <= {imd_type.max}")
-            return range_assertions
+                if float_kind:
+                    max = float(imd_type.max)
+                    max_precision = Attribute.derive_precision(imd_type.max)
+                    if max_precision != type_restrictions["precision"]:
+                        logging.debug(f"NumType precision was not as expected: {imd_type}")
+                else:
+                    max = int(imd_type.max)
+                type_restrictions["max"] = max
+            return str(type_restrictions) if type_restrictions else None
         else:
             logging.debug(f"Type was not handled by range assertions: {imd_type}")
-            return []
+            return None
+
+    @staticmethod
+    def handle_local_types_and_multivalues(
+        index, resolved_type_name, referenced_type, attr_or_param, referenced_class
+    ):
+        local_type = None
+        resolved_type = index.index.get(resolved_type_name)
+        if not resolved_type:
+            # type name is already a type which is not part of original imd tree, we manipulated it in
+            # previous steps and assume here, that we can savely use it
+            return resolved_type_name, local_type
+        if isinstance(referenced_type, MultiValue):
+            final_type_name = f"list['{resolved_type_name}']"
+        elif isinstance(referenced_type, EnumType) and referenced_type.name == "TYPE":
+            if referenced_type.name == resolved_type.name:
+                class_name = f"{attr_or_param.name}Enum"
+                final_type_name = f"'{referenced_class.name}.{class_name}'"
+                local_type = Enumeration.from_imd(referenced_type, index)
+                local_type.name = class_name
+            else:
+                final_type_name = resolved_type_name
+        elif isinstance(referenced_type, ImdLineType) and referenced_type.name == "TYPE":
+            if referenced_type.name == resolved_type.name:
+                class_name = f"{attr_or_param.name}LineType"
+                final_type_name = f"'{referenced_class.name}.{class_name}'"
+                local_type = LineType.from_imd(referenced_type, index)
+                local_type.name = class_name
+            else:
+                final_type_name = resolved_type_name
+        else:
+            final_type_name = resolved_type_name
+        return final_type_name, local_type
 
     @classmethod
     def from_imd(
@@ -218,62 +308,86 @@ class Attribute(Base):
             model = index.index[package.element_in_package.ref]
         else:
             model = package
-        mapped_type = cls.handle_type_trail(referenced_type, index)
+        mapped_type, is_oid = cls.handle_type_trail(referenced_type, index)
         attribute_name = imd_attr_or_param.name
         meta_attributes = cls.assemble_meta_attributes(index, imd_attr_or_param.tid)
-        final_type_name = Attribute.handle_type(
-            mapped_type, imd_attr_or_param, referenced_class, model, referenced_type, sub_model
+        resolved_type_name = Attribute.handle_type(
+            index,
+            mapped_type,
+            imd_attr_or_param,
+            referenced_class,
+            model,
+            referenced_type,
+            is_oid=is_oid,
+            sub_model=sub_model,
         )
-        if isinstance(referenced_type, MultiValue):
-            final_type_name = f"list[{final_type_name}]"
+        final_type_name, local_type = Attribute.handle_local_types_and_multivalues(
+            index, resolved_type_name, referenced_type, imd_attr_or_param, referenced_class
+        )
         return cls(
             identifier=imd_attr_or_param.tid,
             name=attribute_name,
             type=final_type_name,
             doc=cls.doc_string(imd_attr_or_param.documentation),
-            range_assertions=cls.construct_range_assertions(attribute_name, referenced_type),
+            type_restrictions=cls.construct_type_restrictions(attribute_name, referenced_type),
             meta_attributes=meta_attributes,
-            enumeration=mapped_type if isinstance(mapped_type, Enumeration) else None,
+            enumeration=local_type if isinstance(local_type, Enumeration) else None,
+            line_type=local_type if isinstance(local_type, LineType) else None,
         )
 
     @staticmethod
     def handle_type(
-        type_name,
+        index: Index,
+        type_name: str,
         parent_attribute: AttrOrParam,
         parent_class: ImdClass,
         model: Model,
-        referenced_type,
-        submodel: SubModel | None = None,
-    ) -> Union[str, "Enumeration"]:
-        if isinstance(type_name, Enumeration):
-            return f'"{parent_class.name}.{type_name.name}"'
-        if "." in type_name:
-            type_name_parts = type_name.split(".")
-            if type_name_parts[0] == model.name:
-                # type is from the same model/package
-                if submodel:
-                    if type_name_parts[1] == submodel.name:
-                        # type is from the same submodel/module
-                        if type_name_parts[2] == parent_class.name:
-                            # this is a class self reference
-                            type_name = ".".join(type_name_parts[1:-1])
-                            return f'"{type_name}"'
-                        elif "ENUM" in type_name_parts[-1]:
-                            return "".join(type_name_parts[-2:]).replace("_", "")
-                        else:
-                            return type_name_parts[-1]
-                    else:
-                        return type_name
+        referenced_type: (
+            TextType
+            | FormattedType
+            | BlackboxType
+            | NumType
+            | BooleanType
+            | MultiValue
+            | EnumType
+            | ImdCoordType
+        ),
+        is_oid: bool | None = None,
+        sub_model: SubModel | None = None,
+    ) -> str:
+        if is_oid:
+            imd_type = index.index[type_name]
+            if imd_type.element_in_package:
+                package_of_type_name = index.index[imd_type.element_in_package.ref].name
+                if sub_model:
+                    if sub_model.name == package_of_type_name:
+                        type_name = imd_type.name
                 else:
-                    # type is part of the __init__ of the package
-                    if type_name_parts[1] == parent_class.name:
-                        # this is a class self reference
-                        type_name = ".".join(type_name_parts[1:-1])
-                        return f'"{type_name}"'
-                    return type_name_parts[-1]
-            else:
-                # it's a reference to an external, we return the full path
-                return ".".join(type_name_parts)
+                    if model.name == package_of_type_name:
+                        type_name = imd_type.name
+            elif isinstance(imd_type, MultiValue):
+                if imd_type.base_type:
+                    return Attribute.handle_type(
+                        index,
+                        referenced_type.base_type.ref,
+                        parent_attribute,
+                        parent_class,
+                        model,
+                        referenced_type,
+                        is_oid,
+                        sub_model,
+                    )
+                else:
+                    return Attribute.handle_type(
+                        index,
+                        imd_type.tid,
+                        parent_attribute,
+                        parent_class,
+                        model,
+                        referenced_type,
+                        is_oid,
+                        sub_model,
+                    )
         return type_name
 
 
@@ -333,18 +447,6 @@ class Class(Base):
             meta_attributes=meta_attributes,
         )
 
-    @property
-    def range_assertions(self) -> list[str]:
-        """
-        Collects all range assertions of the class and returns it as a plain list.
-        Returns:
-            Tha flat list of range assertions for the whole class.
-        """
-        range_assertions = []
-        for attribute in self.attributes:
-            range_assertions = range_assertions + attribute.range_assertions
-        return range_assertions
-
     @staticmethod
     def decide_super_reference(reference: str, class_tid: str, index: Index) -> str:
         if ".".join(class_tid.split(".")[:-1]) in reference:
@@ -378,14 +480,15 @@ class CoordType(Base):
                 if imd_axis.ref_sys:
                     reference_system = index.index[imd_axis.ref_sys.ref].tid
                 meta_attributes = cls.assemble_meta_attributes(index, imd_axis.tid)
+                mapped_type, is_tid = Attribute.handle_type_trail(imd_axis, index)
                 attributes.append(
                     CoordAttribute(
                         identifier=imd_axis.tid,
                         name=imd_axis.name,
                         doc=cls.doc_string(imd_axis.documentation),
-                        type=Attribute.handle_type_trail(imd_axis, index),
+                        type=mapped_type,
                         reference_system=reference_system,
-                        range_assertions=CoordAttribute.construct_range_assertions(
+                        type_restrictions=CoordAttribute.construct_type_restrictions(
                             imd_axis.name, imd_axis
                         ),
                         meta_attributes=meta_attributes,
@@ -421,20 +524,30 @@ class LineType(Base):
     arcs: bool = field(default=False)
 
     @classmethod
-    def from_imd(cls, imd_line_type: ImdLineType, imd_model_data: ModelData, index: Index):
+    def from_imd(cls, imd_line_type: ImdLineType, index: Index):
         attributes = []
-        coord_type = index.index[imd_line_type.coord_type.ref]
-        if imd_line_type.element_in_package.ref == coord_type.element_in_package.ref:
-            # line_type and coordtype_reference in the same package
-            type_name = coord_type.name.split(".")[-1]
+        attribute_doc = []
+        meta_attributes = []
+        if imd_line_type.coord_type:
+            coord_type = index.index[imd_line_type.coord_type.ref]
+            attribute_doc = cls.doc_string(coord_type.documentation)
+            if imd_line_type.element_in_package:
+                if imd_line_type.element_in_package.ref == coord_type.element_in_package.ref:
+                    # line_type and coordtype_reference in the same package
+                    type_name = coord_type.name.split(".")[-1]
+                else:
+                    # line_type and coordtype_reference NOT in the same package
+                    type_name = imd_line_type.coord_type.ref
+            else:
+                # line_type and coordtype_reference NOT in the same package
+                type_name = imd_line_type.coord_type.ref
+            meta_attributes = cls.assemble_meta_attributes(index, coord_type.tid)
         else:
-            # line_type and coordtype_reference NOT in the same package
-            type_name = imd_line_type.coord_type.ref
-        meta_attributes = cls.assemble_meta_attributes(index, coord_type.tid)
+            type_name = "Any"
         attribute = Attribute(
-            identifier=coord_type.tid,
+            identifier=f"{imd_line_type.tid}_attribute",
             name=imd_line_type.kind.upper(),
-            doc=cls.doc_string(coord_type.documentation),
+            doc=attribute_doc,
             type=type_name,
             meta_attributes=meta_attributes,
         )
@@ -554,8 +667,7 @@ class Module(Base):
     @classmethod
     def from_imd(
         cls,
-        imd_sub_model: SubModel,
-        imported_packages: list[str],
+        imd_instance: MetaElementType,
         imd_model_data: ModelData,
         index: Index,
         library: str,
@@ -565,41 +677,40 @@ class Module(Base):
         for imd_class in cls.get_element_of_type_from_list(
             ImdClass, imd_model_data.choice, ["Class", "Structure"]
         ):
-            if imd_class.element_in_package.ref == imd_sub_model.tid:
+            if imd_class.element_in_package.ref == imd_instance.tid:
                 class_instance = Class.from_imd(imd_class, imd_model_data, index)
                 classes.append(class_instance)
                 for module_path, class_name in class_instance.related_class_imports:
-                    if module_path.split(".")[-1] != imd_sub_model.name:
+                    if module_path.split(".")[-1] != imd_instance.name:
                         if (module_path, class_name) not in related_class_imports:
                             related_class_imports.append((module_path, class_name))
         enumerations = []
         for imd_enumeration in index.types_bucket["EnumType"]:
             if imd_enumeration.element_in_package:
-                if imd_enumeration.element_in_package.ref == imd_sub_model.tid:
+                if imd_enumeration.element_in_package.ref == imd_instance.tid:
                     enumerations.append(Enumeration.from_imd(imd_enumeration, index))
         coord_types = []
         for imd_coord_type in cls.get_element_of_type_from_list(
             ImdCoordType, imd_model_data.choice
         ):
             if imd_coord_type.element_in_package:
-                if imd_coord_type.element_in_package.ref == imd_sub_model.tid:
+                if imd_coord_type.element_in_package.ref == imd_instance.tid:
                     coord_types.append(CoordType.from_imd(imd_coord_type, imd_model_data, index))
         line_types = []
         for imd_line_type in cls.get_element_of_type_from_list(ImdLineType, imd_model_data.choice):
             if imd_line_type.element_in_package:
-                if imd_line_type.element_in_package.ref == imd_sub_model.tid:
-                    line_types.append(LineType.from_imd(imd_line_type, imd_model_data, index))
-        package = index.index[imd_sub_model.element_in_package.ref]
-        meta_attributes = cls.assemble_meta_attributes(index, imd_sub_model.tid)
+                if imd_line_type.element_in_package.ref == imd_instance.tid:
+                    line_types.append(LineType.from_imd(imd_line_type, index))
+        meta_attributes = cls.assemble_meta_attributes(index, imd_instance.tid)
         return cls(
-            identifier=imd_sub_model.tid,
-            name=imd_sub_model.name,
-            doc=cls.doc_string(imd_sub_model.documentation),
+            identifier=imd_instance.tid,
+            name=imd_instance.name,
+            doc=cls.doc_string(imd_instance.documentation),
             classes=classes,
             enumerations=enumerations,
             coord_types=coord_types,
             line_types=line_types,
-            imported_packages=imported_packages + [package.name],
+            imported_packages=[],
             library=library,
             related_class_imports=related_class_imports,
             meta_attributes=meta_attributes,
@@ -607,62 +718,37 @@ class Module(Base):
 
 
 @dataclass
-class Package(Base):
+class Package(Module):
     """
     Represents a python package, this is a folder containing an __init__.py file. The folder gets the name of
     the model, the documentation goes into the __init__.py file.
     """
 
-    version: str
-    ili_version: str
+    version: str = field(default=None)
+    ili_version: str = field(default=None)
     modules: list[Module] = field(default_factory=list)
-    classes: list[Class] = field(default_factory=list)
-    enumerations: list[Enumeration] = field(default_factory=list)
-    coord_types: list[CoordType] = field(default_factory=list)
-    line_types: list[LineType] = field(default_factory=list)
-    imported_packages: list[str] = field(default_factory=list)
-    related_class_imports: list[Tuple[str, str]] = field(default_factory=list)
-    library: str = field(default=None)
 
     @classmethod
-    def from_imd(cls, imd_model: Model, imd_model_data: ModelData, index: Index, library: str):
-        modules = []
-        imported_packages = index.importing_p[imd_model.tid]
-        for imd_submodel in cls.get_element_of_type_from_list(SubModel, imd_model_data.choice):
-            modules.append(
-                Module.from_imd(imd_submodel, imported_packages, imd_model_data, index, library)
-            )
+    def from_imd(
+        cls, imd_instance: MetaElementType, imd_model_data: ModelData, index: Index, library: str
+    ):
+        if not isinstance(imd_instance, Model):
+            raise TypeError(f'imd_instance has to be of type "Model" but was {imd_instance}')
+        # set correct typing
+        imd_model: Model = imd_instance
 
-        classes = []
-        related_class_imports = []
-        for imd_class in cls.get_element_of_type_from_list(
-            ImdClass, imd_model_data.choice, ["Class", "Structure"]
-        ):
-            if imd_class.element_in_package.ref == imd_model.tid:
-                class_instance = Class.from_imd(imd_class, imd_model_data, index)
-                classes.append(class_instance)
-                for module_path, class_name in class_instance.related_class_imports:
-                    if module_path.split(".")[0] != imd_model.name:
-                        if (module_path, class_name) not in related_class_imports:
-                            related_class_imports.append((module_path, class_name))
-        coord_types = []
-        for imd_coord_type in cls.get_element_of_type_from_list(
-            ImdCoordType, imd_model_data.choice
-        ):
-            if imd_coord_type.element_in_package:
-                if imd_coord_type.element_in_package.ref == imd_model.tid:
-                    coord_types.append(CoordType.from_imd(imd_coord_type, imd_model_data, index))
-        line_types = []
-        for imd_line_type in cls.get_element_of_type_from_list(ImdLineType, imd_model_data.choice):
-            if imd_line_type.element_in_package:
-                if imd_line_type.element_in_package.ref == imd_model.tid:
-                    line_types.append(LineType.from_imd(imd_line_type, imd_model_data, index))
-        enumerations = []
-        for imd_enumeration in cls.get_element_of_type_from_list(EnumType, imd_model_data.choice):
-            if imd_enumeration.element_in_package:
-                if imd_enumeration.element_in_package.ref == imd_model.tid:
-                    enumerations.append(Enumeration.from_imd(imd_enumeration, index))
-        meta_attributes = cls.assemble_meta_attributes(index, imd_model.tid)
+        # call Module function to initialize
+        partialy_initialized_package = super(Package, cls).from_imd(
+            imd_instance, imd_model_data, index, library
+        )
+        modules = []
+        imported_packages = index.importing_p[imd_instance.tid]
+        for imd_submodel in cls.get_element_of_type_from_list(SubModel, imd_model_data.choice):
+            module = Module.from_imd(imd_submodel, imd_model_data, index, library)
+            # we add imported packages from module level here too, this is necessary since we split things into
+            # nested files (python style)
+            module.imported_packages = imported_packages + [partialy_initialized_package.name]
+            modules.append(module)
         return cls(
             identifier=imd_model.tid,
             name=imd_model.name,
@@ -670,14 +756,14 @@ class Package(Base):
             ili_version=imd_model.ili_version,
             doc=cls.doc_string(imd_model.documentation),
             modules=modules,
-            enumerations=enumerations,
-            classes=classes,
-            coord_types=coord_types,
-            line_types=line_types,
+            enumerations=partialy_initialized_package.enumerations,
+            classes=partialy_initialized_package.classes,
+            coord_types=partialy_initialized_package.coord_types,
+            line_types=partialy_initialized_package.line_types,
             imported_packages=imported_packages,
             library=library,
-            related_class_imports=related_class_imports,
-            meta_attributes=meta_attributes,
+            related_class_imports=partialy_initialized_package.related_class_imports,
+            meta_attributes=partialy_initialized_package.meta_attributes,
         )
 
 

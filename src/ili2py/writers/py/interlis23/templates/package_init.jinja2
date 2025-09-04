@@ -1,7 +1,10 @@
 from typing import Union
 from enum import Enum
+from typing import Any
 from dataclasses import dataclass, field
+{%- if package.name != 'INTERLIS' %}
 from {{ package.library }} import INTERLIS
+{%- endif %}
 {% for item in  package.imported_packages %}
 from {{ package.library }} import {{ item }}
 {% endfor %}

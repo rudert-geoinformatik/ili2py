@@ -8,5 +8,7 @@ def create_python_classes(library: Library, index: Index, output_path: str):
     ili_version = handle_model_versions(index)
     if ili_version == "2.3":
         reader_classes(library, output_path)
+    elif ili_version == "2.4":
+        reader_classes(library, output_path)
     else:
         raise NotImplementedError(f"ili version '{ili_version}' not supported")

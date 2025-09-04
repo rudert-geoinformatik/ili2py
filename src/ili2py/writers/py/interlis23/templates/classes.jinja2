@@ -29,6 +29,11 @@ class {{ class_definition.name }}:
     {%- macro render_enumerations() %}{% include "enumerations.jinja2" %}{% endmacro %}
     {{ render_enumerations() | indent(4, true) }}
 {%- endif %}
+{%- if attribute.line_type %}
+    {%- set line_types=[attribute.line_type] %}
+    {%- macro render_line_types() %}{% include "line_types.jinja2" %}{% endmacro %}
+    {{ render_line_types() | indent(4, true) }}
+{%- endif %}
 {%- endfor %}
 {% for attribute in class_definition.attributes %}
     {%- if attribute.name == attribute.type %}
@@ -39,7 +44,9 @@ class {{ class_definition.name }}:
                     {%- for item in attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                }{%- if attribute.type_restrictions %},
+                "type_restrictions": {{ attribute.type_restrictions }}
+                {%- endif  %}
             }
         }
     )
@@ -51,20 +58,14 @@ class {{ class_definition.name }}:
                     {%- for item in attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                }{%- if attribute.type_restrictions %},
+                "type_restrictions": {{ attribute.type_restrictions }}
+                {%- endif  %}
             }
         }
     )
     {%- endif %}
 {%- endfor %}
-    def assert_range(self):
-{%- if class_definition.range_assertions %}
-{%- for range_assertion in class_definition.range_assertions %}
-        assert {{ range_assertion }}
-{%- endfor %}
-{% else %}
-        pass
-{%- endif %}
 {%- else %}
     pass
 {%- endif  %}

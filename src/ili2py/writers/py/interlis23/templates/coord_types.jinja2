@@ -19,26 +19,22 @@ class {{ coord_type.name }}:
                     {%- for item in attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                }{%- if attribute.type_restrictions %},
+                "type_restrictions": {{ attribute.type_restrictions }}
+                {%- endif  %}
             }
         }
     )
 {%- endfor %}
-    def assert_range(self):
-{%- if coord_type.range_assertions %}
-{%- for range_assertion in coord_type.range_assertions %}
-        assert {{ range_assertion }}
-{%- endfor %}
-{% else %}
-        pass
-{%- endif %}
     @property
     def metadata(self) -> dict:
         return {
             "interlis": {
-                {%- for item in coord_type.meta_attributes %}
-                    "{{ item.name }}": "{{ item.value }}",
-                {%- endfor %}
+                "meta_attributes": {
+                    {%- for item in coord_type.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
             }
         }
 
