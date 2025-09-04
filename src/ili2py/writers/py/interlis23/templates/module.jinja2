@@ -6,9 +6,15 @@ from {{ module.library }} import INTERLIS
 {% for item in  module.imported_packages %}
 from {{ module.library }} import {{ item }}
 {% endfor %}
-{% for module_path, class_item in module.related_class_imports %}
+{%- for module_path, class_item, alias in module.related_class_imports %}
+{%- if class_item and alias  %}
+from {{ module.library }}.{{ module_path }} import {{ class_item }} as {{ alias }}
+{%- elif class_item and not alias %}
 from {{ module.library }}.{{ module_path }} import {{ class_item }}
-{% endfor %}
+{%- elif not class_item and not alias %}
+import {{ module.library }}.{{ module_path }}
+{%- endif %}
+{%- endfor %}
 {%- if module.doc %}
 """
 {{ "\n".join(module.doc) }}

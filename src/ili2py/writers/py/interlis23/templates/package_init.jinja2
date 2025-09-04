@@ -8,8 +8,14 @@ from {{ package.library }} import INTERLIS
 {% for item in  package.imported_packages %}
 from {{ package.library }} import {{ item }}
 {% endfor %}
-{% for module_path, class_item in package.related_class_imports %}
+{% for module_path, class_item, alias in package.related_class_imports %}
+{%- if class_item and alias  %}
+from {{ package.library }}.{{ module_path }} import {{ class_item }} as {{ alias }}
+{%- elif class_item and not alias %}
 from {{ package.library }}.{{ module_path }} import {{ class_item }}
+{%- elif not class_item and not alias %}
+import {{ package.library }}.{{ module_path }}
+{%- endif %}
 {% endfor %}
 {%- if package.doc %}
 """

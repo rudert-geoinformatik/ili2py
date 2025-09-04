@@ -429,17 +429,24 @@ class Class(Base):
                     )
                 )
                 related_class_imports.append(
-                    (".".join(related_class.tid.split(".")[:-1]), related_class.tid.split(".")[-1])
+                    (
+                        ".".join(related_class.tid.split(".")[:-1]),
+                        related_class.tid.split(".")[-1],
+                        "_".join(related_class.tid.split(".")),
+                    )
                 )
         meta_attributes = cls.assemble_meta_attributes(index, imd_class.tid)
+        super_class_reference = None
+        if imd_class.super:
+            super_class_reference, super_class_reference_imports = cls.decide_super_reference(
+                imd_class.super.ref, imd_class.tid, index
+            )
+            if super_class_reference_imports:
+                related_class_imports.append(super_class_reference_imports)
         return cls(
             identifier=imd_class.tid,
             name=imd_class.name,
-            super_class=(
-                cls.decide_super_reference(imd_class.super.ref, imd_class.tid, index)
-                if imd_class.super
-                else None
-            ),
+            super_class=super_class_reference,
             doc=cls.doc_string(imd_class.documentation),
             attributes=attributes,
             abstract=imd_class.abstract,
@@ -448,11 +455,60 @@ class Class(Base):
         )
 
     @staticmethod
-    def decide_super_reference(reference: str, class_tid: str, index: Index) -> str:
-        if ".".join(class_tid.split(".")[:-1]) in reference:
-            return index.index[reference].name
+    def decide_super_reference(
+        reference: str, class_tid: str, index: Index
+    ) -> Tuple[str, Union[Tuple[str, str, str], None]]:
+        super_class = index.index[reference]
+        super_class_package = index.index[super_class.element_in_package.ref]
+        child_class = index.index[class_tid]
+        child_class_package = index.index[child_class.element_in_package.ref]
+        if isinstance(super_class_package, Model):
+            if isinstance(child_class_package, Model):
+                if super_class_package.name == child_class_package.name:
+                    # both are from same model, so we can simply use the class name as super reference and
+                    # dont need any additional imports
+                    return super_class.name, None
+                else:
+                    # The reference is ok, it can be imported and used directly
+                    return reference, (reference, None, None)
+            elif isinstance(child_class_package, SubModel):
+                return reference, (reference, None, None)
+            else:
+                logging.debug(
+                    f"Unexpected type while handling super class constructs of class {child_class}"
+                )
+        elif isinstance(super_class_package, SubModel):
+            super_class_model_package = index.index[super_class_package.element_in_package.ref]
+            if isinstance(child_class_package, SubModel):
+                child_class_model_package = index.index[child_class_package.element_in_package.ref]
+                if (
+                    child_class_package.name == super_class_package.name
+                    and child_class_model_package.name == super_class_model_package.name
+                ):
+                    # Super class is from the same package
+                    return super_class.name, None
+                else:
+                    super_class_model_package = index.index[
+                        super_class_package.element_in_package.ref
+                    ]
+                    super_class_reference = f"{super_class_model_package.name}_{super_class_package.name}_{super_class.name}"
+                    return super_class_reference, (
+                        f"{super_class_model_package.name}.{super_class_package.name}",
+                        super_class.name,
+                        super_class_reference,
+                    )
+            else:
+                super_class_model_package = index.index[super_class_package.element_in_package.ref]
+                super_class_reference = f"{super_class_model_package.name}_{super_class_package.name}_{super_class.name}"
+                return super_class_reference, (
+                    f"{super_class_model_package.name}.{super_class_package.name}",
+                    super_class.name,
+                    super_class_reference,
+                )
         else:
-            return reference
+            logging.debug(
+                f"Unexpected type while handling super class constructs of class {child_class}"
+            )
 
     def get_class_name(self):
         return "_".join(self.name.split("."))
@@ -680,10 +736,9 @@ class Module(Base):
             if imd_class.element_in_package.ref == imd_instance.tid:
                 class_instance = Class.from_imd(imd_class, imd_model_data, index)
                 classes.append(class_instance)
-                for module_path, class_name in class_instance.related_class_imports:
-                    if module_path.split(".")[-1] != imd_instance.name:
-                        if (module_path, class_name) not in related_class_imports:
-                            related_class_imports.append((module_path, class_name))
+                for module_path, class_name, alias in class_instance.related_class_imports:
+                    if (module_path, class_name, alias) not in related_class_imports:
+                        related_class_imports.append((module_path, class_name, alias))
         enumerations = []
         for imd_enumeration in index.types_bucket["EnumType"]:
             if imd_enumeration.element_in_package:

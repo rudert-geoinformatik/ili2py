@@ -3,6 +3,7 @@ from abc import ABC
 {% endif %}
 
 {%- for class_definition in classes %}
+
 @dataclass
 {% if class_definition.super_class %}
 class {{ class_definition.name }}({{ class_definition.super_class }}):

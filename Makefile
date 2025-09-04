@@ -45,11 +45,11 @@ $(DOC_REQUIREMENTS): $(PIP_REQUIREMENTS)
 	touch $@
 
 $(DEV_REQUIREMENTS): $(PIP_REQUIREMENTS)
-	$(VENV_BIN)/$(PIP_COMMAND) install .[dev]
+	$(VENV_BIN)/$(PIP_COMMAND) install -e .[dev]
 	touch $@
 
 $(TEST_REQUIREMENTS): $(PIP_REQUIREMENTS)
-	$(VENV_BIN)/$(PIP_COMMAND) install .[test]
+	$(VENV_BIN)/$(PIP_COMMAND) install -e .[test]
 	touch $@
 
 $(CHECK_REQUIREMENTS): $(PIP_REQUIREMENTS)

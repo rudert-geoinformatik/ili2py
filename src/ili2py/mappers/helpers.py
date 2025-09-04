@@ -133,8 +133,9 @@ class Index:
             for element in basket.choice:
                 self.prepare_tree(element)
 
-        for association_class in self.types_specialized_bucket["Class.Association"]:
-            self.prepare_association(association_class)
+        if self.types_specialized_bucket.get("Class.Association"):
+            for association_class in self.types_specialized_bucket["Class.Association"]:
+                self.prepare_association(association_class)
 
     def prepare_tree(self, element: Any):
         self.resolve_references(element)
