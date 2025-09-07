@@ -1,0 +1,29 @@
+INTERLIS 2.4;
+
+!!@ furtherInformation=https://www.cadastre-manual.admin.ch/de/modelldokumentation-dmav
+!!@ technicalContact=mailto:dmav@swisstopo.ch
+MODEL DMAVTYM_Tous_V1_0 (fr)
+  AT "https://models.geo.admin.ch/V_D/"
+  VERSION "2025-02-01"
+  TRANSLATION OF DMAVTYM_Alles_V1_0 ["2025-02-01"]
+  =
+  IMPORTS DMAV_CouvertureDuSol_V1_0;
+  IMPORTS DMAV_TerritoiresEnMouvementPermanent_V1_0;
+  IMPORTS DMAV_AssiettesDeServitudes_V1_0;
+  IMPORTS DMAV_ObjetsDivers_V1_0;
+  IMPORTS DMAV_PointsFixesMOCategorie3_V1_0;
+  IMPORTS DMAV_AdressesDeBatiments_V1_0;
+  IMPORTS DMAV_Immeubles_V1_0;
+  IMPORTS DMAV_LimitesTerritorialesMO_V1_0;
+  IMPORTS DMAV_Nomenclature_V1_0;
+  IMPORTS DMAV_Conduites_V1_0;
+  IMPORTS DMAV_NiveauxTolerance_V1_0;
+  IMPORTS DMAVSUP_SousUniteRegistreFoncier;
+
+  !! Intégré comme service dans les données de la mensuration officielle
+  IMPORTS FixpunkteLV_V1_0;                   !! Géodonnées de  base ID 53
+  IMPORTS KGKCGC_FPDS2_V1_1_FR;               !! Géodonnées de  base ID 54
+  IMPORTS HoheitsgrenzenLV_V1_0;              !! Géodonnées de  base ID 39
+  IMPORTS OfficialIndexOfLocalities_V1_0;     !! Géodonnées de  base ID 181
+
+END DMAVTYM_Tous_V1_0.

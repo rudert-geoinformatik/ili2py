@@ -13,3 +13,8 @@ Create IMD16 from Models:
 ```shell
 docker run -v $(pwd)/models:/io/models --rm ili2c:latest
 ```
+
+Or directly without docker:
+```shell
+ILI2C_EXECUTABLE="java -jar <ABSOLUTE-PATH-TO-ILI2C-JAR>" make recreate-imd
+```

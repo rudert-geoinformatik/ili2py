@@ -1,12 +1,18 @@
 site_name: ili2py Docs
 docs_dir: mkdocs
-
+extra_css:
+  - style.css
 nav:
   - Welcome: index.md
   - "Quick Start": quick_start.md
   - "DEV Setup": dev_setup.md
   - "Feature Status":
-    - "IlisMeta16": feature_status/ilismeta16.md
+      - "Overview": feature_status/index.md
+      - "Reading IlisMeta16": feature_status/ilismeta16.md
+      - "Index Mapper":  feature_status/index_mapper.md
+      - "Python Classes":  feature_status/python_classes.md
+      - "UML Diagrams":  feature_status/uml_diagrams.md
+
   - Installation: installation.md
   - Usage:
       - UML: uml.md
@@ -18,6 +24,7 @@ nav:
 plugins:
   - search
   - autorefs
+  - mermaid2
   - mkdocstrings:
         default_handler: python
         handlers:

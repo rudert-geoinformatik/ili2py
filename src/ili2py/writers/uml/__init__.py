@@ -26,5 +26,15 @@ def create_uml_diagram(
             direction=direction,
             linetype=linetype,
         )
+    elif ili_version == "2.4":
+        uml_diagram(
+            diagram,
+            index,
+            model_names,
+            flavour,
+            output_path,
+            direction=direction,
+            linetype=linetype,
+        )
     else:
         raise NotImplementedError(f"ili version '{ili_version}' not supported")

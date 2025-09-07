@@ -25,6 +25,12 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     View,
     MetaAttribute,
     SubModel,
+    MetaElementType,
+    TypeRelatedTypeType,
+    TypeRestrictionType,
+    TypeType,
+    DataUnitType,
+    Dependency,
 )
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import DataSection
 
@@ -44,8 +50,8 @@ class Index:
             which has a list of tid's of packages which are importing it. IMPORTANT: Explicit imports only!
         importing_p: The other direction as imported_p. Key is the package tid which has a list of package
             tid's it is exporting. IMPORTANT: Explicit imports only!
-        class_in_basket: Key is the class tid, and it has a list of basket tid's which is in.
-        of_data_unit: TODO
+        allowed_in_basket_class_in_basket: Key is the class tid, and it has a list of basket tid's which is in.
+        allowed_in_basket_of_data_unit: TODO
         transfer_class: A representation of the Class construct out of the imd which is specifically for
             parsing transfer data more easily. The key is the class tid and it has a list of tuple containing
             the order number of the attribute and the tid to the linked attribute.
@@ -77,8 +83,9 @@ class Index:
             the embedded reference, where the actual class might get additional attributes by the association
             definition. It explicitly is only used when association is one or zero on the side of the class in
             question.
-        element_in_package: Key is the tid of the package (Model, Submodel) and value is a list of tid's of
+        elements_in_package: Key is the tid of the package (Model, Submodel) and value is a list of tid's of
             elements which are in the package.
+        dependency_using: Key is the
     """
 
     def __init__(self, data_section: DataSection):
@@ -87,8 +94,8 @@ class Index:
         self.imported_p: dict = {}
         self.importing_p: dict = {}
 
-        self.class_in_basket: dict = {}
-        self.of_data_unit: dict = {}
+        self.allowed_in_basket_class_in_basket: dict = {}
+        self.allowed_in_basket_of_data_unit: dict = {}
 
         self.transfer_class: dict = {}
         self.transfer_element: dict = {}
@@ -125,6 +132,10 @@ class Index:
         self.class_in_package: dict = {}
         self.submodel_in_package: dict = {}
         self.association_in_package: dict = {}
+        self.elements_in_package: dict = {}
+
+        self.dependency_depends_on: dict = {}
+        self.dependency_used_by: dict = {}
 
         for basket in data_section.ModelData:
             for element in basket.choice:
@@ -160,6 +171,9 @@ class Index:
         Args:
             element: the element which is looked up and which references will be deconstructed.
         """
+        if isinstance(element, MetaElementType):
+            # we want to track all basic meta elements
+            self.handle_element_in_package(element)
         if isinstance(element, Import):
             self.handle_import(element)
         elif isinstance(element, AllowedInBasket):
@@ -180,6 +194,8 @@ class Index:
             self.handle_attr_or_param(element)
         elif isinstance(element, MetaAttribute):
             self.handle_metaattribute(element)
+        elif isinstance(element, Dependency):
+            self.handle_dependency(element)
 
     def handle_import(self, element: Import):
         """
@@ -200,10 +216,10 @@ class Index:
         Args:
             element: The allowed-in-basket reference which will be handled.
         """
-        of_data_unit_bucket = self.class_in_basket[element.class_in_basket.ref]
+        of_data_unit_bucket = self.allowed_in_basket_class_in_basket[element.class_in_basket.ref]
         if element.of_data_unit.ref not in of_data_unit_bucket:
             of_data_unit_bucket.append(element.of_data_unit.ref)
-        class_in_basket_bucket = self.of_data_unit[element.of_data_unit.ref]
+        class_in_basket_bucket = self.allowed_in_basket_of_data_unit[element.of_data_unit.ref]
         if element.class_in_basket.ref not in class_in_basket_bucket:
             class_in_basket_bucket.append(element.class_in_basket.ref)
 
@@ -271,6 +287,20 @@ class Index:
             f"Element type is {type(self.index[element.meta_element.ref])} and has a MetaAttribute"
         )
 
+    def handle_element_in_package(self, element: MetaElementType):
+        if element.element_in_package:
+            if element.element_in_package.ref not in self.elements_in_package:
+                self.elements_in_package[element.element_in_package.ref] = []
+            self.elements_in_package[element.element_in_package.ref].append(element.tid)
+
+    def handle_dependency(self, element: Dependency):
+        if element.using.ref not in self.dependency_used_by:
+            self.dependency_used_by[element.using.ref] = []
+        self.dependency_used_by[element.using.ref].append(element.dependent.ref)
+        if element.dependent.ref not in self.dependency_depends_on:
+            self.dependency_depends_on[element.dependent.ref] = []
+        self.dependency_depends_on[element.dependent.ref].append(element.using.ref)
+
     def unwrap_tree(self, element: Any):
         """
         Helper method to assemble a one dimensional index with the elements unique
@@ -304,12 +334,12 @@ class Index:
                     self.submodel_in_package[element.element_in_package.ref].append(element.tid)
 
                 elif isinstance(element, DataUnit):
-                    if element.tid not in self.of_data_unit:
-                        self.of_data_unit[element.tid] = []
+                    if element.tid not in self.allowed_in_basket_of_data_unit:
+                        self.allowed_in_basket_of_data_unit[element.tid] = []
 
                 elif isinstance(element, Class):
-                    if element.tid not in self.class_in_basket:
-                        self.class_in_basket[element.tid] = []
+                    if element.tid not in self.allowed_in_basket_class_in_basket:
+                        self.allowed_in_basket_class_in_basket[element.tid] = []
                     if element.tid not in self.transfer_class:
                         self.transfer_class[element.tid] = []
                     if element.tid not in self.ili1_transfer_class:
@@ -328,8 +358,8 @@ class Index:
                         )
 
                 elif isinstance(element, View):
-                    if element.tid not in self.class_in_basket:
-                        self.class_in_basket[element.tid] = []
+                    if element.tid not in self.allowed_in_basket_class_in_basket:
+                        self.allowed_in_basket_class_in_basket[element.tid] = []
                     if element.tid not in self.transfer_class:
                         self.transfer_class[element.tid] = []
 
@@ -403,7 +433,10 @@ class Index:
         for member_ref in association_members:
             # handling of embedded associations
             role: Role = self.index[member_ref]
-            for linked_class in self.class_related_type[member_ref]:
+            linked = self.class_related_type[member_ref]
+            if not isinstance(linked, list):
+                linked = [linked]
+            for linked_class in linked:
                 # multiple classes can be linked with additional logical operator
                 # (currently OR is what is implemented according to ref manual)
                 if (
