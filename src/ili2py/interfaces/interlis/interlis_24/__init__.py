@@ -1,14 +1,11 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional
 
 namespace_map = {
     "ili": "http://www.interlis.ch/xtf/2.4/INTERLIS",
     "geom": "http://www.interlis.ch/geometry/1.0",
     "xsi": "http://www.w3.org/2001/XMLSchema-instance"
 }
-
-class ILI_META_BASE:
-    namespace = namespace_map["ili"]
 
 
 @dataclass
@@ -22,17 +19,37 @@ class Model:
 
 
 @dataclass
-class Headersection:
-    class Meta(ILI_META_BASE):
-        pass
+class Models:
+    elements: List[Model] = field(
+        default_factory=list,
+        metadata={
+            "type": "Elements",
+            "choices": (
+                {"name": "model", "type": Model, "namespace": namespace_map["ili"]},
+            )
+        }
+    )
 
-    models: List[Model]
-    sender: str = None
+
+@dataclass
+class HeaderSection:
+
+    models: Models = field(
+        metadata={
+            "namespace": namespace_map["ili"]
+        }
+    )
+    sender: Optional[str] = field(
+        default=None,
+        metadata={"namespace": namespace_map["ili"]},
+    )
 
 
 @dataclass
 class Transfer:
-    class Meta(ILI_META_BASE):
-        pass
 
-    headersection: Headersection
+    headersection: HeaderSection = field(
+        metadata={
+            "namespace": namespace_map["ili"]
+        }
+    )

@@ -1,0 +1,2012 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.interlis.ch/xtf/2.4/IlisMeta16"
+  targetNamespace="http://www.interlis.ch/xtf/2.4/IlisMeta16"
+  xmlns:geom="http://www.interlis.ch/geometry/1.0"
+  xmlns:INTERLIS="http://www.interlis.ch/xtf/2.4/INTERLIS"
+  xmlns:ili2c="http://www.interlis.ch/ili2c"
+  elementFormDefault="qualified" attributeFormDefault="qualified">
+<xsd:annotation>
+  <xsd:appinfo source="http://www.interlis.ch/ili2c/ili2cversion">5.4.0-SNAPSHOT-570e4c9a1bbddae765a9715395b9a0a59f8e397e</xsd:appinfo>
+  <xsd:appinfo source="http://www.interlis.ch/ili2c">
+    <ili2c:model>IlisMeta16</ili2c:model>
+    <ili2c:modelVersion>2022-10-10</ili2c:modelVersion>
+    <ili2c:modelAt>http://models.interlis.ch</ili2c:modelAt>
+  </xsd:appinfo>
+</xsd:annotation>
+<xsd:import namespace="http://www.interlis.ch/geometry/1.0"/>
+<xsd:import namespace="http://www.interlis.ch/xtf/2.4/INTERLIS"/>
+<xsd:simpleType name="BasketOID">
+  <xsd:restriction base="xsd:token"/>
+</xsd:simpleType>
+<xsd:simpleType name="MetaElemOID">
+  <xsd:restriction base="xsd:token"/>
+</xsd:simpleType>
+<xsd:simpleType name="LanguageCode">
+  <xsd:restriction base="xsd:normalizedString">
+    <xsd:maxLength value="5"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="Code">
+  <xsd:restriction base="xsd:integer">
+    <xsd:minInclusive value="0"/>
+    <xsd:maxInclusive value="255"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="MultRange">
+  <xsd:restriction base="xsd:integer">
+    <xsd:minInclusive value="0"/>
+    <xsd:maxInclusive value="2147483647"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="LengthRange">
+  <xsd:restriction base="xsd:integer">
+    <xsd:minInclusive value="1"/>
+    <xsd:maxInclusive value="2147483647"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:element name="DocText" type="DocTextType"/>
+<xsd:complexType  name="DocTextType">
+  <xsd:sequence>
+    <xsd:element name="Name" minOccurs="0">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="Text">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="MetaElement" type="MetaElementType"/>
+<xsd:complexType  name="MetaElementType">
+  <xsd:sequence>
+    <xsd:element name="Name">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="Documentation" minOccurs="0" maxOccurs="unbounded">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="DocText"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ElementInPackage" minOccurs="0">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="PackageElements" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+  <xsd:attribute ref="INTERLIS:tid" use="required"/>
+</xsd:complexType>
+<xsd:element name="MetaAttribute" type="MetaAttributeType"/>
+<xsd:complexType  name="MetaAttributeType">
+  <xsd:sequence>
+    <xsd:element name="Name">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="Value">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="MetaElement" minOccurs="0">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="MetaAttributes" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+  <xsd:attribute ref="INTERLIS:tid" use="required"/>
+</xsd:complexType>
+<xsd:element name="MetaAttributes" type="MetaAttributesType"/>
+<xsd:complexType  name="MetaAttributesType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ExtendableME" type="ExtendableMEType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="ExtendableMEType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+        <xsd:element name="Abstract" type="xsd:boolean"/>
+        <xsd:element name="Generic" type="xsd:boolean"/>
+        <xsd:element name="Final" type="xsd:boolean"/>
+        <xsd:element name="Super" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Inheritance" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Inheritance" type="InheritanceType"/>
+<xsd:complexType  name="InheritanceType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Package" type="PackageType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="PackageType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Ili1Format" type="Ili1FormatType"/>
+<xsd:complexType  name="Ili1FormatType">
+  <xsd:sequence>
+    <xsd:element name="isFree" type="xsd:boolean"/>
+    <xsd:element name="LineSize" type="LengthRange" minOccurs="0"/>
+    <xsd:element name="tidSize" type="LengthRange" minOccurs="0"/>
+    <xsd:element name="blankCode" type="Code"/>
+    <xsd:element name="undefinedCode" type="Code"/>
+    <xsd:element name="continueCode" type="Code"/>
+    <xsd:element name="Font">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="tidKind">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="tidExplanation" minOccurs="0">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Model" type="ModelType" substitutionGroup="Package"/>
+<xsd:complexType  name="ModelType">
+  <xsd:complexContent>
+    <xsd:extension base="PackageType">
+      <xsd:sequence>
+        <xsd:element name="iliVersion">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Contracted" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Language" type="LanguageCode" minOccurs="0"/>
+        <xsd:element name="At" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Version" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="NoIncrementalTransfer" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="CharSetIANAName" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="xmlns" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="ili1Transfername" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="ili1Format" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Ili1Format"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="SubModel" type="SubModelType" substitutionGroup="Package"/>
+<xsd:complexType  name="SubModelType">
+  <xsd:complexContent>
+    <xsd:extension base="PackageType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="PackageElements" type="PackageElementsType"/>
+<xsd:complexType  name="PackageElementsType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Import" type="ImportType"/>
+<xsd:complexType  name="ImportType">
+  <xsd:sequence>
+    <xsd:element name="ImportingP">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ImportedP">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Type" type="TypeType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="TypeType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="LFTParent" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="LocalFType" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="LTParent" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="LocalType" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Expression" type="ExpressionType"/>
+<xsd:complexType  name="ExpressionType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Multiplicity" type="MultiplicityType"/>
+<xsd:complexType  name="MultiplicityType">
+  <xsd:sequence>
+    <xsd:element name="Min" type="MultRange"/>
+    <xsd:element name="Max" type="MultRange" minOccurs="0"/>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Constraint" type="ConstraintType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="ConstraintType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+        <xsd:element name="ToClass" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ClassConstraint" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ToDomain" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="DomainConstraint" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="DomainType" type="DomainTypeType" substitutionGroup="Type"/>
+<xsd:complexType  name="DomainTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="TypeType">
+      <xsd:sequence>
+        <xsd:element name="Mandatory" type="xsd:boolean"/>
+        <xsd:element name="Context" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="GenericDef" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="DomainConstraint" type="DomainConstraintType"/>
+<xsd:complexType  name="DomainConstraintType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Class" type="ClassType" substitutionGroup="Type"/>
+<xsd:complexType  name="ClassType">
+  <xsd:complexContent>
+    <xsd:extension base="TypeType">
+      <xsd:sequence>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Multiplicity" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Multiplicity"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="EmbeddedRoleTransfer" type="xsd:boolean"/>
+        <xsd:element name="ili1OptionalTable" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="ExistenceConstraint" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ExistenceDef" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Oid" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ObjectOID" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="View" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="DerivedAssoc" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="AttrOrParam" type="AttrOrParamType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="AttrOrParamType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="SubdivisionKind" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Transient" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="Derivates" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="AttrParent" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ClassAttr" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ParamParent" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ClassParam" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Type">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="AttrOrParamType" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ClassConstraint" type="ClassConstraintType"/>
+<xsd:complexType  name="ClassConstraintType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="LocalType" type="LocalTypeType"/>
+<xsd:complexType  name="LocalTypeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="AttrOrParamType" type="AttrOrParamTypeType"/>
+<xsd:complexType  name="AttrOrParamTypeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ClassAttr" type="ClassAttrType"/>
+<xsd:complexType  name="ClassAttrType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ClassParam" type="ClassParamType"/>
+<xsd:complexType  name="ClassParamType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="TypeRelatedType" type="TypeRelatedTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="TypeRelatedTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="BaseType">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="BaseType" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="BaseType" type="BaseTypeType"/>
+<xsd:complexType  name="BaseTypeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="TypeRestriction" type="TypeRestrictionType"/>
+<xsd:complexType  name="TypeRestrictionType">
+  <xsd:sequence>
+    <xsd:element name="TRTR">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="TypeRestriction">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="MultiValue" type="MultiValueType" substitutionGroup="TypeRelatedType"/>
+<xsd:complexType  name="MultiValueType">
+  <xsd:complexContent>
+    <xsd:extension base="TypeRelatedTypeType">
+      <xsd:sequence>
+        <xsd:element name="Ordered" type="xsd:boolean"/>
+        <xsd:element name="Multiplicity" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Multiplicity"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ClassRelatedType" type="ClassRelatedTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="ClassRelatedTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="BaseClass" type="BaseClassType"/>
+<xsd:complexType  name="BaseClassType">
+  <xsd:sequence>
+    <xsd:element name="CRT">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="BaseClass">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ClassRestriction" type="ClassRestrictionType"/>
+<xsd:complexType  name="ClassRestrictionType">
+  <xsd:sequence>
+    <xsd:element name="CRTR">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ClassRestriction">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ReferenceType" type="ReferenceTypeType" substitutionGroup="ClassRelatedType"/>
+<xsd:complexType  name="ReferenceTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="ClassRelatedTypeType">
+      <xsd:sequence>
+        <xsd:element name="External" type="xsd:boolean"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Role" type="RoleType" substitutionGroup="ReferenceType"/>
+<xsd:complexType  name="RoleType">
+  <xsd:complexContent>
+    <xsd:extension base="ReferenceTypeType">
+      <xsd:sequence>
+        <xsd:element name="Strongness">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Ordered" type="xsd:boolean"/>
+        <xsd:element name="Multiplicity" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Multiplicity"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Derivates" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="EmbeddedTransfer" type="xsd:boolean"/>
+        <xsd:element name="Association" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="AssocRole" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="AssocRole" type="AssocRoleType"/>
+<xsd:complexType  name="AssocRoleType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ExplicitAssocAccess" type="ExplicitAssocAccessType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="ExplicitAssocAccessType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="AssocAccOf" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ExplicitAssocAcc" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="OriginRole">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="AssocAccOrigin" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="TargetRole" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="AssocAccTarget" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ExplicitAssocAcc" type="ExplicitAssocAccType"/>
+<xsd:complexType  name="ExplicitAssocAccType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="AssocAccOrigin" type="AssocAccOriginType"/>
+<xsd:complexType  name="AssocAccOriginType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="AssocAccTarget" type="AssocAccTargetType"/>
+<xsd:complexType  name="AssocAccTargetType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="AssocAcc" type="AssocAccType"/>
+<xsd:complexType  name="AssocAccType">
+  <xsd:sequence>
+    <xsd:element name="Class">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="AssocAcc">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="TransferElement" type="TransferElementType"/>
+<xsd:complexType  name="TransferElementType">
+  <xsd:sequence>
+    <xsd:element name="TransferClass">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="TransferElement">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+        <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Ili1TransferElement" type="Ili1TransferElementType"/>
+<xsd:complexType  name="Ili1TransferElementType">
+  <xsd:sequence>
+    <xsd:element name="Ili1TransferClass">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Ili1RefAttr">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+        <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="DataUnit" type="DataUnitType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="DataUnitType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="ViewUnit" type="xsd:boolean"/>
+        <xsd:element name="DataUnitName">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Oid" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ModelData.BasketOID" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Dependency" type="DependencyType"/>
+<xsd:complexType  name="DependencyType">
+  <xsd:sequence>
+    <xsd:element name="Using">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Dependent">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="AllowedInBasket" type="AllowedInBasketType"/>
+<xsd:complexType  name="AllowedInBasketType">
+  <xsd:sequence>
+    <xsd:element name="OfDataUnit">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ClassInBasket">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Context" type="ContextType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="ContextType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="GenericDef" type="GenericDefType"/>
+<xsd:complexType  name="GenericDefType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ConcreteForGeneric" type="ConcreteForGenericType"/>
+<xsd:complexType  name="ConcreteForGenericType">
+  <xsd:sequence>
+    <xsd:element name="GenericDef">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ConcreteDomain">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Unit" type="UnitType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="UnitType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Definition" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="MetaBasketDef" type="MetaBasketDefType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="MetaBasketDefType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="MetaDataTopic">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="MetaDataUnit" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="MetaDataUnit" type="MetaDataUnitType"/>
+<xsd:complexType  name="MetaDataUnitType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="MetaObjectDef" type="MetaObjectDefType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="MetaObjectDefType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+        <xsd:element name="IsRefSystem" type="xsd:boolean"/>
+        <xsd:element name="Class">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="MetaObjectClass" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MetaBasketDef" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="MetaBasketMembers" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="MetaBasketMembers" type="MetaBasketMembersType"/>
+<xsd:complexType  name="MetaBasketMembersType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="MetaObjectClass" type="MetaObjectClassType"/>
+<xsd:complexType  name="MetaObjectClassType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="BooleanType" type="BooleanTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="BooleanTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="TextType" type="TextTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="TextTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="MaxLength" type="LengthRange" minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="BlackboxType" type="BlackboxTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="BlackboxTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="NumType" type="NumTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="NumTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="Min" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Max" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Circular" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="Clockwise" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="RefSys" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="NumsRefSys" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Unit" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="NumUnit" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="NumUnit" type="NumUnitType"/>
+<xsd:complexType  name="NumUnitType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:simpleType name="AxisInd">
+  <xsd:restriction base="xsd:integer">
+    <xsd:minInclusive value="1"/>
+    <xsd:maxInclusive value="3"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:element name="CoordType" type="CoordTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="CoordTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="NullAxis" type="AxisInd" minOccurs="0"/>
+        <xsd:element name="PiHalfAxis" type="AxisInd" minOccurs="0"/>
+        <xsd:element name="Multi" type="xsd:boolean" minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="AxisSpec" type="AxisSpecType"/>
+<xsd:complexType  name="AxisSpecType">
+  <xsd:sequence>
+    <xsd:element name="CoordType">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Axis">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+        <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="NumsRefSys" type="NumsRefSysType"/>
+<xsd:complexType  name="NumsRefSysType">
+  <xsd:sequence>
+    <xsd:element name="Axis" type="AxisInd" minOccurs="0"/>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="FormattedType" type="FormattedTypeType" substitutionGroup="NumType"/>
+<xsd:complexType  name="FormattedTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="NumTypeType">
+      <xsd:sequence>
+        <xsd:element name="Format">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Struct">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="StructOfFormat" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="StructOfFormat" type="StructOfFormatType"/>
+<xsd:complexType  name="StructOfFormatType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="AnyOIDType" type="AnyOIDTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="AnyOIDTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ObjectOID" type="ObjectOIDType"/>
+<xsd:complexType  name="ObjectOIDType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ModelData.BasketOID" type="ModelData.BasketOIDType"/>
+<xsd:complexType  name="ModelData.BasketOIDType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="FunctionDef" type="FunctionDefType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="FunctionDefType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+        <xsd:element name="Explanation" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="ResultType">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ResultType" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="LocalFType" type="LocalFTypeType"/>
+<xsd:complexType  name="LocalFTypeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ResultType" type="ResultTypeType"/>
+<xsd:complexType  name="ResultTypeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Argument" type="ArgumentType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="ArgumentType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Function" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="FormalArgument" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Type" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ArgumentType" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="FormalArgument" type="FormalArgumentType"/>
+<xsd:complexType  name="FormalArgumentType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ArgumentType" type="ArgumentTypeType"/>
+<xsd:complexType  name="ArgumentTypeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ClassRefType" type="ClassRefTypeType" substitutionGroup="ClassRelatedType"/>
+<xsd:complexType  name="ClassRefTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="ClassRelatedTypeType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ObjectType" type="ObjectTypeType" substitutionGroup="ClassRelatedType"/>
+<xsd:complexType  name="ObjectTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="ClassRelatedTypeType">
+      <xsd:sequence>
+        <xsd:element name="Multiple" type="xsd:boolean"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="AttributeRefType" type="AttributeRefTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="AttributeRefTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="Of" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ARefOf" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ARefOf" type="ARefOfType"/>
+<xsd:complexType  name="ARefOfType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ARefRestriction" type="ARefRestrictionType"/>
+<xsd:complexType  name="ARefRestrictionType">
+  <xsd:sequence>
+    <xsd:element name="ARef">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Type">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="EnumType" type="EnumTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="EnumTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="Order">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="EnumNode" type="EnumNodeType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="EnumNodeType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="EnumType" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="TopNode" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ParentNode" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="SubNode" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="TopNode" type="TopNodeType"/>
+<xsd:complexType  name="TopNodeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="SubNode" type="SubNodeType"/>
+<xsd:complexType  name="SubNodeType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="EnumTreeValueType" type="EnumTreeValueTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="EnumTreeValueTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="ET">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="TreeValueTypeOf" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="TreeValueTypeOf" type="TreeValueTypeOfType"/>
+<xsd:complexType  name="TreeValueTypeOfType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="LineForm" type="LineFormType" substitutionGroup="MetaElement"/>
+<xsd:complexType  name="LineFormType">
+  <xsd:complexContent>
+    <xsd:extension base="MetaElementType">
+      <xsd:sequence>
+        <xsd:element name="Structure">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="LineFormStructure" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="LineFormStructure" type="LineFormStructureType"/>
+<xsd:complexType  name="LineFormStructureType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="LineType" type="LineTypeType" substitutionGroup="DomainType"/>
+<xsd:complexType  name="LineTypeType">
+  <xsd:complexContent>
+    <xsd:extension base="DomainTypeType">
+      <xsd:sequence>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="MaxOverlap" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Multi" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="CoordType" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="LineCoord" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="LAStructure" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="LineAttr" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="LinesForm" type="LinesFormType"/>
+<xsd:complexType  name="LinesFormType">
+  <xsd:sequence>
+    <xsd:element name="LineType">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="LineForm">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="LineCoord" type="LineCoordType"/>
+<xsd:complexType  name="LineCoordType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="LineAttr" type="LineAttrType"/>
+<xsd:complexType  name="LineAttrType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="View" type="ViewType" substitutionGroup="Class"/>
+<xsd:complexType  name="ViewType">
+  <xsd:complexContent>
+    <xsd:extension base="ClassType">
+      <xsd:sequence>
+        <xsd:element name="FormationKind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="FormationParameter" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Where" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Transient" type="xsd:boolean"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="RenamedBaseView" type="RenamedBaseViewType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="RenamedBaseViewType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="OrNull" type="xsd:boolean" minOccurs="0"/>
+        <xsd:element name="BaseView">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="BaseViewRef" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="View" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="BaseViewDef" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+            <xsd:attribute ref="INTERLIS:order_pos" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="BaseViewDef" type="BaseViewDefType"/>
+<xsd:complexType  name="BaseViewDefType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="BaseViewRef" type="BaseViewRefType"/>
+<xsd:complexType  name="BaseViewRefType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="DerivedAssoc" type="DerivedAssocType"/>
+<xsd:complexType  name="DerivedAssocType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="UnaryExpr" type="UnaryExprType" substitutionGroup="Expression"/>
+<xsd:complexType  name="UnaryExprType">
+  <xsd:complexContent>
+    <xsd:extension base="ExpressionType">
+      <xsd:sequence>
+        <xsd:element name="Operation" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="SubExpression" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="CompoundExpr" type="CompoundExprType" substitutionGroup="Expression"/>
+<xsd:complexType  name="CompoundExprType">
+  <xsd:complexContent>
+    <xsd:extension base="ExpressionType">
+      <xsd:sequence>
+        <xsd:element name="Operation" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="SubExpressions" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Factor" type="FactorType" substitutionGroup="Expression"/>
+<xsd:complexType  name="FactorType">
+  <xsd:complexContent>
+    <xsd:extension base="ExpressionType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="PathEl" type="PathElType"/>
+<xsd:complexType  name="PathElType">
+  <xsd:sequence>
+    <xsd:element name="Kind" minOccurs="0">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="Ref" minOccurs="0">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="NumIndex" type="MultRange" minOccurs="0"/>
+    <xsd:element name="SpecIndex" minOccurs="0">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="PathOrInspFactor" type="PathOrInspFactorType" substitutionGroup="Factor"/>
+<xsd:complexType  name="PathOrInspFactorType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="PathEls" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="PathEl"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Inspection" minOccurs="0">
+          <xsd:complexType>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="EnumAssignment" type="EnumAssignmentType"/>
+<xsd:complexType  name="EnumAssignmentType">
+  <xsd:sequence>
+    <xsd:element name="ValueToAssign" minOccurs="0">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="Expression"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="MinEnumValue">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="MaxEnumValue" minOccurs="0">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="EnumMapping" type="EnumMappingType" substitutionGroup="Factor"/>
+<xsd:complexType  name="EnumMappingType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="EnumValue" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="PathOrInspFactor"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Cases" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="EnumAssignment"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ClassRef" type="ClassRefType"/>
+<xsd:complexType  name="ClassRefType">
+  <xsd:sequence>
+    <xsd:element name="Ref">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ActualArgument" type="ActualArgumentType"/>
+<xsd:complexType  name="ActualArgumentType">
+  <xsd:sequence>
+    <xsd:element name="FormalArgument">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Kind">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="Expression" minOccurs="0">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="Expression"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="ObjectClasses" minOccurs="0" maxOccurs="unbounded">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="ClassRef"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="FunctionCall" type="FunctionCallType" substitutionGroup="Factor"/>
+<xsd:complexType  name="FunctionCallType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="Function">
+          <xsd:complexType>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Arguments" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="ActualArgument"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="RuntimeParamRef" type="RuntimeParamRefType" substitutionGroup="Factor"/>
+<xsd:complexType  name="RuntimeParamRefType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="RuntimeParam">
+          <xsd:complexType>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Constant" type="ConstantType" substitutionGroup="Factor"/>
+<xsd:complexType  name="ConstantType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="Value">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ClassConst" type="ClassConstType" substitutionGroup="Factor"/>
+<xsd:complexType  name="ClassConstType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="Class" minOccurs="0">
+          <xsd:complexType>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="AttributeConst" type="AttributeConstType" substitutionGroup="Factor"/>
+<xsd:complexType  name="AttributeConstType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="Attribute" minOccurs="0">
+          <xsd:complexType>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="UnitRef" type="UnitRefType" substitutionGroup="Factor"/>
+<xsd:complexType  name="UnitRefType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="Unit" minOccurs="0">
+          <xsd:complexType>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="UnitFunction" type="UnitFunctionType" substitutionGroup="Factor"/>
+<xsd:complexType  name="UnitFunctionType">
+  <xsd:complexContent>
+    <xsd:extension base="FactorType">
+      <xsd:sequence>
+        <xsd:element name="Explanation">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="SimpleConstraint" type="SimpleConstraintType" substitutionGroup="Constraint"/>
+<xsd:complexType  name="SimpleConstraintType">
+  <xsd:complexContent>
+    <xsd:extension base="ConstraintType">
+      <xsd:sequence>
+        <xsd:element name="Kind" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Percentage" minOccurs="0">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:decimal">
+              <xsd:minInclusive value="0.00"/>
+              <xsd:maxInclusive value="100.00"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="LogicalExpression" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ExistenceConstraint" type="ExistenceConstraintType" substitutionGroup="Constraint"/>
+<xsd:complexType  name="ExistenceConstraintType">
+  <xsd:complexContent>
+    <xsd:extension base="ConstraintType">
+      <xsd:sequence>
+        <xsd:element name="Attr">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="PathOrInspFactor"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="ExistenceDef" type="ExistenceDefType"/>
+<xsd:complexType  name="ExistenceDefType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="UniqueConstraint" type="UniqueConstraintType" substitutionGroup="Constraint"/>
+<xsd:complexType  name="UniqueConstraintType">
+  <xsd:complexContent>
+    <xsd:extension base="ConstraintType">
+      <xsd:sequence>
+        <xsd:element name="Where" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Kind">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:normalizedString">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="UniqueDef" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="PathOrInspFactor"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="SetConstraint" type="SetConstraintType" substitutionGroup="Constraint"/>
+<xsd:complexType  name="SetConstraintType">
+  <xsd:complexContent>
+    <xsd:extension base="ConstraintType">
+      <xsd:sequence>
+        <xsd:element name="Where" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Constraint" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="Graphic" type="GraphicType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="GraphicType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="Where" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="Expression"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Base" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="GraphicBase" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="GraphicBase" type="GraphicBaseType"/>
+<xsd:complexType  name="GraphicBaseType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="SignParamAssignment" type="SignParamAssignmentType"/>
+<xsd:complexType  name="SignParamAssignmentType">
+  <xsd:sequence>
+    <xsd:element name="Param">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Assignment" minOccurs="0">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="Expression"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="CondSignParamAssignment" type="CondSignParamAssignmentType"/>
+<xsd:complexType  name="CondSignParamAssignmentType">
+  <xsd:sequence>
+    <xsd:element name="Where" minOccurs="0">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="Expression"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="Assignments" minOccurs="0" maxOccurs="unbounded">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="SignParamAssignment"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="DrawingRule" type="DrawingRuleType" substitutionGroup="ExtendableME"/>
+<xsd:complexType  name="DrawingRuleType">
+  <xsd:complexContent>
+    <xsd:extension base="ExtendableMEType">
+      <xsd:sequence>
+        <xsd:element name="Rule" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="CondSignParamAssignment"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Class" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="SignClass" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Graphic" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="GraphicRule" minOccurs="0"/>
+            </xsd:sequence>
+            <xsd:attribute ref="INTERLIS:ref" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="GraphicRule" type="GraphicRuleType"/>
+<xsd:complexType  name="GraphicRuleType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="SignClass" type="SignClassType"/>
+<xsd:complexType  name="SignClassType">
+  <xsd:sequence>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="ModelData" type="ModelDataType"/>
+<xsd:complexType name="ModelDataType">
+  <xsd:choice minOccurs="0" maxOccurs="unbounded">
+    <xsd:element ref="MetaElement"/>
+    <xsd:element ref="MetaAttribute"/>
+    <xsd:element ref="Import"/>
+    <xsd:element ref="TypeRestriction"/>
+    <xsd:element ref="BaseClass"/>
+    <xsd:element ref="ClassRestriction"/>
+    <xsd:element ref="AssocAcc"/>
+    <xsd:element ref="TransferElement"/>
+    <xsd:element ref="Ili1TransferElement"/>
+    <xsd:element ref="Dependency"/>
+    <xsd:element ref="AllowedInBasket"/>
+    <xsd:element ref="ConcreteForGeneric"/>
+    <xsd:element ref="AxisSpec"/>
+    <xsd:element ref="ARefRestriction"/>
+    <xsd:element ref="LinesForm"/>
+  </xsd:choice>
+  <xsd:attribute ref="INTERLIS:bid" use="required"/>
+  <xsd:attribute ref="INTERLIS:consistency"/>
+</xsd:complexType>
+<xsd:element name="DocTextTranslation" type="DocTextTranslationType"/>
+<xsd:complexType  name="DocTextTranslationType">
+  <xsd:sequence>
+    <xsd:element name="Text">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="METranslation" type="METranslationType"/>
+<xsd:complexType  name="METranslationType">
+  <xsd:sequence>
+    <xsd:element name="Of">
+      <xsd:complexType>
+        <xsd:attribute ref="INTERLIS:ref" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="TranslatedName" minOccurs="0">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:normalizedString">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:element>
+    <xsd:element name="TranslatedDoc" minOccurs="0" maxOccurs="unbounded">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="DocTextTranslation"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:element name="Translation" type="TranslationType"/>
+<xsd:complexType  name="TranslationType">
+  <xsd:sequence>
+    <xsd:element name="Language" type="LanguageCode"/>
+    <xsd:element name="Translations" minOccurs="0" maxOccurs="unbounded">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="METranslation"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+  <xsd:attribute ref="INTERLIS:tid" use="required"/>
+</xsd:complexType>
+<xsd:element name="ModelTranslation" type="ModelTranslationType"/>
+<xsd:complexType name="ModelTranslationType">
+  <xsd:choice minOccurs="0" maxOccurs="unbounded">
+    <xsd:element ref="Translation"/>
+  </xsd:choice>
+  <xsd:attribute ref="INTERLIS:bid" use="required"/>
+  <xsd:attribute ref="INTERLIS:consistency"/>
+</xsd:complexType>
+</xsd:schema>

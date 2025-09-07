@@ -45,11 +45,11 @@ $(DOC_REQUIREMENTS): $(PIP_REQUIREMENTS)
 	touch $@
 
 $(DEV_REQUIREMENTS): $(PIP_REQUIREMENTS)
-	$(VENV_BIN)/$(PIP_COMMAND) install .[dev]
+	$(VENV_BIN)/$(PIP_COMMAND) install -e .[dev]
 	touch $@
 
 $(TEST_REQUIREMENTS): $(PIP_REQUIREMENTS)
-	$(VENV_BIN)/$(PIP_COMMAND) install .[test]
+	$(VENV_BIN)/$(PIP_COMMAND) install -e .[test]
 	touch $@
 
 $(CHECK_REQUIREMENTS): $(PIP_REQUIREMENTS)
@@ -78,6 +78,7 @@ build: $(BUILD_DEPS)
 
 .PHONY: clean
 clean:
+	find ./src -name "*.pyc" -delete
 
 .PHONY: clean-all
 clean-all: clean
@@ -91,8 +92,12 @@ clean-all: clean
 git-attributes:
 	git --no-pager diff --check `git log --oneline | tail -1 | cut --fields=1 --delimiter=' '`
 
+.PHONY: dev
+dev: setup.py install-dev
+	$(VENV_BIN)/pip install -e .
+
 .PHONY: test
-test: $(TEST_REQUIREMENTS) $(VARS_FILES)
+test: $(TEST_REQUIREMENTS) $(VARS_FILES) install-dev
 	$(VENV_BIN)/py.test -vv --cov-config .coveragerc --cov $(PACKAGE) --cov-report term-missing:skip-covered tests
 
 .PHONY: tests
@@ -114,10 +119,6 @@ doc-serve: $(DOC_REQUIREMENTS) docs/mkdocs.yml
 .PHONY: updates
 updates: $(PIP_REQUIREMENTS)
 	$(VENV_BIN)/pip list --outdated
-
-.PHONY: dev
-dev: setup.py install-dev
-	$(VENV_BIN)/pip install -e .
 
 .PHONY: pin-deps
 pin-deps: $(CHECK_REQUIREMENTS) $(TEST_REQUIREMENTS)

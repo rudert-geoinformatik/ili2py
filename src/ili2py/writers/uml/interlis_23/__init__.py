@@ -1,62 +1,76 @@
+from random import randint
 
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 from typing import List
 
-from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.helper import index_modeldata
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.type_class import \
-    Class, BaseClass
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.serialization_elements import MultiplicityElement
+from ili2py.mappers.helpers import Index
+from ili2py.writers import create_file
+from ili2py.writers.uml.interlis_23.uml import Diagram
 
-flavours = ["mermaid", "plantuml"]
+ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
 
-ns_map = {
-    "ili": "http://www.interlis.ch/INTERLIS2.3"
+tool_settings = {
+    "mermaid": {
+        "settings": {
+            "directions": ["LR", "RL", "TD", "DT"],
+            # currently not supported on class diagrams
+            "linetype": [],
+        },
+    },
+    "plantuml": {
+        "settings": {
+            "directions": ["top to bottom", "left to right"],
+            "linetype": ["polyline", "ortho", "spline"],
+        },
+    },
 }
 
-direction = [
-    'LR', 'RL', 'TD', 'DT'
-]
 
-
-def render_multiplicity(multiplicity: MultiplicityElement) -> str|None:
-    if multiplicity is None:
-        return None
-    if multiplicity.Min == 1 and multiplicity.Max == 1:
-        return '1'
-    elif multiplicity.Min == 0 and multiplicity.Max == 0:
-        #Cardinality / Multiplicity '0' is not implemented in mermaid
-        return '0'
-    elif multiplicity.Min == 0 and multiplicity.Max == 1:
-        return '0..1'
-    elif multiplicity.Min == 1 and multiplicity.Max is None:
-        return '1..*'
-    elif multiplicity.Min == 0 and multiplicity.Max is None:
-        # Cardinality / Multiplicity '0..*' is not implemented in mermaid directly we deliver empty string
-        return "0..*"
-    elif multiplicity.Min is None and multiplicity.Max is None:
-        return '*'
+def uml_diagram(
+    diagram: Diagram,
+    index: Index,
+    model_names: List[str],
+    flavour: str,
+    output_path: str,
+    direction: str | None = None,
+    linetype: str | None = None,
+):
+    if flavour == "mermaid":
+        file_name = f"{flavour}.md"
+        selected_direction = tool_settings[flavour]["settings"]["directions"][0]
+        selected_linetype = None
+    elif flavour == "plantuml":
+        file_name = f"{flavour}.puml"
+        selected_direction = tool_settings[flavour]["settings"]["directions"][0]
+        selected_linetype = tool_settings[flavour]["settings"]["linetype"][0]
     else:
-        return f'{multiplicity.Min}..{multiplicity.Max}'
+        raise NotImplementedError
+    if direction is not None:
+        if direction not in tool_settings[flavour]["settings"]["directions"]:
+            raise NotImplementedError
+        else:
+            selected_direction = direction
+    if linetype is not None:
+        if linetype not in tool_settings[flavour]["settings"]["linetype"]:
+            raise NotImplementedError
+        else:
+            selected_linetype = linetype
 
-
-def uml_diagram(metamodel: ImdTransfer, model_names: List[str], flavour: str):
-    index = index_modeldata(metamodel)
     tpl_dir = Path(__file__).parent.joinpath("templates")
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
-    if flavour not in flavours:
-        raise NotImplementedError
+    if len(model_names) == 0:
+        model_names = [model.name for model in diagram.model_groups]
     output = env.get_template(f"{flavour}.jinja2").render(
-        metamodel=metamodel,
+        diagram=diagram,
         index=index,
+        len=len,
+        randint=randint,
         model_names=model_names,
-        class_type=Class,
-        base_class_instance=BaseClass,
-        isinstance=isinstance,
-        render_multiplicity=render_multiplicity,
-        direction=direction[1],
-        len=len
+        direction=selected_direction,
+        linetype=selected_linetype,
     )
     src_code_encoded = output.encode()
-    return src_code_encoded.decode()
+
+    diagram_file = create_file(output_path, flavour, file_name)
+    diagram_file.write_text(src_code_encoded.decode())

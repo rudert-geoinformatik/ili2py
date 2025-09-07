@@ -1,27 +1,45 @@
 from dataclasses import dataclass, field
-from typing import List
 
-from ili2py.interfaces.interlis.interlis_24 import ILI_META_BASE, Transfer
+from ili2py.interfaces.interlis.interlis_24 import Transfer
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import imd_namespace_map
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.model_data import ModelData
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    ModelData as Imd_ModelData,
+    ModelTranslation as Imd_ModelTranslation,
+)
 
 
 @dataclass(kw_only=True)
-class Datasection:
-    class Meta(ILI_META_BASE):
-        pass
+class DataSection:
 
-    ModelData: List["ModelData"] = field(
+    ModelData: list["Imd_ModelData"] = field(
+        default_factory=list,
         metadata={
-            "namespace": imd_namespace_map['IlisMeta16']
-        }
+            "type": "Elements",
+            "choices": (
+                {
+                    "name": "ModelData",
+                    "type": Imd_ModelData,
+                    "namespace": imd_namespace_map["IlisMeta16"],
+                },
+            ),
+        },
+    )
+    ModelTranslation: list["Imd_ModelTranslation"] = field(
+        default_factory=list,
+        metadata={
+            "type": "Elements",
+            "choices": (
+                {
+                    "name": "ModelTranslation",
+                    "type": Imd_ModelTranslation,
+                    "namespace": imd_namespace_map["IlisMeta16"],
+                },
+            ),
+        },
     )
 
 
 @dataclass(kw_only=True)
 class ImdTransfer(Transfer):
-    class Meta(ILI_META_BASE):
-        pass
 
-    datasection: Datasection
-
+    datasection: DataSection = field(metadata={"namespace": imd_namespace_map["ili"]})

@@ -10,7 +10,11 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.references imp
 
 @dataclass(kw_only=True)
 class MetaElement(HasRef, AbstractElement):
-    Name: str
+    Name: str = field(
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"],
+        }
+    )
     tid: str = field(
         metadata={
             "type": "Attribute",
@@ -18,10 +22,16 @@ class MetaElement(HasRef, AbstractElement):
         }
     )
     Documentation: Optional[List["MetaElement._Documentation"]] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"],
+        }
     )
     MetaAttribute: Optional[List[MetaAttributeElement]] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"],
+        }
     )
     # use the metadata.name to fetch the element from XML but store it
     #   as `*_ref` instance variable to resolve soft reference to actual object

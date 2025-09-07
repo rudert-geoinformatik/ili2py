@@ -1,14 +1,12 @@
 import logging
 from dataclasses import dataclass, field
 
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import IMD_META_BASE, imd_namespace_map
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import imd_namespace_map
 
 log = logging.getLogger(__name__)
 
 @dataclass
 class Ref:
-    class Meta(IMD_META_BASE):
-        pass
 
     ref: str = field(
         metadata={

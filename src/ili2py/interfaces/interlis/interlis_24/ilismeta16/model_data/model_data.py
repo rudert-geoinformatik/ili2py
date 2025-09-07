@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional, List
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.abstract_element import MetaAttributeElement
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import IMD_META_BASE, imd_namespace_map
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import imd_namespace_map
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.package.package import Model, SubModel
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.extendable_me import DataUnit, Unit
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.extendable_me.type.type_class import Class, BaseClass
@@ -17,9 +17,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.constraints im
 
 
 @dataclass
-class ModelData:
-    class Meta(IMD_META_BASE):
-        name = "ModelData"
+class ModelDataType:
 
     bid: str = field(
         metadata={
@@ -49,69 +47,135 @@ class ModelData:
         },
     )
     Class: Optional[List["Class"]] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     AttrOrParam: List["AttrOrParam"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     TextType: Optional[List["TextType"]] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     EnumNode: List["EnumNode"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     EnumType: List["EnumType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     NumType: Optional[List["NumType"]] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     AxisSpec: List["AxisSpec"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     CoordType: List["CoordType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     BaseClass: List["BaseClass"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     ObjectType: List["ObjectType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     ClassRefType: List["ClassRefType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     MultiValue: Optional[List["MultiValue"]] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     BooleanType: List["BooleanType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     FormattedType: List["FormattedType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     LinesForm: List["LinesForm"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     LineType: List["LineType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     LineForm: List["LineForm"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     Role: List["Role"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     SimpleConstraint: List["SimpleConstraint"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     ReferenceType: List["ReferenceType"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     BlackboxType: Optional[List["BlackboxType"]] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     Unit: List["Unit"] = field(
-        default_factory=list
+        default_factory=list,
+        metadata={
+            "namespace": imd_namespace_map["IlisMeta16"]
+        }
     )
     # TODO: Add Views

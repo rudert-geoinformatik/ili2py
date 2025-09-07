@@ -1,11 +1,14 @@
-from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
-
+from ili2py.mappers.helpers import Index
+from ili2py.writers.py.interlis23.python import Library
+from ili2py.writers import handle_model_versions
 from ili2py.writers.py.interlis23 import reader_classes
 
 
-def create_python_classes(transfer: ImdTransfer, output_path: str) -> str:
-    # TODO: This is probably ugly (aka can we have mixed ili versions?
-    if transfer.datasection.ModelData[-1].Model.iliVersion in ['2.3', '2.4']:
-        return reader_classes(transfer, output_path)
+def create_python_classes(library: Library, index: Index, output_path: str):
+    ili_version = handle_model_versions(index)
+    if ili_version == "2.3":
+        reader_classes(library, output_path)
+    elif ili_version == "2.4":
+        reader_classes(library, output_path)
     else:
-        raise NotImplemented
+        raise NotImplementedError(f"ili version '{ili_version}' not supported")
