@@ -73,7 +73,7 @@ ILI file.
 | ModelData.ExplicitAssocAcc    | ASSOCIATION    |      ❌       |      ✅      |
 | ModelData.AssocAccOrigin      | ASSOCIATION    |      ❌       |      ✅      |
 | ModelData.AssocAccTarget      | ASSOCIATION    |      ❌       |      ✅      |
-| ModelData.AssocAcc            | ASSOCIATION    |      ✅       |      ✅      |
+| ModelData.AssocAcc            | ASSOCIATION    |      ✅       |      ❌<br/>(not exported by ili2c)      |
 
 ## Information for easy transfer
 
