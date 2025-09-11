@@ -9,7 +9,7 @@ class {{ coord_type.name }}Type:
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "interlis": {
                 "meta_attributes": {
                     {%- for item in attribute.meta_attributes %}
@@ -27,7 +27,7 @@ class {{ coord_type.name }}Type:
 @dataclass
 class {{ coord_type.name }}:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
     {%- if coord_type.doc %}
     """
     {{ "\n".join(coord_type.doc) }}
@@ -37,7 +37,7 @@ class {{ coord_type.name }}:
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "interlis": {}
         }
     )
@@ -57,7 +57,7 @@ class {{ coord_type.name }}:
 
 class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
@@ -65,7 +65,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}
@@ -76,7 +76,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}
@@ -87,7 +87,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}
@@ -98,7 +98,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
 
 class {{ coord_type.name }}ARC:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
@@ -106,7 +106,7 @@ class {{ coord_type.name }}ARC:
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}

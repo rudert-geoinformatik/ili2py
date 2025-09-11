@@ -1,0 +1,166 @@
+INTERLIS 2.3;
+
+/** Minimales Geodatenmodell
+ * Waldabstandslinien
+ * Geobasisdatensatz Nr. 159
+ * TRANSLATION OF-Modelle: DistancesParRapportALaForet_V1_2.ili, LineeDiDistanzaDallaForesta_V1_2.ili
+ */
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2023-03-20 | ARE   | CLASS Typ: Attribut Code, Feldlänge 40 Zeichen
+!!------------------------------------------------------------------------------
+!! 2021-11-19 | KOGIS | Localisation_V1 replaced by LocalisationCH_V1
+!!------------------------------------------------------------------------------
+!! 2021-09-01 | ARE   | Version 1.2
+!!                    | Anpassungen an das ÖREB-Rahmenmodell Version 2.0 vom 14.04.2021
+!!                    | - DOMAIN RechtsStatus angepasst, DokumentTyp neu
+!!                    | - STRUCTURE LocalisedBlob und MultilingualBlob neu
+!!                    | - CLASS Waldabstand_Linie: neues Attribut publiziertBis
+!!                    | - CLASS Dokument angepasst an ÖREB-Rahmenmodell
+!!                    | - CLASS Amt angepasst an ÖREB-Rahmenmodell
+!!                    | Weitere technische Anpassungen
+!!                    | - ASSOCIATION Geometrie_Dokument zusätzlich eingefügt, um eine direkte Verknüpfung von Geometrie und Dokument zu ermöglichen
+!!                    | - TOPIC Geobasisdaten neu mit BASKET OID vom Typ TypeID
+!!                    | - CLASS Datenbestand: Attribut BasketID neu vom Typ TypeID, neues Meta-Attribut zur Überprüfung der ID
+!!------------------------------------------------------------------------------
+
+!!@ technicalContact=mailto:info@are.admin.ch
+!!@ furtherInformation=https://www.are.admin.ch/mgm
+!!@ IDGeoIV=159
+MODEL Waldabstandslinien_V1_2 (de)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2023-03-20"  =
+  IMPORTS CHAdminCodes_V1,InternationalCodes_V1,LocalisationCH_V1,GeometryCHLV95_V1;
+
+  DOMAIN
+
+    TypeID = OID TEXT*60;
+
+    Verbindlichkeit = (
+      Nutzungsplanfestlegung,
+      Orientierend,
+      Hinweisend,
+      Wegleitend
+    );
+
+    RechtsStatus = (
+      inKraft,
+      AenderungMitVorwirkung,
+      AenderungOhneVorwirkung
+    );
+
+    DokumentTyp = (
+      Rechtsvorschrift,
+      GesetzlicheGrundlage,
+      Hinweis
+    );
+
+  STRUCTURE LocalisedUri =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Text : MANDATORY URI;
+  END LocalisedUri;
+
+  STRUCTURE MultilingualUri =
+    LocalisedText : BAG {1..*} OF Waldabstandslinien_V1_2.LocalisedUri;
+    UNIQUE (LOCAL) LocalisedText: Language;
+  END MultilingualUri;
+
+  STRUCTURE LocalisedBlob =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Blob : MANDATORY BLACKBOX BINARY;
+  END LocalisedBlob;
+
+  STRUCTURE MultilingualBlob =
+    LocalisedBlob : BAG {1..*} OF Waldabstandslinien_V1_2.LocalisedBlob;
+    UNIQUE (LOCAL) LocalisedBlob: Language;
+  END MultilingualBlob;
+
+  TOPIC Rechtsvorschriften =
+
+    CLASS Dokument =
+      Typ : MANDATORY Waldabstandslinien_V1_2.DokumentTyp;
+      Titel : MANDATORY LocalisationCH_V1.MultilingualText;
+      Abkuerzung : LocalisationCH_V1.MultilingualText;
+      OffizielleNr : LocalisationCH_V1.MultilingualText;
+      NurInGemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      TextImWeb : Waldabstandslinien_V1_2.MultilingualUri;
+      Dokument : Waldabstandslinien_V1_2.MultilingualBlob;
+      AuszugIndex : MANDATORY -1000 .. 1000;
+      Rechtsstatus : MANDATORY Waldabstandslinien_V1_2.RechtsStatus;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+    END Dokument;
+
+  END Rechtsvorschriften;
+
+  TOPIC Geobasisdaten =
+    BASKET OID AS TypeID;
+    DEPENDS ON Waldabstandslinien_V1_2.Rechtsvorschriften;
+
+    CLASS Typ =
+      Code : MANDATORY TEXT*40;
+      Bezeichnung : MANDATORY TEXT*80;
+      Abkuerzung : TEXT*10;
+      Verbindlichkeit : MANDATORY Waldabstandslinien_V1_2.Verbindlichkeit;
+      Bemerkungen : MTEXT;
+      Symbol : BLACKBOX BINARY;
+    END Typ;
+
+    CLASS Waldabstand_Linie =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+      Rechtsstatus : MANDATORY Waldabstandslinien_V1_2.RechtsStatus;
+      Bemerkungen : MTEXT;
+    END Waldabstand_Linie;
+
+    ASSOCIATION Geometrie_Dokument =
+      Geometrie (EXTERNAL) -- {0..*} Waldabstand_Linie;
+      Dokument (EXTERNAL) -- {0..*} Waldabstandslinien_V1_2.Rechtsvorschriften.Dokument;
+    END Geometrie_Dokument;
+
+    ASSOCIATION Typ_Dokument =
+      Typ (EXTERNAL) -- {0..*} Typ;
+      Vorschrift (EXTERNAL) -- {0..*} Waldabstandslinien_V1_2.Rechtsvorschriften.Dokument;
+    END Typ_Dokument;
+
+    ASSOCIATION Typ_Geometrie =
+      Geometrie -- {0..*} Waldabstand_Linie;
+      WAL -<> {1} Typ;
+    END Typ_Geometrie;
+
+  END Geobasisdaten;
+
+  TOPIC TransferMetadaten =
+    DEPENDS ON Waldabstandslinien_V1_2.Geobasisdaten;
+
+    CLASS Amt =
+      Name : MANDATORY LocalisationCH_V1.MultilingualText;
+      AmtImWeb : Waldabstandslinien_V1_2.MultilingualUri;
+      UID : TEXT*12;
+      Zeile1 : TEXT*80;
+      Zeile2 : TEXT*80;
+      Strasse : TEXT*100;
+      Hausnr : TEXT*7;
+      PLZ : TEXT*4;
+      Ort : TEXT*40;
+      UNIQUE UID;
+    END Amt;
+
+    CLASS Datenbestand =
+      !!@ basketRef=Waldabstandslinien_V1_2.Geobasisdaten
+      BasketID : MANDATORY TypeID;
+      Stand : MANDATORY INTERLIS.XMLDate;
+      Lieferdatum : INTERLIS.XMLDate;
+      Bemerkungen : MTEXT;
+    END Datenbestand;
+
+    ASSOCIATION Datenbestand_zustStelle =
+      zustaendigeStelle -<> {1} Amt;
+      Datenbestand -- {0..*} Datenbestand;
+    END Datenbestand_zustStelle;
+
+  END TransferMetadaten;
+
+END Waldabstandslinien_V1_2.

@@ -1,0 +1,85 @@
+
+{%- for module_path, class_item, alias in library.related_class_imports %}
+{%- if class_item and alias  %}
+from {{ library.library }}.{{ module_path }} import {{ class_item }} as {{ alias }}
+{%- elif class_item and not alias %}
+from {{ library.library }}.{{ module_path }} import {{ class_item }}
+{%- elif not class_item and not alias %}
+import {{ library.library }}.{{ module_path }}
+{%- endif %}
+{%- endfor %}
+from dataclasses import dataclass, field
+
+@dataclass
+class DataSection:
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+
+    choice: list[
+        {{library.topic_choices|map(attribute='type_reference')|join('|') }}
+    ] = field(
+        default_factory=list,
+        metadata={
+            "type": "Elements",
+            "choices": (
+            {%- for choice in library.topic_choices %}
+                {
+                    "name": "{{ choice.identifier }}",
+                    "type": {{ choice.type_reference }},
+                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                },
+            {%- endfor %}
+            )
+        }
+    )
+
+@dataclass
+class Model:
+
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+
+    name: str|None = field(default=None, metadata={"name": "NAME", "type": "Attribute"})
+    version: str|None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
+    uri: str|None = field(default=None, metadata={"name": "URI", "type": "Attribute"})
+
+
+@dataclass
+class ModelsType:
+    choice: list[Model] = field(
+        default_factory=list,
+        metadata={
+            "type": "Elements",
+            "choices": (
+                {"name": "MODEL", "type": Model, "namespace": "{{ render_config['namespace_map']['ili'] }}"},
+            )
+        }
+    )
+
+
+@dataclass
+class HeaderSection:
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+    models: ModelsType = field(
+        metadata={
+            "name": "MODELS",
+            "type": "Element",
+            "namespace": "{{ render_config['namespace_map']['ili'] }}"
+        }
+    )
+    sender: str|None = field(default=None, metadata={"name": "SENDER", "type": "Attribute"})
+    version: str|None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
+
+@dataclass
+class Transfer:
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        name = "TRANSFER"
+
+    headersection: HeaderSection = field(
+        metadata={"name": "HEADERSECTION", "type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"}
+    )
+    datasection: DataSection = field(
+        metadata={"name": "DATASECTION", "type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"}
+    )

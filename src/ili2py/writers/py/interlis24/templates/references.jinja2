@@ -1,0 +1,14 @@
+from dataclasses import dataclass, field
+
+@dataclass
+class Ref:
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        name = "REF"
+    REF: str = field(default=None, metadata={"type": "Attribute"})
+
+class BinBlBox(str):
+    pass
+
+class XmlBlBox(str):
+    pass

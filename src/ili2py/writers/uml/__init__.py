@@ -2,7 +2,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
 from typing import List
 
 from ili2py.mappers.helpers import Index
-from ili2py.writers import handle_model_versions
+from ili2py.writers.helpers import handle_model_versions
 from ili2py.writers.uml.interlis_23 import uml_diagram, Diagram
 
 

@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 
 from ili2py.mappers.helpers import Index
-from ili2py.writers import create_file
+from ili2py.writers.helpers import create_file
 from ili2py.writers.uml.interlis_23.uml import Diagram
 
 ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
@@ -32,16 +32,15 @@ def uml_diagram(
     index: Index,
     model_names: List[str],
     flavour: str,
+    file_name: str,
     output_path: str,
     direction: str | None = None,
     linetype: str | None = None,
 ):
     if flavour == "mermaid":
-        file_name = f"{flavour}.md"
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
         selected_linetype = None
     elif flavour == "plantuml":
-        file_name = f"{flavour}.puml"
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
         selected_linetype = tool_settings[flavour]["settings"]["linetype"][0]
     else:

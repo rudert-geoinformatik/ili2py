@@ -1,0 +1,13 @@
+{%- for definition in domain_types %}
+class {{ definition['name'] }}({{ definition['reference'] }}):
+
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                "oid": "{{ definition['oid'] }}",
+                "meta_attributes": {},
+                "type_restrictions": {{ definition['restrictions'] }}
+            }
+        }
+{%- endfor %}

@@ -1,0 +1,26 @@
+from dataclasses import dataclass, field
+
+@dataclass
+class Ref:
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        name = "REF"
+    REF: str = field(default=None, metadata={"type": "Attribute"})
+
+class BinBlBoxType(str):
+    pass
+
+class XmlBlBoxType(str):
+    pass
+
+@dataclass
+class BinBlBox:
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+    BINBLBOX: BinBlBoxType = field(metadata={"type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"})
+
+@dataclass
+class XmlBlBox:
+    class Meta:
+        namespace = "{{ render_config['namespace_map']['ili'] }}"
+    XMLBLBOX: XmlBlBoxType = field(metadata={"type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"})

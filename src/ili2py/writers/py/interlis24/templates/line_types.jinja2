@@ -3,7 +3,7 @@
 {%- if line_type.attribute.name in ["POLYLINE", "DIRECTEDPOLYLINE"]  %}
 class {{ line_type.name }}:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
     {%- if line_type.doc %}
     """
@@ -14,7 +14,7 @@ class {{ line_type.name }}:
         default_factory=list,
         metadata={
             "type": "Elements",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "name": "{{ line_type.attribute.name }}",
             "interlis": {
                 "meta_attributes": {
@@ -26,7 +26,7 @@ class {{ line_type.name }}:
 {%- elif line_type.attribute.name in ["SURFACE", "AREA"] %}
 class {{ line_type.name }}:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
     """
     {%- if line_type.doc %}
@@ -37,18 +37,18 @@ class {{ line_type.name }}:
     @dataclass
     class {{ line_type.name }}BOUNDARY:
         class Meta:
-            namespace = "{{ render_config['namespace_map']['ili'] }}"
+            namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
             name = "SURFACE"
 
         @dataclass
         class {{ line_type.name }}POLYLINE:
             class Meta:
-                namespace = "{{ render_config['namespace_map']['ili'] }}"
+                namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
             @dataclass
             class Segment:
                 class Meta:
-                    namespace = "{{ render_config['namespace_map']['ili'] }}"
+                    namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
                 choice: list[{{ line_type.attribute.type }}Type|{{ line_type.attribute.type }}ARCType] = field(
                     default_factory=list,
@@ -57,11 +57,11 @@ class {{ line_type.name }}:
                         "choices": ({
                             "name": "COORD",
                             "type": {{ line_type.attribute.type }}Type,
-                            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
                         },{
                             "name": "ARC",
                             "type": {{ line_type.attribute.type }}ARCType,
-                            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
                         } ),
                         "interlis": {
                             "meta_attributes": {
@@ -74,7 +74,7 @@ class {{ line_type.name }}:
                 default=None,
                 metadata={
                     "type": "Element",
-                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                    "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
                     "interlis": {"meta_attributes": {}},
                 },
             )
@@ -86,7 +86,7 @@ class {{ line_type.name }}:
                 "choices": ({
                     "type": {{ line_type.name }}POLYLINE,
                     "name": "BOUNDARY",
-                    "namespace": "{{ render_config['namespace_map']['ili'] }}"
+                    "namespace": "{{ render_config['base_url'] }}/{{ package.name }}"
                 },),
                 "interlis": {
                     "meta_attributes": {
@@ -100,7 +100,7 @@ class {{ line_type.name }}:
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             "interlis": {"meta_attributes": {}},
         }
     )

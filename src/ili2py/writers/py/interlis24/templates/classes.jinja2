@@ -15,7 +15,7 @@ class {{ class_definition.name }}:
 
     class Meta:
         name = "{{ class_definition.identifier }}"
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
     {%- if class_definition.doc %}
     """
@@ -47,7 +47,8 @@ class {{ class_definition.name }}:
         default=None,
         metadata={
             "type": "Attribute",
-            "name": "TID",
+            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "name": "tid",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {{ class_definition.oid.type_restrictions }}
@@ -56,11 +57,12 @@ class {{ class_definition.name }}:
     )
 {%- else %}
 {%- if class_definition.kind == 'Class' %}
-    TID: str = field(
+    tid: str = field(
         default=None,
         metadata={
             "type": "Attribute",
-            "name": "TID",
+            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "name": "tid",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": None
@@ -74,7 +76,7 @@ class {{ class_definition.name }}:
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             {%- if attribute.type_restrictions['type_related_type'] %}
             "name": "{{ attribute.identifier.replace('ili2py.', '') }}",
             {%- endif %}

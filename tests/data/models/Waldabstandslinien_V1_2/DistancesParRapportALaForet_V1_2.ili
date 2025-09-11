@@ -1,0 +1,166 @@
+INTERLIS 2.3;
+
+/** Modèle de géodonnées minimal
+ * Distances par rapport à la forêt
+ * Jeu de géodonnées de base No. 159
+ */
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2023-03-20 | ARE   | CLASS Type : Attribut Code, Longeur de champ 40 caractères
+!!------------------------------------------------------------------------------
+!! 2021-11-19 | KOGIS | Localisation_V1 replaced by LocalisationCH_V1
+!!------------------------------------------------------------------------------
+!! 2021-09-01 | ARE   | Version 1.2
+!!                    | Adaption au modèle-cadre RDPPF version 2.0 du 14 avril 2021 :
+!!                    | - DOMAIN StatutJuridique adapté, TypeDocument nouveau
+!!                    | - STRUCTURE LocalisedBlob et MultilingualBlob nouveaux
+!!                    | - CLASS DistanceParRapportALaForet_Ligne : nouvel attribut publieJusque
+!!                    | - CLASS Document adapté au modèle-cadre RDPPF
+!!                    | - CLASS Service adapté au modèle-cadre RDPPF
+!!                    | Modifications techniques ultérieures
+!!                    | - ASSOCIATION Geometrie_Document inséré additionellement pour permettre un lien direct entre les classes Geometrie et Document
+!!                    | - TOPIC GeodonneesDeBase maintenant avec BASKET OID du type TypeID
+!!                    | - CLASS JeuDeDonnees : Attribut BasketID maintenant du type TypeID, nouvel méta-attribut pour la vérification de l’ID
+!!------------------------------------------------------------------------------
+
+!!@ technicalContact=mailto:info@are.admin.ch
+!!@ furtherInformation=https://www.are.admin.ch/mgm
+!!@ IDGeoIV=159
+MODEL DistancesParRapportALaForet_V1_2 (fr)
+AT "https://models.geo.admin.ch/BAFU/"
+VERSION "2023-03-20"
+TRANSLATION OF Waldabstandslinien_V1_2 ["2023-03-20"] =
+  IMPORTS CHAdminCodes_V1,InternationalCodes_V1,LocalisationCH_V1,GeometryCHLV95_V1;
+
+  DOMAIN
+
+    TypeID = OID TEXT*60;
+
+    ForceObligatoire = (
+      Contenu_contraignant,
+      Contenu_informatif,
+      Contenu_indicatif,
+      Contenu_dAideALaMiseEnOeuvre
+    );
+
+    StatutJuridique = (
+      enVigueur,
+      ModificationAvecEffetAnticipe,
+      ModificationSansEffetAnticipe
+    );
+
+    DokumentTyp = (
+      Rechtsvorschrift,
+      GesetzlicheGrundlage,
+      Hinweis
+    );
+
+  STRUCTURE LocalisedUri =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Text : MANDATORY URI;
+  END LocalisedUri;
+
+  STRUCTURE MultilingualUri =
+    LocalisedText : BAG {1..*} OF DistancesParRapportALaForet_V1_2.LocalisedUri;
+    UNIQUE (LOCAL) LocalisedText: Language;
+  END MultilingualUri;
+
+  STRUCTURE LocalisedBlob =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Blob : MANDATORY BLACKBOX BINARY;
+  END LocalisedBlob;
+
+  STRUCTURE MultilingualBlob =
+    LocalisedBlob : BAG {1..*} OF DistancesParRapportALaForet_V1_2.LocalisedBlob;
+    UNIQUE (LOCAL) LocalisedBlob: Language;
+  END MultilingualBlob;
+
+  TOPIC DispositionsJuridiques =
+
+    CLASS Document =
+      Type : MANDATORY DistancesParRapportALaForet_V1_2.DokumentTyp;
+      Titre : MANDATORY LocalisationCH_V1.MultilingualText;
+      Abreviation : LocalisationCH_V1.MultilingualText;
+      NoOfficiel : LocalisationCH_V1.MultilingualText;
+      SeulementCommune : CHAdminCodes_V1.CHMunicipalityCode;
+      TexteSurInternet : DistancesParRapportALaForet_V1_2.MultilingualUri;
+      Document : DistancesParRapportALaForet_V1_2.MultilingualBlob;
+      IndexExtrait : MANDATORY -1000 .. 1000;
+      StatutJuridique : MANDATORY DistancesParRapportALaForet_V1_2.StatutJuridique;
+      publieDepuis : MANDATORY INTERLIS.XMLDate;
+      publieJusque : INTERLIS.XMLDate;
+    END Document;
+
+  END DispositionsJuridiques;
+
+  TOPIC GeodonneesDeBase =
+    BASKET OID AS TypeID;
+    DEPENDS ON DistancesParRapportALaForet_V1_2.DispositionsJuridiques;
+
+    CLASS Type =
+      Code : MANDATORY TEXT*40;
+      Designation : MANDATORY TEXT*80;
+      Abreviation : TEXT*10;
+      ForceObligatoire : MANDATORY DistancesParRapportALaForet_V1_2.ForceObligatoire;
+      Remarques : MTEXT;
+      Symbole : BLACKBOX BINARY;
+    END Type;
+
+    CLASS DistanceParRapportALaForet_Ligne =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+      publieDepuis : MANDATORY INTERLIS.XMLDate;
+      publieJusque : INTERLIS.XMLDate;
+      StatutJuridique : MANDATORY DistancesParRapportALaForet_V1_2.StatutJuridique;
+      Remarques : MTEXT;
+    END DistanceParRapportALaForet_Ligne;
+
+    ASSOCIATION Geometrie_Document =
+      Geometrie (EXTERNAL) -- {0..*} DistanceParRapportALaForet_Ligne;
+      Document (EXTERNAL) -- {0..*} DistancesParRapportALaForet_V1_2.DispositionsJuridiques.Document;
+    END Geometrie_Document;
+
+    ASSOCIATION Type_Document =
+      Type (EXTERNAL) -- {0..*} Type;
+      Disposition (EXTERNAL) -- {0..*} DistancesParRapportALaForet_V1_2.DispositionsJuridiques.Document;
+    END Type_Document;
+
+    ASSOCIATION Type_Geometrie =
+      Geometrie -- {0..*} DistanceParRapportALaForet_Ligne;
+      DF -<> {1} Type;
+    END Type_Geometrie;
+
+  END GeodonneesDeBase;
+
+  TOPIC MetadonneesTransfert =
+    DEPENDS ON DistancesParRapportALaForet_V1_2.GeodonneesDeBase;
+
+    CLASS Service =
+      Nom : MANDATORY LocalisationCH_V1.MultilingualText;
+      ServiceSurInternet : DistancesParRapportALaForet_V1_2.MultilingualUri;
+      DEI : TEXT*12;
+      Ligne1 : TEXT*80;
+      Ligne2 : TEXT*80;
+      Rue : TEXT*100;
+      Numero : TEXT*7;
+      NPA : TEXT*4;
+      Localite : TEXT*40;
+      UNIQUE DEI;
+    END Service;
+
+    CLASS JeuDeDonnees =
+      !!@ basketRef=DistancesParRapportALaForet_V1_2.GeodonneesDeBase
+      BasketID : MANDATORY TypeID;
+      Version : MANDATORY INTERLIS.XMLDate;
+      DateDeLivraison : INTERLIS.XMLDate;
+      Remarques : MTEXT;
+    END JeuDeDonnees;
+
+    ASSOCIATION Donnees_orgResp =
+      OrganismeResponsable -<> {1} Service;
+      JeuDeDonnees -- {0..*} JeuDeDonnees;
+    END Donnees_orgResp;
+
+  END MetadonneesTransfert;
+
+END DistancesParRapportALaForet_V1_2.

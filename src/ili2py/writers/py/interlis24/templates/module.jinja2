@@ -47,7 +47,7 @@ metadata = {
 @dataclass
 class {{ module.name }}TOPIC:
     class Meta:
-        name = "{{ module.identifier }}"
+        name = "{{ module.name }}"
 
     choice: list[
         {{module.basket.choices|map(attribute='type_reference')|join('|') }}
@@ -58,9 +58,9 @@ class {{ module.name }}TOPIC:
             "choices": (
             {%- for choice in module.basket.choices %}
                 {
-                    "name": "{{ choice.identifier }}",
+                    "name": "{{ choice.name }}",
                     "type": {{ choice.type_reference }},
-                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                    "namespace": "{{ render_config['base_url'] }}/{{ choice.model_name }}",
                 },
             {%- endfor %}
             )
