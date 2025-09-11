@@ -73,7 +73,7 @@ ILI file.
 | ModelData.ExplicitAssocAcc    | ASSOCIATION    |      ❌       |      ✅      |
 | ModelData.AssocAccOrigin      | ASSOCIATION    |      ❌       |      ✅      |
 | ModelData.AssocAccTarget      | ASSOCIATION    |      ❌       |      ✅      |
-| ModelData.AssocAcc            | ASSOCIATION    |      ✅       |      ❌<br/>(not exported by ili2c)      |
+| ModelData.AssocAcc            | ASSOCIATION    |      ✅       |      ❌<br/>(not exported by ili2c 5.6.6)      |
 
 ## Information for easy transfer
 
@@ -237,7 +237,7 @@ ILI file.
 
 | Construct                           | ili Kind  | Mandatory v1 | Implemented |
 |-------------------------------------|-----------|:------------:|:-----------:|
-| ModelTranslation.DocTextTranslation | STRUCTURE |      ✅       |      ❌      |
-| ModelTranslation.METranslation      | STRUCTURE |      ✅       |      ❌      |
-| ModelTranslation.Translation        | CLASS     |      ✅       |      ❌      |
+| ModelTranslation.DocTextTranslation | STRUCTURE |      ✅       |      ❌<br/>(not exported by ili2c 5.6.6)      |
+| ModelTranslation.METranslation      | STRUCTURE |      ✅       |      ❌<br/>(not exported by ili2c 5.6.6)      |
+| ModelTranslation.Translation        | CLASS     |      ✅       |      ❌<br/>(not exported by ili2c 5.6.6)      |
 
