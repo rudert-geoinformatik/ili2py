@@ -70,7 +70,21 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-    {{ attribute.name }}: {% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %} = field(
+{%- if attribute.type == 'BinBlBoxType' %}
+
+    @dataclass
+    class BinBlBox:
+        class Meta:
+            namespace = "{{ render_config['namespace_map']['ili'] }}"
+        BINBLBOX: BinBlBoxType = field(
+            metadata={
+                "type": "Element",
+                "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            }
+        )
+
+{% endif %}
+    {{ attribute.name }}: {% if attribute.type == 'BinBlBoxType' %}"{{ class_definition.name }}.BinBlBox"{% else %}{% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %}{% endif %} = field(
         default=None,
         metadata={
             "type": "Element",

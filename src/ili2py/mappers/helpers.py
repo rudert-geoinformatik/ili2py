@@ -145,6 +145,9 @@ class Index:
         self.dependency_depends_on: dict = {}
         self.dependency_used_by: dict = {}
 
+        self.oid_in_topic: dict = {}
+        self.oid_in_model: dict = {}
+
         for basket in data_section.ModelData:
             for element in basket.choice:
                 self.unwrap_tree(element)
@@ -509,6 +512,14 @@ class Index:
                 self.class_association_attribute[element.param_parent.ref].append(element.tid)
 
     def handle_class(self, element: Class):
+        if element.oid:
+            if element.element_in_package:
+                package = self.index[element.element_in_package.ref]
+                if isinstance(package, SubModel):
+                    self.oid_in_topic[package.tid] = True
+                    self.oid_in_model[package.element_in_package.ref] = True
+                else:
+                    self.oid_in_model[element.element_in_package.ref] = True
         if element.super:
             if element.super.ref not in self.class_subclassed_by:
                 self.class_subclassed_by[element.super.ref] = []

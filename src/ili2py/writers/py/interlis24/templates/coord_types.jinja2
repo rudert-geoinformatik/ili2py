@@ -5,11 +5,11 @@ class {{ coord_type.name }}Type:
     {%- if attribute.reference_system %}
     # {{ attribute.reference_system }}
     {%- endif %}
-    {{ attribute.name }}: {{ attribute.type }} = field(
+    {{ attribute.name.lower() }}: {{ attribute.type }} = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {
                 "meta_attributes": {
                     {%- for item in attribute.meta_attributes %}
@@ -27,17 +27,17 @@ class {{ coord_type.name }}Type:
 @dataclass
 class {{ coord_type.name }}:
     class Meta:
-        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
+        namespace = "{{ render_config['namespace_map']['geom'] }}"
     {%- if coord_type.doc %}
     """
     {{ "\n".join(coord_type.doc) }}
     """
     {%- endif %}
-    COORD: {{ coord_type.name }}Type = field(
+    coord: {{ coord_type.name }}Type = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {}
         }
     )
@@ -57,37 +57,37 @@ class {{ coord_type.name }}:
 
 class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
     class Meta:
-        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
+        namespace = "{{ render_config['namespace_map']['geom'] }}"
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
-    A1: float = field(
+    a1: float = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}
             }
         }
     )
-    A2: float = field(
+    a2: float = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}
             }
         }
     )
-    R: float = field(
+    r: float = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}
@@ -98,15 +98,15 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
 
 class {{ coord_type.name }}ARC:
     class Meta:
-        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
+        namespace = "{{ render_config['namespace_map']['geom'] }}"
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
-    ARC: {{ coord_type.name }}ARCType = field(
+    arc: {{ coord_type.name }}ARCType = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {}

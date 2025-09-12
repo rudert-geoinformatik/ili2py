@@ -15,7 +15,7 @@ class DataSection:
     class Meta:
         namespace = "{{ render_config['namespace_map']['ili'] }}"
 
-    choice: list[
+    baskets: list[
         {{library.topic_choices|map(attribute='type_reference')|join('|') }}
     ] = field(
         default_factory=list,

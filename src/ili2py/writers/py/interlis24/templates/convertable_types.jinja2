@@ -39,3 +39,12 @@ def get_special_float_types():
         {%- endfor %}
         {%- endfor %}
     ]
+
+def get_contained_model_names():
+    return [
+    {%- for package in library.packages %}
+    {%- if package.name != "INTERLIS" %}
+    "{{ package.name }}",
+    {%- endif %}
+    {%- endfor %}
+    ]

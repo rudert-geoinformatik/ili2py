@@ -27,17 +27,21 @@ render_configuration = {
 }
 
 
-def create_python_classes(library: Library, index: Index, output_path: str):
+def create_python_classes(library: Library, index: Index, output_path: str, beautify: bool = True):
     ili_version = handle_model_versions(index)
     if ili_version == "2.3":
-        reader_classes(library, output_path, render_config=render_configuration[ili_version])
+        reader_classes(
+            library, output_path, render_config=render_configuration[ili_version], beautify=beautify
+        )
     elif ili_version == "2.4":
-        reader_classes(library, output_path, render_config=render_configuration[ili_version])
+        reader_classes(
+            library, output_path, render_config=render_configuration[ili_version], beautify=beautify
+        )
     else:
         raise NotImplementedError(f"ili version '{ili_version}' not supported")
 
 
-def reader_classes(library: Library, output_path: str, render_config: dict, beautify=True):
+def reader_classes(library: Library, output_path: str, render_config: dict, beautify: bool = True):
     tpl_dir = Path(__file__).parent.joinpath(f"interlis{render_config['selector']}", "templates")
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
     library_content = env.get_template("library_init.jinja2").render(

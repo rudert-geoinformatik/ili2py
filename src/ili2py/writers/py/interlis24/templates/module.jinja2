@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from typing import Any, Union
 from {{ module.library }} import INTERLIS
-from {{ module.library }}.references import Ref, XmlBlBox, BinBlBox
+from {{ module.library }}.references import Ref, XmlBlBoxType, BinBlBoxType
 {% for item in  module.imported_packages %}
 from {{ module.library }} import {{ item }}
 {% endfor %}
@@ -49,9 +49,11 @@ class {{ module.name }}TOPIC:
     class Meta:
         name = "{{ module.name }}"
 
-    choice: list[
-        {{module.basket.choices|map(attribute='type_reference')|join('|') }}
-    ] = field(
+    elements: list[Union[
+        {% for choice in module.basket.choices %}
+        {{choice.type_reference}},
+        {% endfor %}
+    ]] = field(
         default_factory=list,
         metadata={
             "type": "Elements",
@@ -66,7 +68,14 @@ class {{ module.name }}TOPIC:
             )
         }
     )
-    BID: str|None = field(
+    bid: str|None = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+        },
+    )
+    kind: str|None = field(
         default=None,
         metadata={
             "type": "Attribute",

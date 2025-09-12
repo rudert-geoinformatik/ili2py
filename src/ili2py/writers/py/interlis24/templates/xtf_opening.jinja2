@@ -15,7 +15,7 @@ class DataSection:
     class Meta:
         namespace = "{{ render_config['namespace_map']['ili'] }}"
 
-    choice: list[
+    baskets: list[
         {{library.topic_choices|map(attribute='type_reference')|join('|') }}
     ] = field(
         default_factory=list,
@@ -40,8 +40,6 @@ class Model:
         namespace = "{{ render_config['namespace_map']['ili'] }}"
 
     name: str|None = field(default=None, metadata={"name": "NAME", "type": "Text"})
-    version: str|None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
-    uri: str|None = field(default=None, metadata={"name": "URI", "type": "Attribute"})
 
 
 @dataclass
@@ -75,7 +73,7 @@ class HeaderSection:
 class Transfer:
     class Meta:
         namespace = "{{ render_config['namespace_map']['ili'] }}"
-        name = "TRANSFER"
+        name = "transfer"
 
     headersection: HeaderSection = field(
         metadata={"name": "headersection", "type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"}

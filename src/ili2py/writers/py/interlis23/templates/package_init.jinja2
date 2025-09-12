@@ -1,8 +1,8 @@
 from typing import Union
 from enum import Enum
-from typing import Any
+from typing import Any, Union
 from dataclasses import dataclass, field
-from {{ package.library }}.references import Ref, XmlBlBox, BinBlBox
+from {{ package.library }}.references import Ref, XmlBlBoxType, BinBlBoxType
 {%- if package.name != 'INTERLIS' %}
 from {{ package.library }} import INTERLIS
 {%- endif %}

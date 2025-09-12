@@ -33,10 +33,11 @@ class {{ coord_type.name }}:
     {{ "\n".join(coord_type.doc) }}
     """
     {%- endif %}
-    COORD: {{ coord_type.name }}Type = field(
+    coord: {{ coord_type.name }}Type = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "COORD",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {}
         }
@@ -61,10 +62,11 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
-    A1: float = field(
+    a1: float = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "A1",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},
@@ -72,10 +74,11 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
             }
         }
     )
-    A2: float = field(
+    a2: float = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "A2",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},
@@ -83,10 +86,11 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
             }
         }
     )
-    R: float = field(
+    r: float = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "R",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},
@@ -102,10 +106,11 @@ class {{ coord_type.name }}ARC:
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
-    ARC: {{ coord_type.name }}ARCType = field(
+    arc: {{ coord_type.name }}ARCType = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "ARC",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},

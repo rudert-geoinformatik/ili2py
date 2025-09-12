@@ -118,6 +118,7 @@ class Attribute(Base):
     enumeration: Optional["Enumeration"] = field(default=None)
     line_type: Optional["LineType"] = field(default=None)
     type_related_type_class: Optional["Class"] = field(default=None)
+    reference_targets: list[str] = field(default_factory=list)
 
     @staticmethod
     def check_float_kind(representation: str | None) -> bool:
@@ -196,9 +197,9 @@ class Attribute(Base):
                 return "Any", False
         elif isinstance(imd_type, BlackboxType):
             if imd_type.kind.upper() == "BINARY":
-                return "BinBlBox", False
+                return "BinBlBoxType", False
             elif imd_type.kind.upper() == "XML":
-                return "XmlBlBox", False
+                return "XmlBlBoxType", False
             else:
                 logging.debug(f"Binary type was not handled correctly {imd_type}")
                 return "str", False
@@ -1143,9 +1144,20 @@ class Module(Base):
                         own_class = True
 
                     if own_class:
+                        association_attribute_names = []
                         for role_oid, referenced_class_oid in association_construct:
                             role_object: ImdRole = index.index[role_oid]
-                            referenced_class_object: ImdClass = index.index[referenced_class_oid]
+                            if role_object.name in association_attribute_names:
+                                logging.debug(
+                                    f"We skip association attribute. Attribute with same name was added "
+                                    f"already (this is likely due to an OR role combination in "
+                                    f"{association_object.tid}) => {role_object}"
+                                )
+                                attributes[
+                                    association_attribute_names.index(role_object.name)
+                                ].reference_targets.append(referenced_class_oid)
+                                continue
+                            association_attribute_names.append(role_object.name)
                             attributes.append(
                                 Attribute(
                                     name=role_object.name,
@@ -1160,6 +1172,7 @@ class Module(Base):
                                     ),
                                     enumeration=None,
                                     line_type=None,
+                                    reference_targets=[referenced_class_oid],
                                 )
                             )
                 super_reference = None

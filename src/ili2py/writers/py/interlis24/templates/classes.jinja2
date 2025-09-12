@@ -5,16 +5,15 @@ from abc import ABC
 {%- for class_definition in classes %}
 
 @dataclass
-{% if class_definition.super_class %}
+{%- if class_definition.super_class %}
 class {{ class_definition.name }}({{ class_definition.super_class }}):
-{% elif class_definition.abstract %}
+{%- elif class_definition.abstract %}
 class {{ class_definition.name }}(ABC):
-{% else %}
+{%- else %}
 class {{ class_definition.name }}:
-{% endif %}
+{%- endif %}
 
     class Meta:
-        name = "{{ class_definition.identifier }}"
         namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
     {%- if class_definition.doc %}
@@ -78,10 +77,13 @@ class {{ class_definition.name }}:
             "type": "Element",
             "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             {%- if attribute.type_restrictions['type_related_type'] %}
-            "name": "{{ attribute.identifier.replace('ili2py.', '') }}",
+            "name": "{{ attribute.name }}",
             {%- endif %}
             "interlis": {
                 "oid": "{{ attribute.identifier }}",
+                {%- if attribute.reference_targets %}
+                "reference_targets": {{ attribute.reference_targets }},
+                {%- endif %}
                 "meta_attributes": {
                     {%- for item in attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
