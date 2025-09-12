@@ -3,7 +3,7 @@
 
 During the intense work with IMD16 which were produced by ili2c, some questions came up. These are
 summarized here. These Questions are not exclusively related to the compiler but may also be related
-to the [Reference Manual of INTERLIS 2.4](https://github.com/rudert-geoinformatik/ili2py/blob/master/tests/data/ilismeta16/ili2-refman_2006-04-13_d.pdf)
+to the [Reference Manual of INTERLIS 2.4](https://github.com/rudert-geoinformatik/ili2py/blob/master/tests/data/ilismeta16/STAN_d_DEF_2024-04-24_eCH-0031_V2.1.0_INTERLIS_2-Referenzhandbuch.pdf)
 
 ## Missing Topic ilisMeta16.ModelTranslation in IMD16
 
