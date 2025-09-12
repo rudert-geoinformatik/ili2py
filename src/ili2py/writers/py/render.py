@@ -37,7 +37,7 @@ def create_python_classes(library: Library, index: Index, output_path: str):
         raise NotImplementedError(f"ili version '{ili_version}' not supported")
 
 
-def reader_classes(library: Library, output_path: str, render_config: dict):
+def reader_classes(library: Library, output_path: str, render_config: dict, beautify=True):
     tpl_dir = Path(__file__).parent.joinpath(f"interlis{render_config['selector']}", "templates")
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
     library_content = env.get_template("library_init.jinja2").render(
@@ -80,7 +80,7 @@ def reader_classes(library: Library, output_path: str, render_config: dict):
             "ruff",
             "format",
             "--line-length",
-            "88",
+            "79",
             output_path,
         ],
         [
@@ -101,10 +101,11 @@ def reader_classes(library: Library, output_path: str, render_config: dict):
     env = os.environ.copy()
     if env.get("PATH"):
         env["PATH"] = executable_path + os.pathsep + env["PATH"]
-    for command in commands:
-        subprocess.run(
-            command,
-            capture_output=True,
-            check=True,
-            env=env,
-        )
+    if beautify:
+        for command in commands:
+            subprocess.run(
+                command,
+                capture_output=True,
+                check=True,
+                env=env,
+            )

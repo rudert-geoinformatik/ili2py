@@ -49,9 +49,7 @@ class {{ module.name }}TOPIC:
     class Meta:
         name = "{{ module.identifier }}"
 
-    choice: list[
-        {{module.basket.choices|map(attribute='type_reference')|join('|') }}
-    ] = field(
+    choice: list[{{module.basket.choices|map(attribute='type_reference')|join('|') }}] = field(
         default_factory=list,
         metadata={
             "type": "Elements",
