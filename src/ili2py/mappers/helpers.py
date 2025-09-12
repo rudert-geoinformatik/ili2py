@@ -145,8 +145,11 @@ class Index:
         self.dependency_depends_on: dict = {}
         self.dependency_used_by: dict = {}
 
-        self.oid_in_topic: dict = {}
-        self.oid_in_model: dict = {}
+        self.object_oid_in_submodel: dict = {}
+        self.object_oid_in_model: dict = {}
+
+        self.basket_oid_in_submodel: dict = {}
+        self.basket_oid_in_model: dict = {}
 
         for basket in data_section.ModelData:
             for element in basket.choice:
@@ -304,6 +307,12 @@ class Index:
             self.elements_in_package[element.element_in_package.ref].append(element.tid)
         if isinstance(element, DataUnitType):
             self.topic_basket[element.element_in_package.ref] = element.tid
+            if element.oid:
+                package = self.index[element.element_in_package.ref]
+                if isinstance(package, SubModel):
+                    self.basket_oid_in_submodel[package.tid] = element.tid
+                    package = self.index[package.element_in_package.ref]
+                self.basket_oid_in_model[package.tid] = element.tid
         if isinstance(element, ClassType):
             if element.kind == "Class":
                 if element.element_in_package.ref not in self.elements_in_package_class_class:
@@ -516,10 +525,9 @@ class Index:
             if element.element_in_package:
                 package = self.index[element.element_in_package.ref]
                 if isinstance(package, SubModel):
-                    self.oid_in_topic[package.tid] = True
-                    self.oid_in_model[package.element_in_package.ref] = True
-                else:
-                    self.oid_in_model[element.element_in_package.ref] = True
+                    self.object_oid_in_submodel[package.tid] = element.oid.ref
+                    package = self.index[package.element_in_package.ref]
+                self.object_oid_in_model[package.tid] = element.oid.ref
         if element.super:
             if element.super.ref not in self.class_subclassed_by:
                 self.class_subclassed_by[element.super.ref] = []
