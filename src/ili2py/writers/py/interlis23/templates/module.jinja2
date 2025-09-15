@@ -68,11 +68,18 @@ class {{ module.name }}TOPIC:
             )
         }
     )
-    BID: str|None = field(
+    bid: str|None = field(
         default=None,
         metadata={
             "type": "Attribute",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "name": "BID"
+        },
+    )
+    kind: str|None = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+            "name": "KIND"
         },
     )
 {% endif %}

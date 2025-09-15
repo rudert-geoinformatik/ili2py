@@ -1,3 +1,4 @@
+import os
 from random import randint
 
 from jinja2 import Environment, FileSystemLoader
@@ -24,6 +25,13 @@ tool_settings = {
             "linetype": ["polyline", "ortho", "spline"],
         },
     },
+    "dot": {
+        "settings": {
+            "directions": [],
+            # currently not supported on class diagrams
+            "linetype": [],
+        },
+    },
 }
 
 
@@ -43,6 +51,9 @@ def uml_diagram(
     elif flavour == "plantuml":
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
         selected_linetype = tool_settings[flavour]["settings"]["linetype"][0]
+    elif flavour == "dot":
+        selected_direction = None
+        selected_linetype = None
     else:
         raise NotImplementedError
     if direction is not None:
@@ -56,7 +67,7 @@ def uml_diagram(
         else:
             selected_linetype = linetype
 
-    tpl_dir = Path(__file__).parent.joinpath("templates")
+    tpl_dir = os.path.join(Path(__file__).parent.joinpath("templates"), flavour)
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
     if len(model_names) == 0:
         model_names = [model.name for model in diagram.model_groups]
