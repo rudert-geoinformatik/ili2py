@@ -7,7 +7,7 @@ class Ref:
         name = "REF"
     ref: str = field(default=None, metadata={"type": "Attribute", "name": "REF"})
 
-class BinBlBoxType(str):
+class BinBlBoxType(bytes):
     pass
 
 class XmlBlBoxType(str):

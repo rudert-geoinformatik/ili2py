@@ -6,7 +6,7 @@ class Ref:
         namespace = "{{ render_config['namespace_map']['ili'] }}"
     ref: str = field(default=None, metadata={"type": "Attribute", "namespace": "{{ render_config['namespace_map']['ili'] }}"})
 
-class BinBlBoxType(str):
+class BinBlBoxType(bytes):
     pass
 
 class XmlBlBoxType(str):
