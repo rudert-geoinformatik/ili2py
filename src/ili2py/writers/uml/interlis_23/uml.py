@@ -1,6 +1,6 @@
 import logging
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Tuple
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
@@ -20,6 +20,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     CoordType as ImdCoordType,
     LineType as ImdLineType,
     ClassRefType as ImdClassRefType,
+    RoleType,
 )
 from ili2py.mappers.helpers import Index
 
@@ -28,6 +29,10 @@ from ili2py.mappers.helpers import Index
 class Base(ABC):
     oid: str
     name: str
+
+    @property
+    def save_oid(self) -> str:
+        return self.oid.replace(".", "_")
 
 
 @dataclass
@@ -108,6 +113,7 @@ class Attribute(Base):
 class Class(Base):
     attributes: list[Attribute]
     inherits_from: str | None
+    association_attributes: list[Attribute] = field(default_factory=list)
 
     @classmethod
     def from_imd(cls, class_definition: ImdClass, index: Index):
@@ -116,11 +122,33 @@ class Class(Base):
             for attribute_tid in index.class_class_attribute[class_definition.tid]:
                 attribute = index.index[attribute_tid]
                 attributes.append(Attribute.from_imd(attribute, index))
+        association_attributes = []
+        association_oids = index.associated_classes.get(class_definition.tid, [])
+        for association_oid in association_oids:
+            for role_oid, related_class_oid in index.association_bucket[association_oid]:
+                if related_class_oid != class_definition.tid:
+                    role_object: RoleType = index.index[role_oid]
+                    min = role_object.multiplicity.multiplicity.min
+                    if min is None:
+                        min = 0
+                    max = role_object.multiplicity.multiplicity.max
+                    if max is None:
+                        max = "*"
+                    association_attributes.append(
+                        Attribute(
+                            oid=role_object.tid,
+                            name=role_object.name,
+                            type_definition="Ref",
+                            mandatory=f"{min}...{max}" if min != max else f"{min}",
+                        )
+                    )
+
         return cls(
             name=class_definition.name,
             oid=class_definition.tid,
             inherits_from=class_definition.super.ref if class_definition.super else None,
             attributes=attributes,
+            association_attributes=association_attributes,
         )
 
 
@@ -157,7 +185,10 @@ class TopicGroup(Base):
 
     @classmethod
     def handle_association(
-        cls, associations: list[list[Tuple[str, str, str]]], association: ImdClass, index: Index
+        cls,
+        associations: list[list[Tuple[str, str, str]]],
+        association: ImdClass,
+        index: Index,
     ):
         if index.association_bucket.get(association.tid):
             association_string = []
@@ -167,7 +198,7 @@ class TopicGroup(Base):
                 multiplicity_string = TopicGroup.render_multiplicity(role.multiplicity.multiplicity)
                 strongness_string = TopicGroup.render_strongness(role.strongness)
                 association_string.append(
-                    (related_class.tid, multiplicity_string, strongness_string)
+                    (related_class.tid, multiplicity_string, strongness_string, role_tid)
                 )
             association_string.append(association.name)
             associations.append(association_string)

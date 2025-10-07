@@ -31,6 +31,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     TypeType,
     DataUnitType,
     Dependency,
+    ClassType,
 )
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import DataSection
 
@@ -85,6 +86,8 @@ class Index:
             question.
         elements_in_package: Key is the tid of the package (Model, Submodel) and value is a list of tid's of
             elements which are in the package.
+        topic_basket: Key is the tid of the package (SubModel) and value is the tid of the corresponding
+            basket.
         dependency_using: Key is the
     """
 
@@ -133,9 +136,20 @@ class Index:
         self.submodel_in_package: dict = {}
         self.association_in_package: dict = {}
         self.elements_in_package: dict = {}
+        self.elements_in_package_class_class: dict = {}
+        self.elements_in_package_class_structure: dict = {}
+        self.elements_in_package_class_association: dict = {}
+        self.topic_basket: dict = {}
+        self.class_subclassed_by: dict = {}
 
         self.dependency_depends_on: dict = {}
         self.dependency_used_by: dict = {}
+
+        self.object_oid_in_submodel: dict = {}
+        self.object_oid_in_model: dict = {}
+
+        self.basket_oid_in_submodel: dict = {}
+        self.basket_oid_in_model: dict = {}
 
         for basket in data_section.ModelData:
             for element in basket.choice:
@@ -196,6 +210,8 @@ class Index:
             self.handle_metaattribute(element)
         elif isinstance(element, Dependency):
             self.handle_dependency(element)
+        elif isinstance(element, Class):
+            self.handle_class(element)
 
     def handle_import(self, element: Import):
         """
@@ -283,15 +299,41 @@ class Index:
         if element.meta_element.ref not in self.metaelement_metaattributes:
             self.metaelement_metaattributes[element.meta_element.ref] = []
         self.metaelement_metaattributes[element.meta_element.ref].append(element.tid)
-        logging.debug(
-            f"Element type is {type(self.index[element.meta_element.ref])} and has a MetaAttribute"
-        )
 
     def handle_element_in_package(self, element: MetaElementType):
         if element.element_in_package:
             if element.element_in_package.ref not in self.elements_in_package:
                 self.elements_in_package[element.element_in_package.ref] = []
             self.elements_in_package[element.element_in_package.ref].append(element.tid)
+        if isinstance(element, DataUnitType):
+            self.topic_basket[element.element_in_package.ref] = element.tid
+            if element.oid:
+                package = self.index[element.element_in_package.ref]
+                if isinstance(package, SubModel):
+                    self.basket_oid_in_submodel[package.tid] = element.tid
+                    package = self.index[package.element_in_package.ref]
+                self.basket_oid_in_model[package.tid] = element.tid
+        if isinstance(element, ClassType):
+            if element.kind == "Class":
+                if element.element_in_package.ref not in self.elements_in_package_class_class:
+                    self.elements_in_package_class_class[element.element_in_package.ref] = []
+                self.elements_in_package_class_class[element.element_in_package.ref].append(
+                    element.tid
+                )
+            elif element.kind == "Structure":
+                if element.element_in_package.ref not in self.elements_in_package_class_structure:
+                    self.elements_in_package_class_structure[element.element_in_package.ref] = []
+                self.elements_in_package_class_structure[element.element_in_package.ref].append(
+                    element.tid
+                )
+            elif element.kind == "Association":
+                if element.element_in_package.ref not in self.elements_in_package_class_association:
+                    self.elements_in_package_class_association[element.element_in_package.ref] = []
+                self.elements_in_package_class_association[element.element_in_package.ref].append(
+                    element.tid
+                )
+            else:
+                logging.debug(f"Element kind of Class type was not handled correctly: {element}")
 
     def handle_dependency(self, element: Dependency):
         if element.using.ref not in self.dependency_used_by:
@@ -459,7 +501,7 @@ class Index:
     def handle_attr_or_param(self, element: AttrOrParam):
         if element.attr_parent:
             referenced_class = self.index[element.attr_parent.ref]
-            if referenced_class.kind == "Class":
+            if referenced_class.kind in ["Class", "Structure"]:
                 if element.attr_parent.ref not in self.class_class_attribute:
                     self.class_class_attribute[element.attr_parent.ref] = []
                 self.class_class_attribute[element.attr_parent.ref].append(element.tid)
@@ -469,7 +511,7 @@ class Index:
                 self.class_association_attribute[element.attr_parent.ref].append(element.tid)
         elif element.param_parent:
             referenced_class = self.index[element.param_parent.ref]
-            if referenced_class.kind == "Class":
+            if referenced_class.kind in ["Class", "Structure"]:
                 if element.param_parent.ref not in self.class_class_attribute:
                     self.class_class_attribute[element.param_parent.ref] = []
                 self.class_class_attribute[element.param_parent.ref].append(element.tid)
@@ -477,3 +519,16 @@ class Index:
                 if element.param_parent.ref not in self.class_association_attribute:
                     self.class_association_attribute[element.param_parent.ref] = []
                 self.class_association_attribute[element.param_parent.ref].append(element.tid)
+
+    def handle_class(self, element: Class):
+        if element.oid:
+            if element.element_in_package:
+                package = self.index[element.element_in_package.ref]
+                if isinstance(package, SubModel):
+                    self.object_oid_in_submodel[package.tid] = element.oid.ref
+                    package = self.index[package.element_in_package.ref]
+                self.object_oid_in_model[package.tid] = element.oid.ref
+        if element.super:
+            if element.super.ref not in self.class_subclassed_by:
+                self.class_subclassed_by[element.super.ref] = []
+            self.class_subclassed_by[element.super.ref].append(element.tid)

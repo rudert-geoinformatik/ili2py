@@ -2,7 +2,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
 from typing import List
 
 from ili2py.mappers.helpers import Index
-from ili2py.writers import handle_model_versions
+from ili2py.writers.helpers import handle_model_versions
 from ili2py.writers.uml.interlis_23 import uml_diagram, Diagram
 
 
@@ -11,6 +11,7 @@ def create_uml_diagram(
     index: Index,
     model_names: list[str],
     flavour: str,
+    file_name: str,
     output_path: str,
     direction: str | None = None,
     linetype: str | None = None,
@@ -22,6 +23,7 @@ def create_uml_diagram(
             index,
             model_names,
             flavour,
+            file_name,
             output_path,
             direction=direction,
             linetype=linetype,
@@ -32,6 +34,7 @@ def create_uml_diagram(
             index,
             model_names,
             flavour,
+            file_name,
             output_path,
             direction=direction,
             linetype=linetype,

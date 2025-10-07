@@ -1,0 +1,50 @@
+{% for package in library.packages %}
+{%- for definition in package.type_definitions %}
+from {{ library.name }}.{{ package.name }} import {{ definition['name'] }} as {{ package.name }}_{{ definition['name'] }}
+{% endfor %}
+{% endfor %}
+
+
+def get_special_int_types():
+    return [
+        {%- for package in library.packages %}
+        {%- for definition in package.type_definitions %}
+        {%- if definition["kind"] == "int" %}
+            {{ package.name }}_{{ definition['name'] }},
+        {%- endif %}
+        {%- endfor %}
+        {%- endfor %}
+    ]
+
+
+def get_special_str_types():
+    return [
+        {%- for package in library.packages %}
+        {%- for definition in package.type_definitions %}
+        {%- if definition["kind"] == "text" %}
+            {{ package.name }}_{{ definition['name'] }},
+        {%- endif %}
+        {%- endfor %}
+        {%- endfor %}
+    ]
+
+def get_contained_model_names():
+    return [
+    {%- for package in library.packages %}
+    {%- if package.name != "INTERLIS" %}
+    "{{ package.name }}",
+    {%- endif %}
+    {%- endfor %}
+    ]
+
+
+def get_special_float_types():
+    return [
+        {%- for package in library.packages %}
+        {%- for definition in package.type_definitions %}
+        {%- if definition["kind"] == "float" %}
+            {{ package.name }}_{{ definition['name'] }},
+        {%- endif %}
+        {%- endfor %}
+        {%- endfor %}
+    ]

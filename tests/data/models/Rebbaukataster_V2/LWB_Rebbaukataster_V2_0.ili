@@ -1,0 +1,41 @@
+INTERLIS 2.3;
+
+!! Version    | Who   | Modification
+!!----------------------------------------------------------------------------------------
+!! 2023-01-01 | BLW   | Geometrie neu ohne Kreisbogen, Klasse Bezugsjahr gelöscht, LV03 gelöscht, Versionsnummer neu V2_0,
+!!                    | Erstellungsdatum in Aenderungsdatum umbenannt
+
+/** Modell Rebbaukataster.
+ * Der Rebbaukataster beinhaltet alle Flächen die mit Reben bepflanzt sind oder auf denen Reben angepflanzt werden dürfen.
+ * Er unterscheidet nicht zwischen bestockten und unbestockten Flächen. Neuanpflanzungen von Reben bedürfen einer Bewilligung des Kantons.
+ * Erneuerungen sind dem Kanton zu melden.
+ */
+!!@ technicalContact=mailto:info@blw.admin.ch
+!!@ furtherInformation="https://www.blw.admin.ch/blw/de/home/politik/datenmanagement/geografisches-informationssystem-gis/rebbaukataster.html"
+!!@ IDGeoIV=151.1
+MODEL LWB_Rebbaukataster_V2_0 (de)
+AT "https://models.geo.admin.ch/BLW/"
+VERSION "2023-01-01"  =
+  IMPORTS GeometryCHLV95_V1;
+
+  TOPIC Perimeter =
+    OID AS INTERLIS.UUIDOID;
+
+    DOMAIN
+      Surface = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+
+    /** In dieser Klasse wird der Perimeter definiert, in welchem Reben angepflanzt werden dürfen.
+     */
+    CLASS RK_Flaeche =
+      /** Die Flächen dürfen aneinander angrenzen, sollen sich aber nicht überlappen.
+       */
+      Flaeche : MANDATORY Surface;
+      /** Sprechender Identifikator, mit Hilfe welchem verschiedene involvierte Personen über diese Fläche sprechen können.
+       */
+      Identifikator : TEXT*50;
+      Aenderungsdatum : MANDATORY INTERLIS.XMLDate;
+    END RK_Flaeche;
+
+  END Perimeter;
+
+END LWB_Rebbaukataster_V2_0.

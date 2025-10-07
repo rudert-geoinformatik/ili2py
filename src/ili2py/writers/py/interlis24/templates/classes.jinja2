@@ -5,17 +5,16 @@ from abc import ABC
 {%- for class_definition in classes %}
 
 @dataclass
-{% if class_definition.super_class %}
+{%- if class_definition.super_class %}
 class {{ class_definition.name }}({{ class_definition.super_class }}):
-{% elif class_definition.abstract %}
+{%- elif class_definition.abstract %}
 class {{ class_definition.name }}(ABC):
-{% else %}
+{%- else %}
 class {{ class_definition.name }}:
-{% endif %}
+{%- endif %}
 
     class Meta:
-        name = "{{ class_definition.identifier }}"
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
     {%- if class_definition.doc %}
     """
@@ -47,7 +46,8 @@ class {{ class_definition.name }}:
         default=None,
         metadata={
             "type": "Attribute",
-            "name": "TID",
+            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "name": "tid",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {{ class_definition.oid.type_restrictions }}
@@ -56,11 +56,12 @@ class {{ class_definition.name }}:
     )
 {%- else %}
 {%- if class_definition.kind == 'Class' %}
-    TID: str = field(
+    tid: str = field(
         default=None,
         metadata={
             "type": "Attribute",
-            "name": "TID",
+            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "name": "tid",
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": None
@@ -70,30 +71,19 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-{%- if attribute.type == 'BinBlBoxType' %}
-
-    @dataclass
-    class BinBlBox:
-        class Meta:
-            namespace = "{{ render_config['namespace_map']['ili'] }}"
-        BINBLBOX: BinBlBoxType = field(
-            metadata={
-                "type": "Element",
-                "namespace": "{{ render_config['namespace_map']['ili'] }}",
-            }
-        )
-
-{% endif %}
-    {{ attribute.name }}: {% if attribute.type == 'BinBlBoxType' %}"{{ class_definition.name }}.BinBlBox"{% else %}{% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %}{% endif %} = field(
+    {{ attribute.name }}: {% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %} = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
             {%- if attribute.type_restrictions['type_related_type'] %}
-            "name": "{{ attribute.identifier.replace('ili2py.', '') }}",
+            "name": "{{ attribute.name }}",
             {%- endif %}
             "interlis": {
                 "oid": "{{ attribute.identifier }}",
+                {%- if attribute.reference_targets %}
+                "reference_targets": {{ attribute.reference_targets }},
+                {%- endif %}
                 "meta_attributes": {
                     {%- for item in attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",

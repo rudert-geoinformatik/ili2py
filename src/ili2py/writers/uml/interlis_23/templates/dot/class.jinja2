@@ -1,0 +1,34 @@
+{{ class.save_oid }} [
+    shape=plain;
+    style=filled;
+    fillcolor=gray95;
+    label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+            <tr>
+                <td colspan="3">
+                    <b>{{ class.name }}</b>
+                </td>
+            </tr>
+            {%- if class.attributes or class.association_attributes %}
+            {%- for attribute in class.attributes -%}
+            <tr>
+                <td align="left">+ {{ attribute.name }}</td>
+                <td align="left">{{ attribute.type_definition }}</td>
+                <td align="left">{{ attribute.mandatory }}</td>
+            </tr>
+            {%- endfor  -%}
+            {%- if class.association_attributes %}
+            {%- for attribute in class.association_attributes -%}
+            <tr>
+                <td align="left">+ {{ attribute.name }}</td>
+                <td align="left"></td>
+                <td align="left" port="{{ attribute.save_oid }}">[{{ attribute.mandatory }}]</td>
+            </tr>
+            {%- endfor  -%}
+            {%- endif %}
+            {%- endif %}
+        </table>>
+]
+{%- if class.inherits_from %}
+edge [dir=back arrowtail=empty style=""]
+{{ class.inherits_from.replace('.', '_') }} -> {{ class.save_oid }}
+{%- endif %}

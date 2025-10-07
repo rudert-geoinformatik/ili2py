@@ -47,22 +47,22 @@ metadata = {
 @dataclass
 class {{ module.name }}TOPIC:
     class Meta:
-        name = "{{ module.identifier }}"
+        name = "{{ module.name }}"
 
     elements: list[Union[
         {% for choice in module.basket.choices %}
         {{choice.type_reference}},
         {% endfor %}
-    ]]  = field(
+    ]] = field(
         default_factory=list,
         metadata={
             "type": "Elements",
             "choices": (
             {%- for choice in module.basket.choices %}
                 {
-                    "name": "{{ choice.identifier }}",
+                    "name": "{{ choice.name }}",
                     "type": {{ choice.type_reference }},
-                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                    "namespace": "{{ render_config['base_url'] }}/{{ choice.model_name }}",
                 },
             {%- endfor %}
             )
@@ -72,14 +72,14 @@ class {{ module.name }}TOPIC:
         default=None,
         metadata={
             "type": "Attribute",
-            "name": "BID"
+            "namespace": "{{ render_config['namespace_map']['ili'] }}",
         },
     )
     kind: str|None = field(
         default=None,
         metadata={
             "type": "Attribute",
-            "name": "KIND"
+            "namespace": "{{ render_config['namespace_map']['ili'] }}",
         },
     )
 {% endif %}

@@ -1,3 +1,4 @@
+import os
 from random import randint
 
 from jinja2 import Environment, FileSystemLoader
@@ -5,7 +6,7 @@ from pathlib import Path
 from typing import List
 
 from ili2py.mappers.helpers import Index
-from ili2py.writers import create_file
+from ili2py.writers.helpers import create_file
 from ili2py.writers.uml.interlis_23.uml import Diagram
 
 ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
@@ -24,6 +25,13 @@ tool_settings = {
             "linetype": ["polyline", "ortho", "spline"],
         },
     },
+    "dot": {
+        "settings": {
+            "directions": [],
+            # currently not supported on class diagrams
+            "linetype": [],
+        },
+    },
 }
 
 
@@ -32,18 +40,20 @@ def uml_diagram(
     index: Index,
     model_names: List[str],
     flavour: str,
+    file_name: str,
     output_path: str,
     direction: str | None = None,
     linetype: str | None = None,
 ):
     if flavour == "mermaid":
-        file_name = f"{flavour}.md"
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
         selected_linetype = None
     elif flavour == "plantuml":
-        file_name = f"{flavour}.puml"
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
         selected_linetype = tool_settings[flavour]["settings"]["linetype"][0]
+    elif flavour == "dot":
+        selected_direction = None
+        selected_linetype = None
     else:
         raise NotImplementedError
     if direction is not None:
@@ -57,7 +67,7 @@ def uml_diagram(
         else:
             selected_linetype = linetype
 
-    tpl_dir = Path(__file__).parent.joinpath("templates")
+    tpl_dir = os.path.join(Path(__file__).parent.joinpath("templates"), flavour)
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
     if len(model_names) == 0:
         model_names = [model.name for model in diagram.model_groups]

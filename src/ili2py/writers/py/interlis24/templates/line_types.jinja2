@@ -3,7 +3,7 @@
 {%- if line_type.attribute.name in ["POLYLINE", "DIRECTEDPOLYLINE"]  %}
 class {{ line_type.name }}:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['namespace_map']['geom'] }}"
 
     {%- if line_type.doc %}
     """
@@ -14,7 +14,7 @@ class {{ line_type.name }}:
         default_factory=list,
         metadata={
             "type": "Elements",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "name": "{{ line_type.attribute.name }}",
             "interlis": {
                 "meta_attributes": {
@@ -26,7 +26,7 @@ class {{ line_type.name }}:
 {%- elif line_type.attribute.name in ["SURFACE", "AREA"] %}
 class {{ line_type.name }}:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ render_config['namespace_map']['geom'] }}"
 
     """
     {%- if line_type.doc %}
@@ -35,33 +35,32 @@ class {{ line_type.name }}:
     """
 
     @dataclass
-    class {{ line_type.name }}BOUNDARY:
+    class {{ line_type.name }}Boundary:
         class Meta:
-            namespace = "{{ render_config['namespace_map']['ili'] }}"
-            name = "SURFACE"
+            namespace = "{{ render_config['namespace_map']['geom'] }}"
 
         @dataclass
-        class {{ line_type.name }}POLYLINE:
+        class {{ line_type.name }}Polyline:
             class Meta:
-                namespace = "{{ render_config['namespace_map']['ili'] }}"
+                namespace = "{{ render_config['namespace_map']['geom'] }}"
 
             @dataclass
             class Segment:
                 class Meta:
-                    namespace = "{{ render_config['namespace_map']['ili'] }}"
+                    namespace = "{{ render_config['namespace_map']['geom'] }}"
 
-                choice: list[{{ line_type.attribute.type }}Type|{{ line_type.attribute.type }}ARCType] = field(
+                segments: list[{{ line_type.attribute.type }}Type|{{ line_type.attribute.type }}ARCType] = field(
                     default_factory=list,
                     metadata={
                         "type": "Elements",
                         "choices": ({
-                            "name": "COORD",
+                            "name": "coord",
                             "type": {{ line_type.attribute.type }}Type,
-                            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                            "namespace": "{{ render_config['namespace_map']['geom'] }}",
                         },{
-                            "name": "ARC",
+                            "name": "arc",
                             "type": {{ line_type.attribute.type }}ARCType,
-                            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                            "namespace": "{{ render_config['namespace_map']['geom'] }}",
                         } ),
                         "interlis": {
                             "meta_attributes": {
@@ -70,24 +69,36 @@ class {{ line_type.name }}:
                         }
                     }
                 )
-            POLYLINE: Segment = field(
+            polyline: Segment = field(
                 default=None,
                 metadata={
                     "type": "Element",
-                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                    "namespace": "{{ render_config['namespace_map']['geom'] }}",
                     "interlis": {"meta_attributes": {}},
                 },
             )
 
-        BOUNDARY: list[{{ line_type.name }}POLYLINE] = field(
+        @dataclass
+        class {{ line_type.name }}PolylineInterior({{ line_type.name }}Polyline):
+            pass
+
+        @dataclass
+        class {{ line_type.name }}PolylineExterior({{ line_type.name }}Polyline):
+            pass
+    
+        boundaries: list[{{ line_type.name }}Polyline] = field(
             default_factory=list,
             metadata={
                 "type": "Elements",
                 "choices": ({
-                    "type": {{ line_type.name }}POLYLINE,
-                    "name": "BOUNDARY",
-                    "namespace": "{{ render_config['namespace_map']['ili'] }}"
-                },),
+                    "type": {{ line_type.name }}PolylineExterior,
+                    "name": "exterior",
+                    "namespace": "{{ render_config['namespace_map']['geom'] }}"
+                },{
+                    "type": {{ line_type.name }}PolylineInterior,
+                    "name": "interior",
+                    "namespace": "{{ render_config['namespace_map']['geom'] }}"
+                }),
                 "interlis": {
                     "meta_attributes": {
 
@@ -96,11 +107,11 @@ class {{ line_type.name }}:
             }
         )
 
-    SURFACE: {{ line_type.name }}BOUNDARY = field(
+    surface: {{ line_type.name }}Boundary = field(
         default=None,
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
+            "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {"meta_attributes": {}},
         }
     )

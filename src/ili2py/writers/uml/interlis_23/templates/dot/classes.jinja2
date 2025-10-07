@@ -1,0 +1,4 @@
+{% macro class_include(class) %}{% include "class.jinja2" %}{% endmacro %}
+{% for class in classes %}
+    {{ class_include(class)|indent|safe }}
+{% endfor %}
