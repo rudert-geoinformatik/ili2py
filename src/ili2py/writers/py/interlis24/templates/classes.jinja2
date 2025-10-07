@@ -48,7 +48,7 @@ class {{ class_definition.name }}:
         metadata={
             "type": "Attribute",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
-            "name": "tid",
+            "name": {{ class_definition.oid.name }},
             "interlis": {
                 "meta_attributes": {},
                 "type_restrictions": {{ class_definition.oid.type_restrictions }}
