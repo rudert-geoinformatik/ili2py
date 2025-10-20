@@ -47,25 +47,30 @@ def reader_classes(library: Library, output_path: str, render_config: dict, beau
     library_content = env.get_template("library_init.jinja2").render(
         library=library, render_config=render_config
     )
-    target_path = os.path.join(output_path, library.name)
+    # we expect the name to contain dots (as python dotted path) this can be used to create the interface in
+    # the correct way for a library where it should be included to. As we always want the folder of the
+    # library package to be named after the library we expect the last element the right match in any case.
+    library_name = library.name.split(".")[-1]
+    target_path = os.path.join(output_path, library_name)
     if os.path.isdir(target_path):
         shutil.rmtree(target_path)
-    library_file = create_file(output_path, library.name, "__init__.py")
+
+    library_file = create_file(output_path, library_name, "__init__.py")
     library_file.write_text(library_content)
     references_content = env.get_template("references.jinja2").render(render_config=render_config)
-    references_file = create_file(output_path, library.name, "references.py")
+    references_file = create_file(output_path, library_name, "references.py")
     references_file.write_text(references_content)
     convertable_types_content = env.get_template("convertable_types.jinja2").render(
         library=library, render_config=render_config
     )
-    convertable_types_file = create_file(output_path, library.name, "convertable_types.py")
+    convertable_types_file = create_file(output_path, library_name, "convertable_types.py")
     convertable_types_file.write_text(convertable_types_content)
     xtf_opening_content = env.get_template("xtf_opening.jinja2").render(
         library=library, render_config=render_config
     )
-    xtf_opening_file = create_file(output_path, library.name, "xtf_opening.py")
+    xtf_opening_file = create_file(output_path, library_name, "xtf_opening.py")
     xtf_opening_file.write_text(xtf_opening_content)
-    output_path = os.path.join(output_path, library.name)
+    output_path = os.path.join(output_path, library_name)
     for package in library.packages:
         package_file = create_file(output_path, package.name, "__init__.py")
         package_content = env.get_template("package_init.jinja2").render(

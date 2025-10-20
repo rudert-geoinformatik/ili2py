@@ -29,7 +29,7 @@ generated
 test.puml
 src/ili2py/test.py
 src/ili2py/test1.py
-.generated/
+.generated/*
 !.generated/.gitkeep
 
 tests/data/*/*.py

@@ -12,7 +12,7 @@ from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
 from ili2py.writers.uml import create_uml_diagram
 from ili2py.writers.uml.interlis_23 import tool_settings, Diagram
-from ili2py.writers.py import Library
+from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.render import create_python_classes
 
 this_file_location = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
@@ -38,23 +38,34 @@ def cli():
     logging.info(version_msg())
 
 
-@cli.command(context_settings=dict(help_option_names=["-h", "--help"]))
+@cli.command(
+    help="""Parses an arbitrary imd and creates and creates a diagram of selected flavour
+    representing the selected models.""",
+    context_settings=dict(help_option_names=["-h", "--help"]),
+)
 @click.version_option(__version__, "-V", "--version", message=version_msg())
 @click.option("-v", "--verbose", is_flag=True, help="Print debug information", default=False)
 @click.option("-i", "--imd", is_flag=False, help="full path to imd file")
-@click.option("-m", "--models", is_flag=False, help="model names separated by comma")
 @click.option(
-    "-o",
-    "--output",
+    "-m",
+    "--models",
+    is_flag=False,
+    help="""Model names separated by comma. This is used to filter the content of the resulting diagram.
+    If not provided, the full tree will be drawn.""",
+)
+@click.option(
+    "-f",
+    "--flavour",
     is_flag=False,
     default=list(tool_settings.keys())[0],
     help=f'the desired flavour (one of {", ".join(tool_settings.keys())})',
 )
 @click.option(
-    "-f",
-    "--folder_output",
+    "-o",
+    "--output_folder",
     is_flag=False,
-    help="Path to where the python package should be written",
+    help="""Path to the folder where the python package should be written to.
+    The folder will be created if not existing.""",
 )
 @click.option(
     "-d",
@@ -70,23 +81,31 @@ def cli():
     default=None,
     help=f'the desired linetype, depending on the selected flavour (one of {", ".join([f'{key}: {tool_settings[key]["settings"]["linetype"]}' for key in tool_settings])})',
 )
-def ili2py_uml(**kwargs: Any):
+@click.option(
+    "-n",
+    "--file_name",
+    is_flag=False,
+    default="diagram",
+    help=f"The name of the output diagram. The postfix (md, puml, etc. is added automatically due to selected flavour).",
+)
+def ili2py_diagram(**kwargs: Any):
     """
     parse an arbitrary imd and creates a UML diagram of selected flavour
     """
     metamodel_path = kwargs.pop("imd")
     model_names = kwargs.pop("models")
-    output_path = kwargs.pop("folder_output")
+    output_path = kwargs.pop("output_folder")
     direction = kwargs.pop("direction")
     linetype = kwargs.pop("linetype")
+    file_name = kwargs.pop("file_name")
     if model_names:
         model_names = model_names.split(",")
     else:
         model_names = []
-    flavour = kwargs.pop("output")
+    flavour = kwargs.pop("flavour")
     if flavour not in tool_settings.keys():
         click.echo(
-            f'The output {flavour} is not allowed. It has to be one of {" ,".join(tool_settings.keys())}'
+            f'The output {flavour} is not allowed. It has to be one of {", ".join(tool_settings.keys())}'
         )
         sys.exit(2)
     try:
@@ -98,6 +117,7 @@ def ili2py_uml(**kwargs: Any):
             index,
             model_names,
             flavour,
+            f"{file_name or flavour}.{tool_settings[flavour]['postfix']}",
             output_path=output_path,
             direction=direction,
             linetype=linetype,
@@ -107,13 +127,17 @@ def ili2py_uml(**kwargs: Any):
         sys.exit(1)
 
 
-@cli.command(context_settings=dict(help_option_names=["-h", "--help"]))
+@cli.command(
+    help="""Parses an arbitrary imd and creates a library of python classes which
+    represents a typed interface to the complete construction.""",
+    context_settings=dict(help_option_names=["-h", "--help"]),
+)
 @click.version_option(__version__, "-V", "--version", message=version_msg())
 @click.option("-v", "--verbose", is_flag=True, help="Print debug information", default=False)
 @click.option("-i", "--imd", is_flag=False, help="full path to imd file")
 @click.option(
-    "-f",
-    "--folder_output",
+    "-o",
+    "--output_folder",
     is_flag=False,
     help="Path to where the python package should be written",
 )
@@ -124,11 +148,8 @@ def ili2py_uml(**kwargs: Any):
     help="Library name which will be used to assemble all python structures in.",
 )
 def ili2py_python_classes(**kwargs: Any):
-    """
-    parse an arbitrary imd and creates a UML diagram of selected flavour
-    """
     metamodel_path = kwargs.pop("imd")
-    output_path = kwargs.pop("folder_output")
+    output_path = kwargs.pop("output_folder")
     try:
         metamodel = Imd16Reader().read(metamodel_path)
         index = Index(metamodel.datasection)
