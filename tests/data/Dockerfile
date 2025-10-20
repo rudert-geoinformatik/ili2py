@@ -8,7 +8,7 @@ RUN apt-get update && \
         make
 
 # install & setup ili2c
-ARG ILI2C_VERSION=5.6.3
+ARG ILI2C_VERSION=5.6.6
 RUN curl -o /tmp/ili2c-${ILI2C_VERSION}.zip https://downloads.interlis.ch/ili2c/ili2c-${ILI2C_VERSION}.zip && \
   rm -rf /tmp/ili2c && \
   mkdir /tmp/ili2c && \

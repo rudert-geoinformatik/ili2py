@@ -4,9 +4,11 @@ This folder contains the metamodels which is ili2py tested against.
 
 With the following commands the imd's can be updated.
 
+ili2c versions available can be found here: https://downloads.interlis.ch/ili2c/
+
 Build image:
 ```shell
-docker build --build-arg ILI2C_VERSION=5.6.3 -t ili2c:latest .
+docker build --build-arg ILI2C_VERSION=<desired-verion-of-ili2c> -t ili2c:latest .
 ```
 
 Create IMD16 from Models:
