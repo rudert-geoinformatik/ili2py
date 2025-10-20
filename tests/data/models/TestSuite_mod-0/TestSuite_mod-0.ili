@@ -1,0 +1,389 @@
+INTERLIS 2.3;
+
+MODEL TestSuite
+AT "https://www.kogis.ch"
+VERSION "2018-10-10" =
+
+  DOMAIN
+    LKoord = COORD 2480000.00 .. 2850000.00,
+                   1060000.00 .. 1320000.00,
+             ROTATION 2 -> 1;
+    Art = TEXT*6;
+    Art3 EXTENDS Art = TEXT*3;
+    ArtNAME = NAME;
+    ArtURI = URI;
+    Farbe = (
+        /** Rote Farbe */
+        rot (
+            /** Dunkelrote Farbe */
+            dunkel,
+            hell
+            ),
+        gruen,
+        blau
+        );
+    AlleFarben = ALL OF Farbe;
+    Datum = FORMAT BASED ON INTERLIS.GregorianDate (Year ":" Month ":" Day);
+
+  TOPIC Bodenbedeckung =
+
+    STRUCTURE GemeindeRef =
+      GdeRef : TEXT*5;
+    END GemeindeRef ;
+
+    STRUCTURE Code =
+      Code : MANDATORY 0..9;
+    END Code ;
+
+    CLASS GebaeudeArt =
+      Art : MANDATORY Art;
+      Art3 : Art3;
+      Beschreibung : MTEXT*9;
+      ArtNAME : ArtNAME;
+      ArtURI : ArtURI;
+      Datum : FORMAT Datum "2017:01:01" .. "2017:01:31";
+      Datum2 : INTERLIS.XMLDate ;
+      ArtUUID : INTERLIS.UUIDOID;
+      ArtStandardID : INTERLIS.STANDARDOID;
+      TextID : OID TEXT*34;
+      Code : BAG {0..*} OF TestSuite.Bodenbedeckung.Code;
+    UNIQUE
+      (LOCAL) Code : Code;
+    END GebaeudeArt;
+
+    CLASS GebaeudeArt3 EXTENDS GebaeudeArt =
+      Bezeichnung : TEXT;
+      Klassifizierung : (A,B,C);
+    UNIQUE  WHERE Klassifizierung == #A : Art,ArtStandardID;
+    MANDATORY CONSTRAINT INTERLIS.len(Bezeichnung)<=15;
+    END GebaeudeArt3;
+
+    CLASS BoFlaechen2 =
+      Art : (a,b,c);
+      Form : SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.10;
+    SET CONSTRAINT WHERE Art == #a : INTERLIS.areAreas (ALL,UNDEFINED,>>Form);
+    END BoFlaechen2;
+
+    CLASS BoLinien =
+      Form : POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.10;
+    END BoLinien;
+
+    CLASS BoLinien2 =
+      Form : POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+      Symbol : BLACKBOX BINARY;
+    END BoLinien2;
+
+    CLASS Geschichte =
+      DossierNummer : TEXT*12;
+      Status : (Bearbeitung, Verifikation, verifiziert);
+    UNIQUE
+      DossierNummer;
+    END Geschichte;
+
+    STRUCTURE GebaeudeGeschichte =
+      Ref : MANDATORY REFERENCE TO TestSuite.Bodenbedeckung.Geschichte;
+    END GebaeudeGeschichte;
+
+    CLASS Gebaeude =
+      GdeGeschichte : GebaeudeGeschichte;
+      GdeRef : GemeindeRef;
+      POI : LKoord;
+      istNeubau : BOOLEAN;
+      stoecke : 1 .. 9;
+      Status : (projektiert, real);
+      Datum : INTERLIS.XMLDate;
+    MANDATORY CONSTRAINT NOT (Status == #real) OR DEFINED (Datum);
+    END Gebaeude;
+
+    CLASS Gebaeude2 EXTENDS Gebaeude =
+      Name : TEXT*30;
+    END Gebaeude2;
+
+    CLASS BoFlaechen =
+      Flaeche : 1.0 .. 10000.0;
+      Art : (Gebaeude (privat, kommerziell, gemischt), vegetationslos);
+      Farbe : Farbe;
+      AlleFarben : AlleFarben;
+      Form : AREA WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.10;
+    END BoFlaechen;
+
+    ASSOCIATION GebaeudeArt2 =
+      Art -- {1} GebaeudeArt;
+      Gebaeude -<> {0..*} Gebaeude;
+    END GebaeudeArt2;
+
+    ASSOCIATION GebaeudeFlaeche=
+      Flaeche -- {0..1} BoFlaechen;
+      Gebaeude -<> {0..*} Gebaeude;
+    END GebaeudeFlaeche;
+    
+	  CLASS Typ =
+	    Attribut : MANDATORY (a,b);
+	  END Typ;
+	
+	  CLASS Dokument =
+	  END Dokument;
+
+	  ASSOCIATION Typ_Dokument =
+	    typ -- {0..*} Typ;
+  	  dok -- {0..*} Dokument;
+  	END Typ_Dokument;
+	
+  	CONSTRAINTS OF Typ =
+  	  MANDATORY CONSTRAINT NOT (Attribut == #a) OR DEFINED (dok);
+  	END ;
+
+  END Bodenbedeckung;
+
+  TOPIC GebaeudeRegister =
+
+    CLASS GebaeudeRegister =
+      RegisterID : TEXT*4;
+      RegisterURI : URI;
+      BeginnGueltigkeit : INTERLIS.XMLDate;
+      EndeGueltigkeit : INTERLIS.XMLDate;
+    MANDATORY CONSTRAINT BeginnGueltigkeit < EndeGueltigkeit;
+    MANDATORY CONSTRAINT DEFINED (RegisterID) OR DEFINED (RegisterURI);
+    END GebaeudeRegister;
+
+    CLASS Grundstueck =
+      Nummer : TEXT*12;
+      NBIdent : TEXT*12;
+      EGRID : TEXT*14;
+    MANDATORY CONSTRAINT DEFINED (EGRID) OR ( DEFINED (Nummer) AND DEFINED (NBIdent));
+    END Grundstueck;
+
+    CLASS GebaeudeDetail =
+    END GebaeudeDetail;
+
+    CLASS GebaeudeAdresse =
+    END GebaeudeAdresse;
+
+    CLASS Lokalisierung =
+      Art : MANDATORY (benannter_Ort, Strasse, Platz:FINAL);
+      Geometrie_Platz_Strasse : POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.10;
+      Geometrie_Ort : SURFACE WITH (STRAIGHTS, ARCS)VERTEX LKoord WITHOUT OVERLAPS > 0.10;
+      !! Die Art #Strasse oder #Platz muss mit der Geometrie #Geometrie_Platz_Strasse assoziert sein (und darf kein SURFACE (Geometrie_Ort) sein)- Oder- die Art #benannter_Ort muss mit der #Geometrie_Ort (Surface)assoziert sein und nicht umgekehrt
+    MANDATORY CONSTRAINT ((Art==#Strasse OR Art==#Platz) AND DEFINED (Geometrie_Platz_Strasse) AND NOT (DEFINED (Geometrie_Ort))) OR (Art==#benannter_Ort AND DEFINED (Geometrie_Ort) AND NOT (DEFINED (Geometrie_Platz_Strasse)));
+    END Lokalisierung;
+
+    CLASS Gebaeude =
+      RegisterID : TEXT*4;
+      BezirkNummer : TEXT*5;
+    EXISTENCE CONSTRAINT RegisterID REQUIRED IN GebaeudeRegister:RegisterID;
+    END Gebaeude;
+
+    ASSOCIATION GebAdr =
+      Adresse -- {0..1} GebaeudeAdresse;
+      Gebaeude -- {0..1} Gebaeude;
+      Abkuerzung : TEXT*12;
+    END GebAdr;
+
+  END GebaeudeRegister;
+
+  TOPIC Beziehungen =
+    DEPENDS ON Bodenbedeckung, GebaeudeRegister;
+
+    STRUCTURE StrName =
+      Name : TEXT;
+      Sprache : (de,fr,it,rm);
+    END StrName;
+
+    STRUCTURE AGebaeude =
+      Ref : MANDATORY REFERENCE TO (EXTERNAL) TestSuite.Bodenbedeckung.Gebaeude;
+    END AGebaeude;
+
+    CLASS A =
+      GdeRef : MANDATORY AGebaeude;
+    END A;
+
+    CLASS B =
+      Namen : BAG {1..2} OF StrName;
+    END B;
+
+    CLASS C =
+    END C;
+
+    CLASS D =
+    END D;
+
+    CLASS E =
+    END E;
+
+    CLASS F =
+    END F;
+
+    CLASS G =
+    END G;
+
+    CLASS H =
+    END H;
+
+    CLASS I =
+    END I;
+
+    CLASS L =
+  	 attrL : MANDATORY TEXT*3;
+  	 attrL2 : MANDATORY TEXT*3;
+    END L;
+
+    CLASS M =
+     attrM : MANDATORY TEXT*3;
+    END M;
+
+    CLASS N =
+     attrN : MANDATORY TEXT*3;
+     attrN2 : MANDATORY TEXT*3;
+    END N;
+
+    CLASS O =
+     attrO : MANDATORY TEXT*3;
+    END O;
+
+    CLASS Alpha =
+    END Alpha;
+
+    CLASS Beta =
+    END Beta;
+
+    ASSOCIATION AB =
+      RolleA -- {0..1} A;
+      RolleB -- {0..1} B;
+    END AB;
+
+    ASSOCIATION C_GebaeudeAdresse =
+      RolleC -- {0..1} C;
+      RolleGebaeudeAdresse (EXTERNAL) -- {0..1} TestSuite.GebaeudeRegister.GebaeudeAdresse;
+    END C_GebaeudeAdresse;
+
+    ASSOCIATION DE =
+      RolleD -- {0..1} D;
+      RolleE -- {0..*} E;
+    END DE;
+
+    ASSOCIATION D_GebaeudeAdresse =
+      RolleD -- {0..1} D;
+      RolleGebaeudeAdresse (EXTERNAL) -- {0..*} TestSuite.GebaeudeRegister.GebaeudeAdresse;
+    END D_GebaeudeAdresse;
+
+    ASSOCIATION GebAdr =
+      Gebaeude (EXTERNAL) -- {0..1} TestSuite.Bodenbedeckung.Gebaeude;
+      Adresse (EXTERNAL) -- {0..1} TestSuite.GebaeudeRegister.GebaeudeAdresse;
+    END GebAdr;
+
+    ASSOCIATION FG =
+      RolleF -- {1} F;
+      RolleG -- {0..*} G;
+      Status : MANDATORY (Bearbeitung, Verifikation, verifiziert);
+    END FG;
+
+    ASSOCIATION AlphaBeta =
+      RolleAlpha -- {0..*} Alpha;
+      RolleBeta -- {0..*} Beta;
+      Status : MANDATORY (Bearbeitung, Verifikation, verifiziert);
+    END AlphaBeta;
+
+    ASSOCIATION AlphaBetaExtended EXTENDS AlphaBeta =
+      Code : TEXT*4;
+    END AlphaBetaExtended;
+
+    ASSOCIATION HI =
+      RolleH -- {0..*} H;
+      RolleI -- {0..*} I;
+    END HI;
+
+    ASSOCIATION LM =
+      RolleL -- {0..*} L;
+      RolleM -- {0..*} M;
+  	  UNIQUE RolleL->attrL,RolleL->attrL2,RolleM->attrM;
+    END LM;
+
+  	ASSOCIATION assoNO =
+      RolleN -- {0..*} N;
+      RolleO -- {0..1} O;
+  	  UNIQUE RolleN->attrN,RolleN->attrN2,RolleO->attrO;
+    END assoNO;
+
+  END Beziehungen;
+
+  TOPIC Kardinalitaet =
+
+    CLASS A =
+    END A;
+
+    CLASS B =
+    END B;
+
+    CLASS C =
+    END C;
+
+    CLASS D =
+    END D;
+
+    CLASS E =
+    END E;
+
+    CLASS F =
+    END F;
+
+    CLASS G =
+    END G;
+
+    CLASS H =
+    END H;
+
+    CLASS I =
+    END I;
+
+    CLASS L =
+    END L;
+
+    CLASS M =
+    END M;
+
+    CLASS N =
+    END N;
+
+    !! RolleA ist in Klasse B obligatorisch
+    !! 2 Instanzen von B dürfen nicht auf die gleiche Instanz von A verweisen
+    !! Alle Instanzen von A müssen referenziert werden
+    ASSOCIATION AB =
+      RolleA -- {1} A;
+      RolleB -- {1} B;
+    END AB;
+
+    !! RolleC ist in Klasse D nicht obligatorisch
+    !! 2 Instanzen von D dürfen nicht auf die gleiche Instanz von C verweisen
+    !! Alle Instanzen von C müssen referenziert werden
+    ASSOCIATION CD =
+      RolleC -- {0..1} C;
+      RolleD -- {1} D;
+    END CD;
+
+    !! RolleE ist in Klasse F nicht obligatorisch
+    !! 2 Instanzen von F dürfen nicht auf die gleiche Instanz von E verweisen
+    !! Nicht alle Instanzen von E müssen referenziert werden
+    ASSOCIATION EF =
+      RolleE -- {0..1} E;
+      RolleF -- {0..1} F;
+    END EF;
+
+    !! RolleG ist in Klasse H obligatorisch
+    !! 2 Instanzen von H dürfen auf die gleiche Instanz von G verweisen
+    !! Nicht alle Instanzen von G müssen referenziert werden
+    ASSOCIATION GH =
+      RolleG -- {1} G;
+      RolleH -- {0..*} H;
+    END GH;
+
+    !! RolleL ist in Klasse I obligatorisch
+    !! 2 Instanzen von I dürfen auf die gleiche Instanz von L verweisen
+    !! Nicht alle Instanzen von L müssen referenziert werden
+    ASSOCIATION IL =
+      RolleI -- {0..*} I;
+      RolleL -- {1} L;
+    END IL;
+
+  END Kardinalitaet;
+
+END TestSuite.

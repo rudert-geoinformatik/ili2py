@@ -96,9 +96,13 @@ git-attributes:
 dev: setup.py install-dev
 	$(VENV_BIN)/pip install -e .
 
+.PHONY: test-coverage
+test-coverage: $(TEST_REQUIREMENTS) $(VARS_FILES) install-dev
+	$(VENV_BIN)/py.test -vv --cov-config .coveragerc --cov $(PACKAGE) --cov-report term-missing:skip-covered tests
+
 .PHONY: test
 test: $(TEST_REQUIREMENTS) $(VARS_FILES) install-dev
-	$(VENV_BIN)/py.test -vv --cov-config .coveragerc --cov $(PACKAGE) --cov-report term-missing:skip-covered tests
+	$(VENV_BIN)/py.test -vv tests
 
 .PHONY: tests
 tests: test

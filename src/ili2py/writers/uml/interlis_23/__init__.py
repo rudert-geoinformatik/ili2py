@@ -13,6 +13,7 @@ ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
 
 tool_settings = {
     "mermaid": {
+        "postfix": "md",
         "settings": {
             "directions": ["LR", "RL", "TD", "DT"],
             # currently not supported on class diagrams
@@ -20,12 +21,14 @@ tool_settings = {
         },
     },
     "plantuml": {
+        "postfix": "puml",
         "settings": {
             "directions": ["top to bottom", "left to right"],
             "linetype": ["polyline", "ortho", "spline"],
         },
     },
     "dot": {
+        "postfix": "dot",
         "settings": {
             "directions": [],
             # currently not supported on class diagrams

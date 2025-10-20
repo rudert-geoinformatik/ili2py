@@ -1,7 +1,6 @@
 [run]
 source =
     ili2py
-    tests
 
 [report]
 show_missing = true
