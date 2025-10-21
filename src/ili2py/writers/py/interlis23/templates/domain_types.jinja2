@@ -10,4 +10,16 @@ class {{ definition['name'] }}({{ definition['reference'] }}):
                 "type_restrictions": {{ definition['restrictions'] }}
             }
         }
+    @property
+    def existence_constraints(self):
+        return {{ definition['existence_constraints'] }}
+    @property
+    def set_constraints(self):
+        return {{ definition['set_constraints'] }}
+    @property
+    def simple_constraints(self):
+        return {{ definition['simple_constraints'] }}
+    @property
+    def unique_constraints(self):
+        return {{ definition['unique_constraints'] }}
 {%- endfor %}

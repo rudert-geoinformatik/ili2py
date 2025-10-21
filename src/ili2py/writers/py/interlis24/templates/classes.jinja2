@@ -108,4 +108,16 @@ class {{ class_definition.name }}:
                 }
             }
         }
+    @property
+    def existence_constraints(self):
+        return {{ class_definition['existence_constraints'] }}
+    @property
+    def set_constraints(self):
+        return {{ class_definition['set_constraints'] }}
+    @property
+    def simple_constraints(self):
+        return {{ class_definition['simple_constraints'] }}
+    @property
+    def unique_constraints(self):
+        return {{ class_definition['unique_constraints'] }}
 {% endfor -%}
