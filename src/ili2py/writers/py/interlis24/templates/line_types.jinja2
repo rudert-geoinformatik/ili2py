@@ -85,7 +85,7 @@ class {{ line_type.name }}:
         @dataclass
         class {{ line_type.name }}PolylineExterior({{ line_type.name }}Polyline):
             pass
-    
+
         boundaries: list[{{ line_type.name }}Polyline] = field(
             default_factory=list,
             metadata={

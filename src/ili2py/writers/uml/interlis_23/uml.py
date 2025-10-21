@@ -4,23 +4,51 @@ from dataclasses import dataclass, field
 from typing import Any, Tuple
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
-    Model as ImdModel,
-    SubModel as ImdSubmodel,
-    Class as ImdClass,
     AttrOrParam as ImdAttrOrParam,
-    Multiplicity as ImdMultiplicity,
-    TextType as ImdTextType,
-    FormattedType as ImdFormattedType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     BlackboxType as ImdBlackboxType,
-    NumType as ImdNumType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     BooleanType as ImdBooleanType,
-    MultiValue as ImdMultiValue,
-    EnumType as ImdEnumType,
-    EnumTreeValueType as ImdEnumTreeValueType,
-    CoordType as ImdCoordType,
-    LineType as ImdLineType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import Class as ImdClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     ClassRefType as ImdClassRefType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    CoordType as ImdCoordType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    EnumTreeValueType as ImdEnumTreeValueType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    EnumType as ImdEnumType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    FormattedType as ImdFormattedType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    LineType as ImdLineType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import Model as ImdModel
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    Multiplicity as ImdMultiplicity,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    MultiValue as ImdMultiValue,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    NumType as ImdNumType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     RoleType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    SubModel as ImdSubmodel,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    TextType as ImdTextType,
 )
 from ili2py.mappers.helpers import Index
 

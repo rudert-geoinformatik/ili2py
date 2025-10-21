@@ -3,7 +3,7 @@ from typing import Optional
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import imd_namespace_map
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.meta_element import MetaElement
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.references import Ref, HasRef
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.references import HasRef, Ref
 
 
 @dataclass

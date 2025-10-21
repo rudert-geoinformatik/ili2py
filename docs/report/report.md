@@ -38,7 +38,7 @@ INTERLIS wird immer als einer unabhängigen Modellierungssprache, vorrangig für
 darüber hinaus gehandelt. Das ist korrekt. Die intuitive *Sprache* lässt aber schnell vergessen, dass
 man sich in der digitalen Welt bewegt und das, was man *Modellieren* nennt, eigentlich
 *Programmieren* ist. Dem interessierten Leser sei an dieser Stelle das Studium der Programmiersprache
-[Modula-2](https://en.wikipedia.org/wiki/Modula-2) ans Herz gelegt. Sie ist es die man schreibt, wenn man 
+[Modula-2](https://en.wikipedia.org/wiki/Modula-2) ans Herz gelegt. Sie ist es die man schreibt, wenn man
 INTERLIS schreibt. Natürlich mit Erweiterungen, aber im Kern ist es Modula-2. Wir programmieren also wenn wir
 modellieren! Man könnte dieselben Resultate
 erreichen wenn man die Klassen und Assoziationen einfach in JAVA oder PYTHON schreiben würde. Bis auf ein
@@ -91,8 +91,8 @@ jeweiligen Zielsystems.
 
 ```mermaid
 flowchart BT
-    
-    
+
+
     interlis_model[".ili"]
     meta_model["MetaModell"]
     pg["Postgres"]
@@ -100,7 +100,7 @@ flowchart BT
     fme["FME"]
     uml["UML"]
     gpkg["GeoPackage"]
-    
+
     interlis_model-->meta_model
     meta_model-->pg
     meta_model-->oracle
@@ -125,8 +125,8 @@ Modells.
 ```mermaid
 
 flowchart LR
-    
-    
+
+
     interlis_model[".ili"]
     subgraph ili2c["INTERLIS Compiler"]
         parsing["parsen"]
@@ -134,7 +134,7 @@ flowchart LR
         meta_model["MetaModell"]
     end
     imd[".imd"]
-    
+
     interlis_model-->parsing
     parsing-->compile
     compile-->meta_model
@@ -535,7 +535,7 @@ Beispiele geebnet wäre (QGIS drag'n'drop eines XTF).
 
 ### Nächste Schritte
 
-Nach der Präsentation der Ergebnisse muss entschieden werden, inwiefern diese ausreichen, um ein breiteres 
+Nach der Präsentation der Ergebnisse muss entschieden werden, inwiefern diese ausreichen, um ein breiteres
 Publikum zu animieren. Insbesondere ist die baldige Unterstützung durch übergeordnete Stufen zu suchen. Dies
 kann vorerst durch eine weitere Finanzierung im Rahmen einer grösseren Usergroup (BL, NE, SH, GR, TI) erfolgen.
 Parallel dazu sollten aber auch wieder Instanzen wie KGK oder Geostandards angefragt werden.

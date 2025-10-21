@@ -1,7 +1,7 @@
 ```mermaid
 flowchart LR
-    
-    
+
+
     interlis_model[".ili"]
     subgraph ili2c["INTERLIS Compiler"]
         parsing["parsen"]
@@ -9,7 +9,7 @@ flowchart LR
         meta_model["MetaModell"]
     end
     imd[".imd"]
-    
+
     interlis_model-->parsing
     parsing-->compile
     compile-->meta_model

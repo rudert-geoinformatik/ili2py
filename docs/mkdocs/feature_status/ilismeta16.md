@@ -240,4 +240,3 @@ ILI file.
 | ModelTranslation.DocTextTranslation | STRUCTURE |      ✅       |      ❌<br/>(not exported by ili2c 5.6.6)      |
 | ModelTranslation.METranslation      | STRUCTURE |      ✅       |      ❌<br/>(not exported by ili2c 5.6.6)      |
 | ModelTranslation.Translation        | CLASS     |      ✅       |      ❌<br/>(not exported by ili2c 5.6.6)      |
-

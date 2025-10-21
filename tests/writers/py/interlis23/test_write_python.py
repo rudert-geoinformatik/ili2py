@@ -2,12 +2,12 @@ import os
 import tempfile
 
 import pytest
-from ili2py.mappers.helpers import Index
-from ili2py.writers.py.python_structure import Library
-from ili2py.writers.py.render import create_python_classes
 from xsdata.formats.dataclass.parsers.config import ParserConfig
 
+from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
+from ili2py.writers.py.python_structure import Library
+from ili2py.writers.py.render import create_python_classes
 
 output_path = tempfile.mkdtemp(prefix="ili2py")
 

@@ -12,15 +12,15 @@ def unwrap_tree(element: object, index: dict):
     Args:
         index: the dictionary which should be filled with the elements.
     """
-    if hasattr(element, '__annotations__'):
-        if hasattr(element, 'tid'):
+    if hasattr(element, "__annotations__"):
+        if hasattr(element, "tid"):
             # the element has already a unique identifier. we can use this in the index
             if element.tid in index:
-                raise LookupError(f'Element {element.tid} was already in tree. Thats not allowed!')
+                raise LookupError(f"Element {element.tid} was already in tree. Thats not allowed!")
         else:
             # the element does not have a unique idendtifier (usually relations) we will set up a runtime
             # one to make linking possible
-            setattr(element, 'tid', f'{element.__class__.__name__}.{str(uuid4())}')
+            setattr(element, "tid", f"{element.__class__.__name__}.{str(uuid4())}")
         index[element.tid] = element
         for attribute in element.__annotations__:
             member = element.__getattribute__(attribute)

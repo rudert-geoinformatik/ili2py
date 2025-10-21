@@ -7,6 +7,7 @@ from ili2py.mappers.internal.ilismeta16.model_data.domain import Code, LengthRan
 
 # MetaElements definition of ilisMeta16.ili
 
+
 class DocText:
 
     def __init__(self, text: str, name: str | None = None):
@@ -71,6 +72,7 @@ class ExtendableMe(ABC, MetaElement):
 
 
 # Models definition of ilisMeta16.ili
+
 
 class Package(ABC, MetaElement):
     def __init__(
@@ -192,8 +194,6 @@ class SubModel(Package):
     Represents an INTERLIS Topic
     """
 
-    pass
-
 
 class Type(ABC):
     pass
@@ -204,7 +204,7 @@ class Expression(ABC):
 
 
 class Multiplicity:
-    def __init__(self, minimum: int, maximum: int|None = None):
+    def __init__(self, minimum: int, maximum: int | None = None):
         MultRange(minimum)
         MultRange(maximum)
         self.minimum = minimum
@@ -231,13 +231,25 @@ class DomainType(ABC, Type):
         super_class: ExtendableMe | None = None,
         constraints: list[Constraint] | None = None,
     ):
-        super().__init__(tid, name, abstract, final, generic, documentation=documentation, meta_attributes=meta_attributes, element_in_package=element_in_package, sub=sub, super_class=super_class)
+        super().__init__(
+            tid,
+            name,
+            abstract,
+            final,
+            generic,
+            documentation=documentation,
+            meta_attributes=meta_attributes,
+            element_in_package=element_in_package,
+            sub=sub,
+            super_class=super_class,
+        )
         self.mandatory = mandatory
         # association DomainConstraint
         self.constraints = constraints or []
 
 
 # Classes definition of ilisMeta16.ili
+
 
 class ClassKind(Enum):
     STRUCTURE = "Structure"
@@ -247,7 +259,16 @@ class ClassKind(Enum):
 
 
 class Class(Type):
-    def __init__(self, kind: ClassKind, embedded_role_transfer: bool, attributes: list["AttrOrParam"] |None = None, parameters: list["AttrOrParam"] |None = None, multiplicity: Multiplicity | None = None, ili1_optional_table: bool | None = None, constraints: list[Constraint] | None = None):
+    def __init__(
+        self,
+        kind: ClassKind,
+        embedded_role_transfer: bool,
+        attributes: list["AttrOrParam"] | None = None,
+        parameters: list["AttrOrParam"] | None = None,
+        multiplicity: Multiplicity | None = None,
+        ili1_optional_table: bool | None = None,
+        constraints: list[Constraint] | None = None,
+    ):
         self.kind = kind
         self.embedded_role_transfer = embedded_role_transfer
         self.attributes = attributes or []
@@ -268,21 +289,21 @@ class SubdivisionKind(Enum):
 
 class AttrOrParam(ExtendableMe):
     def __init__(
-            self,
-            tid: str,
-            name: str,
-            abstract: bool,
-            final: bool,
-            subdivision_kind: SubdivisionKind,
-            attr_type: Type,
-            generic: bool | None = None,
-            documentation: list[DocText] | None = None,
-            meta_attributes: list[MetaAttribute] | None = None,
-            sub: list["ExtendableMe"] | None = None,
-            super_class: Optional["ExtendableMe"] = None,
-            transient: bool | None = None,
-            derivates: list[Expression] | None = None,
-            local_type: list[Type] | None = None,
+        self,
+        tid: str,
+        name: str,
+        abstract: bool,
+        final: bool,
+        subdivision_kind: SubdivisionKind,
+        attr_type: Type,
+        generic: bool | None = None,
+        documentation: list[DocText] | None = None,
+        meta_attributes: list[MetaAttribute] | None = None,
+        sub: list["ExtendableMe"] | None = None,
+        super_class: Optional["ExtendableMe"] = None,
+        transient: bool | None = None,
+        derivates: list[Expression] | None = None,
+        local_type: list[Type] | None = None,
     ):
         super().__init__(
             tid,
@@ -304,22 +325,23 @@ class AttrOrParam(ExtendableMe):
 
 # Types related to other types of ilisMeta16.ili
 
+
 class TypeRelatedType(ABC, DomainType):
     def __init__(
-            self,
-            tid: str,
-            name: str,
-            abstract: bool,
-            final: bool,
-            mandatory: bool,
-            base_type: Type,
-            generic: bool | None = None,
-            documentation: list[DocText] | None = None,
-            meta_attributes: list[MetaAttribute] | None = None,
-            element_in_package: Package | None | None = None,
-            sub: list[ExtendableMe] | None = None,
-            super_class: ExtendableMe | None = None,
-            type_restrictions: list[Type] | None = None,
+        self,
+        tid: str,
+        name: str,
+        abstract: bool,
+        final: bool,
+        mandatory: bool,
+        base_type: Type,
+        generic: bool | None = None,
+        documentation: list[DocText] | None = None,
+        meta_attributes: list[MetaAttribute] | None = None,
+        element_in_package: Package | None | None = None,
+        sub: list[ExtendableMe] | None = None,
+        super_class: ExtendableMe | None = None,
+        type_restrictions: list[Type] | None = None,
     ):
         super().__init__(
             tid,
@@ -345,22 +367,22 @@ class TypeRelatedType(ABC, DomainType):
 
 class MultiValue(TypeRelatedType):
     def __init__(
-            self,
-            tid: str,
-            name: str,
-            abstract: bool,
-            final: bool,
-            mandatory: bool,
-            base_type: Type,
-            ordered: bool,
-            generic: bool | None = None,
-            documentation: list[DocText] | None = None,
-            meta_attributes: list[MetaAttribute] | None = None,
-            element_in_package: Package | None | None = None,
-            sub: list[ExtendableMe] | None = None,
-            super_class: ExtendableMe | None = None,
-            type_restrictions: list[Type] | None = None,
-            multiplicity: Multiplicity | None = None,
+        self,
+        tid: str,
+        name: str,
+        abstract: bool,
+        final: bool,
+        mandatory: bool,
+        base_type: Type,
+        ordered: bool,
+        generic: bool | None = None,
+        documentation: list[DocText] | None = None,
+        meta_attributes: list[MetaAttribute] | None = None,
+        element_in_package: Package | None | None = None,
+        sub: list[ExtendableMe] | None = None,
+        super_class: ExtendableMe | None = None,
+        type_restrictions: list[Type] | None = None,
+        multiplicity: Multiplicity | None = None,
     ):
         super().__init__(
             tid,
@@ -375,7 +397,7 @@ class MultiValue(TypeRelatedType):
             element_in_package=element_in_package,
             sub=sub,
             super_class=super_class,
-            type_restrictions=type_restrictions
+            type_restrictions=type_restrictions,
         )
         self.ordered = ordered
         self.multiplicity = multiplicity

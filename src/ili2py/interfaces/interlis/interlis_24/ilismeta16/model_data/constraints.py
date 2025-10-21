@@ -5,7 +5,9 @@ from typing import Optional
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import imd_namespace_map
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.meta_element import MetaElement
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.references import Ref
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.serialization_elements import CompoundExprElement
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.serialization_elements import (
+    CompoundExprElement,
+)
 
 
 @dataclass
@@ -26,21 +28,19 @@ class SimpleConstraint(Constraint):
         MandC = auto()
         LowPercC = auto()
         HighPercC = auto()
+
     Kind: KindEnum = field(
         default=None,
         metadata={
             "namespace": imd_namespace_map["IlisMeta16"],
-        }
+        },
     )
     LogicalExpression: CompoundExprElement = field(
-        default=None,
-        metadata={
-            "namespace": imd_namespace_map["IlisMeta16"]
-        }
+        default=None, metadata={"namespace": imd_namespace_map["IlisMeta16"]}
     )
     Percentage: Optional[float] = field(
         default=None,
         metadata={
             "namespace": imd_namespace_map["IlisMeta16"],
-        }
+        },
     )

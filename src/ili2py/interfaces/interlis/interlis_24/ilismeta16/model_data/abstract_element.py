@@ -20,36 +20,12 @@ class Ili1FormatElement(AbstractElement):
         TID_ANY = auto()
         TID_EXPLANATION = auto()
 
-    isFree: bool = field(
-        metadata={
-            "namespace": imd_namespace_map["IlisMeta16"]
-        }
-    )
-    blankCode: int = field(
-        metadata={
-            "namespace": imd_namespace_map["IlisMeta16"]
-        }
-    )
-    undefinedCode: int = field(
-        metadata={
-            "namespace": imd_namespace_map["IlisMeta16"]
-        }
-    )
-    continueCode: int = field(
-        metadata={
-            "namespace": imd_namespace_map["IlisMeta16"]
-        }
-    )
-    Font: str = field(
-        metadata={
-            "namespace": imd_namespace_map["IlisMeta16"]
-        }
-    )
-    tidKind: TidKind = field(
-        metadata={
-            "namespace": imd_namespace_map["IlisMeta16"]
-        }
-    )
+    isFree: bool = field(metadata={"namespace": imd_namespace_map["IlisMeta16"]})
+    blankCode: int = field(metadata={"namespace": imd_namespace_map["IlisMeta16"]})
+    undefinedCode: int = field(metadata={"namespace": imd_namespace_map["IlisMeta16"]})
+    continueCode: int = field(metadata={"namespace": imd_namespace_map["IlisMeta16"]})
+    Font: str = field(metadata={"namespace": imd_namespace_map["IlisMeta16"]})
+    tidKind: TidKind = field(metadata={"namespace": imd_namespace_map["IlisMeta16"]})
     LineSize: Optional[int] = field(
         default=None,
         metadata={
@@ -90,7 +66,7 @@ class DocTextElement(AbstractElement):
 
 
 @dataclass
-class MetaAttributeElement(HasRef,AbstractElement):
+class MetaAttributeElement(HasRef, AbstractElement):
 
     Name: str = field(
         metadata={
@@ -102,12 +78,7 @@ class MetaAttributeElement(HasRef,AbstractElement):
             "namespace": imd_namespace_map["IlisMeta16"],
         },
     )
-    tid: str = field(
-        metadata={
-            "type": "Attribute",
-            "namespace": imd_namespace_map["ili"]
-        }
-    )
+    tid: str = field(metadata={"type": "Attribute", "namespace": imd_namespace_map["ili"]})
     # use the metadata.name to fetch the element from XML but store it
     #   as `*_ref` instance variable to resolve soft reference to actual object
     MetaElement_ref: Ref = field(
@@ -116,4 +87,3 @@ class MetaAttributeElement(HasRef,AbstractElement):
             "namespace": imd_namespace_map["IlisMeta16"],
         }
     )
-

@@ -1,14 +1,15 @@
+import inspect
 import os
 import shutil
 import subprocess
 import sys
-import inspect
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
-from ili2py.writers.py import constraints
+
 from ili2py.mappers.helpers import Index
-from ili2py.writers.helpers import handle_model_versions, create_file
+from ili2py.writers.helpers import create_file, handle_model_versions
+from ili2py.writers.py import constraints
 from ili2py.writers.py.python_structure import Library
 
 base_url_23 = "http://www.interlis.ch/INTERLIS2.3"

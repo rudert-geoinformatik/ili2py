@@ -3,17 +3,17 @@
 import logging
 import os
 import sys
+from typing import Any
 
 import click
 
-from typing import Any
 from ili2py import __version__
 from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
-from ili2py.writers.uml import create_uml_diagram
-from ili2py.writers.uml.interlis_23 import tool_settings, Diagram
 from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.render import create_python_classes
+from ili2py.writers.uml import create_uml_diagram
+from ili2py.writers.uml.interlis_23 import Diagram, tool_settings
 
 this_file_location = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
 

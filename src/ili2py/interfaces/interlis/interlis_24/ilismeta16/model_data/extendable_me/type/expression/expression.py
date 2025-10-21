@@ -31,7 +31,7 @@ class UnaryExpr(Expression):
 @dataclass
 class CompoundExpr(Expression):
     class OperationEnum(StrEnum):
-        Implication = "Implication" # 2.4!
+        Implication = "Implication"  # 2.4!
         And = "And"
         Or = "Or"
         Mult = "Mult"
@@ -47,7 +47,7 @@ class CompoundExpr(Expression):
         default=None,
         metadata={
             "namespace": imd_namespace_map["IlisMeta16"],
-        }
+        },
     )
     # TODO: Fix this, currently this fails while parsing the XML...
     # SubExpressions: List[Union[Constant, PathOrInspFactor]]
