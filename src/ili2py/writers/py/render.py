@@ -2,10 +2,11 @@ import os
 import shutil
 import subprocess
 import sys
+import inspect
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
-
+from ili2py.writers.py import constraints
 from ili2py.mappers.helpers import Index
 from ili2py.writers.helpers import handle_model_versions, create_file
 from ili2py.writers.py.python_structure import Library
@@ -60,6 +61,9 @@ def reader_classes(library: Library, output_path: str, render_config: dict, beau
     references_content = env.get_template("references.jinja2").render(render_config=render_config)
     references_file = create_file(output_path, library_name, "references.py")
     references_file.write_text(references_content)
+    # this way we can use the code and also deliver it to the built package
+    constraints_file = create_file(output_path, library_name, "constraints.py")
+    constraints_file.write_text(inspect.getsource(constraints))
     convertable_types_content = env.get_template("convertable_types.jinja2").render(
         library=library, render_config=render_config
     )

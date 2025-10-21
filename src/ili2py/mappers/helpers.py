@@ -31,7 +31,8 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     TypeType,
     DataUnitType,
     Dependency,
-    ClassType,
+    ClassType, ConstraintType, SimpleConstraintType, ExistenceConstraintType, UniqueConstraintType,
+    SetConstraintType, DomainTypeType,
 )
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import DataSection
 
@@ -151,6 +152,17 @@ class Index:
         self.basket_oid_in_submodel: dict = {}
         self.basket_oid_in_model: dict = {}
 
+        self.class_with_simple_constraints: dict = {}
+        self.class_with_existence_constraints: dict = {}
+        self.class_with_unique_constraints: dict = {}
+        self.class_with_set_constraints: dict = {}
+        self.domain_with_simple_constraints: dict = {}
+        self.domain_with_existence_constraints: dict = {}
+        self.domain_with_unique_constraints: dict = {}
+        self.domain_with_set_constraints: dict = {}
+
+        self.types_in_domain: dict = {}
+
         for basket in data_section.ModelData:
             for element in basket.choice:
                 self.unwrap_tree(element)
@@ -212,6 +224,10 @@ class Index:
             self.handle_dependency(element)
         elif isinstance(element, Class):
             self.handle_class(element)
+        elif isinstance(element, ConstraintType):
+            self.handle_constraint(element)
+        if isinstance(element, DomainTypeType):
+            self.handle_domain_type(element)
 
     def handle_import(self, element: Import):
         """
@@ -532,3 +548,50 @@ class Index:
             if element.super.ref not in self.class_subclassed_by:
                 self.class_subclassed_by[element.super.ref] = []
             self.class_subclassed_by[element.super.ref].append(element.tid)
+
+    def handle_constraint(self, element: ConstraintType):
+        if isinstance(element, SimpleConstraintType):
+            if element.to_class:
+                if element.to_class.ref not in self.class_with_simple_constraints:
+                    self.class_with_simple_constraints[element.to_class.ref] = []
+                self.class_with_simple_constraints[element.to_class.ref].append(element.tid)
+            if element.to_domain:
+                if element.to_domain.ref not in self.domain_with_simple_constraints:
+                    self.domain_with_simple_constraints[element.to_domain.ref] = []
+                self.domain_with_simple_constraints[element.to_domain.ref].append(element.tid)
+        elif isinstance(element, ExistenceConstraintType):
+            if element.to_class:
+                if element.to_class.ref not in self.class_with_existence_constraints:
+                    self.class_with_existence_constraints[element.to_class.ref] = []
+                self.class_with_existence_constraints[element.to_class.ref].append(element.tid)
+            if element.to_domain:
+                if element.to_domain.ref not in self.domain_with_existence_constraints:
+                    self.domain_with_existence_constraints[element.to_domain.ref] = []
+                self.domain_with_existence_constraints[element.to_domain.ref].append(element.tid)
+        elif isinstance(element, UniqueConstraintType):
+            if element.to_class:
+                if element.to_class.ref not in self.class_with_unique_constraints:
+                    self.class_with_unique_constraints[element.to_class.ref] = []
+                self.class_with_unique_constraints[element.to_class.ref].append(element.tid)
+            if element.to_domain:
+                if element.to_domain.ref not in self.domain_with_unique_constraints:
+                    self.domain_with_unique_constraints[element.to_domain.ref] = []
+                self.domain_with_unique_constraints[element.to_domain.ref].append(element.tid)
+        elif isinstance(element, SetConstraintType):
+            if element.to_class:
+                if element.to_class.ref not in self.class_with_set_constraints:
+                    self.class_with_set_constraints[element.to_class.ref] = []
+                self.class_with_set_constraints[element.to_class.ref].append(element.tid)
+            if element.to_domain:
+                if element.to_domain.ref not in self.domain_with_set_constraints:
+                    self.domain_with_set_constraints[element.to_domain.ref] = []
+                self.domain_with_set_constraints[element.to_domain.ref].append(element.tid)
+        else:
+            logging.warning(f"Constraint was not handled as expected: {element}")
+
+    def handle_domain_type(self, element: DomainTypeType):
+        if element.name not in ['TYPE', 'C1', 'C2', 'C3']:
+            if element.element_in_package:
+                if element.element_in_package.ref not in self.types_in_domain:
+                    self.types_in_domain[element.element_in_package.ref] = []
+                self.types_in_domain[element.element_in_package.ref].append(element)

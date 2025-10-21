@@ -37,3 +37,37 @@ OeREBKRMtrsfr_V2_0.Transferstruktur have `oid=Null` in the resulting IMD16.
 
 When creating IMD16 with ili2c from 2.4 Models (e.g. Waldreservate_V2_0), the element `ModelData.Model`
 `ModelData.Model.Version` is missing.
+
+## IlisMeta16.Operation 'Nested' in IlisMeta16.UnaryExpr
+
+Ili model IlisMeta16 defines:
+![](../assets/img/ilismeta16.unaryexpression.operation_in_ili.png)
+
+But imd16 generated with ili2c 5.6.6 delivers an operation 'Nested':
+![](../assets/img/ilismeta16.unaryexpression.operation_in_imd16_wrong.png)
+
+Example models:
+- SZ_Lebensraum_Fisch_V2
+- Hazard_Mapping_LV95_V1_3
+- DMAV_HoheitsgrenzenAV_V1_0
+- DMAV_Grundstuecke_V1_0
+- DMAV_Dienstbarkeitsgrenzen_V1_0
+- DMAV_Gebaeudeadressen_V1_0
+- KbS_V1_5
+- ...
+
+## Potentially missing IlisMeta16.ExistenceDefType in imd16 exports
+
+ili2c 5.6.6 seems to miss the ExistenceDefType association in imd16 exports.
+It seems to be missing in the XSD too:
+![](../assets/img/ilismeta16.existence_def_type_empty_in_xsd.png)
+
+Example model:
+- DMAVTYM_Alles_V1_0
+
+## Potentially missing IlisMeta16.EnumAssignment in imd16 exports
+
+ili2c 5.6.6 seems to miss the EnumAssignment association in imd16 exports.
+
+Example model:
+- DMAVTYM_Alles_V1_0

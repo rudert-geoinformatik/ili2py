@@ -31,6 +31,9 @@ metadata = {
     }
 }
 
+{%- set domain_types=module.type_definitions %}
+{%- include "domain_types.jinja2" %}
+
 {%- set enumerations=module.enumerations %}
 {%- include "enumerations.jinja2" %}
 
