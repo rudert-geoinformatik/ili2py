@@ -1,7 +1,7 @@
 ```mermaid
 flowchart BT
-    
-    
+
+
     interlis_model[".ili"]
     meta_model["MetaModell"]
     pg["Postgres"]
@@ -9,7 +9,7 @@ flowchart BT
     fme["FME"]
     uml["UML"]
     gpkg["GeoPackage"]
-    
+
     interlis_model-->meta_model
     meta_model-->pg
     meta_model-->oracle

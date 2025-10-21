@@ -11,7 +11,7 @@ an overview about what formats are supported and the limitations.
 
 ## Mermaid
 
-[Mermaid](https://mermaid.js.org/syntax/classDiagram.html) is well known and widely used. Its strength is the 
+[Mermaid](https://mermaid.js.org/syntax/classDiagram.html) is well known and widely used. Its strength is the
 wide support in many development tools (Ide's, github, gitlab, ...).
 
 The format is a markdown code snippet. See mermaid documentation for details.
@@ -29,7 +29,7 @@ Currently, known limitations are:
   by mermaid.
 - Potentially broken self references (awkward rendering of Cardinalities, strange positioning of connectors).
 - routing of connectors between classes is a bit flaky especially when it comes to larger diagrams
-- Some renderers do not allow '.' in names of namespaces! 
+- Some renderers do not allow '.' in names of namespaces!
 
 ![](assets/img/mermaid_example.png)
 

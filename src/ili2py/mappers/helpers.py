@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass
 from typing import Any
 
+from ili2py.interfaces.interlis.interlis_24.ilismeta16 import DataSection
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     AllowedInBasket,
     AttrOrParam,
@@ -9,32 +10,32 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     BaseClass,
     Class,
     ClassRefType,
+    ClassType,
+    ConstraintType,
     CoordType,
     DataUnit,
+    DataUnitType,
+    Dependency,
+    DomainTypeType,
+    ExistenceConstraintType,
     ExplicitAssocAccess,
     Ili1TransferElement,
     Import,
     LineForm,
     LinesForm,
     LineType,
+    MetaAttribute,
+    MetaElementType,
     Model,
-    NumType,
     ObjectType,
     Role,
-    TransferElement,
-    View,
-    MetaAttribute,
+    SetConstraintType,
+    SimpleConstraintType,
     SubModel,
-    MetaElementType,
-    TypeRelatedTypeType,
-    TypeRestrictionType,
-    TypeType,
-    DataUnitType,
-    Dependency,
-    ClassType, ConstraintType, SimpleConstraintType, ExistenceConstraintType, UniqueConstraintType,
-    SetConstraintType, DomainTypeType,
+    TransferElement,
+    UniqueConstraintType,
+    View,
 )
-from ili2py.interfaces.interlis.interlis_24.ilismeta16 import DataSection
 
 
 @dataclass
@@ -590,7 +591,7 @@ class Index:
             logging.warning(f"Constraint was not handled as expected: {element}")
 
     def handle_domain_type(self, element: DomainTypeType):
-        if element.name not in ['TYPE', 'C1', 'C2', 'C3']:
+        if element.name not in ["TYPE", "C1", "C2", "C3"]:
             if element.element_in_package:
                 if element.element_in_package.ref not in self.types_in_domain:
                     self.types_in_domain[element.element_in_package.ref] = []

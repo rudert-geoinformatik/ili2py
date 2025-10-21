@@ -4,6 +4,8 @@ from ili2py.interfaces.interlis.interlis_24 import Transfer
 from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import imd_namespace_map
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     ModelData as Imd_ModelData,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     ModelTranslation as Imd_ModelTranslation,
 )
 

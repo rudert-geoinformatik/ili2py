@@ -1,9 +1,9 @@
-from dataclasses import make_dataclass, field
+from dataclasses import field, make_dataclass
 from typing import List, Optional
 
 from ili2py.interfaces.interlis.interlis_23 import TRANSFER
-from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.model_data import ModelData
 from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
+from ili2py.interfaces.interlis.interlis_24.ilismeta16.model_data.model_data import ModelData
 
 
 class DataClassGenerator:
@@ -38,10 +38,17 @@ class DataClassGenerator:
             class_fields = [("bid", str, field(metadata={"name": "BID", "type": "Attribute"}))]
             # find all classes inside sub_model[ili:TOPIC]
             for class_item in model_data.Class:
-                if class_item.element_in_package.ref == topic_item.tid and class_item.kind == "Class":
-                    attr_or_param_fields = [("tid", Optional[str], field(default=None,
-                                                                         metadata={"name": "TID",
-                                                                                   "type": "Attribute"}))]
+                if (
+                    class_item.element_in_package.ref == topic_item.tid
+                    and class_item.kind == "Class"
+                ):
+                    attr_or_param_fields = [
+                        (
+                            "tid",
+                            Optional[str],
+                            field(default=None, metadata={"name": "TID", "type": "Attribute"}),
+                        )
+                    ]
                     # find all attributes related to class
                     for attr_or_param_item in model_data.AttrOrParam:
                         if attr_or_param_item.AttrParent_ref.ref == class_item.tid:
@@ -51,20 +58,24 @@ class DataClassGenerator:
                                     attr_or_param_field = (
                                         attr_or_param_item.Name.lower(),
                                         str if type_item.mandatory else Optional[str],
-                                        field(
-                                            metadata={
-                                                "name": attr_or_param_item.Name,
-                                                "type": "Element",
-                                                "required": type_item.mandatory
-                                            }
-                                        ) if type_item.mandatory else field(
-                                            default=None,
-                                            metadata={
-                                                "name": attr_or_param_item.Name,
-                                                "type": "Element",
-                                                "required": type_item.mandatory
-                                            }
-                                        )
+                                        (
+                                            field(
+                                                metadata={
+                                                    "name": attr_or_param_item.Name,
+                                                    "type": "Element",
+                                                    "required": type_item.mandatory,
+                                                }
+                                            )
+                                            if type_item.mandatory
+                                            else field(
+                                                default=None,
+                                                metadata={
+                                                    "name": attr_or_param_item.Name,
+                                                    "type": "Element",
+                                                    "required": type_item.mandatory,
+                                                },
+                                            )
+                                        ),
                                     )
                                     # dataclasses have kwargs and args. We need to ensure, that the stay in correct
                                     # order (args first)
@@ -78,20 +89,24 @@ class DataClassGenerator:
                                     attr_or_param_field = (
                                         attr_or_param_item.Name.lower(),
                                         int if type_item.mandatory else Optional[int],
-                                        field(
-                                            metadata={
-                                                "name": attr_or_param_item.Name,
-                                                "type": "Element",
-                                                "required": type_item.mandatory
-                                            }
-                                        ) if type_item.mandatory else field(
-                                            default=None,
-                                            metadata={
-                                                "name": attr_or_param_item.Name,
-                                                "type": "Element",
-                                                "required": type_item.mandatory
-                                            }
-                                        )
+                                        (
+                                            field(
+                                                metadata={
+                                                    "name": attr_or_param_item.Name,
+                                                    "type": "Element",
+                                                    "required": type_item.mandatory,
+                                                }
+                                            )
+                                            if type_item.mandatory
+                                            else field(
+                                                default=None,
+                                                metadata={
+                                                    "name": attr_or_param_item.Name,
+                                                    "type": "Element",
+                                                    "required": type_item.mandatory,
+                                                },
+                                            )
+                                        ),
                                     )
                                     # dataclasses have kwargs and args. We need to ensure, that the stay in correct
                                     # order (args first)
@@ -109,22 +124,16 @@ class DataClassGenerator:
                                 metadata={
                                     "name": class_item.tid,
                                     "type": "Element",
-                                    "default": None
-                                }
-                            )
+                                    "default": None,
+                                },
+                            ),
                         )
                     )
             topic_fields.append(
                 (
                     topic_item.Name.lower(),
                     make_dataclass(topic_item.Name, class_fields),
-                    field(
-                        metadata={
-                            "name": topic_item.tid,
-                            "type": "Element",
-                            "default": None
-                        }
-                    )
+                    field(metadata={"name": topic_item.tid, "type": "Element", "default": None}),
                 )
             )
 

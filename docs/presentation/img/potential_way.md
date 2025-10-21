@@ -1,7 +1,7 @@
 ```mermaid
 flowchart LR
-    
-    
+
+
     interlis_model[".ili"]
     ili2c["INTERLIS Compiler"]
     imd[".imd"]
@@ -11,7 +11,7 @@ flowchart LR
       ili_docs["ILI API-Docs"]
       ili_uml["ILI UML Diagrams"]
     end
-    
+
     interlis_model-->ili2c
     ili2c-->imd
     imd-->imd_reader

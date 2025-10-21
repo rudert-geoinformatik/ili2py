@@ -73,7 +73,19 @@ class NumType(DomainType):
         clockwise: bool | None = None,
         unit: Unit | None | None = None,
     ):
-        super().__init__(tid, name, abstract, final, mandatory, generic, documentation=documentation, meta_attributes=meta_attributes, element_in_package=element_in_package, sub=sub, super_class=super_class)
+        super().__init__(
+            tid,
+            name,
+            abstract,
+            final,
+            mandatory,
+            generic,
+            documentation=documentation,
+            meta_attributes=meta_attributes,
+            element_in_package=element_in_package,
+            sub=sub,
+            super_class=super_class,
+        )
         self.min = min
         self.max = max
         self.circular = circular

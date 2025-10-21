@@ -1,9 +1,9 @@
 import os
+from pathlib import Path
 from random import randint
+from typing import List
 
 from jinja2 import Environment, FileSystemLoader
-from pathlib import Path
-from typing import List
 
 from ili2py.mappers.helpers import Index
 from ili2py.writers.helpers import create_file

@@ -1,5 +1,5 @@
 
-**Used ili2c version: 5.6.6** 
+**Used ili2c version: 5.6.6**
 
 During the intense work with IMD16 which were produced by ili2c, some questions came up. These are
 summarized here. These Questions are not exclusively related to the compiler but may also be related

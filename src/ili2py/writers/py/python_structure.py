@@ -1,51 +1,92 @@
 import logging
 from abc import ABC
 from dataclasses import dataclass, field
-from random import choice
-from typing import Any, Tuple, Optional, Union
+from typing import Any, Optional, Tuple, Union
 
 from xsdata.formats.dataclass.serializers import DictEncoder
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    ActualArgumentType,
+    AttributeConstType,
     AttrOrParam,
     AxisSpec,
     BlackboxType,
     BooleanType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import Class as ImdClass
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    ClassConstType,
+    ClassRefType,
+    CompoundExprType,
+    ConstantType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    CoordType as ImdCoordType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    DataUnit,
+    EnumAssignment,
+    EnumAssignmentType,
+    EnumMappingType,
     EnumNode,
     EnumTreeValueType,
     EnumType,
+    ExistenceConstraintType,
     FormattedType,
+    FunctionCallType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    LineType as ImdLineType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    MetaAttribute as ImdMetaAttribute,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    MetaElementType,
     MetaElementTypeDocumentation,
     Model,
     ModelData,
     MultiValue,
     NumType,
+    NumTypeType,
+    PathOrInspFactorType,
+    PathOrInspFactorTypePathEls,
+    ReferenceType,
+)
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import Role as ImdRole
+from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
+    RuntimeParamRefType,
+    SetConstraintType,
+    SimpleConstraintType,
     SubModel,
     TextType,
-    MetaElementType,
-    NumTypeType,
     TypeType,
-    ClassRefType,
-    DataUnit,
-    TypeRelatedTypeType,
-    ReferenceType, ExistenceConstraintType, PathOrInspFactorType, PathOrInspFactorTypePathEls,
+    UnaryExprType,
     UniqueConstraintType,
-    UniqueConstraintTypeWhere, UnitFunctionType, UnitRefType, AttributeConstType, ClassConstType, ConstantType,
-    RuntimeParamRefType, FunctionCallType, ActualArgumentType, ActualArgumentTypeExpression, EnumMappingType,
-    EnumAssignmentType, EnumAssignment, CompoundExprType, CompoundExprTypeSubExpressions,
-    EnumAssignmentTypeValueToAssign, UnaryExprType, UnaryExprTypeSubExpression, SimpleConstraintType, SimpleConstraintTypeLogicalExpression, SetConstraintType
-)
-from ili2py.writers.py.constraints import ExistenceConstraint, PathOrInspFactor, PathEl, UniqueConstraint, \
-    ExpressionType, UnitFunction, UnitRef, AttributeConst, ClassConst, Constant, \
-    RuntimeParamRef, FunctionCall, ActualArgument, EnumMapping, CompoundExpr, UnaryExpr, SimpleConstraint, SetConstraint
-from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
-    Class as ImdClass,
-    Role as ImdRole,
-    CoordType as ImdCoordType,
-    LineType as ImdLineType,
-    MetaAttribute as ImdMetaAttribute,
+    UnitFunctionType,
+    UnitRefType,
 )
 from ili2py.mappers.helpers import Index
+from ili2py.writers.py.constraints import (
+    ActualArgument,
+    AttributeConst,
+    ClassConst,
+    CompoundExpr,
+    Constant,
+    EnumMapping,
+    ExistenceConstraint,
+    ExpressionType,
+    FunctionCall,
+    PathEl,
+    PathOrInspFactor,
+    RuntimeParamRef,
+    SetConstraint,
+    SimpleConstraint,
+    UnaryExpr,
+    UniqueConstraint,
+    UnitFunction,
+    UnitRef,
+)
 
 base_type_dictionary = {
     "TextType": "str",
@@ -692,20 +733,16 @@ class Class(Base):
             kind=imd_class.kind,
             oid=oid_attribute,
             existence_constraints=Class.translate_existence_constraint(
-                index.class_with_existence_constraints.get(imd_class.tid, []),
-                index
+                index.class_with_existence_constraints.get(imd_class.tid, []), index
             ),
             set_constraints=Class.translate_set_constraint(
-                index.class_with_set_constraints.get(imd_class.tid, []),
-                index
+                index.class_with_set_constraints.get(imd_class.tid, []), index
             ),
             simple_constraints=Class.translate_simple_constraint(
-                index.class_with_simple_constraints.get(imd_class.tid, []),
-                index
+                index.class_with_simple_constraints.get(imd_class.tid, []), index
             ),
             unique_constraints=Class.translate_unique_constraint(
-                index.class_with_unique_constraints.get(imd_class.tid, []),
-                index
+                index.class_with_unique_constraints.get(imd_class.tid, []), index
             ),
         )
 
@@ -718,7 +755,7 @@ class Class(Base):
                     kind=path_el_imd.path_el.kind,
                     ref=path_el_imd.path_el.ref.ref if path_el_imd.path_el.ref else None,
                     num_index=path_el_imd.path_el.num_index,
-                    spec_index=path_el_imd.path_el.spec_index
+                    spec_index=path_el_imd.path_el.spec_index,
                 )
             )
         return translated_path_els
@@ -730,17 +767,23 @@ class Class(Base):
             if object_class.class_ref:
                 object_classes.append(object_class.class_ref.ref)
         return ActualArgument(
-            formal_argument=imd_element.formal_argument.ref if imd_element.formal_argument else None,
+            formal_argument=(
+                imd_element.formal_argument.ref if imd_element.formal_argument else None
+            ),
             kind=imd_element.kind,
             object_classes=object_classes,
-            expression=Class.translate_expression(imd_element.expression.choice) if imd_element.expression else None
+            expression=(
+                Class.translate_expression(imd_element.expression.choice)
+                if imd_element.expression
+                else None
+            ),
         )
 
     @staticmethod
     def translate_path_or_insp_factor(imd_element: PathOrInspFactorType) -> PathOrInspFactor:
         translated_element = PathOrInspFactor(
             path_els=Class.translate_path_els(imd_element.path_els),
-            inspection=imd_element.inspection.ref if imd_element.inspection else None
+            inspection=imd_element.inspection.ref if imd_element.inspection else None,
         )
         return translated_element
 
@@ -766,10 +809,7 @@ class Class(Base):
 
     @staticmethod
     def translate_constant(imd_element: ConstantType):
-        return Constant(
-            value=imd_element.value,
-            type=imd_element.type_value
-        )
+        return Constant(value=imd_element.value, type=imd_element.type_value)
 
     @staticmethod
     def translate_runtime_param(imd_element: RuntimeParamRefType) -> RuntimeParamRef:
@@ -781,7 +821,10 @@ class Class(Base):
     def translate_function_call(imd_element: FunctionCallType) -> FunctionCall:
         return FunctionCall(
             function=imd_element.function.ref if imd_element.function else None,
-            arguments=[Class.translate_actual_argument(function_call_argument.actual_argument) for function_call_argument in imd_element.arguments]
+            arguments=[
+                Class.translate_actual_argument(function_call_argument.actual_argument)
+                for function_call_argument in imd_element.arguments
+            ],
         )
 
     @staticmethod
@@ -789,14 +832,18 @@ class Class(Base):
         return EnumAssignment(
             min_enum_value=imd_element.min_enum_value.ref if imd_element.min_enum_value else None,
             max_enum_value=imd_element.max_enum_value.ref if imd_element.max_enum_value else None,
-            value_to_assign=Class.translate_expression(imd_element.value_to_assign.choice)
+            value_to_assign=Class.translate_expression(imd_element.value_to_assign.choice),
         )
 
     @staticmethod
     def translate_enum_mapping(imd_element: EnumMappingType) -> EnumMapping:
         translated_element = EnumMapping(
-            enum_value=Class.translate_path_or_insp_factor(imd_element.enum_value.path_or_insp_factor),
-            cases=[Class.translate_enum_assignment(case.enum_assignment) for case in imd_element.cases]
+            enum_value=Class.translate_path_or_insp_factor(
+                imd_element.enum_value.path_or_insp_factor
+            ),
+            cases=[
+                Class.translate_enum_assignment(case.enum_assignment) for case in imd_element.cases
+            ],
         )
         return translated_element
 
@@ -807,63 +854,54 @@ class Class(Base):
             for expression in sub_expressions.choice:
                 translated_sub_expressions.append(Class.translate_expression(expression))
         return CompoundExpr(
-            operation=imd_element.operation,
-            sub_expressions=translated_sub_expressions
+            operation=imd_element.operation, sub_expressions=translated_sub_expressions
         )
 
     @staticmethod
     def translate_unary_expression(imd_element: UnaryExprType) -> UnaryExpr:
         return UnaryExpr(
             operation=imd_element.operation,
-            sub_expression=Class.translate_expression(imd_element.sub_expression.choice)
+            sub_expression=Class.translate_expression(imd_element.sub_expression.choice),
         )
 
     @staticmethod
-    def translate_expression(expression_imd: UnitFunctionType | UnitRefType | AttributeConstType | ClassConstType | ConstantType | RuntimeParamRefType | FunctionCallType | EnumMappingType | PathOrInspFactorType | CompoundExprType | UnaryExprType) -> ExpressionType | None:
+    def translate_expression(
+        expression_imd: (
+            UnitFunctionType
+            | UnitRefType
+            | AttributeConstType
+            | ClassConstType
+            | ConstantType
+            | RuntimeParamRefType
+            | FunctionCallType
+            | EnumMappingType
+            | PathOrInspFactorType
+            | CompoundExprType
+            | UnaryExprType
+        ),
+    ) -> ExpressionType | None:
         if isinstance(expression_imd, UnitFunctionType):
-            return ExpressionType(
-                choice=Class.translate_unit_function(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_unit_function(expression_imd))
         elif isinstance(expression_imd, UnitRefType):
-            return ExpressionType(
-                choice=Class.translate_unit_ref(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_unit_ref(expression_imd))
         elif isinstance(expression_imd, AttributeConstType):
-            return ExpressionType(
-                choice=Class.translate_attribute_const(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_attribute_const(expression_imd))
         elif isinstance(expression_imd, ClassConstType):
-            return ExpressionType(
-                choice=Class.translate_class_const(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_class_const(expression_imd))
         elif isinstance(expression_imd, ConstantType):
-            return ExpressionType(
-                choice=Class.translate_constant(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_constant(expression_imd))
         elif isinstance(expression_imd, RuntimeParamRefType):
-            return ExpressionType(
-                choice=Class.translate_runtime_param(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_runtime_param(expression_imd))
         elif isinstance(expression_imd, FunctionCallType):
-            return ExpressionType(
-                choice=Class.translate_function_call(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_function_call(expression_imd))
         elif isinstance(expression_imd, EnumMappingType):
-            return ExpressionType(
-                choice=Class.translate_enum_mapping(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_enum_mapping(expression_imd))
         elif isinstance(expression_imd, PathOrInspFactorType):
-            return ExpressionType(
-                choice=Class.translate_path_or_insp_factor(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_path_or_insp_factor(expression_imd))
         elif isinstance(expression_imd, CompoundExprType):
-            return ExpressionType(
-                choice=Class.translate_compound_expression(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_compound_expression(expression_imd))
         elif isinstance(expression_imd, UnaryExprType):
-            return ExpressionType(
-                choice=Class.translate_unary_expression(expression_imd)
-            )
+            return ExpressionType(choice=Class.translate_unary_expression(expression_imd))
         else:
             logging.debug(f"passed type was: {expression_imd}")
             return None
@@ -874,17 +912,20 @@ class Class(Base):
         for oid in constraint_oids:
             constraint: ExistenceConstraintType = index.index[oid]
             translated_constraints.append(
-                DictEncoder().encode(ExistenceConstraint(
-                    id=constraint.tid,
-                    name=constraint.name,
-                    documentation=Class.doc_string(constraint.documentation),
-                    to_class=constraint.to_class.ref if constraint.to_class else None,
-                    to_domain=constraint.to_domain.ref if constraint.to_domain else None,
-                    attr=Class.translate_path_or_insp_factor(constraint.attr.path_or_insp_factor)
-                ))
+                DictEncoder().encode(
+                    ExistenceConstraint(
+                        id=constraint.tid,
+                        name=constraint.name,
+                        documentation=Class.doc_string(constraint.documentation),
+                        to_class=constraint.to_class.ref if constraint.to_class else None,
+                        to_domain=constraint.to_domain.ref if constraint.to_domain else None,
+                        attr=Class.translate_path_or_insp_factor(
+                            constraint.attr.path_or_insp_factor
+                        ),
+                    )
+                )
             )
         return translated_constraints
-
 
     @staticmethod
     def translate_set_constraint(constraint_oids: list[str], index: Index):
@@ -897,8 +938,16 @@ class Class(Base):
                 documentation=Class.doc_string(constraint.documentation),
                 to_class=constraint.to_class.ref if constraint.to_class else None,
                 to_domain=constraint.to_domain.ref if constraint.to_domain else None,
-                where=Class.translate_expression(constraint.where.choice) if constraint.where else None,
-                constraint=Class.translate_expression(constraint.constraint.choice) if constraint.constraint else None
+                where=(
+                    Class.translate_expression(constraint.where.choice)
+                    if constraint.where
+                    else None
+                ),
+                constraint=(
+                    Class.translate_expression(constraint.constraint.choice)
+                    if constraint.constraint
+                    else None
+                ),
             )
             translated_constraints.append(DictEncoder().encode(translated_constraint))
             return translated_constraints
@@ -916,7 +965,7 @@ class Class(Base):
                 to_domain=constraint.to_domain.ref if constraint.to_domain else None,
                 kind=constraint.kind,
                 percentage=constraint.percentage,
-                logical_expression=Class.translate_expression(constraint.logical_expression.choice)
+                logical_expression=Class.translate_expression(constraint.logical_expression.choice),
             )
             translated_constraints.append(DictEncoder().encode(translated_constraint))
             return translated_constraints
@@ -932,16 +981,22 @@ class Class(Base):
                     Class.translate_path_or_insp_factor(unique_def_imd.path_or_insp_factor)
                 )
             translated_constraints.append(
-                DictEncoder().encode(UniqueConstraint(
-                    id=constraint.tid,
-                    name=constraint.name,
-                    documentation=Class.doc_string(constraint.documentation),
-                    to_class=constraint.to_class.ref if constraint.to_class else None,
-                    to_domain=constraint.to_domain.ref if constraint.to_domain else None,
-                    kind=constraint.kind,
-                    unique_def=unique_def,
-                    where=Class.translate_expression(constraint.where.choice) if constraint.where else None
-                ))
+                DictEncoder().encode(
+                    UniqueConstraint(
+                        id=constraint.tid,
+                        name=constraint.name,
+                        documentation=Class.doc_string(constraint.documentation),
+                        to_class=constraint.to_class.ref if constraint.to_class else None,
+                        to_domain=constraint.to_domain.ref if constraint.to_domain else None,
+                        kind=constraint.kind,
+                        unique_def=unique_def,
+                        where=(
+                            Class.translate_expression(constraint.where.choice)
+                            if constraint.where
+                            else None
+                        ),
+                    )
+                )
             )
             return translated_constraints
 
@@ -1112,7 +1167,6 @@ class LineType(Base):
 
     @classmethod
     def from_imd(cls, imd_line_type: ImdLineType, index: Index):
-        attributes = []
         attribute_doc = []
         meta_attributes = []
         if imd_line_type.coord_type:
@@ -1331,21 +1385,17 @@ class Module(Base):
                             "reference": reference,
                             "kind": kind,
                             "existence_constraints": Class.translate_existence_constraint(
-                                index.domain_with_existence_constraints.get(element.tid, []),
-                                index
+                                index.domain_with_existence_constraints.get(element.tid, []), index
                             ),
                             "set_constraints": Class.translate_set_constraint(
-                                index.domain_with_set_constraints.get(element.tid, []),
-                                index
+                                index.domain_with_set_constraints.get(element.tid, []), index
                             ),
                             "simple_constraints": Class.translate_simple_constraint(
-                                index.domain_with_simple_constraints.get(element.tid, []),
-                                index
+                                index.domain_with_simple_constraints.get(element.tid, []), index
                             ),
                             "unique_constraints": Class.translate_unique_constraint(
-                                index.domain_with_unique_constraints.get(element.tid, []),
-                                index
-                            )
+                                index.domain_with_unique_constraints.get(element.tid, []), index
+                            ),
                         }
                     )
         basket = None
@@ -1520,7 +1570,7 @@ class Package(Module):
         imd_model: Model = imd_instance
 
         # call Module function to initialize
-        partialy_initialized_package = super(Package, cls).from_imd(
+        partialy_initialized_package = super().from_imd(
             imd_instance, imd_model_data, index, library
         )
         modules = []

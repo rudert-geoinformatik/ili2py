@@ -25,7 +25,7 @@ project root. Content of `generated` will be overwritten by re issue of the comm
 
 First you need to create a folder called `uml` in the root of the project.
 
-Linux: 
+Linux:
 ```shell
 mkdir uml
 ```

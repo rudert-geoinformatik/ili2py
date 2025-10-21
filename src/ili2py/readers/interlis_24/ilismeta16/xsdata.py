@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import AnyStr, IO
+from typing import IO, AnyStr
 
 from xsdata.formats.dataclass.parsers import XmlParser
 from xsdata.formats.dataclass.parsers.config import ParserConfig

@@ -5,31 +5,23 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta16.shared import imd_namespa
 
 log = logging.getLogger(__name__)
 
+
 @dataclass
 class Ref:
 
-    ref: str = field(
-        metadata={
-            "type": "Attribute",
-            "namespace": imd_namespace_map["ili"]
-        }
-    )
+    ref: str = field(metadata={"type": "Attribute", "namespace": imd_namespace_map["ili"]})
 
 
 @dataclass
 class OrderedRef(Ref):
-    order_pos: str = field(
-        metadata={
-            "type": "Attribute",
-            "namespace": imd_namespace_map["ili"]
-        }
-    )
+    order_pos: str = field(metadata={"type": "Attribute", "namespace": imd_namespace_map["ili"]})
 
 
 class HasRef:
     """
     Abstract base class which is used to implement decent behaviour on desired subclasses.
     """
+
     def resolve_refs(self, index: dict):
         """
         References the actual object based on the unique identifier in the index. It is based currently
@@ -49,12 +41,14 @@ class HasRef:
             if isinstance(getattr(self, attribute_name), Ref):
                 reference = getattr(self, attribute_name).ref
                 if not index.get(reference, False):
-                    log.info(f'Element with tid <{reference}> was not found in index. It is highly possible that it is not implemented yet')
+                    log.info(
+                        f"Element with tid <{reference}> was not found in index. It is highly possible that it is not implemented yet"
+                    )
                 else:
                     referenced_element = index[reference]
-                    new_attribute_name = attribute_name.replace('_ref', '')
+                    new_attribute_name = attribute_name.replace("_ref", "")
                     setattr(self, new_attribute_name, referenced_element)
-                    backref_name = f'{new_attribute_name}_backref'
+                    backref_name = f"{new_attribute_name}_backref"
                     if not hasattr(referenced_element, backref_name):
                         setattr(referenced_element, backref_name, [])
                     getattr(referenced_element, backref_name).append(self)

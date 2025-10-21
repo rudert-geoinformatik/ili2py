@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
 from abc import ABC
-from typing import Union
+from dataclasses import dataclass, field
 from decimal import Decimal
+from typing import Union
 
 
 @dataclass
@@ -105,24 +105,18 @@ class Constant(Factor):
 @dataclass
 class ClassConst(Factor):
     # reference to Ilismeta16.Class
-    class_value: str | None = field(
-        default=None
-    )
+    class_value: str | None = field(default=None)
 
 
 @dataclass
 class AttributeConst(Factor):
     # reference to Ilismeta16.AttrOrParam
-    attribute: str | None = field(
-        default=None
-    )
+    attribute: str | None = field(default=None)
 
 
 @dataclass
 class UnitRef(Factor):
-    unit: str | None = field(
-        default=None
-    )
+    unit: str | None = field(default=None)
 
 
 @dataclass
@@ -135,9 +129,20 @@ class ExpressionType:
     class Meta:
         global_type = False
 
-    choice: UnitFunction | UnitRef | AttributeConst | ClassConst | Constant | RuntimeParamRef | FunctionCall | EnumMapping | PathOrInspFactor | CompoundExpr | UnaryExpr | None = field(
-        default=None
-    )
+    choice: (
+        UnitFunction
+        | UnitRef
+        | AttributeConst
+        | ClassConst
+        | Constant
+        | RuntimeParamRef
+        | FunctionCall
+        | EnumMapping
+        | PathOrInspFactor
+        | CompoundExpr
+        | UnaryExpr
+        | None
+    ) = field(default=None)
 
 
 @dataclass
@@ -155,7 +160,7 @@ class SimpleConstraint(Constraint):
     percentage: Decimal | None = field(
         default=None,
     )
-    logical_expression: ExpressionType|None = field(default=None)
+    logical_expression: ExpressionType | None = field(default=None)
 
 
 @dataclass(kw_only=True)
@@ -175,4 +180,4 @@ class UniqueConstraint(Constraint):
 class SetConstraint(Constraint):
     # bag of...
     where: ExpressionType | None = field(default_factory=list)
-    constraint: ExpressionType|None = field(default=None)
+    constraint: ExpressionType | None = field(default=None)
