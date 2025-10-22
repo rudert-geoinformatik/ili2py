@@ -58,7 +58,8 @@ dependencies = [
     "isort==6.0.1",
     "click",
     "ruff",
-    "autoflake"
+    "autoflake",
+    "rich"
 ]
 optional-dependencies.dev = [
     "setuptools-scm>=8",

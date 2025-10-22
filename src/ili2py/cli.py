@@ -6,6 +6,7 @@ import sys
 from typing import Any
 
 import click
+from rich.logging import RichHandler
 
 from ili2py import version
 from ili2py.mappers.helpers import Index
@@ -32,7 +33,16 @@ def version_msg():
 @click.version_option(version, "-V", "--version", message=version_msg())
 def cli(verbose):
     level = logging.DEBUG if verbose else logging.INFO
-    logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
+    handlers = []
+    # we recognize if we run in tty -> colorlogging is enabled with rich logging
+    # else we use the default stream handler (this avoids awkward output when it's piped to a file).
+    if sys.stdout.isatty():
+        handlers.append(RichHandler())
+    else:
+        handlers.append(logging.StreamHandler(sys.stdout))
+    logging.basicConfig(
+        level=level, format="%(levelname)s: %(message)s", datefmt="[%X]", handlers=handlers
+    )
     logging.info("Starting ili2py CLI")
     logging.info(version_msg())
 
