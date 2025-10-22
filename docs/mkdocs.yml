@@ -11,11 +11,11 @@ nav:
       - "Reading IlisMeta16": feature_status/ilismeta16.md
       - "Index Mapper":  feature_status/index_mapper.md
       - "Python Classes":  feature_status/python_classes.md
-      - "UML Diagrams":  feature_status/uml_diagrams.md
+      - "Diagrams":  feature_status/diagrams.md
 
   - Installation: installation.md
   - Usage:
-      - UML: uml.md
+      - UML: diagram.md
   - Code:
       - Interfaces:
           - "INTERLIS 2.4":

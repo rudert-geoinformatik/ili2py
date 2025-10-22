@@ -16,6 +16,8 @@ dist/
 build/
 htmlcov/
 
+ili2py.spec
+
 .tox/
 node_modules
 

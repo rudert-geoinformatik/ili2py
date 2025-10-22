@@ -58,11 +58,13 @@ dependencies = [
     "isort==6.0.1",
     "click",
     "ruff",
-    "autoflake"
+    "autoflake",
+    "rich"
 ]
 optional-dependencies.dev = [
     "setuptools-scm>=8",
     "pre-commit==4.1.0",
+    "pyinstaller"
 ]
 # Test: packages imported in test code and packages required for the "test runner"
 optional-dependencies.test = [

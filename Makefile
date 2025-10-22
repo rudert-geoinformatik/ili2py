@@ -127,3 +127,11 @@ updates: $(PIP_REQUIREMENTS)
 .PHONY: pin-deps
 pin-deps: $(CHECK_REQUIREMENTS) $(TEST_REQUIREMENTS)
 	pip freeze --all > $(PINNED_DEPS)
+
+.PHONY: binary
+binary: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
+	$(VENV_BIN)/pyinstaller --name ili2py --onefile --noconfirm \
+		--add-data "src/ili2py/writers/uml/interlis_23/templates:ili2py/writers/uml/interlis_23/templates" \
+		--add-data "src/ili2py/writers/py/interlis23/templates:ili2py/writers/py/interlis23/templates" \
+		--add-data "src/ili2py/writers/py/interlis24/templates:ili2py/writers/py/interlis24/templates" \
+		src/ili2py/cli.py
