@@ -1,4 +1,4 @@
-# UML-Diagram generation
+# Diagram generation
 
 One of the demonstrator programms is the generation of UML-Diagrams from imd16. The following section gives
 an overview about what formats are supported and the limitations.

@@ -7,17 +7,13 @@ from typing import Any
 
 import click
 
-from ili2py import __version__
+from ili2py import version
 from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
 from ili2py.writers.py.python_structure import Library
-from ili2py.writers.py.render import create_python_classes
+from ili2py.writers.py.render import create_python_classes, library_storage_name
 from ili2py.writers.uml import create_uml_diagram
 from ili2py.writers.uml.interlis_23 import Diagram, tool_settings
-
-this_file_location = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
-
-logging.basicConfig(level="DEBUG")
 
 
 def version_msg():
@@ -27,31 +23,33 @@ def version_msg():
     and Python version.
     """
     python_version = sys.version[:6]
-    location = os.path.dirname(this_file_location)
-    message = f"ili2py from {location} (Python {python_version})"
+    message = f"ili2py {version} from {sys.argv[0]} (Python {python_version})"
     return message
 
 
 @click.group()
-def cli():
+@click.option("-v", "--verbose", is_flag=True, help="Print debug information", default=False)
+@click.version_option(version, "-V", "--version", message=version_msg())
+def cli(verbose):
+    level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
     logging.info("Starting ili2py CLI")
     logging.info(version_msg())
 
 
 @cli.command(
-    help="""Parses an arbitrary imd and creates and creates a diagram of selected flavour
+    help="""Parses an arbitrary IMD16 and creates and creates a diagram of selected flavour
     representing the selected models.""",
-    context_settings=dict(help_option_names=["-h", "--help"]),
+    context_settings=dict(help_option_names=["-h", "--help"], show_default=True),
 )
-@click.version_option(__version__, "-V", "--version", message=version_msg())
-@click.option("-v", "--verbose", is_flag=True, help="Print debug information", default=False)
-@click.option("-i", "--imd", is_flag=False, help="full path to imd file")
+@click.option("-i", "--imd", is_flag=False, required=True, help="full path to IMD16 file")
 @click.option(
-    "-m",
-    "--models",
+    "-o",
+    "--output_folder",
     is_flag=False,
-    help="""Model names separated by comma. This is used to filter the content of the resulting diagram.
-    If not provided, the full tree will be drawn.""",
+    required=True,
+    help="""Path to the folder where the python package should be written to.
+    The folder will be created if not existing.""",
 )
 @click.option(
     "-f",
@@ -59,13 +57,6 @@ def cli():
     is_flag=False,
     default=list(tool_settings.keys())[0],
     help=f'the desired flavour (one of {", ".join(tool_settings.keys())})',
-)
-@click.option(
-    "-o",
-    "--output_folder",
-    is_flag=False,
-    help="""Path to the folder where the python package should be written to.
-    The folder will be created if not existing.""",
 )
 @click.option(
     "-d",
@@ -88,10 +79,19 @@ def cli():
     default="diagram",
     help=f"The name of the output diagram. The postfix (md, puml, etc. is added automatically due to selected flavour).",
 )
-def ili2py_diagram(**kwargs: Any):
+@click.option(
+    "-m",
+    "--models",
+    is_flag=False,
+    help="""Model names separated by comma. This is used to filter the content of the resulting diagram.
+    If not provided, the full tree will be drawn.""",
+)
+@click.pass_context
+def diagram(ctx: click.Context, **kwargs: Any):
     """
     parse an arbitrary imd and creates a UML diagram of selected flavour
     """
+    logging.info("Creating diagram")
     metamodel_path = kwargs.pop("imd")
     model_names = kwargs.pop("models")
     output_path = kwargs.pop("output_folder")
@@ -112,12 +112,21 @@ def ili2py_diagram(**kwargs: Any):
         metamodel = Imd16Reader().read(metamodel_path)
         index = Index(metamodel.datasection)
         diagram = Diagram.from_imd(index)
+        assembled_file_name = f"{file_name or flavour}.{tool_settings[flavour]['postfix']}"
+        logging.info(
+            f"""Diagram ({flavour}) is generated with:
+            path:       {os.path.join(output_path, assembled_file_name)}
+            direction:  {direction if direction else 'DEFAULT'}
+            linetype:   {linetype if linetype else 'DEFAULT'}
+
+        """
+        )
         create_uml_diagram(
             diagram,
             index,
             model_names,
             flavour,
-            f"{file_name or flavour}.{tool_settings[flavour]['postfix']}",
+            assembled_file_name,
             output_path=output_path,
             direction=direction,
             linetype=linetype,
@@ -132,29 +141,34 @@ def ili2py_diagram(**kwargs: Any):
     represents a typed interface to the complete construction.""",
     context_settings=dict(help_option_names=["-h", "--help"]),
 )
-@click.version_option(__version__, "-V", "--version", message=version_msg())
-@click.option("-v", "--verbose", is_flag=True, help="Print debug information", default=False)
-@click.option("-i", "--imd", is_flag=False, help="full path to imd file")
+@click.option("-i", "--imd", is_flag=False, required=True, help="full path to imd file")
 @click.option(
     "-o",
     "--output_folder",
     is_flag=False,
+    required=True,
     help="Path to where the python package should be written",
 )
 @click.option(
     "-l",
     "--library_name",
     is_flag=False,
+    required=True,
     help="Library name which will be used to assemble all python structures in.",
 )
-def ili2py_python_classes(**kwargs: Any):
+def python_classes(**kwargs: Any):
+    logging.info("Creating python-classes")
     metamodel_path = kwargs.pop("imd")
     output_path = kwargs.pop("output_folder")
+    library_name = kwargs.pop("library_name")
     try:
         metamodel = Imd16Reader().read(metamodel_path)
         index = Index(metamodel.datasection)
-        library = Library.from_imd(
-            metamodel.datasection.ModelData, index, kwargs.pop("library_name")
+        library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
+        logging.info(
+            f"""Classes are generated with:
+            path:       {os.path.join(output_path, library_storage_name(library_name))}
+        """
         )
         create_python_classes(library, index, output_path)
     except Exception as error:

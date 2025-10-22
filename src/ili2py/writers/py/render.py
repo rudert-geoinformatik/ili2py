@@ -43,6 +43,10 @@ def create_python_classes(library: Library, index: Index, output_path: str, beau
         raise NotImplementedError(f"ili version '{ili_version}' not supported")
 
 
+def library_storage_name(library_name: str) -> str:
+    return library_name.split(".")[-1]
+
+
 def reader_classes(library: Library, output_path: str, render_config: dict, beautify: bool = True):
     tpl_dir = Path(__file__).parent.joinpath(f"interlis{render_config['selector']}", "templates")
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
@@ -52,7 +56,7 @@ def reader_classes(library: Library, output_path: str, render_config: dict, beau
     # we expect the name to contain dots (as python dotted path) this can be used to create the interface in
     # the correct way for a library where it should be included to. As we always want the folder of the
     # library package to be named after the library we expect the last element the right match in any case.
-    library_name = library.name.split(".")[-1]
+    library_name = library_storage_name(library.name)
     target_path = os.path.join(output_path, library_name)
     if os.path.isdir(target_path):
         shutil.rmtree(target_path)
