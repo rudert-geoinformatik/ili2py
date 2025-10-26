@@ -50,17 +50,17 @@ class {{ line_type.name }}:
                 class Meta:
                     namespace = "{{ render_config['namespace_map']['ili'] }}"
 
-                segments: "list[{{ line_type.attribute.types[0] }}Type|{{ line_type.attribute.types[0] }}ARCType]" = field(
+                vertices: "list[{{ line_type.attribute.types[0] }}Type | {{ line_type.attribute.types[0] }}ARCType]" = field(
                     default_factory=list,
                     metadata={
                         "type": "Elements",
                         "choices": ({
                             "name": "COORD",
-                            "type": "{{ line_type.attribute.types[0] }}Type",
+                            "type": {{ line_type.attribute.types[0] }}Type,
                             "namespace": "{{ render_config['namespace_map']['ili'] }}",
                         },{
                             "name": "ARC",
-                            "type": "{{ line_type.attribute.types[0] }}ARCType",
+                            "type": {{ line_type.attribute.types[0] }}ARCType,
                             "namespace": "{{ render_config['namespace_map']['ili'] }}",
                         } ),
                         "interlis": {

@@ -47,7 +47,7 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endfor %}
 {%-if class_definition.oid  %}
-    {{ class_definition.oid.name }}: "{{ class_definition.oid.types|join(' | ') }}, None" = field(
+    {{ class_definition.oid.name }}: "{{ class_definition.oid.types|join(' | ') }} | None" = field(
         default=None,
         metadata={
             "type": "Attribute",

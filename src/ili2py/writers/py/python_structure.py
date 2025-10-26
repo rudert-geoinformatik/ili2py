@@ -415,7 +415,7 @@ class Attribute(Base):
         if isinstance(referenced_type, EnumType) and referenced_type.name == "TYPE":
             if referenced_type.name == resolved_type.name:
                 class_name = f"{attr_or_param.name}Enum"
-                final_type_name = f"'{referenced_class.name}.{class_name}'"
+                final_type_name = f"{referenced_class.name}.{class_name}"
                 local_type = Enumeration.from_imd(referenced_type, index)
                 local_type.name = class_name
             else:
@@ -423,7 +423,7 @@ class Attribute(Base):
         elif isinstance(referenced_type, ImdLineType) and referenced_type.name == "TYPE":
             if referenced_type.name == resolved_type.name:
                 class_name = f"{attr_or_param.name}LineType"
-                final_type_name = f"'{referenced_class.name}.{class_name}'"
+                final_type_name = f"{referenced_class.name}.{class_name}"
                 local_type = LineType.from_imd(referenced_type, index)
                 local_type.name = class_name
             else:
@@ -535,7 +535,7 @@ class Attribute(Base):
                         )
                 list_type = Attribute.decide_list_type(imd_type_object)
                 type_related_type_class = Class(
-                    name=f"{imd_attr_or_param.name}Type",
+                    name=f"{referenced_class.name}{imd_attr_or_param.name}{imd_type_object.name}",
                     identifier=imd_type_object.tid,
                     doc=["This is a class inserted by ili2py for correctly parsing multi types."],
                     meta_attributes=cls.assemble_meta_attributes(index, imd_type_object.tid),
@@ -564,13 +564,7 @@ class Attribute(Base):
         return cls(
             identifier=imd_attr_or_param.tid,
             name=attribute_name,
-            types=[
-                (
-                    f"{referenced_class.name}.{type_related_type_class.name}"
-                    if type_related_type_class
-                    else final_type_name
-                )
-            ],
+            types=[type_related_type_class.name if type_related_type_class else final_type_name],
             doc=cls.doc_string(imd_attr_or_param.documentation),
             type_restrictions=cls.construct_type_restrictions(referenced_type),
             meta_attributes=meta_attributes,

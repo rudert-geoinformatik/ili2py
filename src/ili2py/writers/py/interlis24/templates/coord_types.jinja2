@@ -55,6 +55,8 @@ class {{ coord_type.name }}:
             }
         }
 
+
+@dataclass
 class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
     class Meta:
         namespace = "{{ render_config['namespace_map']['geom'] }}"
@@ -96,6 +98,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
     )
 
 
+@dataclass
 class {{ coord_type.name }}ARC:
     class Meta:
         namespace = "{{ render_config['namespace_map']['geom'] }}"
