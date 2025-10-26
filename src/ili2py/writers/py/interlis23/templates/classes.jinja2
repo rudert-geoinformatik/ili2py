@@ -5,13 +5,13 @@ from abc import ABC
 {%- for class_definition in classes %}
 
 @dataclass
-{% if class_definition.super_class %}
+{%- if class_definition.super_class %}
 class {{ class_definition.name }}({{ class_definition.super_class }}):
-{% elif class_definition.abstract %}
+{%- elif class_definition.abstract %}
 class {{ class_definition.name }}(ABC):
-{% else %}
+{%- else %}
 class {{ class_definition.name }}:
-{% endif %}
+{%- endif %}
 
     class Meta:
         name = "{{ class_definition.identifier }}"
@@ -41,9 +41,14 @@ class {{ class_definition.name }}:
     {%- macro render_line_types() %}{% include "line_types.jinja2" %}{% endmacro %}
     {{ render_line_types() | indent(4, true) }}
 {%- endif %}
+{%- if attribute.type_related_type_class %}
+    {%- set classes=[attribute.type_related_type_class] %}
+    {%- macro render_type_related_classes() %}{% include "classes.jinja2" %}{% endmacro %}
+    {{ render_type_related_classes() | indent(4, true) }}
+{%- endif %}
 {%- endfor %}
 {%-if class_definition.oid  %}
-    {{ class_definition.oid.name }}: Union[{{ class_definition.oid.types|join(' | ') }}, None] = field(
+    {{ class_definition.oid.name }}: "{{ class_definition.oid.types|join(' | ') }}, None" = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -70,11 +75,6 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-{%- if 'BinBlBoxType' in attribute.types %}
-
-
-
-{% endif %}
     {{ attribute.name }}: "{% if attribute.is_list_type %}list[{{ attribute.types|join(" | ") }}]{% else %}{{ attribute.types|join(" | ") }} | None{% endif %}" = field(
         {%- if attribute.is_list_type %}
         default_factory=list,
@@ -89,6 +89,9 @@ class {{ class_definition.name }}:
             {%- endif %}
             "interlis": {
                 "oid": "{{ attribute.identifier }}",
+                {%- if attribute.reference_targets %}
+                "reference_targets": {{ attribute.reference_targets }},
+                {%- endif %}
                 "meta_attributes": {
                     {%- for item in attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",

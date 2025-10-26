@@ -5,7 +5,7 @@ class {{ coord_type.name }}Type:
     {%- if attribute.reference_system %}
     # {{ attribute.reference_system }}
     {%- endif %}
-    {{ attribute.name.lower() }}: {{ attribute.type }} | None = field(
+    {{ attribute.name.lower() }}: "{{ attribute.types|join(' | ') }} | None" = field(
         default=None,
         metadata={
             "type": "Element",

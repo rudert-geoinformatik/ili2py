@@ -10,7 +10,7 @@ class {{ line_type.name }}:
     {{ "\n".join(line_type.doc) }}
     """
     {%- endif %}
-    {{ line_type.attribute.name }}: list[{{ line_type.attribute.types|join(' | ') }}] = field(
+    {{ line_type.attribute.name }}: "list[{{ line_type.attribute.types|join(' | ') }}]" = field(
         default_factory=list,
         metadata={
             "type": "Elements",
@@ -50,17 +50,17 @@ class {{ line_type.name }}:
                 class Meta:
                     namespace = "{{ render_config['namespace_map']['ili'] }}"
 
-                choice: list[{{ line_type.attribute.types[0] }}Type|{{ line_type.attribute.types[0] }}ARCType] = field(
+                segments: "list[{{ line_type.attribute.types[0] }}Type|{{ line_type.attribute.types[0] }}ARCType]" = field(
                     default_factory=list,
                     metadata={
                         "type": "Elements",
                         "choices": ({
                             "name": "COORD",
-                            "type": {{ line_type.attribute.types[0] }}Type,
+                            "type": "{{ line_type.attribute.types[0] }}Type",
                             "namespace": "{{ render_config['namespace_map']['ili'] }}",
                         },{
                             "name": "ARC",
-                            "type": {{ line_type.attribute.types[0] }}ARCType,
+                            "type": "{{ line_type.attribute.types[0] }}ARCType",
                             "namespace": "{{ render_config['namespace_map']['ili'] }}",
                         } ),
                         "interlis": {

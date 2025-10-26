@@ -40,9 +40,14 @@ class {{ class_definition.name }}:
     {%- macro render_line_types() %}{% include "line_types.jinja2" %}{% endmacro %}
     {{ render_line_types() | indent(4, true) }}
 {%- endif %}
+{%- if attribute.type_related_type_class %}
+    {%- set classes=[attribute.type_related_type_class] %}
+    {%- macro render_type_related_classes() %}{% include "classes.jinja2" %}{% endmacro %}
+    {{ render_type_related_classes() | indent(4, true) }}
+{%- endif %}
 {%- endfor %}
 {%-if class_definition.oid  %}
-    {{ class_definition.oid.name }}: {{ class_definition.oid.type }} | None = field(
+    {{ class_definition.oid.name }}: "{{ class_definition.oid.types|join(' | ') }}, None" = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -55,7 +60,7 @@ class {{ class_definition.name }}:
         }
     )
 {%- else %}
-{%- if class_definition.kind == 'Class' %}
+{%- if class_definition.kind == 'Class' and not class_definition.oid %}
     tid: str = field(
         default=None,
         metadata={
@@ -71,8 +76,12 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-    {{ attribute.name }}: {% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %} | None = field(
+    {{ attribute.name }}: "{% if attribute.is_list_type %}list[{{ attribute.types|join(" | ") }}]{% else %}{{ attribute.types|join(" | ") }} | None{% endif %}" = field(
+        {%- if attribute.is_list_type %}
+        default_factory=list,
+        {%- else %}
         default=None,
+        {%- endif %}
         metadata={
             "type": "Element",
             "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
@@ -108,6 +117,7 @@ class {{ class_definition.name }}:
                 }
             }
         }
+
     @property
     def existence_constraints(self) -> list:
         return {{ class_definition['existence_constraints'] }}

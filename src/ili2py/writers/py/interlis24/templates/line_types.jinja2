@@ -10,7 +10,7 @@ class {{ line_type.name }}:
     {{ "\n".join(line_type.doc) }}
     """
     {%- endif %}
-    {{ line_type.attribute.name }}: list[{{ line_type.attribute.type }}] = field(
+    {{ line_type.attribute.name }}: "list[{{ line_type.attribute.types|join(' | ') }}]" = field(
         default_factory=list,
         metadata={
             "type": "Elements",
@@ -49,17 +49,17 @@ class {{ line_type.name }}:
                 class Meta:
                     namespace = "{{ render_config['namespace_map']['geom'] }}"
 
-                segments: list[{{ line_type.attribute.type }}Type|{{ line_type.attribute.type }}ARCType] = field(
+                segments: "list[{{ line_type.attribute.types[0] }}Type|{{ line_type.attribute.types[0] }}ARCType]" = field(
                     default_factory=list,
                     metadata={
                         "type": "Elements",
                         "choices": ({
                             "name": "coord",
-                            "type": {{ line_type.attribute.type }}Type,
+                            "type": "{{ line_type.attribute.type }}Type",
                             "namespace": "{{ render_config['namespace_map']['geom'] }}",
                         },{
                             "name": "arc",
-                            "type": {{ line_type.attribute.type }}ARCType,
+                            "type": "{{ line_type.attribute.type }}ARCType",
                             "namespace": "{{ render_config['namespace_map']['geom'] }}",
                         } ),
                         "interlis": {

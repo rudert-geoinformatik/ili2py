@@ -25,7 +25,7 @@ import {{ package.library }}.{{ module_path }}
 {%- endif %}
 
 
-VERSION="{{ package.version }}"
+VERSION={% if package.version %}"{{ package.version }}"{% else %}{{ package.version }}{% endif %}
 ILI_VERSION="{{ package.ili_version }}"
 
 metadata: dict = {

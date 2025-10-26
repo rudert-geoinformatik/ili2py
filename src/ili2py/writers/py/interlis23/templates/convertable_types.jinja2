@@ -28,15 +28,6 @@ def get_special_str_types() -> list:
         {%- endfor %}
     ]
 
-def get_contained_model_names() -> list:
-    return [
-    {%- for package in library.packages %}
-    {%- if package.name != "INTERLIS" %}
-    "{{ package.name }}",
-    {%- endif %}
-    {%- endfor %}
-    ]
-
 
 def get_special_float_types() -> list:
     return [
@@ -47,4 +38,13 @@ def get_special_float_types() -> list:
         {%- endif %}
         {%- endfor %}
         {%- endfor %}
+    ]
+
+def get_contained_model_names() -> list:
+    return [
+    {%- for package in library.packages %}
+    {%- if package.name != "INTERLIS" %}
+    "{{ package.name }}",
+    {%- endif %}
+    {%- endfor %}
     ]
