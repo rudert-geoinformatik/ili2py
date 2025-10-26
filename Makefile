@@ -5,7 +5,6 @@ PIP_REQUIREMENTS = $(VENV_PATH)/.requirements-timestamp
 DEV_REQUIREMENTS = $(VENV_PATH)/.dev-requirements-timestamp
 DOC_REQUIREMENTS = $(VENV_PATH)/.doc-requirements-timestamp
 TEST_REQUIREMENTS = $(VENV_PATH)/.test-requirements-timestamp
-CHECK_REQUIREMENTS = $(VENV_PATH)/.check-requirements-timestamp
 VENV_BIN = $(VENV_PATH)/bin
 PIP_COMMAND = pip3
 PYTHON_PATH = $(shell which python3)
@@ -52,10 +51,6 @@ $(TEST_REQUIREMENTS): $(PIP_REQUIREMENTS)
 	$(VENV_BIN)/$(PIP_COMMAND) install -e .[test]
 	touch $@
 
-$(CHECK_REQUIREMENTS): $(PIP_REQUIREMENTS)
-	$(VENV_BIN)/$(PIP_COMMAND) install .[check]
-	touch $@
-
 # **************
 # Common targets
 # **************
@@ -71,6 +66,9 @@ install-docs: $(PIP_REQUIREMENTS) $(DOC_REQUIREMENTS)
 
 .PHONY: install-dev
 install-dev: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
+
+.PHONY: install-dev
+install-test: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS) $(TEST_REQUIREMENTS)
 
 .PHONY: build
 build: $(BUILD_DEPS)
@@ -108,7 +106,7 @@ test: $(TEST_REQUIREMENTS) $(VARS_FILES) install-dev
 tests: test
 
 .PHONY: check
-check: $(CHECK_REQUIREMENTS)
+check: $(PIP_REQUIREMENTS) $(TEST_REQUIREMENTS)
 	mypy --explicit-package-bases --show-error-codes src/$(PACKAGE) tests
 
 .PHONY: doc-html
@@ -125,7 +123,7 @@ updates: $(PIP_REQUIREMENTS)
 	$(VENV_BIN)/pip list --outdated
 
 .PHONY: pin-deps
-pin-deps: $(CHECK_REQUIREMENTS) $(TEST_REQUIREMENTS)
+pin-deps: $(PIP_REQUIREMENTS) $(TEST_REQUIREMENTS)
 	pip freeze --all > $(PINNED_DEPS)
 
 .PHONY: binary
