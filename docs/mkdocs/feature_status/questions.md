@@ -71,3 +71,10 @@ ili2c 5.6.6 seems to miss the EnumAssignment association in imd16 exports.
 
 Example model:
 - DMAVTYM_Alles_V1_0
+
+## How are the geometric overlaps constraint unit transported in IlisMeta16?
+
+Currently, we can have IlisMeta16:LineType.IlisMeta16:MaxOverlap in IlisMeta16 but it's not clear where the
+unit is coming from.
+
+Not sure if this is relevant, because there is also no unit defined in e.g. GeometryCHLV95_V1
