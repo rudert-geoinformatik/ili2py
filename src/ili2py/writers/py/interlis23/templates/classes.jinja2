@@ -43,7 +43,7 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endfor %}
 {%-if class_definition.oid  %}
-    {{ class_definition.oid.name }}: {{ class_definition.oid.type }} = field(
+    {{ class_definition.oid.name }}: Union[{{ class_definition.oid.types|join(' | ') }}, None] = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -55,8 +55,8 @@ class {{ class_definition.name }}:
         }
     )
 {%- else %}
-{%- if class_definition.kind == 'Class' %}
-    TID: str = field(
+{%- if class_definition.kind == 'Class' and not class_definition.oid %}
+    TID: str | None = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -70,22 +70,17 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-{%- if attribute.type == 'BinBlBoxType' %}
+{%- if 'BinBlBoxType' in attribute.types %}
 
-    @dataclass
-    class BinBlBox:
-        class Meta:
-            namespace = "{{ render_config['namespace_map']['ili'] }}"
-        BINBLBOX: BinBlBoxType = field(
-            metadata={
-                "type": "Element",
-                "namespace": "{{ render_config['namespace_map']['ili'] }}",
-            }
-        )
+
 
 {% endif %}
-    {{ attribute.name }}: {% if attribute.type == 'BinBlBoxType' %}"{{ class_definition.name }}.BinBlBox"{% else %}{% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %}{% endif %} = field(
+    {{ attribute.name }}: "{% if attribute.is_list_type %}list[{{ attribute.types|join(" | ") }}]{% else %}{{ attribute.types|join(" | ") }} | None{% endif %}" = field(
+        {%- if attribute.is_list_type %}
+        default_factory=list,
+        {%- else %}
         default=None,
+        {%- endif %}
         metadata={
             "type": "Element",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
@@ -120,15 +115,15 @@ class {{ class_definition.name }}:
         }
 
     @property
-    def existence_constraints(self):
+    def existence_constraints(self) -> list:
         return {{ class_definition['existence_constraints'] }}
     @property
-    def set_constraints(self):
+    def set_constraints(self) -> list:
         return {{ class_definition['set_constraints'] }}
     @property
-    def simple_constraints(self):
+    def simple_constraints(self) -> list:
         return {{ class_definition['simple_constraints'] }}
     @property
-    def unique_constraints(self):
+    def unique_constraints(self) -> list:
         return {{ class_definition['unique_constraints'] }}
 {% endfor -%}

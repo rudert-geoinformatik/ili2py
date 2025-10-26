@@ -66,7 +66,7 @@ class EnumMapping(Factor):
 class ActualArgument:
     kind: str = field()
     # reference string to Argument
-    formal_argument: str = field(
+    formal_argument: str | None = field(
         default=None,
     )
     # references to classes bag {0..1}
@@ -82,7 +82,7 @@ class ActualArgument:
 @dataclass
 class FunctionCall(Factor):
     # ref to IlisMeta16.FunctionDef
-    function: str = field(
+    function: str | None = field(
         default=None,
     )
     arguments: list[ActualArgument] = field(
@@ -150,8 +150,8 @@ class Constraint:
     id: str = field()
     name: str = field()
     documentation: list[str] = field()
-    to_class: str = field(default=None)
-    to_domain: str = field(default=None)
+    to_class: str | None = field(default=None)
+    to_domain: str | None = field(default=None)
 
 
 @dataclass(kw_only=True)
@@ -173,11 +173,11 @@ class UniqueConstraint(Constraint):
     kind: str = field()
     unique_def: list[PathOrInspFactor] = field()
     # bag of...
-    where: ExpressionType = field(default_factory=list)
+    where: ExpressionType | None = field(default=None)
 
 
 @dataclass(kw_only=True)
 class SetConstraint(Constraint):
     # bag of...
-    where: ExpressionType | None = field(default_factory=list)
+    where: ExpressionType | None = field(default=None)
     constraint: ExpressionType | None = field(default=None)

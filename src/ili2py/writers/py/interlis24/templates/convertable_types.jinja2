@@ -5,7 +5,7 @@ from {{ library.name }}.{{ package.name }} import {{ definition['name'] }} as {{
 {% endfor %}
 
 
-def get_special_int_types():
+def get_special_int_types() -> list:
     return [
         {%- for package in library.packages %}
         {%- for definition in package.type_definitions %}
@@ -17,7 +17,7 @@ def get_special_int_types():
     ]
 
 
-def get_special_str_types():
+def get_special_str_types() -> list:
     return [
         {%- for package in library.packages %}
         {%- for definition in package.type_definitions %}
@@ -29,7 +29,7 @@ def get_special_str_types():
     ]
 
 
-def get_special_float_types():
+def get_special_float_types() -> list:
     return [
         {%- for package in library.packages %}
         {%- for definition in package.type_definitions %}
@@ -40,7 +40,7 @@ def get_special_float_types():
         {%- endfor %}
     ]
 
-def get_contained_model_names():
+def get_contained_model_names() -> list:
     return [
     {%- for package in library.packages %}
     {%- if package.name != "INTERLIS" %}

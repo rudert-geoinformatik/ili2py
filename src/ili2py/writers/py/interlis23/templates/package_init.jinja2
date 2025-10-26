@@ -28,7 +28,7 @@ import {{ package.library }}.{{ module_path }}
 VERSION="{{ package.version }}"
 ILI_VERSION="{{ package.ili_version }}"
 
-metadata = {
+metadata: dict = {
     "interlis": {
         "meta_attributes": {
             {% for item in package.meta_attributes %}

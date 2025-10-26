@@ -21,7 +21,7 @@ import {{ module.library }}.{{ module_path }}
 """
 {%- endif %}
 
-metadata = {
+metadata: dict = {
     "interlis": {
         "meta_attributes": {
             {% for item in module.meta_attributes %}

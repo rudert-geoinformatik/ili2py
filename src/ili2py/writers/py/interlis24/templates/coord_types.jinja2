@@ -5,7 +5,7 @@ class {{ coord_type.name }}Type:
     {%- if attribute.reference_system %}
     # {{ attribute.reference_system }}
     {%- endif %}
-    {{ attribute.name.lower() }}: {{ attribute.type }} = field(
+    {{ attribute.name.lower() }}: {{ attribute.type }} | None = field(
         default=None,
         metadata={
             "type": "Element",
@@ -33,7 +33,7 @@ class {{ coord_type.name }}:
     {{ "\n".join(coord_type.doc) }}
     """
     {%- endif %}
-    coord: {{ coord_type.name }}Type = field(
+    coord: {{ coord_type.name }}Type | None = field(
         default=None,
         metadata={
             "type": "Element",
@@ -61,7 +61,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
-    a1: float = field(
+    a1: float | None = field(
         default=None,
         metadata={
             "type": "Element",
@@ -72,7 +72,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
             }
         }
     )
-    a2: float = field(
+    a2: float | None = field(
         default=None,
         metadata={
             "type": "Element",
@@ -83,7 +83,7 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
             }
         }
     )
-    r: float = field(
+    r: float | None = field(
         default=None,
         metadata={
             "type": "Element",
@@ -102,7 +102,7 @@ class {{ coord_type.name }}ARC:
     """
     This is an intermediate class which simplifies parsing of XTF later.
     """
-    arc: {{ coord_type.name }}ARCType = field(
+    arc: {{ coord_type.name }}ARCType | None = field(
         default=None,
         metadata={
             "type": "Element",

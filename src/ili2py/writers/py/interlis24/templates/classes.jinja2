@@ -42,7 +42,7 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endfor %}
 {%-if class_definition.oid  %}
-    {{ class_definition.oid.name }}: {{ class_definition.oid.type }} = field(
+    {{ class_definition.oid.name }}: {{ class_definition.oid.type }} | None = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -71,7 +71,7 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-    {{ attribute.name }}: {% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %} = field(
+    {{ attribute.name }}: {% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %} | None = field(
         default=None,
         metadata={
             "type": "Element",
@@ -109,15 +109,15 @@ class {{ class_definition.name }}:
             }
         }
     @property
-    def existence_constraints(self):
+    def existence_constraints(self) -> list:
         return {{ class_definition['existence_constraints'] }}
     @property
-    def set_constraints(self):
+    def set_constraints(self) -> list:
         return {{ class_definition['set_constraints'] }}
     @property
-    def simple_constraints(self):
+    def simple_constraints(self) -> list:
         return {{ class_definition['simple_constraints'] }}
     @property
-    def unique_constraints(self):
+    def unique_constraints(self) -> list:
         return {{ class_definition['unique_constraints'] }}
 {% endfor -%}
