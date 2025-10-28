@@ -1,10 +1,11 @@
 import inspect
 import os
 import shutil
-import subprocess
-import sys
 from pathlib import Path
 
+import autoflake
+import black
+import isort
 from jinja2 import Environment, FileSystemLoader
 
 from ili2py.mappers.helpers import Index
@@ -92,38 +93,32 @@ def reader_classes(library: Library, output_path: str, render_config: dict, beau
                 module=module, render_config=render_config, package=package
             )
             module_file.write_text(module_content)
-    commands = [
-        ["isort", output_path, "--profile black", "--float-to-top"],
-        [
-            "ruff",
-            "format",
-            "--line-length",
-            "79",
-            output_path,
-        ],
-        [
-            "ruff",
-            "check",
-            "--extend-select",
-            "I",
-            "--extend-select",
-            "E401",
-            "--fix",
-            "--unsafe-fixes",
-            "--exit-zero",
-            output_path,
-        ],
-        ["autoflake", "--in-place", "--remove-all-unused-imports", "--recursive", output_path],
-    ]
-    executable_path = os.path.dirname(sys.executable)
-    env = os.environ.copy()
-    if env.get("PATH"):
-        env["PATH"] = executable_path + os.pathsep + env["PATH"]
     if beautify:
-        for command in commands:
-            subprocess.run(
-                command,
-                capture_output=True,
-                check=True,
-                env=env,
+
+        output_path_pathlib = Path(output_path)
+        py_files = (
+            output_path_pathlib.rglob("*.py")
+            if output_path_pathlib.is_dir()
+            else [output_path_pathlib]
+        )
+
+        # run autoflake
+        for file_path in py_files:
+            code = file_path.read_text()
+            fixed_code = autoflake.fix_code(
+                code,
+                remove_all_unused_imports=True,
+                remove_unused_variables=True,
+            )
+            file_path.write_text(fixed_code)
+
+        # run isort
+        for file_path in py_files:
+            isort.file(file_path, profile="black", float_to_top=True)
+
+        # run black
+        mode = black.FileMode(line_length=79)
+        for file_path in py_files:
+            black.format_file_in_place(
+                file_path, fast=False, mode=mode, write_back=black.WriteBack.YES
             )
