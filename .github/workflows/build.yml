@@ -89,6 +89,8 @@ jobs:
           path: dist_upload/*
   release_latest:
     name: Release Latest
+    permissions:
+      contents: write
     needs: [ build ]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
