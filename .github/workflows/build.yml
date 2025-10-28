@@ -44,9 +44,9 @@ jobs:
             echo "Binary test failed"
             exit 1
           fi
-          ./dist/ili2py diagram -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -f plantuml -o .generated
-          ./dist/ili2py diagram -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -f mermaid -o .generated
-          ./dist/ili2py python-classes -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o .generated -l interface
+          ./dist/ili2py -v diagram -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -f plantuml -o .generated
+          ./dist/ili2py -v diagram -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -f mermaid -o .generated
+          ./dist/ili2py -v python-classes -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o .generated -l interface
 
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'
@@ -69,9 +69,9 @@ jobs:
           # check exit code
           & $binary --version
           if ($LASTEXITCODE -ne 0) { exit 1 }
-          .\dist\ili2py.exe diagram -i tests\data\models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -f plantuml -o .generated
-          .\dist\ili2py.exe diagram -i tests\data\models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -f mermaid -o .generated
-          .\dist\ili2py.exe python-classes -i tests\data\models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -o .generated -l interface
+          .\dist\ili2py.exe -v diagram -i tests\data\models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -f plantuml -o .generated
+          .\dist\ili2py.exe -v diagram -i tests\data\models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -f mermaid -o .generated
+          .\dist\ili2py.exe -v python-classes -i tests\data\models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -o .generated -l interface
 
       - name: Rename binary
         run: |
