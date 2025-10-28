@@ -57,8 +57,9 @@ dependencies = [
     "black==25.1.0",
     "isort==6.0.1",
     "click",
-    "ruff",
+    "black",
     "autoflake",
+    # logging
     "rich"
 ]
 optional-dependencies.dev = [

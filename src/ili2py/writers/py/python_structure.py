@@ -756,7 +756,16 @@ class Class(Base):
                 imd_class.super.ref, imd_class.tid, index
             )
             if super_class_reference_imports:
-                related_class_imports.append(super_class_reference_imports)
+                if (
+                    len(super_class_reference_imports[0].split(".")) > 1
+                    and super_class_reference_imports[1] is None
+                    and super_class_reference_imports[2] is None
+                ):
+                    logging.debug(
+                        "Import was skipped, since it has too many dots: {super_class_reference_imports[0]}"
+                    )
+                else:
+                    related_class_imports.append(super_class_reference_imports)
         return cls(
             identifier=imd_class.tid,
             name=imd_class.name,

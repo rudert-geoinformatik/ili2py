@@ -129,7 +129,5 @@ pin-deps: $(PIP_REQUIREMENTS) $(TEST_REQUIREMENTS)
 .PHONY: binary
 binary: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
 	$(VENV_BIN)/pyinstaller --name ili2py --onefile --noconfirm \
-		--add-data "src/ili2py/writers/uml/interlis_23/templates:ili2py/writers/uml/interlis_23/templates" \
-		--add-data "src/ili2py/writers/py/interlis23/templates:ili2py/writers/py/interlis23/templates" \
-		--add-data "src/ili2py/writers/py/interlis24/templates:ili2py/writers/py/interlis24/templates" \
+		--add-data "src/ili2py:ili2py" \
 		src/ili2py/cli.py
