@@ -173,6 +173,9 @@ class Attribute(Base):
     type_related_type_class: Optional["Class"] = field(default=None)
     reference_targets: list[str] = field(default_factory=list)
     is_list_type: bool = field(default=False)
+    is_point_like: bool = field(default=False)
+    is_line_like: bool = field(default=False)
+    is_polygon_like: bool = field(default=False)
 
     @staticmethod
     def check_float_kind(representation: str | None) -> bool:
@@ -572,6 +575,11 @@ class Attribute(Base):
             line_type=local_type if isinstance(local_type, LineType) else None,
             type_related_type_class=type_related_type_class,
             is_list_type=Attribute.decide_list_type(referenced_type),
+            is_point_like=isinstance(referenced_type, ImdCoordType),
+            is_line_like=isinstance(referenced_type, ImdLineType)
+            and referenced_type.kind in ["Polyline", "DirectedPolyline"],
+            is_polygon_like=isinstance(referenced_type, ImdLineType)
+            and referenced_type.kind in ["Surface", "Area"],
         )
 
     @staticmethod
@@ -645,6 +653,17 @@ class Class(Base):
     set_constraints: list[dict] = field(default_factory=list)
     simple_constraints: list[dict] = field(default_factory=list)
     unique_constraints: list[dict] = field(default_factory=list)
+    geom_point_like_attributes: list[Attribute] = field(default_factory=list)
+    geom_line_like_attributes: list[Attribute] = field(default_factory=list)
+    geom_polygon_like_attributes: list[Attribute] = field(default_factory=list)
+
+    @property
+    def geom_attributes(self):
+        return (
+            self.geom_polygon_like_attributes
+            + self.geom_line_like_attributes
+            + self.geom_point_like_attributes
+        )
 
     @classmethod
     def from_imd(cls, imd_class: ImdClass, imd_model_data: ModelData, index: Index):
@@ -691,12 +710,21 @@ class Class(Base):
                 line_type=None,
                 type_related_type_class=None,
             )
+        point_like_attributes = []
+        line_like_attributes = []
+        polygon_like_attributes = []
         if index.class_class_attribute.get(imd_class.tid):
             for imd_attr_or_param_oid in index.class_class_attribute[imd_class.tid]:
                 attribute = Attribute.from_imd(
                     index.index[imd_attr_or_param_oid], imd_model_data, index
                 )
                 attributes.append(attribute)
+                if attribute.is_point_like:
+                    point_like_attributes.append(attribute)
+                if attribute.is_line_like:
+                    line_like_attributes.append(attribute)
+                if attribute.is_polygon_like:
+                    polygon_like_attributes.append(attribute)
         if imd_class.tid in index.association_to_class_ref_attributes:
             for role_tid, related_class_tid in index.association_to_class_ref_attributes[
                 imd_class.tid
@@ -718,6 +746,7 @@ class Class(Base):
                         types=["Ref"],
                         meta_attributes=meta_attributes,
                         type_restrictions=type_restrictions,
+                        reference_targets=[related_class_tid],
                     )
                 )
         meta_attributes = cls.assemble_meta_attributes(index, imd_class.tid)
@@ -751,6 +780,9 @@ class Class(Base):
             unique_constraints=Class.translate_unique_constraint(
                 index.class_with_unique_constraints.get(imd_class.tid, []), index
             ),
+            geom_point_like_attributes=point_like_attributes,
+            geom_line_like_attributes=line_like_attributes,
+            geom_polygon_like_attributes=polygon_like_attributes,
         )
 
     @staticmethod
@@ -1171,6 +1203,8 @@ class LineType(Base):
     max_overlap: float = field(default=None)
     straights: bool = field(default=False)
     arcs: bool = field(default=False)
+    is_line_like: bool = field(default=False)
+    is_polygon_like: bool = field(default=False)
 
     @classmethod
     def from_imd(cls, imd_line_type: ImdLineType, index: Index):
@@ -1211,6 +1245,8 @@ class LineType(Base):
             straights=imd_line_type.tid in index.line_form["INTERLIS.STRAIGHTS"],
             arcs=imd_line_type.tid in index.line_form["INTERLIS.ARCS"],
             meta_attributes=meta_attributes,
+            is_line_like=imd_line_type.kind in ["Polyline", "DirectedPolyline"],
+            is_polygon_like=imd_line_type.kind in ["Surface", "Area"],
         )
 
 

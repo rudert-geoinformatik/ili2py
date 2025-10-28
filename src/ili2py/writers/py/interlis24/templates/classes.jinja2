@@ -120,14 +120,95 @@ class {{ class_definition.name }}:
 
     @property
     def existence_constraints(self) -> list:
+        """
+        Delivers the existence constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['existence_constraints'] }}
     @property
     def set_constraints(self) -> list:
+        """
+        Delivers the set constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['set_constraints'] }}
     @property
     def simple_constraints(self) -> list:
+        """
+        Delivers the simple constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['simple_constraints'] }}
     @property
     def unique_constraints(self) -> list:
+        """
+        Delivers the unique constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['unique_constraints'] }}
+    @property
+    def geom_point_like_attribute_values(self) -> list[Tuple[str, Any]]:
+        """
+        Gives back a list of tuples which contain the name of the attribute and
+        the corresponding value for point like geometries.
+
+        Returns:
+            Tuple, first element is the attribute name, second the geometry value.
+        """
+        return [
+        {%- for attribute in class_definition.geom_point_like_attributes %}
+            ("{{ attribute.name }}", self.{{ attribute.name }}){% if not loop.last %},{% endif %}
+        {%- endfor %}
+        ]
+    @property
+    def geom_line_like_attribute_values(self) -> list[Tuple[str, Any]]:
+        """
+        Gives back a list of tuples which contain the name of the attribute and
+        the corresponding value for line like geometries.
+
+        Returns:
+            Tuple, first element is the attribute name, second the geometry value.
+        """
+        return [
+        {%- for attribute in class_definition.geom_line_like_attributes %}
+            ("{{ attribute.name }}", self.{{ attribute.name }}){% if not loop.last %},{% endif %}
+        {%- endfor %}
+        ]
+    @property
+    def geom_polygon_like_attribute_values(self) -> list[Tuple[str, Any]]:
+        """
+        Gives back a list of tuples which contain the name of the attribute and
+        the corresponding value for polygon like geometries.
+
+        Returns:
+            Tuple, first element is the attribute name, second the geometry value.
+        """
+        return [
+        {%- for attribute in class_definition.geom_polygon_like_attributes %}
+            ("{{ attribute.name }}", self.{{ attribute.name }}){% if not loop.last %},{% endif %}
+        {%- endfor %}
+        ]
+    @property
+    def geom_attributes(self) -> list[str]:
+        """
+        Delivers a list of attributes names which contain geometric information.
+
+        Returns:
+            The list of geometry attribute names. Empty list when no geometry attributes at this class.
+        """
+        return [
+            {{ class_definition.geom_attributes | map(attribute='name') | map('string') | map('quote') | join(', ') }}
+        ]
 {% endfor -%}
