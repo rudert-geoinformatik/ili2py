@@ -1,11 +1,11 @@
 
 {%- for module_path, class_item, alias in library.related_class_imports %}
 {%- if class_item and alias  %}
-from {{ library.library }}.{{ module_path }} import {{ class_item }} as {{ alias }}
+from {{ library.name }}.{{ module_path }} import {{ class_item }} as {{ alias }}
 {%- elif class_item and not alias %}
-from {{ library.library }}.{{ module_path }} import {{ class_item }}
+from {{ library.name }}.{{ module_path }} import {{ class_item }}
 {%- elif not class_item and not alias %}
-import {{ library.library }}.{{ module_path }}
+import {{ library.name }}.{{ module_path }}
 {%- endif %}
 {%- endfor %}
 from dataclasses import dataclass, field

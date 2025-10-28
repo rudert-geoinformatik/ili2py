@@ -5,13 +5,13 @@ from abc import ABC
 {%- for class_definition in classes %}
 
 @dataclass
-{% if class_definition.super_class %}
+{%- if class_definition.super_class %}
 class {{ class_definition.name }}({{ class_definition.super_class }}):
-{% elif class_definition.abstract %}
+{%- elif class_definition.abstract %}
 class {{ class_definition.name }}(ABC):
-{% else %}
+{%- else %}
 class {{ class_definition.name }}:
-{% endif %}
+{%- endif %}
 
     class Meta:
         name = "{{ class_definition.identifier }}"
@@ -41,9 +41,14 @@ class {{ class_definition.name }}:
     {%- macro render_line_types() %}{% include "line_types.jinja2" %}{% endmacro %}
     {{ render_line_types() | indent(4, true) }}
 {%- endif %}
+{%- if attribute.type_related_type_class %}
+    {%- set classes=[attribute.type_related_type_class] %}
+    {%- macro render_type_related_classes() %}{% include "classes.jinja2" %}{% endmacro %}
+    {{ render_type_related_classes() | indent(4, true) }}
+{%- endif %}
 {%- endfor %}
 {%-if class_definition.oid  %}
-    {{ class_definition.oid.name }}: {{ class_definition.oid.type }} = field(
+    {{ class_definition.oid.name }}: "{{ class_definition.oid.types|join(' | ') }} | None" = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -55,8 +60,8 @@ class {{ class_definition.name }}:
         }
     )
 {%- else %}
-{%- if class_definition.kind == 'Class' %}
-    TID: str = field(
+{%- if class_definition.kind == 'Class' and not class_definition.oid %}
+    TID: str | None = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -70,22 +75,12 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-{%- if attribute.type == 'BinBlBoxType' %}
-
-    @dataclass
-    class BinBlBox:
-        class Meta:
-            namespace = "{{ render_config['namespace_map']['ili'] }}"
-        BINBLBOX: BinBlBoxType = field(
-            metadata={
-                "type": "Element",
-                "namespace": "{{ render_config['namespace_map']['ili'] }}",
-            }
-        )
-
-{% endif %}
-    {{ attribute.name }}: {% if attribute.type == 'BinBlBoxType' %}"{{ class_definition.name }}.BinBlBox"{% else %}{% if attribute.name == attribute.type or class_definition.name == attribute.type %}"{{ attribute.type }}"{% else %}{{ attribute.type }}{% endif %}{% endif %} = field(
+    {{ attribute.name }}: "{% if attribute.is_list_type %}list[{{ attribute.types|join(" | ") }}]{% else %}{{ attribute.types|join(" | ") }} | None{% endif %}" = field(
+        {%- if attribute.is_list_type %}
+        default_factory=list,
+        {%- else %}
         default=None,
+        {%- endif %}
         metadata={
             "type": "Element",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
@@ -94,6 +89,9 @@ class {{ class_definition.name }}:
             {%- endif %}
             "interlis": {
                 "oid": "{{ attribute.identifier }}",
+                {%- if attribute.reference_targets %}
+                "reference_targets": {{ attribute.reference_targets }},
+                {%- endif %}
                 "meta_attributes": {
                     {%- for item in attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
@@ -120,15 +118,98 @@ class {{ class_definition.name }}:
         }
 
     @property
-    def existence_constraints(self):
+    def existence_constraints(self) -> list:
+        """
+        Delivers the existence constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['existence_constraints'] }}
     @property
-    def set_constraints(self):
+    def set_constraints(self) -> list:
+        """
+        Delivers the set constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['set_constraints'] }}
     @property
-    def simple_constraints(self):
+    def simple_constraints(self) -> list:
+        """
+        Delivers the simple constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['simple_constraints'] }}
     @property
-    def unique_constraints(self):
+    def unique_constraints(self) -> list:
+        """
+        Delivers the unique constraints applying to this object.
+
+        Returns:
+            The list of constraints as dict. They can be deserialized with the
+            corresponding classes.
+        """
         return {{ class_definition['unique_constraints'] }}
+    @property
+    def geom_point_like_attribute_values(self) -> list[Tuple[str, Any]]:
+        """
+        Gives back a list of tuples which contain the name of the attribute and
+        the corresponding value for point like geometries.
+
+        Returns:
+            Tuple, first element is the attribute name, second the geometry value.
+        """
+        return [
+        {%- for attribute in class_definition.geom_point_like_attributes %}
+            ("{{ attribute.name }}", self.{{ attribute.name }}){% if not loop.last %},{% endif %}
+        {%- endfor %}
+        ]
+    @property
+    def geom_line_like_attribute_values(self) -> list[Tuple[str, Any]]:
+        """
+        Gives back a list of tuples which contain the name of the attribute and
+        the corresponding value for line like geometries.
+
+        Returns:
+            Tuple, first element is the attribute name, second the geometry value.
+        """
+        return [
+        {%- for attribute in class_definition.geom_line_like_attributes %}
+            ("{{ attribute.name }}", self.{{ attribute.name }}){% if not loop.last %},{% endif %}
+        {%- endfor %}
+        ]
+    @property
+    def geom_polygon_like_attribute_values(self) -> list[Tuple[str, Any]]:
+        """
+        Gives back a list of tuples which contain the name of the attribute and
+        the corresponding value for polygon like geometries.
+
+        Returns:
+            Tuple, first element is the attribute name, second the geometry value.
+        """
+        return [
+        {%- for attribute in class_definition.geom_polygon_like_attributes %}
+            ("{{ attribute.name }}", self.{{ attribute.name }}){% if not loop.last %},{% endif %}
+        {%- endfor %}
+        ]
+    @property
+    def geom_attributes(self) -> list[str]:
+        """
+        Delivers a list of attributes names which contain geometric information.
+
+        Returns:
+            The list of geometry attribute names. Empty list when no geometry attributes at this class.
+        """
+        return [
+            {% for attr in class_definition.geom_attributes %}
+                "{{ attr.name }}"{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        ]
 {% endfor -%}

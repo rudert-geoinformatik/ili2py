@@ -10,15 +10,44 @@ class {{ line_type.name }}:
     {{ "\n".join(line_type.doc) }}
     """
     {%- endif %}
-    {{ line_type.attribute.name }}: list[{{ line_type.attribute.type }}] = field(
-        default_factory=list,
+    @dataclass
+    class Segment:
+        class Meta:
+            namespace = "{{ render_config['namespace_map']['ili'] }}"
+        {%- if line_type.attribute.types[0] == 'Any' %}
+        vertices: "list[{{ line_type.attribute.types[0] }}]" = field(
+        {%- else %}
+        vertices: "list[{{ line_type.attribute.types[0] }}Type | {{ line_type.attribute.types[0] }}ARCType]" = field(
+        {%- endif %}
+            default_factory=list,
+            metadata={
+                "type": "Elements",
+                "choices": ({
+                    "name": "COORD",
+                    "type": {%- if line_type.attribute.types[0] == 'Any' %}Any{% else %}{{ line_type.attribute.types[0] }}Type{% endif %},
+                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                },{
+                    "name": "ARC",
+                    "type": {%- if line_type.attribute.types[0] == 'Any' %}Any{% else %}{{ line_type.attribute.types[0] }}ARCType{% endif %},
+                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
+                } ),
+                "interlis": {
+                    "meta_attributes": {
+
+                    }
+                }
+            }
+        )
+    {{ line_type.attribute.name }}: Segment | None = field(
+        default=None,
         metadata={
-            "type": "Elements",
+            "type": "Element",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
-            "name": "{{ line_type.attribute.name }}",
             "interlis": {
                 "meta_attributes": {
-
+                    {%- for item in line_type.attribute.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
                 }
             }
         }
@@ -50,17 +79,17 @@ class {{ line_type.name }}:
                 class Meta:
                     namespace = "{{ render_config['namespace_map']['ili'] }}"
 
-                choice: list[{{ line_type.attribute.type }}Type|{{ line_type.attribute.type }}ARCType] = field(
+                vertices: "list[{{ line_type.attribute.types[0] }}Type | {{ line_type.attribute.types[0] }}ARCType]" = field(
                     default_factory=list,
                     metadata={
                         "type": "Elements",
                         "choices": ({
                             "name": "COORD",
-                            "type": {{ line_type.attribute.type }}Type,
+                            "type": {{ line_type.attribute.types[0] }}Type,
                             "namespace": "{{ render_config['namespace_map']['ili'] }}",
                         },{
                             "name": "ARC",
-                            "type": {{ line_type.attribute.type }}ARCType,
+                            "type": {{ line_type.attribute.types[0] }}ARCType,
                             "namespace": "{{ render_config['namespace_map']['ili'] }}",
                         } ),
                         "interlis": {
@@ -70,7 +99,7 @@ class {{ line_type.name }}:
                         }
                     }
                 )
-            POLYLINE: Segment = field(
+            POLYLINE: Segment | None = field(
                 default=None,
                 metadata={
                     "type": "Element",
@@ -96,12 +125,18 @@ class {{ line_type.name }}:
             }
         )
 
-    SURFACE: {{ line_type.name }}BOUNDARY = field(
+    SURFACE: {{ line_type.name }}BOUNDARY | None = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
-            "interlis": {"meta_attributes": {}},
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in line_type.attribute.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
         }
     )
 {%- endif  %}
@@ -115,7 +150,10 @@ class {{ line_type.name }}:
                     {%- for item in line_type.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                },
+                "max_overlap": {{ line_type.max_overlap }},
+                "straights": {{ line_type.straights }},
+                "arcs": {{ line_type.arcs }}
             }
         }
 {%- endfor %}

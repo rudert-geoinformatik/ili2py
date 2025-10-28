@@ -47,6 +47,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     Model,
     ModelData,
     MultiValue,
+    MultiValueType,
     NumType,
     NumTypeType,
     PathOrInspFactorType,
@@ -165,12 +166,16 @@ class Base(ABC):
 class Attribute(Base):
     """Represents imd AttrOrParam"""
 
-    type: str
+    types: list[str]
     type_restrictions: dict = field(default_factory=dict)
     enumeration: Optional["Enumeration"] = field(default=None)
     line_type: Optional["LineType"] = field(default=None)
     type_related_type_class: Optional["Class"] = field(default=None)
     reference_targets: list[str] = field(default_factory=list)
+    is_list_type: bool = field(default=False)
+    is_point_like: bool = field(default=False)
+    is_line_like: bool = field(default=False)
+    is_polygon_like: bool = field(default=False)
 
     @staticmethod
     def check_float_kind(representation: str | None) -> bool:
@@ -410,17 +415,10 @@ class Attribute(Base):
             # type name is already a type which is not part of original imd tree, we manipulated it in
             # previous steps and assume here, that we can savely use it
             return resolved_type_name, local_type
-        if isinstance(referenced_type, MultiValue):
-            if referenced_type.multiplicity.multiplicity.max is None:
-                final_type_name = f"list['{resolved_type_name}']"
-            elif referenced_type.multiplicity.multiplicity.max > 1:
-                final_type_name = f"list['{resolved_type_name}']"
-            else:
-                final_type_name = resolved_type_name
-        elif isinstance(referenced_type, EnumType) and referenced_type.name == "TYPE":
+        if isinstance(referenced_type, EnumType) and referenced_type.name == "TYPE":
             if referenced_type.name == resolved_type.name:
                 class_name = f"{attr_or_param.name}Enum"
-                final_type_name = f"'{referenced_class.name}.{class_name}'"
+                final_type_name = f"{referenced_class.name}.{class_name}"
                 local_type = Enumeration.from_imd(referenced_type, index)
                 local_type.name = class_name
             else:
@@ -428,7 +426,7 @@ class Attribute(Base):
         elif isinstance(referenced_type, ImdLineType) and referenced_type.name == "TYPE":
             if referenced_type.name == resolved_type.name:
                 class_name = f"{attr_or_param.name}LineType"
-                final_type_name = f"'{referenced_class.name}.{class_name}'"
+                final_type_name = f"{referenced_class.name}.{class_name}"
                 local_type = LineType.from_imd(referenced_type, index)
                 local_type.name = class_name
             else:
@@ -436,6 +434,27 @@ class Attribute(Base):
         else:
             final_type_name = resolved_type_name
         return final_type_name, local_type
+
+    @staticmethod
+    def decide_list_type(imd_type_object: MultiValueType):
+        list_type = False
+        if isinstance(imd_type_object, MultiValueType):
+            # we act only if passed type was really a candidate to be a list type
+            if imd_type_object.multiplicity:
+                if imd_type_object.multiplicity.multiplicity:
+                    if imd_type_object.multiplicity.multiplicity.max is None:
+                        list_type = True
+                    elif imd_type_object.multiplicity.multiplicity.max > 1:
+                        list_type = True
+                else:
+                    logging.warning(
+                        f"MultiValueType had multiplicity.multiplicity => None, this is unusual: {imd_type_object}"
+                    )
+            else:
+                logging.warning(
+                    f"MultiValueType had multiplicity => None, this is unusual: {imd_type_object}"
+                )
+        return list_type
 
     @classmethod
     def from_imd(
@@ -517,20 +536,9 @@ class Attribute(Base):
                         logging.debug(
                             f"MultiValue Type was not handled correctly {imd_type_object}"
                         )
-                list_type = False
-                if imd_type_object.multiplicity:
-                    if imd_type_object.multiplicity.multiplicity.max is None:
-                        list_type = True
-                    elif imd_type_object.multiplicity.multiplicity.max > 1:
-                        list_type = True
-                if list_type:
-                    if type_reference == related_type_object.name:
-                        type_reference = f"list['{type_reference}']"
-                    else:
-                        type_reference = f"list[{type_reference}]"
-
+                list_type = Attribute.decide_list_type(imd_type_object)
                 type_related_type_class = Class(
-                    name=f"{imd_attr_or_param.name}Type",
+                    name=f"{referenced_class.name}{imd_attr_or_param.name}{imd_type_object.name}",
                     identifier=imd_type_object.tid,
                     doc=["This is a class inserted by ili2py for correctly parsing multi types."],
                     meta_attributes=cls.assemble_meta_attributes(index, imd_type_object.tid),
@@ -541,13 +549,14 @@ class Attribute(Base):
                             identifier=f"ili2py.{related_type_object.tid}",
                             doc=["This attribute is a HOP-Type to correctly parse XTF."],
                             meta_attributes=[],
-                            type=type_reference,
+                            types=[type_reference],
                             type_restrictions=cls.construct_type_restrictions(
                                 imd_type_object, type_related_type=True
                             ),
                             enumeration=None,
                             line_type=None,
                             type_related_type_class=None,
+                            is_list_type=list_type,
                         )
                     ],
                     abstract=False,
@@ -558,13 +567,19 @@ class Attribute(Base):
         return cls(
             identifier=imd_attr_or_param.tid,
             name=attribute_name,
-            type=type_related_type_class.name if type_related_type_class else final_type_name,
+            types=[type_related_type_class.name if type_related_type_class else final_type_name],
             doc=cls.doc_string(imd_attr_or_param.documentation),
             type_restrictions=cls.construct_type_restrictions(referenced_type),
             meta_attributes=meta_attributes,
             enumeration=local_type if isinstance(local_type, Enumeration) else None,
             line_type=local_type if isinstance(local_type, LineType) else None,
             type_related_type_class=type_related_type_class,
+            is_list_type=Attribute.decide_list_type(referenced_type),
+            is_point_like=isinstance(referenced_type, ImdCoordType),
+            is_line_like=isinstance(referenced_type, ImdLineType)
+            and referenced_type.kind in ["Polyline", "DirectedPolyline"],
+            is_polygon_like=isinstance(referenced_type, ImdLineType)
+            and referenced_type.kind in ["Surface", "Area"],
         )
 
     @staticmethod
@@ -638,6 +653,17 @@ class Class(Base):
     set_constraints: list[dict] = field(default_factory=list)
     simple_constraints: list[dict] = field(default_factory=list)
     unique_constraints: list[dict] = field(default_factory=list)
+    geom_point_like_attributes: list[Attribute] = field(default_factory=list)
+    geom_line_like_attributes: list[Attribute] = field(default_factory=list)
+    geom_polygon_like_attributes: list[Attribute] = field(default_factory=list)
+
+    @property
+    def geom_attributes(self):
+        return (
+            self.geom_polygon_like_attributes
+            + self.geom_line_like_attributes
+            + self.geom_point_like_attributes
+        )
 
     @classmethod
     def from_imd(cls, imd_class: ImdClass, imd_model_data: ModelData, index: Index):
@@ -678,18 +704,27 @@ class Class(Base):
                     "This attribute is generated by ili2py based on the OID definition in the underlying model."
                 ],
                 meta_attributes=[],
-                type=oid_type_name,
+                types=[oid_type_name],
                 type_restrictions=Attribute.construct_type_restrictions(oid_type_object),
                 enumeration=None,
                 line_type=None,
                 type_related_type_class=None,
             )
+        point_like_attributes = []
+        line_like_attributes = []
+        polygon_like_attributes = []
         if index.class_class_attribute.get(imd_class.tid):
             for imd_attr_or_param_oid in index.class_class_attribute[imd_class.tid]:
                 attribute = Attribute.from_imd(
                     index.index[imd_attr_or_param_oid], imd_model_data, index
                 )
                 attributes.append(attribute)
+                if attribute.is_point_like:
+                    point_like_attributes.append(attribute)
+                if attribute.is_line_like:
+                    line_like_attributes.append(attribute)
+                if attribute.is_polygon_like:
+                    polygon_like_attributes.append(attribute)
         if imd_class.tid in index.association_to_class_ref_attributes:
             for role_tid, related_class_tid in index.association_to_class_ref_attributes[
                 imd_class.tid
@@ -708,9 +743,10 @@ class Class(Base):
                         name=role.name,
                         identifier=role.tid,
                         doc=cls.doc_string(role.documentation),
-                        type="Ref",
+                        types=["Ref"],
                         meta_attributes=meta_attributes,
                         type_restrictions=type_restrictions,
+                        reference_targets=[related_class_tid],
                     )
                 )
         meta_attributes = cls.assemble_meta_attributes(index, imd_class.tid)
@@ -744,6 +780,9 @@ class Class(Base):
             unique_constraints=Class.translate_unique_constraint(
                 index.class_with_unique_constraints.get(imd_class.tid, []), index
             ),
+            geom_point_like_attributes=point_like_attributes,
+            geom_line_like_attributes=line_like_attributes,
+            geom_polygon_like_attributes=polygon_like_attributes,
         )
 
     @staticmethod
@@ -928,7 +967,7 @@ class Class(Base):
         return translated_constraints
 
     @staticmethod
-    def translate_set_constraint(constraint_oids: list[str], index: Index):
+    def translate_set_constraint(constraint_oids: list[str], index: Index) -> list[dict]:
         translated_constraints = []
         for oid in constraint_oids:
             constraint: SetConstraintType = index.index[oid]
@@ -950,10 +989,10 @@ class Class(Base):
                 ),
             )
             translated_constraints.append(DictEncoder().encode(translated_constraint))
-            return translated_constraints
+        return translated_constraints
 
     @staticmethod
-    def translate_simple_constraint(constraint_oids: list[str], index: Index):
+    def translate_simple_constraint(constraint_oids: list[str], index: Index) -> list[dict]:
         translated_constraints = []
         for oid in constraint_oids:
             constraint: SimpleConstraintType = index.index[oid]
@@ -968,10 +1007,10 @@ class Class(Base):
                 logical_expression=Class.translate_expression(constraint.logical_expression.choice),
             )
             translated_constraints.append(DictEncoder().encode(translated_constraint))
-            return translated_constraints
+        return translated_constraints
 
     @staticmethod
-    def translate_unique_constraint(constraint_oids: list[str], index: Index):
+    def translate_unique_constraint(constraint_oids: list[str], index: Index) -> list[dict]:
         translated_constraints = []
         for oid in constraint_oids:
             constraint: UniqueConstraintType = index.index[oid]
@@ -998,7 +1037,7 @@ class Class(Base):
                     )
                 )
             )
-            return translated_constraints
+        return translated_constraints
 
     @staticmethod
     def decide_type_reference(
@@ -1130,7 +1169,7 @@ class CoordType(Base):
                         identifier=imd_axis.tid,
                         name=imd_axis.name,
                         doc=cls.doc_string(imd_axis.documentation),
-                        type=mapped_type,
+                        types=[mapped_type],
                         reference_system=reference_system,
                         type_restrictions=CoordAttribute.construct_type_restrictions(imd_axis),
                         meta_attributes=meta_attributes,
@@ -1164,6 +1203,8 @@ class LineType(Base):
     max_overlap: float = field(default=None)
     straights: bool = field(default=False)
     arcs: bool = field(default=False)
+    is_line_like: bool = field(default=False)
+    is_polygon_like: bool = field(default=False)
 
     @classmethod
     def from_imd(cls, imd_line_type: ImdLineType, index: Index):
@@ -1189,7 +1230,7 @@ class LineType(Base):
             identifier=f"{imd_line_type.tid}_attribute",
             name=imd_line_type.kind.upper(),
             doc=attribute_doc,
-            type=type_name,
+            types=[type_name],
             meta_attributes=meta_attributes,
         )
         if imd_line_type.kind not in ["Polyline", "DirectedPolyline", "Surface", "Area"]:
@@ -1204,6 +1245,8 @@ class LineType(Base):
             straights=imd_line_type.tid in index.line_form["INTERLIS.STRAIGHTS"],
             arcs=imd_line_type.tid in index.line_form["INTERLIS.ARCS"],
             meta_attributes=meta_attributes,
+            is_line_like=imd_line_type.kind in ["Polyline", "DirectedPolyline"],
+            is_polygon_like=imd_line_type.kind in ["Surface", "Area"],
         )
 
 
@@ -1324,7 +1367,6 @@ class Module(Base):
                 class_instance = Class.from_imd(imd_class, imd_model_data, index)
                 for attribute in class_instance.attributes:
                     if attribute.type_related_type_class:
-                        classes.append(attribute.type_related_type_class)
                         related_class_imports = (
                             related_class_imports
                             + attribute.type_related_type_class.related_class_imports
@@ -1498,7 +1540,7 @@ class Module(Base):
                                     meta_attributes=cls.assemble_meta_attributes(
                                         index, role_object.tid
                                     ),
-                                    type="Ref",
+                                    types=["Ref"],
                                     type_restrictions=Attribute.construct_type_restrictions(
                                         role_object
                                     ),

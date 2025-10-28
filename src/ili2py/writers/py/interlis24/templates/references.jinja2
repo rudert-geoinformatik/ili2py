@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 class Ref:
     class Meta:
         namespace = "{{ render_config['namespace_map']['ili'] }}"
-    ref: str = field(default=None, metadata={"type": "Attribute", "namespace": "{{ render_config['namespace_map']['ili'] }}"})
+    ref: str | None = field(default=None, metadata={"type": "Attribute", "namespace": "{{ render_config['namespace_map']['ili'] }}"})
 
 class BinBlBoxType(bytes):
     pass
