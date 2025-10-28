@@ -35,6 +35,16 @@ jobs:
         run: |
           make binary
 
+      - name: Test binary (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          # check if it exits non zero
+          ./dist/ili2py --version
+          if [ $? -ne 0 ]; then
+            echo "Binary test failed"
+            exit 1
+          fi
+
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'
         shell: powershell
@@ -47,6 +57,15 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           .venv\Scripts\pyinstaller --name ili2py --onefile --noconfirm --add-data "src\ili2py\writers\uml\interlis_23\templates:ili2py\writers\uml\interlis_23\templates" --add-data "src\ili2py\writers\py\interlis23\templates:ili2py\writers\py\interlis23\templates" --add-data "src\ili2py\writers\py\interlis24\templates:ili2py\writers\py\interlis24\templates" src\ili2py\cli.py
+
+      - name: Test binary (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          # check if it exits non zero
+          $binary = ".\dist\ili2py.exe"
+          # check exit code
+          & $binary --version
+          if ($LASTEXITCODE -ne 0) { exit 1 }
 
       - name: Rename binary
         run: |
@@ -70,9 +89,11 @@ jobs:
           path: dist_upload/*
   release_latest:
     name: Release Latest
+    permissions:
+      contents: write
     needs: [ build ]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
 
@@ -81,10 +102,15 @@ jobs:
         with:
           path: dist_upload
 
+      - name: Flatten artifacts for release
+        run: |
+          mkdir dist_flat
+          find dist_upload -type f -exec cp {} dist_flat/ \;
+
       - name: Create GitHub Release Latest
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          files: dist_upload/*
+          tag_name: latest
+          files: dist_flat/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
