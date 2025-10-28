@@ -38,13 +38,17 @@ class {{ line_type.name }}:
                 }
             }
         )
-    {{ line_type.attribute.name }}: Segment = field(
-        default_factory=list,
+    {{ line_type.attribute.name }}: Segment | None = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "{{ render_config['namespace_map']['geom'] }}",
             "interlis": {
-                "meta_attributes": {}
+                "meta_attributes": {
+                    {%- for item in line_type.attribute.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
             }
         }
     )
@@ -137,7 +141,13 @@ class {{ line_type.name }}:
         metadata={
             "type": "Element",
             "namespace": "{{ render_config['namespace_map']['geom'] }}",
-            "interlis": {"meta_attributes": {}},
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in line_type.attribute.meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
         }
     )
 {%- endif  %}
