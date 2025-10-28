@@ -1,12 +1,10 @@
 name: Build Binaries
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
     branches:
       - "*github-build-edit"
+      - master
     tags:
       - "v*"
 
@@ -52,13 +50,16 @@ jobs:
 
       - name: Rename binary
         run: |
+          ts=$(date +%Y%m%d%H%M%S)
+          safe_ref=$(echo "${GITHUB_REF_NAME}" | sed 's#[^A-Za-z0-9._-]#-#g')
           mkdir dist_upload
           if [[ "$RUNNER_OS" == "Linux" ]]; then
-            mv dist/ili2py dist_upload/ili2py-linux
+            mv dist/ili2py dist_upload/ili2py-linux-${safe_ref}-${ts}
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
-            mv dist/ili2py dist_upload/ili2py-macos
+            mv dist/ili2py dist_upload/ili2py-macos-${safe_ref}-${ts}
           else
-            mv dist/ili2py.exe dist_upload/ili2py-windows.exe
+            safe_ref_win=$(echo "${GITHUB_REF_NAME}" | sed 's#[^A-Za-z0-9._-]#-#g')
+            mv dist/ili2py.exe dist_upload/ili2py-windows-${safe_ref_win}-${ts}.exe
           fi
         shell: bash
 
@@ -67,3 +68,23 @@ jobs:
         with:
           name: ${{ runner.os }}-binary
           path: dist_upload/*
+  release_latest:
+    name: Release Latest
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist_upload
+
+      - name: Create GitHub Release Latest
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: dist_upload/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
