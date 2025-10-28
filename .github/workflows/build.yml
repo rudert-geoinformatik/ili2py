@@ -1,0 +1,69 @@
+name: Build Binaries
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - "*github-build-edit"
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies (Linux/MacOS)
+        if: runner.os != 'Windows'
+        run: |
+          make install-dev
+
+      - name: Build binary (Linux/MacOS)
+        if: runner.os != 'Windows'
+        run: |
+          make binary
+
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          python -m venv .venv
+          .venv\Scripts\python.exe -m pip install --upgrade pip wheel setuptools
+          .venv\Scripts\pip.exe install -e .[dev]
+
+      - name: Build binary (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          .venv\Scripts\pyinstaller --name ili2py --onefile --noconfirm --add-data "src\ili2py\writers\uml\interlis_23\templates:ili2py\writers\uml\interlis_23\templates" --add-data "src\ili2py\writers\py\interlis23\templates:ili2py\writers\py\interlis23\templates" --add-data "src\ili2py\writers\py\interlis24\templates:ili2py\writers\py\interlis24\templates" src\ili2py\cli.py
+
+      - name: Rename binary
+        run: |
+          mkdir dist_upload
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            mv dist/ili2py dist_upload/ili2py-linux
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            mv dist/ili2py dist_upload/ili2py-macos
+          else
+            mv dist/ili2py.exe dist_upload/ili2py-windows.exe
+          fi
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-binary
+          path: dist_upload/*
