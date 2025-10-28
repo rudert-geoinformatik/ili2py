@@ -1,0 +1,90 @@
+name: Build Binaries
+
+on:
+  push:
+    branches:
+      - "*github-build-edit"
+      - master
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies (Linux/MacOS)
+        if: runner.os != 'Windows'
+        run: |
+          make install-dev
+
+      - name: Build binary (Linux/MacOS)
+        if: runner.os != 'Windows'
+        run: |
+          make binary
+
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          python -m venv .venv
+          .venv\Scripts\python.exe -m pip install --upgrade pip wheel setuptools
+          .venv\Scripts\pip.exe install -e .[dev]
+
+      - name: Build binary (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          .venv\Scripts\pyinstaller --name ili2py --onefile --noconfirm --add-data "src\ili2py\writers\uml\interlis_23\templates:ili2py\writers\uml\interlis_23\templates" --add-data "src\ili2py\writers\py\interlis23\templates:ili2py\writers\py\interlis23\templates" --add-data "src\ili2py\writers\py\interlis24\templates:ili2py\writers\py\interlis24\templates" src\ili2py\cli.py
+
+      - name: Rename binary
+        run: |
+          ts=$(date +%Y%m%d%H%M%S)
+          safe_ref=$(echo "${GITHUB_REF_NAME}" | sed 's#[^A-Za-z0-9._-]#-#g')
+          mkdir dist_upload
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            mv dist/ili2py dist_upload/ili2py-linux-${safe_ref}-${ts}
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            mv dist/ili2py dist_upload/ili2py-macos-${safe_ref}-${ts}
+          else
+            safe_ref_win=$(echo "${GITHUB_REF_NAME}" | sed 's#[^A-Za-z0-9._-]#-#g')
+            mv dist/ili2py.exe dist_upload/ili2py-windows-${safe_ref_win}-${ts}.exe
+          fi
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-binary
+          path: dist_upload/*
+  release_latest:
+    name: Release Latest
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist_upload
+
+      - name: Create GitHub Release Latest
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: dist_upload/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
