@@ -31,6 +31,8 @@ generated
 test.puml
 src/ili2py/test.py
 src/ili2py/test1.py
+src/ili2py/test2.py
+src/ili2py/test3.py
 .generated/*
 !.generated/.gitkeep
 
