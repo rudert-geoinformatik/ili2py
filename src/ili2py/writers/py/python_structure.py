@@ -106,6 +106,9 @@ class MetaAttribute:
 
 @dataclass
 class Base(ABC):
+    # See chapter 2.1.2 Klasse MetaElement in [IlisMeta16 Documentation](https://github.com/rudert-geoinformatik/ili2py/blob/master/tests/data/ilismeta16/ili24-metamodel_2022-06-17_d.pdf))
+    OID_SEPARATOR = "."
+    PYTHON_NAME_SEPARATOR = ""
     name: str
     identifier: str
     doc: list[str]
@@ -161,6 +164,24 @@ class Base(ABC):
                 )
         return meta_attributes
 
+    @staticmethod
+    def pythonize_oid_global(oid: str) -> str:
+        """
+        Central method to create a pythonic name out of the passed oid. It can be used to derive IMD wide unique names
+        which are save to be used in python as e.g. class names.
+
+        The default behaiour is:
+            'LocalisationCH_V1.MultilingualText.LocalisedText.TYPE' => 'LocalisationCH_V1MultilingualTextLocalisedTextTYPE'
+        Args:
+            oid: The OID string which is split by the oid_separator.
+            python_separator: The separator which is used to join the pythonic name.
+
+        Returns:
+            The pythonized version of the OID.
+        """
+        oid_parts = oid.split(Base.OID_SEPARATOR)
+        return Base.PYTHON_NAME_SEPARATOR.join(oid_parts)
+
 
 @dataclass
 class Attribute(Base):
@@ -176,6 +197,10 @@ class Attribute(Base):
     is_point_like: bool = field(default=False)
     is_line_like: bool = field(default=False)
     is_polygon_like: bool = field(default=False)
+    type_related_imports: list[Tuple[str, Union[Tuple[str, str | None, str | None], None]]] = field(
+        default_factory=list
+    )
+    namespace_package: str | None = field(default=None)
 
     @staticmethod
     def check_float_kind(representation: str | None) -> bool:
@@ -232,21 +257,9 @@ class Attribute(Base):
             in index).
         """
         if isinstance(imd_type, TextType):
-            if imd_type.super:
-                if imd_type.name == "TYPE":
-                    return imd_type.super.ref, True
-                else:
-                    return imd_type.tid, True
-            else:
-                return "str", False
+            return "str", False
         elif isinstance(imd_type, FormattedType):
-            if imd_type.super:
-                if imd_type.name == "TYPE":
-                    return imd_type.super.ref, True
-                else:
-                    return imd_type.tid, True
-            else:
-                return "str", False
+            return "str", False
         elif isinstance(imd_type, ClassRefType):
             if imd_type.ref:
                 return imd_type.ref.ref, True
@@ -262,13 +275,6 @@ class Attribute(Base):
                 return "str", False
         elif isinstance(imd_type, NumType):
             float_kind = Attribute.check_type_float(imd_type)
-            if imd_type.super:
-                if imd_type.name == "TYPE":
-                    referenced_super = index.index[imd_type.super.ref]
-                    if referenced_super.name != "TYPE":
-                        return imd_type.super.ref, True
-                else:
-                    return imd_type.tid, True
             if float_kind:
                 return "float", False
             else:
@@ -283,12 +289,11 @@ class Attribute(Base):
         elif isinstance(imd_type, ImdLineType):
             return imd_type.tid, True
         elif isinstance(imd_type, MultiValue):
+            # we directly return the original base type ref here, this means its the oid of a structure class
+            # we expect that class to exist in the right place (see class.from_imd)
             return imd_type.base_type.ref, True
         elif isinstance(imd_type, EnumType):
-            if imd_type.name == "TYPE" and imd_type.super:
-                return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
-            else:
-                return imd_type.tid, True
+            return imd_type.tid, True
         elif isinstance(imd_type, EnumTreeValueType):
             return imd_type.tid, True
         elif isinstance(imd_type, ReferenceType):
@@ -406,7 +411,7 @@ class Attribute(Base):
         return type_restrictions
 
     @staticmethod
-    def handle_local_types_and_multivalues(
+    def handle_local_types(
         index, resolved_type_name, referenced_type, attr_or_param, referenced_class
     ):
         local_type = None
@@ -417,20 +422,55 @@ class Attribute(Base):
             return resolved_type_name, local_type
         if isinstance(referenced_type, EnumType) and referenced_type.name == "TYPE":
             if referenced_type.name == resolved_type.name:
-                class_name = f"{attr_or_param.name}Enum"
-                final_type_name = f"{referenced_class.name}.{class_name}"
+                class_name = f"{referenced_class.name}{attr_or_param.name}Enum"
+                final_type_name = class_name
                 local_type = Enumeration.from_imd(referenced_type, index)
                 local_type.name = class_name
             else:
                 final_type_name = resolved_type_name
         elif isinstance(referenced_type, ImdLineType) and referenced_type.name == "TYPE":
             if referenced_type.name == resolved_type.name:
-                class_name = f"{attr_or_param.name}LineType"
-                final_type_name = f"{referenced_class.name}.{class_name}"
+                class_name = f"{referenced_class.name}{attr_or_param.name}LineType"
+                final_type_name = class_name
                 local_type = LineType.from_imd(referenced_type, index)
                 local_type.name = class_name
             else:
                 final_type_name = resolved_type_name
+        elif isinstance(referenced_type, MultiValueType) and referenced_type.name == "TYPE":
+            multi_value_base_type = index.index[referenced_type.base_type.ref]
+            imports = []
+            multi_value_base_type_name, multi_value_base_type_import = (
+                Attribute.decide_type_reference(referenced_class, multi_value_base_type.tid, index)
+            )
+            if multi_value_base_type_import:
+                imports.append(multi_value_base_type_import)
+            local_type = Class(
+                name=f"{referenced_class.name}{attr_or_param.name}Struct",
+                identifier=referenced_type.tid,
+                doc=["This Class is a HOP-Class to correctly parse XTF. It was inserted by ili2py"],
+                meta_attributes=Attribute.assemble_meta_attributes(index, referenced_type.tid),
+                super_class=None,
+                attributes=[
+                    Attribute(
+                        name="struct_content",
+                        identifier=f"ili2py.{multi_value_base_type.tid}",
+                        doc=["This attribute is a HOP-Type to correctly parse XTF."],
+                        meta_attributes=[],
+                        types=[multi_value_base_type_name],
+                        type_restrictions={"type_related_type": True},
+                        enumeration=None,
+                        line_type=None,
+                        type_related_type_class=None,
+                        is_list_type=Attribute.decide_list_type(referenced_type),
+                        namespace_package=Attribute.get_model_name_from_type(
+                            multi_value_base_type, index
+                        ),
+                    )
+                ],
+                abstract=False,
+                related_class_imports=imports,
+            )
+            final_type_name = local_type.name
         else:
             final_type_name = resolved_type_name
         return final_type_name, local_type
@@ -456,6 +496,31 @@ class Attribute(Base):
                 )
         return list_type
 
+    @staticmethod
+    def get_referenced_class(imd_attr_or_param: AttrOrParam, index: Index) -> ImdClass:
+        if imd_attr_or_param.attr_parent:
+            referenced_class = index.index[imd_attr_or_param.attr_parent.ref]
+        else:
+            referenced_class = index.index[imd_attr_or_param.param_parent.ref]
+        return referenced_class
+
+    @staticmethod
+    def get_class_location(
+        class_definition: ImdClass, index: Index
+    ) -> Tuple[Model, Union[SubModel, None]]:
+        package = index.index[class_definition.element_in_package.ref]
+        sub_model = None
+        if isinstance(package, SubModel):
+            sub_model = package
+            model = index.index[package.element_in_package.ref]
+        else:
+            model = package
+        return model, sub_model
+
+    @staticmethod
+    def attribute_name(attribute: AttrOrParam):
+        return attribute.name.lower()
+
     @classmethod
     def from_imd(
         cls,
@@ -464,178 +529,145 @@ class Attribute(Base):
         index: Index,
     ):
         referenced_type = index.index[imd_attr_or_param.type_value.ref]
-        if imd_attr_or_param.attr_parent:
-            referenced_class = index.index[imd_attr_or_param.attr_parent.ref]
-        else:
-            referenced_class = index.index[imd_attr_or_param.param_parent.ref]
-        package = index.index[referenced_class.element_in_package.ref]
-        sub_model = None
-        if isinstance(package, SubModel):
-            sub_model = package
-            model = index.index[package.element_in_package.ref]
-        else:
-            model = package
+        referenced_class = Attribute.get_referenced_class(imd_attr_or_param, index)
         mapped_type, is_oid = cls.handle_type_trail(referenced_type, index)
-        attribute_name = imd_attr_or_param.name
         meta_attributes = cls.assemble_meta_attributes(index, imd_attr_or_param.tid)
-        resolved_type_name = Attribute.handle_type(
-            index,
-            mapped_type,
-            imd_attr_or_param,
-            referenced_class,
-            model,
-            referenced_type,
-            is_oid=is_oid,
-            sub_model=sub_model,
+        final_type_name, local_type = Attribute.handle_local_types(
+            index, mapped_type, referenced_type, imd_attr_or_param, referenced_class
         )
-        final_type_name, local_type = Attribute.handle_local_types_and_multivalues(
-            index, resolved_type_name, referenced_type, imd_attr_or_param, referenced_class
-        )
-        imd_type_oid = imd_attr_or_param.type_value.ref
-        imd_type_object = index.index[imd_type_oid]
-        type_related_type_class = None
-        if isinstance(imd_type_object, MultiValue):
-            related_type_oid = imd_type_object.base_type.ref
-            related_type_object = index.index[related_type_oid]
-            if related_type_object.element_in_package:
-                related_type_object_package = index.index[
-                    related_type_object.element_in_package.ref
-                ]
-                type_reference = None
-                type_reference_imports = []
-                if (
-                    related_type_object.element_in_package.ref
-                    == index.index[imd_attr_or_param.attr_parent.ref].element_in_package.ref
-                ):
-                    type_reference = related_type_object.name
-                else:
-                    if isinstance(related_type_object_package, SubModel):
-                        related_type_object_model = index.index[
-                            related_type_object_package.element_in_package.ref
-                        ]
-                        type_reference = f"{related_type_object_model.name}_{related_type_object_package.name}_{related_type_object.name}"
-                        type_reference_imports.append(
-                            (
-                                f"{related_type_object_model.name}.{related_type_object_package.name}",
-                                related_type_object.name,
-                                type_reference,
-                            )
-                        )
-                    elif isinstance(related_type_object_package, Model):
-                        type_reference = (
-                            f"{related_type_object_package.name}_{related_type_object.name}"
-                        )
-                        type_reference_imports.append(
-                            (
-                                f"{related_type_object_package.name}",
-                                related_type_object.name,
-                                type_reference,
-                            )
-                        )
-                    else:
-                        logging.debug(
-                            f"MultiValue Type was not handled correctly {imd_type_object}"
-                        )
-                list_type = Attribute.decide_list_type(imd_type_object)
-                type_related_type_class = Class(
-                    name=f"{referenced_class.name}{imd_attr_or_param.name}{imd_type_object.name}",
-                    identifier=imd_type_object.tid,
-                    doc=["This is a class inserted by ili2py for correctly parsing multi types."],
-                    meta_attributes=cls.assemble_meta_attributes(index, imd_type_object.tid),
-                    super_class=None,
-                    attributes=[
-                        Attribute(
-                            name=related_type_object.name,
-                            identifier=f"ili2py.{related_type_object.tid}",
-                            doc=["This attribute is a HOP-Type to correctly parse XTF."],
-                            meta_attributes=[],
-                            types=[type_reference],
-                            type_restrictions=cls.construct_type_restrictions(
-                                imd_type_object, type_related_type=True
-                            ),
-                            enumeration=None,
-                            line_type=None,
-                            type_related_type_class=None,
-                            is_list_type=list_type,
-                        )
-                    ],
-                    abstract=False,
-                    related_class_imports=type_reference_imports,
-                )
-            else:
-                logging.debug(f"MultiValue Type was not handled as expected {imd_type_object}")
+        type_related_imports = []
+        if is_oid and not local_type:
+            decided_type_name, type_related_import = Attribute.decide_type_reference(
+                referenced_class, final_type_name, index
+            )
+            if decided_type_name:
+                final_type_name = decided_type_name
+            if type_related_import:
+                type_related_imports.append(type_related_import)
         return cls(
             identifier=imd_attr_or_param.tid,
-            name=attribute_name,
-            types=[type_related_type_class.name if type_related_type_class else final_type_name],
+            name=imd_attr_or_param.name,
+            types=[final_type_name],
             doc=cls.doc_string(imd_attr_or_param.documentation),
             type_restrictions=cls.construct_type_restrictions(referenced_type),
             meta_attributes=meta_attributes,
             enumeration=local_type if isinstance(local_type, Enumeration) else None,
             line_type=local_type if isinstance(local_type, LineType) else None,
-            type_related_type_class=type_related_type_class,
+            type_related_type_class=local_type if isinstance(local_type, Class) else None,
             is_list_type=Attribute.decide_list_type(referenced_type),
             is_point_like=isinstance(referenced_type, ImdCoordType),
             is_line_like=isinstance(referenced_type, ImdLineType)
             and referenced_type.kind in ["Polyline", "DirectedPolyline"],
             is_polygon_like=isinstance(referenced_type, ImdLineType)
             and referenced_type.kind in ["Surface", "Area"],
+            type_related_imports=type_related_imports,
+            namespace_package=Attribute.get_last_super_model_name_from_attribute(
+                imd_attr_or_param, index
+            ),
         )
 
     @staticmethod
-    def handle_type(
-        index: Index,
-        type_name: str,
-        parent_attribute: AttrOrParam,
-        parent_class: ImdClass,
-        model: Model,
-        referenced_type: (
-            TextType
-            | FormattedType
-            | BlackboxType
-            | NumType
-            | BooleanType
-            | MultiValue
-            | EnumType
-            | ImdCoordType
-        ),
-        is_oid: bool | None = None,
-        sub_model: SubModel | None = None,
-    ) -> str:
-        if is_oid:
-            imd_type = index.index[type_name]
-            if imd_type.element_in_package:
-                package_of_type_name = index.index[imd_type.element_in_package.ref].name
-                if sub_model:
-                    if sub_model.name == package_of_type_name:
-                        type_name = imd_type.name
+    def get_model_name_from_type(type_definition: TypeType, index: Index):
+        if type_definition.element_in_package:
+            package = index.index[type_definition.element_in_package.ref]
+            if isinstance(package, SubModel):
+                package = index.index[package.element_in_package.ref]
+            return package.name
+        else:
+            attribute = index.index[type_definition.ltparent.ref]
+            return Attribute.get_model_name_from_attribute(attribute, index)
+
+    @staticmethod
+    def get_model_name_from_attribute(attribute: AttrOrParam, index: Index) -> str:
+        if attribute.attr_parent:
+            parent: ImdClass = index.index[attribute.attr_parent.ref]
+        else:
+            parent: ImdClass = index.index[attribute.param_parent.ref]
+        package = index.index[parent.element_in_package.ref]
+        if isinstance(package, SubModel):
+            package = index.index[package.element_in_package.ref]
+        return package.name
+
+    @staticmethod
+    def get_last_super_model_name_from_attribute(attribute: AttrOrParam, index: Index) -> str:
+        """
+        This method derives the package which the attribute is from. It uses the maybe existing super definition to
+        adjust the package to the highest super class. This is because a inherited/extended attribute has its origin
+        back from the package/model where it first was defined.
+        See: https://interlis.discourse.group/t/multilingual-elemente-aus-localisationch-v2-localisation-v2-in-interlis-2-4/423
+
+        Args:
+            attribute:
+            index:
+
+        Returns:
+
+        """
+        if attribute.tid in index.type_super_classes:
+            # here we reset the attribute variable to the highest (last) available element from the inheritance chain!
+            attribute = index.index[index.type_super_classes[attribute.tid][-1]]
+        return Attribute.get_model_name_from_attribute(attribute, index)
+
+    @staticmethod
+    def decide_type_references(source_class: ImdClass, target_type_oids: list[str], index: Index):
+        types = []
+        imports = []
+        for super_reference in target_type_oids:
+            super_type_name, type_reference_import = Attribute.decide_type_reference(
+                source_class, super_reference, index
+            )
+            if super_type_name not in types:
+                types.append(super_type_name)
+            if type_reference_import:
+                if type_reference_import not in imports:
+                    imports.append(type_reference_import)
+        return types, imports
+
+    @staticmethod
+    def decide_type_reference(source_class: ImdClass, target_type_oid: str, index: Index):
+        target_type = index.index[target_type_oid]
+        local_type = False
+        if target_type.element_in_package:
+            # this is a type which is defined as a own class
+            target_referenced_class = target_type
+        else:
+            # this is a type which is defined inline directly with the corresponding attribute
+            target_attr_or_param = index.index[target_type.ltparent.ref]
+            target_referenced_class = Attribute.get_referenced_class(target_attr_or_param, index)
+            local_type = True
+        target_model, target_sub_model = Attribute.get_class_location(
+            target_referenced_class, index
+        )
+        if source_class.element_in_package.ref == target_referenced_class.element_in_package.ref:
+            # source and target in the same package
+            if local_type:
+                if target_referenced_class.tid != source_class.tid:
+                    return f"{target_referenced_class.name}.{target_attr_or_param.name}", None
                 else:
-                    if model.name == package_of_type_name:
-                        type_name = imd_type.name
-            elif isinstance(imd_type, MultiValue):
-                if imd_type.base_type:
-                    return Attribute.handle_type(
-                        index,
-                        referenced_type.base_type.ref,
-                        parent_attribute,
-                        parent_class,
-                        model,
-                        referenced_type,
-                        is_oid,
-                        sub_model,
-                    )
-                else:
-                    return Attribute.handle_type(
-                        index,
-                        imd_type.tid,
-                        parent_attribute,
-                        parent_class,
-                        model,
-                        referenced_type,
-                        is_oid,
-                        sub_model,
-                    )
-        return type_name
+                    return None, None
+            else:
+                return f"{target_referenced_class.name}", None
+        else:
+            if target_sub_model:
+                package_import_part = f"{target_model.name}.{target_sub_model.name}"
+            else:
+                package_import_part = f"{target_model.name}"
+            if local_type:
+                # its a type directly from an attribute of a class, we link to that attribute
+                reference_name = Attribute.pythonize_oid_global(target_referenced_class.tid)
+                return f"{reference_name}.{target_attr_or_param.name}", (
+                    package_import_part,
+                    target_referenced_class.name,
+                    reference_name,
+                )
+            else:
+                # its a dedicated type class, we link to that class
+                reference_name = Attribute.pythonize_oid_global(target_type.tid)
+                return f"{reference_name}", (
+                    package_import_part,
+                    target_type.name,
+                    reference_name,
+                )
 
 
 @dataclass
@@ -725,6 +757,7 @@ class Class(Base):
                     line_like_attributes.append(attribute)
                 if attribute.is_polygon_like:
                     polygon_like_attributes.append(attribute)
+                related_class_imports += attribute.type_related_imports
         if imd_class.tid in index.association_to_class_ref_attributes:
             for role_tid, related_class_tid in index.association_to_class_ref_attributes[
                 imd_class.tid
@@ -762,13 +795,13 @@ class Class(Base):
                     and super_class_reference_imports[2] is None
                 ):
                     logging.debug(
-                        "Import was skipped, since it has too many dots: {super_class_reference_imports[0]}"
+                        f"Import was skipped, since it has too many dots: {super_class_reference_imports[0]}"
                     )
                 else:
                     related_class_imports.append(super_class_reference_imports)
         return cls(
             identifier=imd_class.tid,
-            name=imd_class.name,
+            name=Class.class_name(imd_class),
             super_class=super_class_reference,
             doc=cls.doc_string(imd_class.documentation),
             attributes=attributes,
@@ -793,6 +826,10 @@ class Class(Base):
             geom_line_like_attributes=line_like_attributes,
             geom_polygon_like_attributes=polygon_like_attributes,
         )
+
+    @staticmethod
+    def class_name(imd_class: ImdClass) -> str:
+        return imd_class.name
 
     @staticmethod
     def translate_path_els(path_els_imd: list[PathOrInspFactorTypePathEls]) -> list[PathEl]:

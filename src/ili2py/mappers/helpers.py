@@ -19,6 +19,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     DomainTypeType,
     ExistenceConstraintType,
     ExplicitAssocAccess,
+    ExtendableMetype,
     Ili1TransferElement,
     Import,
     LineForm,
@@ -129,8 +130,9 @@ class Index:
         self.associated_classes: dict = {}
 
         self.types_bucket = {}
-
-        self.types_specialized_bucket = {}
+        self.types_kind_bucket = {}
+        self.type_super_classes = {}
+        self.type_sub_classes = {}
 
         self.metaelement_metaattributes: dict = {}
 
@@ -171,13 +173,23 @@ class Index:
             for element in basket.choice:
                 self.prepare_tree(element)
 
-        if self.types_specialized_bucket.get("Class.Association"):
-            for association_class in self.types_specialized_bucket["Class.Association"]:
+        if self.types_kind_bucket.get("Class.Association"):
+            for association_class in self.types_kind_bucket["Class.Association"]:
                 self.prepare_association(association_class)
 
     def prepare_tree(self, element: Any):
         self.resolve_references(element)
         self.handle_types(element)
+
+    def _follow_super_ref(self, element: ExtendableMetype, super_references_list: list):
+        if element.super is not None:
+            reference = element.super.ref
+            if reference not in self.type_sub_classes:
+                self.type_sub_classes[reference] = []
+            self.type_sub_classes[reference].append(element.tid)
+            if reference not in super_references_list:
+                super_references_list.append(reference)
+            self._follow_super_ref(self.index[reference], super_references_list)
 
     def handle_types(self, element: Any):
         if element.__class__.__name__ not in self.types_bucket:
@@ -185,9 +197,16 @@ class Index:
         self.types_bucket[element.__class__.__name__].append(element)
         if hasattr(element, "kind"):
             key = f"{element.__class__.__name__}.{element.kind}"
-            if key not in self.types_specialized_bucket:
-                self.types_specialized_bucket[key] = []
-            self.types_specialized_bucket[key].append(element)
+            if key not in self.types_kind_bucket:
+                self.types_kind_bucket[key] = []
+            self.types_kind_bucket[key].append(element)
+        if hasattr(element, "super"):
+            if element.super is not None:
+                super_references_list = []
+                self._follow_super_ref(element, super_references_list)
+                if element.tid not in self.type_super_classes:
+                    self.type_super_classes[element.tid] = []
+                self.type_super_classes[element.tid] += super_references_list
 
     def resolve_references(self, element: Any):
         """

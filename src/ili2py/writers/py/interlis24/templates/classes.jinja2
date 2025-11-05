@@ -1,7 +1,3 @@
-{%- if classes %}
-from abc import ABC
-{% endif %}
-
 {%- for class_definition in classes %}
 
 @dataclass
@@ -61,7 +57,7 @@ class {{ class_definition.name }}:
     )
 {%- else %}
 {%- if class_definition.kind == 'Class' and not class_definition.oid %}
-    tid: str = field(
+    tid: str | None = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -84,9 +80,9 @@ class {{ class_definition.name }}:
         {%- endif %}
         metadata={
             "type": "Element",
-            "namespace": "{{ render_config['base_url'] }}/{{ package.name }}",
+            "namespace": "{{ render_config['base_url'] }}/{{ attribute.namespace_package }}",
             {%- if attribute.type_restrictions['type_related_type'] %}
-            "name": "{{ attribute.name }}",
+            "name": "{{ attribute.identifier.split('.')[-1] }}",
             {%- endif %}
             "interlis": {
                 "oid": "{{ attribute.identifier }}",
@@ -209,6 +205,8 @@ class {{ class_definition.name }}:
             The list of geometry attribute names. Empty list when no geometry attributes at this class.
         """
         return [
-            {{ class_definition.geom_attributes | map(attribute='name') | map('string') | map('quote') | join(', ') }}
+            {% for attr in class_definition.geom_attributes %}
+                "{{ attr.name }}"{% if not loop.last %}, {% endif %}
+            {% endfor %}
         ]
 {% endfor -%}
