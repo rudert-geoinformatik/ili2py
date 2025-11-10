@@ -79,7 +79,11 @@ class {{ class_definition.name }}:
         default=None,
         {%- endif %}
         metadata={
+            {%- if attribute.kind == "MVT" %}
+            "type": "Text",
+            {%- else %}
             "type": "Element",
+            {%- endif %}
             "namespace": "{{ render_config['base_url'] }}/{{ attribute.namespace_package }}",
             {%- if attribute.type_restrictions['type_related_type'] %}
             "name": "{{ attribute.identifier.split('.')[-1] }}",
