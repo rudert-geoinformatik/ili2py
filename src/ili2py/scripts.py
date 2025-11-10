@@ -3,10 +3,10 @@ import tempfile
 
 from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
+from ili2py.writers.diagram.interlis import uml_diagram
+from ili2py.writers.diagram.interlis.uml import Diagram
 from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.render import create_python_classes
-from ili2py.writers.uml.interlis_23 import uml_diagram
-from ili2py.writers.uml.interlis_23.uml import Diagram
 
 logging.getLogger().setLevel(logging.DEBUG)
 

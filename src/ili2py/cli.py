@@ -11,10 +11,10 @@ from rich.logging import RichHandler
 from ili2py import version
 from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
+from ili2py.writers.diagram import create_uml_diagram
+from ili2py.writers.diagram.interlis import Diagram, tool_settings
 from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.render import create_python_classes, library_storage_name
-from ili2py.writers.uml import create_uml_diagram
-from ili2py.writers.uml.interlis_23 import Diagram, tool_settings
 
 
 def version_msg():
@@ -96,6 +96,15 @@ def cli(verbose):
     help="""Model names separated by comma. This is used to filter the content of the resulting diagram.
     If not provided, the full tree will be drawn.""",
 )
+@click.option(
+    "-s",
+    "--spacing-line-length",
+    is_flag=False,
+    default=2,
+    help="""The length of the drawn connectors between the diagram nodes.
+    NOTE: Currently this only influences plantuml diagrams!
+    """,
+)
 @click.pass_context
 def diagram(ctx: click.Context, **kwargs: Any):
     """
@@ -108,6 +117,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
     direction = kwargs.pop("direction")
     linetype = kwargs.pop("linetype")
     file_name = kwargs.pop("file_name")
+    multiplier = kwargs.pop("spacing_line_length")
     if model_names:
         model_names = model_names.split(",")
     else:
@@ -125,10 +135,10 @@ def diagram(ctx: click.Context, **kwargs: Any):
         assembled_file_name = f"{file_name or flavour}.{tool_settings[flavour]['postfix']}"
         logging.info(
             f"""Diagram ({flavour}) is generated with:
-            path:       {os.path.join(output_path, assembled_file_name)}
-            direction:  {direction if direction else 'DEFAULT'}
-            linetype:   {linetype if linetype else 'DEFAULT'}
-
+            path:                   {os.path.join(output_path, assembled_file_name)}
+            direction:              {direction if direction else 'DEFAULT'}
+            linetype:               {linetype if linetype else 'DEFAULT'}
+            spacing line length:    {multiplier}
         """
         )
         create_uml_diagram(
@@ -140,6 +150,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
             output_path=output_path,
             direction=direction,
             linetype=linetype,
+            multiplier=multiplier,
         )
     except Exception as error:
         click.echo(error)
