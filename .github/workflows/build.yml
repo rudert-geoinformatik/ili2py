@@ -93,6 +93,7 @@ jobs:
         with:
           name: ${{ runner.os }}-binary
           path: dist_upload/*
+          retention-days: 3
   release_latest:
     name: Release Latest
     permissions:
