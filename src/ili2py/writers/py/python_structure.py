@@ -771,6 +771,7 @@ class Class(Base):
                     related_class_imports.append(type_reference_imports)
                 meta_attributes = cls.assemble_meta_attributes(index, role.tid)
                 type_restrictions = Attribute.construct_type_restrictions(role)
+                package_name = Attribute.get_model_name_from_type(imd_class, index)
                 attributes.append(
                     Attribute(
                         name=role.name,
@@ -780,6 +781,7 @@ class Class(Base):
                         meta_attributes=meta_attributes,
                         type_restrictions=type_restrictions,
                         reference_targets=[related_class_tid],
+                        namespace_package=package_name,
                     )
                 )
         meta_attributes = cls.assemble_meta_attributes(index, imd_class.tid)
@@ -1578,6 +1580,9 @@ class Module(Base):
                                 ].reference_targets.append(referenced_class_oid)
                                 continue
                             association_attribute_names.append(role_object.name)
+                            package_name = Attribute.get_model_name_from_type(
+                                association_object, index
+                            )
                             attributes.append(
                                 Attribute(
                                     name=role_object.name,
@@ -1593,6 +1598,7 @@ class Module(Base):
                                     enumeration=None,
                                     line_type=None,
                                     reference_targets=[referenced_class_oid],
+                                    namespace_package=package_name,
                                 )
                             )
                 super_reference = None
