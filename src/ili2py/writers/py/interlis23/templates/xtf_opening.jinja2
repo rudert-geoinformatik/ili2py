@@ -10,6 +10,7 @@ import {{ library.name }}.{{ module_path }}
 {%- endfor %}
 from dataclasses import dataclass, field
 
+
 @dataclass
 class DataSection:
     class Meta:
@@ -32,16 +33,35 @@ class DataSection:
             )
         }
     )
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                "oid": "DATASECTION",
+                "kind": None,
+                "meta_attributes": {}
+            }
+        }
+
 
 @dataclass
 class Model:
-
     class Meta:
         namespace = "{{ render_config['namespace_map']['ili'] }}"
 
-    name: str|None = field(default=None, metadata={"name": "NAME", "type": "Attribute"})
-    version: str|None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
-    uri: str|None = field(default=None, metadata={"name": "URI", "type": "Attribute"})
+    name: str | None = field(default=None, metadata={"name": "NAME", "type": "Attribute"})
+    version: str | None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
+    uri: str | None = field(default=None, metadata={"name": "URI", "type": "Attribute"})
+
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                "oid": "MODEL",
+                "kind": None,
+                "meta_attributes": {}
+            }
+        }
 
 
 @dataclass
@@ -71,6 +91,17 @@ class HeaderSection:
     sender: str|None = field(default=None, metadata={"name": "SENDER", "type": "Attribute"})
     version: str|None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
 
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                "oid": "HEADERSECTION",
+                "kind": None,
+                "meta_attributes": {}
+            }
+        }
+
+
 @dataclass
 class Transfer:
     class Meta:
@@ -83,3 +114,13 @@ class Transfer:
     datasection: DataSection = field(
         metadata={"name": "DATASECTION", "type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"}
     )
+
+    @property
+    def metadata(self) -> dict:
+        return {
+            "interlis": {
+                "oid": "TRANSFER",
+                "kind": None,
+                "meta_attributes": {}
+            }
+        }
