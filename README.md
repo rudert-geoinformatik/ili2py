@@ -82,7 +82,7 @@ docker build -t ili2py:local-dev .
 docker run --rm -ti ili2py:local-dev
 # show version of ili2py
 docker run --rm -ti ili2py:local-dev -V
-# show help about uml tool
+# show help about diagram tool
 docker run --rm -ti ili2py:local-dev diagram --help
 # create plantuml diagram with one model selected
 docker run --rm -ti -v ./tests/data/models:/io/data -v ./.generated:/io/generated ili2py:local-dev diagram -i /io/data/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -f plantuml -o /io/generated -m OeREBKRMtrsfr_V2_0

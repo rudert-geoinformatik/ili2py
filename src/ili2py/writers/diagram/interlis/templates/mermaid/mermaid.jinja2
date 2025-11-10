@@ -2,6 +2,18 @@
 ---
 title: {{ ', '.join(model_names) }}
 ---
+%%{
+    init: {
+        "layout": "elk",
+        "elk": {
+            "mergeEdges": false,
+            "nodePlacementStrategy": "SIMPLE",
+            "cycleBreakingStrategy": "GREEDY_MODEL_ORDER",
+            "forceNodeModelOrder": true,
+            "considerModelOrder": "NODES_AND_EDGES"
+        }
+    }
+}%%
 classDiagram
 direction {{ direction }}
 {%- for model_group in diagram.model_groups %}

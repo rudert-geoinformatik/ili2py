@@ -27,20 +27,20 @@ First you need to create a folder called `uml` in the root of the project.
 
 Linux:
 ```shell
-mkdir uml
+mkdir diagram
 ```
 
 The following command creates a UML Diagram (PlantUML).
 
 ```shell
-.venv/bin/python -m ili2py.cli ili2py-uml -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o plantuml > uml/test.puml
+.venv/bin/python -m ili2py.cli ili2py-diagram -i tests/data/models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o plantuml > diagram/test.puml
 ```
 
 The resulting File contains the UML description as it can be used with plantuml. To save it as an image (e.g. svg or png) we can run
 the following command:
 
 ```shell
-docker run --rm -v $(pwd)/uml:/io plantuml/plantuml -tsvg -o /io /io/test.puml
+docker run --rm -v $(pwd)/diagram:/io plantuml/plantuml -tsvg -o /io /io/test.puml
 ```
 
 ## Docker

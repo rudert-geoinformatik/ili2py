@@ -6,8 +6,8 @@ from typing import List
 from jinja2 import Environment, FileSystemLoader
 
 from ili2py.mappers.helpers import Index
+from ili2py.writers.diagram.interlis.uml import Diagram
 from ili2py.writers.helpers import create_file
-from ili2py.writers.uml.interlis_23.uml import Diagram
 
 ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
 
@@ -15,7 +15,7 @@ tool_settings = {
     "mermaid": {
         "postfix": "md",
         "settings": {
-            "directions": ["LR", "RL", "TD", "DT"],
+            "directions": ["LR", "RL", "TB", "BT"],
             # currently not supported on class diagrams
             "linetype": [],
         },
@@ -47,6 +47,7 @@ def uml_diagram(
     output_path: str,
     direction: str | None = None,
     linetype: str | None = None,
+    multiplier: int = 2,
 ):
     if flavour == "mermaid":
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
@@ -82,6 +83,7 @@ def uml_diagram(
         model_names=model_names,
         direction=selected_direction,
         linetype=selected_linetype,
+        multiplier=multiplier,
     )
     src_code_encoded = output.encode()
 

@@ -1,9 +1,6 @@
-from typing import List
-
-from ili2py.interfaces.interlis.interlis_24.ilismeta16 import ImdTransfer
 from ili2py.mappers.helpers import Index
+from ili2py.writers.diagram.interlis import Diagram, uml_diagram
 from ili2py.writers.helpers import handle_model_versions
-from ili2py.writers.uml.interlis_23 import Diagram, uml_diagram
 
 
 def create_uml_diagram(
@@ -15,6 +12,7 @@ def create_uml_diagram(
     output_path: str,
     direction: str | None = None,
     linetype: str | None = None,
+    multiplier: int = 2,
 ):
     ili_version = handle_model_versions(index)
     if ili_version == "2.3":
@@ -27,6 +25,7 @@ def create_uml_diagram(
             output_path,
             direction=direction,
             linetype=linetype,
+            multiplier=multiplier,
         )
     elif ili_version == "2.4":
         uml_diagram(
@@ -38,6 +37,7 @@ def create_uml_diagram(
             output_path,
             direction=direction,
             linetype=linetype,
+            multiplier=multiplier,
         )
     else:
         raise NotImplementedError(f"ili version '{ili_version}' not supported")
