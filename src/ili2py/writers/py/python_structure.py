@@ -201,6 +201,7 @@ class Attribute(Base):
         default_factory=list
     )
     namespace_package: str | None = field(default=None)
+    kind: str | None = field(default=None)
 
     @staticmethod
     def check_float_kind(representation: str | None) -> bool:
@@ -289,9 +290,12 @@ class Attribute(Base):
         elif isinstance(imd_type, ImdLineType):
             return imd_type.tid, True
         elif isinstance(imd_type, MultiValue):
-            # we directly return the original base type ref here, this means its the oid of a structure class
-            # we expect that class to exist in the right place (see class.from_imd)
-            return imd_type.base_type.ref, True
+            if isinstance(index.index[imd_type.base_type.ref], ImdClass):
+                # we directly return the original base type ref here, this means its the oid of a structure class
+                # we expect that class to exist in the right place (see class.from_imd)
+                return imd_type.base_type.ref, True
+            else:
+                return imd_type.tid, True
         elif isinstance(imd_type, EnumType):
             return imd_type.tid, True
         elif isinstance(imd_type, EnumTreeValueType):
@@ -436,14 +440,32 @@ class Attribute(Base):
                 local_type.name = class_name
             else:
                 final_type_name = resolved_type_name
-        elif isinstance(referenced_type, MultiValueType) and referenced_type.name == "TYPE":
+        elif isinstance(referenced_type, MultiValueType) and referenced_type.name in [
+            "TYPE",
+            "MVT",
+        ]:
             multi_value_base_type = index.index[referenced_type.base_type.ref]
             imports = []
-            multi_value_base_type_name, multi_value_base_type_import = (
-                Attribute.decide_type_reference(referenced_class, multi_value_base_type.tid, index)
-            )
-            if multi_value_base_type_import:
-                imports.append(multi_value_base_type_import)
+            if referenced_type.name == "MVT":
+                multi_value_base_type_name, is_oid = Attribute.handle_type_trail(
+                    multi_value_base_type, index
+                )
+                if is_oid:
+                    raise NotImplementedError("This was not expected")
+                type_restrictions = Attribute.construct_type_restrictions(multi_value_base_type)
+                model_name = Attribute.get_model_name_from_type(referenced_type, index)
+                list_type = Attribute.decide_list_type(multi_value_base_type)
+            else:
+                multi_value_base_type_name, multi_value_base_type_import = (
+                    Attribute.decide_type_reference(
+                        referenced_class, multi_value_base_type.tid, index
+                    )
+                )
+                if multi_value_base_type_import:
+                    imports.append(multi_value_base_type_import)
+                type_restrictions = {"type_related_type": True}
+                model_name = Attribute.get_model_name_from_type(multi_value_base_type, index)
+                list_type = Attribute.decide_list_type(referenced_type)
             local_type = Class(
                 name=f"{referenced_class.name}{attr_or_param.name}Struct",
                 identifier=referenced_type.tid,
@@ -457,14 +479,13 @@ class Attribute(Base):
                         doc=["This attribute is a HOP-Type to correctly parse XTF."],
                         meta_attributes=[],
                         types=[multi_value_base_type_name],
-                        type_restrictions={"type_related_type": True},
+                        type_restrictions=type_restrictions,
                         enumeration=None,
                         line_type=None,
                         type_related_type_class=None,
-                        is_list_type=Attribute.decide_list_type(referenced_type),
-                        namespace_package=Attribute.get_model_name_from_type(
-                            multi_value_base_type, index
-                        ),
+                        is_list_type=list_type,
+                        namespace_package=model_name,
+                        kind=referenced_type.name,
                     )
                 ],
                 abstract=False,
