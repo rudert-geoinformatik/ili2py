@@ -1,0 +1,40 @@
+{% set surface_class_name=class_name %}
+@dataclass
+class {{ boundary_class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {%- set class_name=surface_class_name + "Polyline" %}
+    {%- set doc=[] %}
+    {% macro render_line_type_polyline() %}{% include "line_type_polyline.jinja2" %}{% endmacro %}
+    {{ render_line_type_polyline() | indent(4, true) }}
+
+
+    @dataclass
+    class {{ surface_class_name }}PolylineInterior({{ class_name }}):
+        pass
+
+
+    @dataclass
+    class {{ surface_class_name }}PolylineExterior({{ class_name }}):
+        pass
+
+
+    boundaries: list[{{ class_name }}] = field(
+        default_factory=list,
+        metadata={
+            "type": "Elements",
+            "choices": ({
+                "type": {{ surface_class_name }}PolylineExterior,
+                "name": "exterior",
+                "namespace": "{{ namespace }}"
+            },{
+                "type": {{ surface_class_name }}PolylineInterior,
+                "name": "interior",
+                "namespace": "{{ namespace }}"
+            }),
+            "interlis": {
+                "meta_attributes": {}
+            }
+        }
+    )

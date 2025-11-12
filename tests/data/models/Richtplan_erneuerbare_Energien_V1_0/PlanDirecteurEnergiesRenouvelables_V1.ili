@@ -1,0 +1,121 @@
+INTERLIS 2.3;
+
+/** !!-----------------------------------------------------------------------------
+ * !! Version    | Wer | Aenderung
+ * !!------------------------------------------------------------------------------
+ * !! 2020-11-30 | CJ  | Finale Version
+ */
+
+!!@ furtherInformation=https://www.bfe.admin.ch/geoinformation
+!!@ technicalContact=mailto:info@bfe.admin.ch
+
+MODEL PlanDirecteurEnergiesRenouvelables_V1 (fr)
+  AT "https://models.geo.admin.ch/BFE/"
+  VERSION "2020-11-30" TRANSLATION OF RichtplanungErneuerbareEnergien_V1 ["2020-11-30"]  =
+  IMPORTS GeometryCHLV95_V1, CHAdminCodes_V1, CatalogueObjects_V1;
+
+  STRUCTURE PointStructure =
+    Point : GeometryCHLV95_V1.Coord2;
+  END PointStructure;
+
+  STRUCTURE MultiPoint =
+    Points : BAG {1..*} OF PlanDirecteurEnergiesRenouvelables_V1.PointStructure;
+  END MultiPoint;
+
+  DOMAIN
+
+    Texte = TEXT*255;
+
+    TypeObjet = (
+      Donnees_de_base,
+      ContenuPlanDirecteur (
+        Information_prealable,
+        Coordination_en_cours,
+        Coordination_reglee,
+        Inconnu
+      )
+    );
+
+  TOPIC Catalogue_FormeEnergie
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    CLASS FormeEnergie
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      FormeEnergie : MANDATORY PlanDirecteurEnergiesRenouvelables_V1.Texte;
+    END FormeEnergie;
+
+    STRUCTURE FormeEnergieRef
+    EXTENDS CatalogueObjects_V1.Catalogues.MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FormeEnergie;
+    END FormeEnergieRef;
+
+  END Catalogue_FormeEnergie;
+
+  TOPIC Catalogue_TypeInformation
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    CLASS TypeInformation
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      TypeInformation : MANDATORY PlanDirecteurEnergiesRenouvelables_V1.Texte;
+    END TypeInformation;
+
+    STRUCTURE TypeInformationRef
+    EXTENDS CatalogueObjects_V1.Catalogues.MandatoryCatalogueReference =
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) TypeInformation;
+    END TypeInformationRef;
+
+  END Catalogue_TypeInformation;
+
+  TOPIC Objets =
+    DEPENDS ON PlanDirecteurEnergiesRenouvelables_V1.Catalogue_FormeEnergie;
+
+    CLASS Objet (ABSTRACT) =
+      FormeEnergie : MANDATORY PlanDirecteurEnergiesRenouvelables_V1.Catalogue_FormeEnergie.FormeEnergieRef;
+      NomObjet : PlanDirecteurEnergiesRenouvelables_V1.Texte;
+      Description : PlanDirecteurEnergiesRenouvelables_V1.Texte;
+      TypeObjet : PlanDirecteurEnergiesRenouvelables_V1.TypeObjet;
+      DateApprobation : INTERLIS.XMLDate;
+      DateDecisionCanton : INTERLIS.XMLDate;
+      Canton : MANDATORY CHAdminCodes_V1.CHCantonCode;
+      Weblink : INTERLIS.URI;
+      Remarques : PlanDirecteurEnergiesRenouvelables_V1.Texte;
+    END Objet;
+
+    CLASS Surface
+    EXTENDS Objet =
+      Geometrie : MANDATORY GeometryCHLV95_V1.MultiSurface;
+    END Surface;
+
+    CLASS Ligne
+    EXTENDS Objet =
+      Geometrie : MANDATORY GeometryCHLV95_V1.MultiLine;
+    END Ligne;
+
+    CLASS Point
+    EXTENDS Objet =
+      Geometrie : MANDATORY PlanDirecteurEnergiesRenouvelables_V1.MultiPoint;
+    END Point;
+
+  END Objets;
+
+  TOPIC MetadonneesTransfer =
+    DEPENDS ON PlanDirecteurEnergiesRenouvelables_V1.Catalogue_TypeInformation;
+
+    CLASS Canton =
+      Canton : MANDATORY CHAdminCodes_V1.CHCantonCode;
+      Energie_eolienne : BAG {1..2} OF PlanDirecteurEnergiesRenouvelables_V1.Catalogue_TypeInformation.TypeInformationRef;
+      Energie_hydraulique : BAG {1..2} OF PlanDirecteurEnergiesRenouvelables_V1.Catalogue_TypeInformation.TypeInformationRef;
+      Geothermie : BAG {1..2} OF PlanDirecteurEnergiesRenouvelables_V1.Catalogue_TypeInformation.TypeInformationRef;
+      Biomasse : BAG {1..2} OF PlanDirecteurEnergiesRenouvelables_V1.Catalogue_TypeInformation.TypeInformationRef;
+      Energie_solaire : BAG {1..2} OF PlanDirecteurEnergiesRenouvelables_V1.Catalogue_TypeInformation.TypeInformationRef;
+      Geometrie : MANDATORY GeometryCHLV95_V1.MultiSurface;
+    END Canton;
+
+    CLASS JeuDeDonnees =
+      Version : MANDATORY INTERLIS.XMLDate;
+      Remarques : PlanDirecteurEnergiesRenouvelables_V1.Texte;
+    END JeuDeDonnees;
+
+  END MetadonneesTransfer;
+
+END PlanDirecteurEnergiesRenouvelables_V1.

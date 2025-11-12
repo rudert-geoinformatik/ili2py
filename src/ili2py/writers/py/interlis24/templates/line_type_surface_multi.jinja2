@@ -1,0 +1,50 @@
+
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {%- if doc %}
+    """
+    {{ "\n".join(doc) }}
+    """
+    {%- endif %}
+
+
+    @dataclass
+    class Surfaces:
+        class Meta:
+            namespace = "{{ namespace }}"
+
+        {%- set doc=[] %}
+        {% set boundary_class_name=class_name + "Boundary" %}
+        {% macro render_line_type_surface_boundary() %}{% include "line_type_surface_boundary.jinja2" %}{% endmacro %}
+        {{ render_line_type_surface_boundary() | indent(8, true) }}
+
+        parts: list[{{ boundary_class_name }}] = field(
+            default_factory=list,
+            metadata={
+                "type": "Elements",
+                "choices": [{
+                    "type": {{ boundary_class_name }},
+                    "name": "surface",
+                    "namespace": "{{ namespace }}"
+                }],
+                "interlis": {}
+            }
+        )
+
+    multisurface: Surfaces = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "{{ namespace }}",
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+    )

@@ -1,0 +1,27 @@
+
+@dataclass
+class {{ segment_class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+    {%- if coord_type_name == 'Any' %}
+    vertices: "list[{{ coord_type_name }}]" = field(
+    {%- else %}
+    vertices: "list[{{ coord_type_name }}Type | {{ coord_type_name }}ARCType]" = field(
+    {%- endif %}
+        default_factory=list,
+        metadata={
+            "type": "Elements",
+            "choices": ({
+                "name": "coord",
+                "type": {%- if coord_type_name == 'Any' %}Any{% else %}{{ coord_type_name }}Type{% endif %},
+                "namespace": "{{ namespace }}",
+            },{
+                "name": "arc",
+                "type": {%- if coord_type_name == 'Any' %}Any{% else %}{{ coord_type_name }}ARCType{% endif %},
+                "namespace": "{{ namespace }}",
+            } ),
+            "interlis": {
+                "meta_attributes": {}
+            }
+        }
+    )
