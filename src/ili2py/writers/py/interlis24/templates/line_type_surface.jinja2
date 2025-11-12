@@ -1,0 +1,31 @@
+{% set surface_class_name=class_name %}
+@dataclass
+class {{ surface_class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    """
+    {%- if doc %}
+    {{ "\n".join(doc) }}
+    {%- endif  %}
+    """
+
+    {%- set doc=[] %}
+    {% set boundary_class_name=class_name + "Boundary" %}
+    {% macro render_line_type_surface_boundary() %}{% include "line_type_surface_boundary.jinja2" %}{% endmacro %}
+    {{ render_line_type_surface_boundary() | indent(4, true) }}
+
+    surface: {{ boundary_class_name }} | None = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "{{ namespace }}",
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+    )

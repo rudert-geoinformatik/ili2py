@@ -41,7 +41,7 @@ def test_init():
         "models/Revitalisierung_Seeufer_V1_2/Revitalisierung_Seen_V1_2.imd",
         "models/Gewaesserraum_V1_1/Gewaesserraum_V1_1.imd",
         "models/Gewaesserraum_V1_1/Gewaesserraum_LegendeEintrag_V1_1.imd",
-        "models/Richtplan_erneuerbare_Energien_V1_0/SupplySecurity_RuledAreas_V1_2.imd",
+        "models/SupplySecurity_RuledAreas_V1_2/SupplySecurity_RuledAreas_V1_2.imd",
         "models/Richtplan_erneuerbare_Energien_V1_0/RichtplanungErneuerbareEnergien_V1.imd",
         "models/SO_AFU_ABBAUSTELLEN_Publikation_20221103/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd",
         "models/Waldreservate_V1_1/Waldreservate_V1_1.imd",

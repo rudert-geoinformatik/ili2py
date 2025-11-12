@@ -1,0 +1,49 @@
+
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {%- if doc %}
+    """
+    {{ "\n".join(doc) }}
+    """
+    {%- endif %}
+    @dataclass
+    class Polylines:
+        class Meta:
+            namespace = "{{ namespace }}"
+
+        {%- set doc=[] %}
+        {%- set coord_type_name=coord_type_name %}
+        {%- set segment_class_name="Segment" %}
+        {% macro render_line_type_segment() %}{% include "line_type_segment.jinja2" %}{% endmacro %}
+        {{ render_line_type_segment() | indent(8, true) }}
+
+        parts: list[{{ segment_class_name }}] = field(
+            default_factory=list,
+            metadata={
+                "type": "Elements",
+                "choices": [{
+                    "type": {{ segment_class_name }},
+                    "name": "surface",
+                    "namespace": "{{ namespace }}"
+                }],
+                "interlis": {}
+            }
+        )
+
+    multipolyline: Polylines = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "{{ namespace }}",
+            "interlis": {
+                "meta_attributes": {
+                    {%- for item in meta_attributes %}
+                        "{{ item.name }}": "{{ item.value }}",
+                    {%- endfor %}
+                }
+            }
+        }
+    )

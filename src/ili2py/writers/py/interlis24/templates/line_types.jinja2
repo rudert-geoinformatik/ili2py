@@ -1,155 +1,26 @@
 {%- for line_type in line_types %}
-@dataclass
-{%- if line_type.attribute.name in ["POLYLINE", "DIRECTEDPOLYLINE"]  %}
-class {{ line_type.name }}:
-    class Meta:
-        namespace = "{{ render_config['namespace_map']['geom'] }}"
-
-    {%- if line_type.doc %}
-    """
-    {{ "\n".join(line_type.doc) }}
-    """
-    {%- endif %}
-    @dataclass
-    class Segment:
-        class Meta:
-            namespace = "{{ render_config['namespace_map']['geom'] }}"
-        {%- if line_type.attribute.types[0] == 'Any' %}
-        vertices: "list[{{ line_type.attribute.types[0] }}]" = field(
-        {%- else %}
-        vertices: "list[{{ line_type.attribute.types[0] }}Type | {{ line_type.attribute.types[0] }}ARCType]" = field(
-        {%- endif %}
-            default_factory=list,
-            metadata={
-                "type": "Elements",
-                "choices": ({
-                    "name": "coord",
-                    "type": {%- if line_type.attribute.types[0] == 'Any' %}Any{% else %}{{ line_type.attribute.types[0] }}Type{% endif %},
-                    "namespace": "{{ render_config['namespace_map']['geom'] }}",
-                },{
-                    "name": "arc",
-                    "type": {%- if line_type.attribute.types[0] == 'Any' %}Any{% else %}{{ line_type.attribute.types[0] }}ARCType{% endif %},
-                    "namespace": "{{ render_config['namespace_map']['geom'] }}",
-                } ),
-                "interlis": {
-                    "meta_attributes": {
-
-                    }
-                }
-            }
-        )
-    {{ line_type.attribute.name }}: Segment | None = field(
-        default=None,
-        metadata={
-            "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['geom'] }}",
-            "interlis": {
-                "meta_attributes": {
-                    {%- for item in line_type.attribute.meta_attributes %}
-                        "{{ item.name }}": "{{ item.value }}",
-                    {%- endfor %}
-                }
-            }
-        }
-    )
-{%- elif line_type.attribute.name in ["SURFACE", "AREA"] %}
-class {{ line_type.name }}:
-    class Meta:
-        namespace = "{{ render_config['namespace_map']['geom'] }}"
-
-    """
-    {%- if line_type.doc %}
-    {{ "\n".join(line_type.doc) }}
-    {%- endif  %}
-    """
-
-    @dataclass
-    class {{ line_type.name }}Boundary:
-        class Meta:
-            namespace = "{{ render_config['namespace_map']['geom'] }}"
-
-        @dataclass
-        class {{ line_type.name }}Polyline:
-            class Meta:
-                namespace = "{{ render_config['namespace_map']['geom'] }}"
-
-            @dataclass
-            class Segment:
-                class Meta:
-                    namespace = "{{ render_config['namespace_map']['geom'] }}"
-
-                vertices: "list[{{ line_type.attribute.types[0] }}Type | {{ line_type.attribute.types[0] }}ARCType]" = field(
-                    default_factory=list,
-                    metadata={
-                        "type": "Elements",
-                        "choices": ({
-                            "name": "coord",
-                            "type": {{ line_type.attribute.types[0] }}Type,
-                            "namespace": "{{ render_config['namespace_map']['geom'] }}",
-                        },{
-                            "name": "arc",
-                            "type": {{ line_type.attribute.types[0] }}ARCType,
-                            "namespace": "{{ render_config['namespace_map']['geom'] }}",
-                        } ),
-                        "interlis": {
-                            "meta_attributes": {
-
-                            }
-                        }
-                    }
-                )
-            polyline: Segment | None = field(
-                default=None,
-                metadata={
-                    "type": "Element",
-                    "namespace": "{{ render_config['namespace_map']['geom'] }}",
-                    "interlis": {"meta_attributes": {}},
-                },
-            )
-
-        @dataclass
-        class {{ line_type.name }}PolylineInterior({{ line_type.name }}Polyline):
-            pass
-
-        @dataclass
-        class {{ line_type.name }}PolylineExterior({{ line_type.name }}Polyline):
-            pass
-
-        boundaries: list[{{ line_type.name }}Polyline] = field(
-            default_factory=list,
-            metadata={
-                "type": "Elements",
-                "choices": ({
-                    "type": {{ line_type.name }}PolylineExterior,
-                    "name": "exterior",
-                    "namespace": "{{ render_config['namespace_map']['geom'] }}"
-                },{
-                    "type": {{ line_type.name }}PolylineInterior,
-                    "name": "interior",
-                    "namespace": "{{ render_config['namespace_map']['geom'] }}"
-                }),
-                "interlis": {
-                    "meta_attributes": {
-
-                    }
-                }
-            }
-        )
-
-    surface: {{ line_type.name }}Boundary | None = field(
-        default=None,
-        metadata={
-            "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['geom'] }}",
-            "interlis": {
-                "meta_attributes": {
-                    {%- for item in line_type.attribute.meta_attributes %}
-                        "{{ item.name }}": "{{ item.value }}",
-                    {%- endfor %}
-                }
-            }
-        }
-    )
+{%- set doc=line_type.doc %}
+{%- set class_name=line_type.name %}
+{%- set attribute_name=line_type.attribute.name.lower() %}
+{%- set coord_type_name=line_type.attribute.types[0] %}
+{%- set namespace=render_config['namespace_map']['geom'] %}
+{%- set meta_attributes=line_type.attribute.meta_attributes %}
+{% if attribute_name in ["polyline", "directedpolyline"]  %}
+{% if line_type.multi %}
+{% macro render_line_type_polyline_multi() %}{% include "line_type_polyline_multi.jinja2" %}{% endmacro %}
+{{ render_line_type_polyline_multi() }}
+{% else %}
+{% macro render_line_type_polyline() %}{% include "line_type_polyline.jinja2" %}{% endmacro %}
+{{ render_line_type_polyline() }}
+{% endif %}
+{%- elif attribute_name in ["surface", "area"] %}
+{% if line_type.multi %}
+{% macro render_line_type_surface_multi() %}{% include "line_type_surface_multi.jinja2" %}{% endmacro %}
+{{ render_line_type_surface_multi() }}
+{% else %}
+{% macro render_line_type_surface() %}{% include "line_type_surface.jinja2" %}{% endmacro %}
+{{ render_line_type_surface() }}
+{% endif %}
 {%- endif  %}
     @property
     def metadata(self) -> dict:

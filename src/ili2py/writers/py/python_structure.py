@@ -283,12 +283,21 @@ class Attribute(Base):
         elif isinstance(imd_type, BooleanType):
             return "bool", False
         elif isinstance(imd_type, ImdCoordType):
-            if imd_type.name == "TYPE" and imd_type.super:
-                return Attribute.handle_type_trail(index.index[imd_type.super.ref], index)
+            if imd_type.name == "TYPE":
+                if imd_type.super:
+                    return imd_type.super.ref, True
+                else:
+                    return imd_type.tid, True
             else:
                 return imd_type.tid, True
         elif isinstance(imd_type, ImdLineType):
-            return imd_type.tid, True
+            if imd_type.name == "TYPE":
+                if imd_type.super:
+                    return imd_type.super.ref, True
+                else:
+                    return imd_type.tid, True
+            else:
+                return imd_type.tid, True
         elif isinstance(imd_type, MultiValue):
             if isinstance(index.index[imd_type.base_type.ref], ImdClass):
                 # we directly return the original base type ref here, this means its the oid of a structure class
@@ -1221,6 +1230,7 @@ class CoordAttribute(Attribute):
 @dataclass
 class CoordType(Base):
     attributes: list[Attribute] = field(default_factory=list)
+    multi: bool = field(default=False)
 
     @classmethod
     def from_imd(cls, imd_coord_type: ImdCoordType, imd_model_data: ModelData, index: Index):
@@ -1251,6 +1261,7 @@ class CoordType(Base):
             doc=cls.doc_string(imd_coord_type.documentation),
             attributes=attributes,
             meta_attributes=meta_attributes,
+            multi=imd_coord_type.multi if imd_coord_type.multi else False,
         )
 
     @property
@@ -1274,6 +1285,7 @@ class LineType(Base):
     arcs: bool = field(default=False)
     is_line_like: bool = field(default=False)
     is_polygon_like: bool = field(default=False)
+    multi: bool = field(default=False)
 
     @classmethod
     def from_imd(cls, imd_line_type: ImdLineType, index: Index):
@@ -1316,6 +1328,7 @@ class LineType(Base):
             meta_attributes=meta_attributes,
             is_line_like=imd_line_type.kind in ["Polyline", "DirectedPolyline"],
             is_polygon_like=imd_line_type.kind in ["Surface", "Area"],
+            multi=imd_line_type.multi if imd_line_type.multi else False,
         )
 
 
