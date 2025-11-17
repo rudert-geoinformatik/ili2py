@@ -13,6 +13,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     ClassType,
     ConstraintType,
     CoordType,
+    CoordTypeType,
     DataUnit,
     DataUnitType,
     Dependency,
@@ -25,6 +26,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     LineForm,
     LinesForm,
     LineType,
+    LineTypeType,
     MetaAttribute,
     MetaElementType,
     Model,
@@ -122,6 +124,14 @@ class Index:
         self.class_class_parameter: dict = {}
         self.class_association_attribute: dict = {}
         self.class_association_parameter: dict = {}
+
+        self.geometric_attributes: list = []
+        self.geometric_attributes_line_form: dict = {}
+        self.geometric_attributes_point_like: list = []
+        self.geometric_attributes_line_like: list = []
+        self.geometric_attributes_polygon_like: list = []
+
+        self.geometric_classes: dict = {}
 
         self.association_role: dict = {}
         self.association_to_class_ref_attributes: dict = {}
@@ -248,6 +258,8 @@ class Index:
             self.handle_constraint(element)
         if isinstance(element, DomainTypeType):
             self.handle_domain_type(element)
+        if isinstance(element, CoordTypeType) or isinstance(element, LineTypeType):
+            self.handle_geometric(element)
 
     def handle_import(self, element: Import):
         """
@@ -325,6 +337,15 @@ class Index:
             line_type_bucket.append(element.line_form.ref)
         if element.line_type.ref not in line_form_bucket:
             line_form_bucket.append(element.line_type.ref)
+        # adding attribute info level to index
+        type_definition = self.index[element.line_type.ref]
+        if type_definition.ltparent:
+            self.index[type_definition.ltparent.ref]
+            if type_definition.ltparent.ref not in self.geometric_attributes_line_form:
+                self.geometric_attributes_line_form[type_definition.ltparent.ref] = []
+            self.geometric_attributes_line_form[type_definition.ltparent.ref].append(
+                element.line_form.ref
+            )
 
     def handle_role(self, element: Role):
         if element.association.ref not in self.association_role:
@@ -615,3 +636,27 @@ class Index:
                 if element.element_in_package.ref not in self.types_in_domain:
                     self.types_in_domain[element.element_in_package.ref] = []
                 self.types_in_domain[element.element_in_package.ref].append(element)
+
+    def handle_geometric(self, element: CoordTypeType | LineTypeType):
+        if element.ltparent:
+            attribute_definition: AttrOrParam = self.index[element.ltparent.ref]
+            if attribute_definition.tid not in self.geometric_attributes:
+                self.geometric_attributes.append(attribute_definition.tid)
+            if isinstance(element, CoordTypeType):
+                if attribute_definition.tid not in self.geometric_attributes_point_like:
+                    self.geometric_attributes_point_like.append(attribute_definition.tid)
+            elif isinstance(element, LineTypeType) and element.kind in [
+                "Polyline",
+                "DirectedPolyline",
+            ]:
+                if attribute_definition.tid not in self.geometric_attributes_line_like:
+                    self.geometric_attributes_line_like.append(attribute_definition.tid)
+            elif isinstance(element, LineTypeType) and element.kind in ["Surface", "Area"]:
+                if attribute_definition.tid not in self.geometric_attributes_polygon_like:
+                    self.geometric_attributes_polygon_like.append(attribute_definition.tid)
+            else:
+                logging.debug(f"Unexpected geometric type {element}")
+            class_definition: Class = self.index[attribute_definition.attr_parent.ref]
+            if class_definition.tid not in self.geometric_classes:
+                self.geometric_classes[class_definition.tid] = []
+            self.geometric_classes[class_definition.tid].append(attribute_definition.tid)
