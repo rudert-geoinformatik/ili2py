@@ -72,7 +72,7 @@ class {{ class_definition.name }}:
 {%- endif %}
 {%- endif %}
 {% for attribute in class_definition.attributes %}
-    {{ attribute.name }}: "{% if attribute.is_list_type %}list[{{ attribute.types|join(" | ") }}]{% else %}{{ attribute.types|join(" | ") }} | None{% endif %}" = field(
+    {% if attribute.name not in reserved_python_key_words %}{{ attribute.name }}{% else %}{{ attribute.name }}_{% endif %}: "{% if attribute.is_list_type %}list[{{ attribute.types|join(" | ") }}]{% else %}{{ attribute.types|join(" | ") }} | None{% endif %}" = field(
         {%- if attribute.is_list_type %}
         default_factory=list,
         {%- else %}
@@ -87,6 +87,8 @@ class {{ class_definition.name }}:
             "namespace": "{{ render_config['base_url'] }}/{{ attribute.namespace_package }}",
             {%- if attribute.type_restrictions['type_related_type'] %}
             "name": "{{ attribute.identifier.split('.')[-1] }}",
+            {%- else %}
+            "name": "{{ attribute.name }}",
             {%- endif %}
             "interlis": {
                 "oid": "{{ attribute.identifier }}",
