@@ -460,7 +460,14 @@ class Attribute(Base):
                     multi_value_base_type, index
                 )
                 if is_oid:
-                    raise NotImplementedError("This was not expected")
+                    # the multi field is not a simple type but links to a complex one
+                    multi_value_base_type_name, multi_value_base_type_import = (
+                        Attribute.decide_type_reference(
+                            referenced_class, multi_value_base_type.tid, index
+                        )
+                    )
+                    if multi_value_base_type_import:
+                        imports.append(multi_value_base_type_import)
                 type_restrictions = Attribute.construct_type_restrictions(multi_value_base_type)
                 model_name = Attribute.get_model_name_from_type(referenced_type, index)
                 list_type = Attribute.decide_list_type(multi_value_base_type)

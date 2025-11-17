@@ -29,6 +29,44 @@ render_configuration = {
     },
 }
 
+reserved_python_key_words = [
+    "False",
+    "await",
+    "else",
+    "import",
+    "pass",
+    "None",
+    "break",
+    "except",
+    "in",
+    "raise",
+    "True",
+    "class",
+    "finally",
+    "is",
+    "return",
+    "and",
+    "continue",
+    "for",
+    "lambda",
+    "try",
+    "as",
+    "def",
+    "from",
+    "nonlocal",
+    "while",
+    "assert",
+    "del",
+    "global",
+    "not",
+    "with",
+    "async",
+    "elif",
+    "if",
+    "or",
+    "yield",
+]
+
 
 def create_python_classes(library: Library, index: Index, output_path: str, beautify: bool = True):
     ili_version = handle_model_versions(index)
@@ -52,7 +90,9 @@ def reader_classes(library: Library, output_path: str, render_config: dict, beau
     tpl_dir = Path(__file__).parent.joinpath(f"interlis{render_config['selector']}", "templates")
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
     library_content = env.get_template("library_init.jinja2").render(
-        library=library, render_config=render_config
+        library=library,
+        render_config=render_config,
+        reserved_python_key_words=reserved_python_key_words,
     )
     # we expect the name to contain dots (as python dotted path) this can be used to create the interface in
     # the correct way for a library where it should be included to. As we always want the folder of the
@@ -64,19 +104,25 @@ def reader_classes(library: Library, output_path: str, render_config: dict, beau
 
     library_file = create_file(output_path, library_name, "__init__.py")
     library_file.write_text(library_content, encoding="utf-8")
-    references_content = env.get_template("references.jinja2").render(render_config=render_config)
+    references_content = env.get_template("references.jinja2").render(
+        render_config=render_config, reserved_python_key_words=reserved_python_key_words
+    )
     references_file = create_file(output_path, library_name, "references.py")
     references_file.write_text(references_content, encoding="utf-8")
     # this way we can use the code and also deliver it to the built package
     constraints_file = create_file(output_path, library_name, "constraints.py")
     constraints_file.write_text(inspect.getsource(constraints), encoding="utf-8")
     convertable_types_content = env.get_template("convertable_types.jinja2").render(
-        library=library, render_config=render_config
+        library=library,
+        render_config=render_config,
+        reserved_python_key_words=reserved_python_key_words,
     )
     convertable_types_file = create_file(output_path, library_name, "convertable_types.py")
     convertable_types_file.write_text(convertable_types_content, encoding="utf-8")
     xtf_opening_content = env.get_template("xtf_opening.jinja2").render(
-        library=library, render_config=render_config
+        library=library,
+        render_config=render_config,
+        reserved_python_key_words=reserved_python_key_words,
     )
     xtf_opening_file = create_file(output_path, library_name, "xtf_opening.py")
     xtf_opening_file.write_text(xtf_opening_content, encoding="utf-8")
@@ -84,13 +130,18 @@ def reader_classes(library: Library, output_path: str, render_config: dict, beau
     for package in library.packages:
         package_file = create_file(output_path, package.name, "__init__.py")
         package_content = env.get_template("package_init.jinja2").render(
-            package=package, render_config=render_config
+            package=package,
+            render_config=render_config,
+            reserved_python_key_words=reserved_python_key_words,
         )
         package_file.write_text(package_content, encoding="utf-8")
         for module in package.modules:
             module_file = create_file(output_path, package.name, f"{module.name}.py")
             module_content = env.get_template("module.jinja2").render(
-                module=module, render_config=render_config, package=package
+                module=module,
+                render_config=render_config,
+                package=package,
+                reserved_python_key_words=reserved_python_key_words,
             )
             module_file.write_text(module_content, encoding="utf-8")
     if beautify:
