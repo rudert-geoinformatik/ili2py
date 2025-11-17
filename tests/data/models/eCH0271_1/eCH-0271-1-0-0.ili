@@ -1,0 +1,1551 @@
+INTERLIS 2.4;
+
+/** Metadaten eCH-0271 1.0.0
+ */
+!!@ technicalContact=mailto:geocat@swisstopo.ch
+!!@ furtherInformation=https://info.geocat.ch/en/standards-and-models
+MODEL eCH0271_1 (en)
+AT "http://www.kogis.ch"
+VERSION "2024-11-18"  =
+  IMPORTS Units,InternationalCodes_V2,Localisation_V2;
+
+  TOPIC eCH0271 =
+
+    DOMAIN
+
+      Angle = 0.00000 .. 360.00000 CIRCULAR [Units.Angle_Degree];
+
+      CHE_AppraisalOfArchivalValueCode = (
+        A,
+        N,
+        S
+      );
+
+      CHE_CI_LegislationTypeCode = (
+        law,
+        ordinance,
+        otherLegalProvision
+      );
+
+      /** justification for the correlation of two datasets
+       */
+      CHE_DS_AssociationTypeCode = (
+        /** reference from one dataset to another
+         */
+        crossReference,
+        /** reference to a master dataset of which this one is a part
+         */
+        largerWorkCitation,
+        /** part of same structured set of data held in a computer
+         */
+        partOfSeamlessDatabase,
+        /** part of a set of imagery that when used together, provides three-dimensional images
+         */
+        stereoMate,
+        isComposedOf,
+        collectiveTitle,
+        series,
+        dependency,
+        revisionOf,
+        isTemporalStateOf,
+        isDescriptionOf,
+        isDescribedBy
+      );
+
+      CHE_MD_BasicGeodataAccessLevelCode = (
+        A,
+        B,
+        C
+      );
+
+      CHE_MD_BasicGeodataTypeCode = (
+        oereb,
+        referenceData
+      );
+
+      CHE_MD_LevelCode = (
+        communal,
+        cantonal,
+        federal,
+        other
+      );
+
+      CHE_MD_SubTopicCategoryCode = (
+        imageryBaseMapsEarthCover_BaseMaps,
+        imageryBaseMapsEarthCover_EarthCover,
+        imageryBaseMapsEarthCover_Imagery,
+        planningCadastre_Planning,
+        planningCadastre_Cadastre,
+        geoscientificInformation_Geology,
+        geoscientificInformation_Soils,
+        geoscientificInformation_NaturalHazards,
+        environment_EnvironmentalProtection,
+        environment_NatureProtection,
+        utilitiesCommunication_Energy,
+        utilitiesCommunication_Utilities,
+        utilitiesCommunication_Communication
+      );
+
+      CHE_ReasonForArchivingValueCode = (
+        legalRelevance,
+        quaranteeOfLegalCertainty,
+        evidenceOfBusinessPractice,
+        benefitsForResearch,
+        contemporaryInterest,
+        sensitivity,
+        developmentsProgression,
+        definingPowers
+      );
+
+      DateTime = FORMAT INTERLIS.XMLDateTime "1582-1-1T0:0:0.0" .. "2999-12-31T23:59:59.999";
+
+      DCPList = (
+        XML_,
+        CORBA,
+        JAVA,
+        COM,
+        SQL,
+        SOAP,
+        Z3950,
+        HTTP,
+        FTP,
+        webServices
+      );
+
+      Distance = 0.00 .. 9999999999.99 [INTERLIS.m];
+
+      GM_Point = COORD -180.00000 .. 180.00000 [Units.Angle_Degree], -90.00000 .. 90.00000 [Units.Angle_Degree] ,ROTATION 2 -> 1;
+
+      /** name of the handling restrictions on the dataset
+       */
+      MD_ClassificationCode = (
+        /** available for general disclosure
+         */
+        unclassified,
+        /** not for general disclosure
+         */
+        restricted,
+        /** available for someone who can be entrusted with information
+         */
+        confidential,
+        /** kept or meant to be kept private, unknown, or hidden from all but a select group of people
+         */
+        secret,
+        /** of the highest secrecy
+         */
+        topSecret,
+        sensitiveButUnclassified,
+        forOfficialUseOnly,
+        protected,
+        limitedDistribution
+      );
+
+      /** methods used to group similar keywords
+       */
+      MD_KeywordTypeCode = (
+        /** keyword identifies a branch of instruction or specialized learning
+         */
+        discipline,
+        /** keyword identifies a location
+         */
+        place,
+        /** keyword identifies the layer(s) of any deposited substance
+         */
+        stratum,
+        /** keyword identifies a time period related to the dataset
+         */
+        temporal,
+        /** keyword identifies a particular subject or topic
+         */
+        theme,
+        dataCentre,
+        featureType,
+        instrument,
+        platform,
+        process,
+        project,
+        service,
+        product,
+        subTopicCategory,
+        taxon
+      );
+
+      /** frequency with which modifications and deletions are made to the data after it is first produced
+       */
+      MD_MaintenanceFrequencyCode = (
+        /** data is repeatedly and frequently updated
+         */
+        continual,
+        /** data is updated each day
+         */
+        daily,
+        /** data is updated on a weekly basis
+         */
+        weekly,
+        /** data is updated every two weeks
+         */
+        fortnightly,
+        /** data is updated each month
+         */
+        monthly,
+        /** data is updated every three months
+         */
+        quarterly,
+        /** data is updated twice each year
+         */
+        biannually,
+        /** data is updated every year
+         */
+        annually,
+        /** data is updated as deemed necessary
+         */
+        asNeeded,
+        /** data is updated in intervals that are uneven in duration
+         */
+        irregular,
+        /** there are no plans to update the data
+         */
+        notPlanned,
+        /** frequency of maintenance for the data is not known
+         */
+        unknown
+      );
+
+      /** limitation(s) placed upon the access or use of the data
+       */
+      MD_RestrictionCode = (
+        /** exclusive right to the publication, production, or sale of the rights to a literary, dramatic, musical, or artistic work, or to the use of a commercial print or label, granted by law for a specified period of time to an author, composer, artist, distribut
+         */
+        copyright,
+        /** government has granted exclusive right to make, sell, use or license an invention or discovery
+         */
+        patent,
+        /** produced or sold information awaiting a patent
+         */
+        patentPending,
+        /** a name, symbol, or other device identifying a product, officially registered and legally restricted to the use of the owner or manufacturer
+         */
+        trademark,
+        /** formal permission to do something
+         */
+        license,
+        /** rights to financial benefit from and control of distribution of non-tangible property that is a result of creativity
+         */
+        intellectualPropertyRights,
+        /** withheld from general circulation or disclosure
+         */
+        restricted,
+        /** limitation not listed
+         */
+        otherRestrictions,
+        unrestricted,
+        licenceUnrestricted,
+        licenceEndUser,
+        licenceDistributor,
+        private,
+        statutory,
+        confidential,
+        sensitiveButUnclassified,
+        in_confidence
+      );
+
+      /** class of information to which the referencing entity applies
+       */
+      MD_ScopeCode = (
+        /** information applies to the attribute class
+         */
+        attribute,
+        /** information applies to the characteristic of a feature
+         */
+        attributeType,
+        /** information applies to the collection hardware class
+         */
+        collectionHardware,
+        /** information applies to  the collection session
+         */
+        collectionSession,
+        /** information applies to the dataset
+         */
+        dataset,
+        /** information applies to the series
+         */
+        series,
+        /** information applies to non-geographic data
+         */
+        nonGeographicDataset,
+        /** information applies to a dimension group
+         */
+        dimensionGroup,
+        /** information applies to a feature
+         */
+        feature,
+        /** information applies to a feature type
+         */
+        featureType,
+        /** information applies to a  property type
+         */
+        propertyType,
+        /** information applies to a field session
+         */
+        fieldSession,
+        /** information applies to a computer program or routine
+         */
+        software,
+        /** information applies to a capability which a service provider entity makes available to a service user entity through a set of interfaces that define a behaviour, such as a use case
+         */
+        service,
+        /** information applies to a copy or imitation of an existing or hypothetical object
+         */
+        model,
+        tile,
+        metadata,
+        inititative,
+        sample,
+        document,
+        repository,
+        aggregate,
+        product,
+        collection,
+        coverage,
+        application
+      );
+
+      Real = -9999999999.99 .. 9999999999.99;
+
+    CLASS DQ_DataQuality =
+    END DQ_DataQuality;
+
+    /** information about the events or source data used in constructing the data specified by the scope or lack of knowledge about lineage
+     */
+    CLASS LI_Lineage =
+      statement : Localisation_V2.MultilingualMText;
+    END LI_Lineage;
+
+    /** restrictions on the access and use of a resource or metadata
+     */
+    CLASS MD_Constraints =
+      useLimitation : BAG {0..*} OF Localisation_V2.MultilingualMText;
+    END MD_Constraints;
+
+    DOMAIN
+
+      Boolean = BOOLEAN;
+
+      GM_Object = SURFACE WITH (ARCS,STRAIGHTS) VERTEX GM_Point WITHOUT OVERLAPS>0.000001;
+
+      Integer = -10000000000 .. 10000000000;
+
+      /** status of the dataset or progress of a review
+       */
+      MD_ProgressCode = (
+        /** production of the data has been completed
+         */
+        completed,
+        /** data has been stored in an offline storage facility
+         */
+        historicalArchive,
+        /** data is no longer relevant
+         */
+        obsolete,
+        /** data is continually being updated
+         */
+        onGoing,
+        /** fixed date has been established upon or by which the data will be created or updated
+         */
+        planned,
+        /** data needs to be generated or updated
+         */
+        required,
+        /** data is currently in the process of being created
+         */
+        underDevelopment,
+        final,
+        pending,
+        retired,
+        superseded,
+        tentative,
+        valid,
+        accepted,
+        notAccepted,
+        withDrawn,
+        proposed,
+        deprecated
+      );
+
+      /** method used to represent geographic information in the dataset
+       */
+      MD_SpatialRepresentationTypeCode = (
+        /** vector data is used to represent geographic data
+         */
+        vector,
+        /** grid data is used to represent geographic data
+         */
+        grid,
+        /** textual or tabular data is used to represent geographic data
+         */
+        textTable,
+        /** triangulated irregular network
+         */
+        tin,
+        /** three-dimensional view formed by the intersecting homologous rays of an overlapping pair of images
+         */
+        stereoModel,
+        /** scene from a video recording
+         */
+        video
+      );
+
+    /** restrictions and legal prerequisites for accessing and using the resource
+     */
+    CLASS CHE_MD_LegalConstraints
+    EXTENDS MD_Constraints =
+      /** access constraints applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on obtaining the resource
+       */
+      accessConstraints : BAG {0..*} OF MD_RestrictionCode;
+      /** constraints applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations or warnings on using the resource
+       */
+      useConstraints : BAG {0..*} OF MD_RestrictionCode;
+      otherConstraints : BAG {0..*} OF Localisation_V2.MultilingualMText;
+    END CHE_MD_LegalConstraints;
+
+    /** information about the scope and frequency of updating
+     */
+    CLASS CHE_MD_MaintenanceInformation =
+      /** frequency with which changes and additions are made to the resource after the initial resource is completed
+       */
+      maintenanceAndUpdateFrequency : MD_MaintenanceFrequencyCode;
+      maintenanceNote : BAG {0..*} OF Localisation_V2.MultilingualMText;
+    END CHE_MD_MaintenanceInformation;
+
+    /** description of the content of a dataset
+     */
+    CLASS MD_ContentInformation (ABSTRACT) =
+    END MD_ContentInformation;
+
+    /** technical means and media by which a resource is obtained from the distributor
+     */
+    CLASS MD_DigitalTransferOptions =
+    END MD_DigitalTransferOptions;
+
+    STRUCTURE TM_Primitive =
+      begin : MANDATORY DateTime;
+      end : DateTime;
+    END TM_Primitive;
+
+    DOMAIN
+
+      CharacterString = TEXT*256;
+
+      /** name of the character coding standard used for the resource
+       */
+      MD_CharacterSetCode = (
+        /** 16-bit fixed size Universal Character Set, based on ISO 10646
+         */
+        ucs2,
+        /** 32-bit fixed size Universal Character Set, based on ISO 10646
+         */
+        ucs4,
+        /** 7-bit variable size UCS Transfer Format, based on ISO 10646
+         */
+        utf7,
+        /** 8-bit variable size UCS Transfer Format, based on ISO 10646
+         */
+        utf8,
+        /** 16-bit variable size UCS Transfer Format, based on ISO 10646
+         */
+        utf16,
+        a8859part1,
+        a8859part2,
+        a8859part3,
+        a8859part4,
+        a8859part5,
+        a8859part6,
+        a8859part7,
+        a8859part8,
+        a8859part9,
+        a8859part10,
+        a8859part11,
+        a8859part13,
+        a8859part14,
+        a8859part15,
+        a8859part16,
+        /** japanese code set used for electronic transmission
+         */
+        jis,
+        /** japanese code set used on MS-DOS based machines
+         */
+        shiftJIS,
+        /** japanese code set used on UNIX based machines
+         */
+        eucJP,
+        /** united states ASCII code set (ISO 646 US)
+         */
+        usAscii,
+        /** ibm mainframe code set
+         */
+        ebcdic,
+        /** korean code set
+         */
+        eucKR,
+        /** taiwanese code set
+         */
+        big5,
+        GB2312
+      );
+
+      /** high-level geographic data thematic classification to assist in the grouping and search of available geographic data sets. Can be used to group keywords as well. Listed examples are not exhaustive.  NOTE It is understood there are overlaps between general
+       */
+      MD_TopicCategoryCode = (
+        /** rearing of animals and/or cultivation of plants  Examples: agriculture, irrigation, aquaculture, plantations, herding, pests and diseases affecting crops and livestock
+         */
+        farming,
+        /** flora and/or fauna in natural environment  Examples: wildlife, vegetation, biological sciences, ecology, wilderness, sealife, wetlands, habitat
+         */
+        biota,
+        /** legal land descriptions  Examples: political and administrative boundaries
+         */
+        boundaries,
+        climatologyMeteorologyAtmosphere,
+        /** economic activities, conditions and employment  Examples: production, labour, revenue, commerce, industry, tourism and ecotourism, forestry, fisheries, commercial or subsistence hunting, exploration and exploitation of resources such as minerals, oil and
+         */
+        economy,
+        /** height above or below sea level  Examples: altitude, bathymetry, digital elevation models, slope, derived products
+         */
+        elevation,
+        /** inland water features, drainage systems and their characteristics  Examples: rivers and glaciers, salt lakes, water utilization plans, dams, currents, floods, water quality, hydrographic charts
+         */
+        inlandWaters,
+        /** environmental resources, protection and conservation   Examples: environmental pollution, waste storage and treatment, environmental impact assessment, monitoring environmental risk, nature reserves, landscape
+         */
+        environment,
+        /** information pertaining to earth sciences  Examples: geophysical features and processes, geology, minerals, sciences dealing with the composition, structure and origin of the earth?s rocks, risks of earthquakes, volcanic activity, landslides, gravity infor
+         */
+        geoscientificInformation,
+        /** health, health services, human ecology, and safety  Examples: disease and illness, factors affecting health, hygiene, substance abuse, mental and physical health, health services
+         */
+        health,
+        /** base maps  Examples: land cover, topographic maps, imagery, unclassified images, annotations
+         */
+        imageryBaseMapsEarthCover,
+        /** military bases, structures, activities  Examples: barracks, training grounds, military transportation, information collection
+         */
+        intelligenceMilitary,
+        /** positional information and services  Examples:  addresses, geodetic networks, control points, postal zones and services, place names
+         */
+        location,
+        /** features and characteristics of salt water bodies (excluding inland waters)  Examples: tides, tidal waves, coastal information, reefs
+         */
+        oceans,
+        /** information used for appropriate actions for future use of the land   Examples: land use maps, zoning maps, cadastral surveys, land ownership
+         */
+        planningCadastre,
+        /** characteristics of society and cultures  Examples: settlements, anthropology, archaeology, education, traditional beliefs, manners and customs, demographic data, recreational areas and activities, social impact assessments, crime and justice, census infor
+         */
+        society,
+        /** man-made construction  Examples: buildings, museums, churches, factories, housing, monuments, shops, towers
+         */
+        structure,
+        /** means and aids for conveying persons and/or goods  Examples: roads, airports/airstrips, shipping routes, tunnels, nautical charts, vehicle or vessel location, aeronautical charts, railways
+         */
+        transportation,
+        extraTerrestrial,
+        disaster,
+        utilitiesCommunication
+      );
+
+    /** time period covered by the content of the dataset
+     */
+    CLASS EX_TemporalExtent =
+      extent : MANDATORY eCH0271_1.eCH0271.TM_Primitive;
+    END EX_TemporalExtent;
+
+    /** information about the distributor
+     */
+    CLASS MD_Distributor =
+    END MD_Distributor;
+
+    /** information identifying the feature catalogue
+     */
+    CLASS MD_FeatureCatalogueDescription
+    EXTENDS MD_ContentInformation =
+    END MD_FeatureCatalogueDescription;
+
+    DOMAIN
+
+      CharacterStringLong = MTEXT;
+
+    CLASS CHE_MD_Appraisal_AAP =
+      durationOfConservation : MANDATORY Integer;
+      commentOnDurationOfConservation : CharacterString;
+      appraisalOfArchivalValue : MANDATORY CHE_AppraisalOfArchivalValueCode;
+      reasonForArchivingValue : CHE_ReasonForArchivingValueCode;
+      commentOnArchivalValue : CharacterString;
+    END CHE_MD_Appraisal_AAP;
+
+    STRUCTURE CHE_MD_BasicGeodataInformation =
+      basicGeodataID : MANDATORY CharacterString;
+      basicGeodataLegalLevel : CHE_MD_LevelCode;
+      basicGeodataResponsibilityLevel : CHE_MD_LevelCode;
+      basicGeodataAccessLevel : CHE_MD_BasicGeodataAccessLevelCode;
+      basicGeodataType : BAG {0..*} OF CHE_MD_BasicGeodataTypeCode;
+    END CHE_MD_BasicGeodataInformation;
+
+    CLASS CHE_MD_Legislation =
+      country : BAG {1..*} OF InternationalCodes_V2.CountryCode_ISO3166_1;
+      language : BAG {0..*} OF InternationalCodes_V2.LanguageCode_ISO639_1;
+      legislationType : BAG {0..*} OF CHE_CI_LegislationTypeCode;
+      internalReference : BAG {0..*} OF CharacterString;
+      legislationLevel : BAG {0..*} OF CHE_MD_LevelCode;
+      legislationAcronym : BAG {0..*} OF CharacterString;
+    END CHE_MD_Legislation;
+
+    /** location of the responsible individual or organization
+     */
+    CLASS CI_Address =
+      deliveryPoint : BAG {0..*} OF CharacterString;
+      /** ZIP or other postal code
+       */
+      postalCode : CharacterString;
+      /** city of the location
+       */
+      city : CharacterString;
+      /** state, province of the location
+       */
+      administrativeArea : CharacterString;
+      /** country of the physical address
+       */
+      country : InternationalCodes_V2.CountryCode_ISO3166_1;
+      electronicMailAddress : BAG {0..*} OF CharacterString;
+    END CI_Address;
+
+    /** Information about the application schema used to build the dataset
+     */
+    CLASS MD_ApplicationSchemaInformation =
+      schemaLanguage : MANDATORY CharacterString;
+      constraintLanguage : MANDATORY CharacterString;
+    END MD_ApplicationSchemaInformation;
+
+    /** graphic that provides an illustration of the dataset (should include a legend for the graphic)
+     */
+    CLASS MD_BrowseGraphic =
+      fileName : MANDATORY CharacterString;
+      fileType : CharacterString;
+      fileDescription : Localisation_V2.MultilingualMText;
+    END MD_BrowseGraphic;
+
+    /** description of the computer language construct that specifies the representation of data objects in a record, file, message, storage device or transmission channel
+     */
+    CLASS MD_Format =
+      amendmentNumber : CharacterString;
+    END MD_Format;
+
+    /** basic information required to uniquely identify a resource or resources
+     */
+    CLASS MD_Identification (ABSTRACT) =
+      /** status of the resource(s)
+       */
+      status : BAG {0..*} OF MD_ProgressCode;
+      spatialRepresentationType : BAG {0..*} OF MD_SpatialRepresentationTypeCode;
+      topicCategory : BAG {0..*} OF MD_TopicCategoryCode;
+      /** brief narrative summary of the content of the resource(s)
+       */
+      abstract : MANDATORY Localisation_V2.MultilingualMText;
+    END MD_Identification;
+
+    /** handling restrictions imposed on the resource for national security or similar security concerns
+     */
+    CLASS MD_SecurityConstraints
+    EXTENDS MD_Constraints =
+      /** name of the handling restrictions on the resource
+       */
+      classification : MANDATORY MD_ClassificationCode;
+      /** name of the classification system
+       */
+      classificationSystem : CharacterString;
+    END MD_SecurityConstraints;
+
+    STRUCTURE PT_Locale =
+      language : MANDATORY InternationalCodes_V2.LanguageCode_ISO639_1;
+      country : InternationalCodes_V2.CountryCode_ISO3166_1;
+      characterEncoding : MD_CharacterSetCode;
+    END PT_Locale;
+
+    CLASS SV_OperationMetadata =
+      operationName : MANDATORY CharacterString;
+      distributedComputingPlatform : BAG {1..*} OF DCPList;
+      invocationName : CharacterString;
+      operationDescription : Localisation_V2.MultilingualMText;
+    END SV_OperationMetadata;
+
+    DOMAIN
+
+      /** identification of when a given event occurred
+       */
+      CI_DateTypeCode = (
+        /** date identifies when the resource was brought into existence
+         */
+        creation,
+        /** date identifies when the resource was issued
+         */
+        publication,
+        /** date identifies when the resource was examined or re-examined and improved or amended
+         */
+        revision,
+        expiry,
+        lastUpdate,
+        lastRevision,
+        nextUpdate,
+        unavailable,
+        inForce,
+        adopted,
+        deprecated,
+        superseded,
+        validityBegins,
+        validityExpires,
+        released,
+        distribution
+      );
+
+    CLASS MD_AssociatedResource =
+      associationType : MANDATORY CHE_DS_AssociationTypeCode;
+    END MD_AssociatedResource;
+
+    /** class providing the unique coded value within a namespace
+     */
+    CLASS MD_Identifier =
+      code : MANDATORY Localisation_V2.MultilingualMText;
+      codeSpace : CharacterString;
+      version : CharacterString;
+      description : Localisation_V2.MultilingualText;
+    END MD_Identifier;
+
+    /** common ways in which the resource may be obtained or received, and related instructions and fee information
+     */
+    CLASS MD_StandardOrderProcess =
+      /** fees and terms for retrieving the resource.  Include monetary units (as specified in ISO 4217)
+       */
+      fees : CharacterString;
+    END MD_StandardOrderProcess;
+
+    ASSOCIATION legislationConstraintsMD_LegalConstraints =
+      legislationConstraints -- {0..*} CHE_MD_Legislation;
+      MD_LegalConstraints -<> {0..*} CHE_MD_LegalConstraints;
+    END legislationConstraintsMD_LegalConstraints;
+
+    ASSOCIATION MD_BrowseGraphicimageConstraints =
+      MD_BrowseGraphic -<#> {0..1} MD_BrowseGraphic;
+      imageConstraints -- {0..*} MD_Constraints;
+    END MD_BrowseGraphicimageConstraints;
+
+    ASSOCIATION MD_DigitalTransferOptionsdistributionFormat =
+      MD_DigitalTransferOptions -<#> {0..1} MD_DigitalTransferOptions;
+      distributionFormat -- {0..*} MD_Format;
+    END MD_DigitalTransferOptionsdistributionFormat;
+
+    ASSOCIATION MD_MaintenanceInformationappraisal =
+      CHE_MD_MaintenanceInformation -<> {1} CHE_MD_MaintenanceInformation;
+      appraisal -- {0..1} CHE_MD_Appraisal_AAP;
+    END MD_MaintenanceInformationappraisal;
+
+    DOMAIN
+
+      CI_TelephoneTypeCode = (
+        voice,
+        facsimile,
+        sms
+      );
+
+    /** reference date and event used to describe it
+     */
+    STRUCTURE CI_Date =
+      /** reference date for the cited resource
+       */
+      date : MANDATORY DateTime;
+      /** event used for reference date
+       */
+      dateType : MANDATORY CI_DateTypeCode;
+    END CI_Date;
+
+    ASSOCIATION aggregationInfo_MD_Identification =
+      aggregationInfo -- {0..*} MD_AssociatedResource;
+      MD_Identification -<> {0..*} MD_Identification;
+    END aggregationInfo_MD_Identification;
+
+    ASSOCIATION distributionOrderProcessMD_Distributor =
+      /** provides information about how the resource may be obtained, and related instructions and fee information
+       */
+      distributionOrderProcess -- {0..*} MD_StandardOrderProcess;
+      MD_Distributor -<> {0..*} MD_Distributor;
+    END distributionOrderProcessMD_Distributor;
+
+    ASSOCIATION distributorTransferOptionsMD_Distributor =
+      /** provides information about the technical means and media used by the distributor
+       */
+      distributorTransferOptions -- {0..*} MD_DigitalTransferOptions;
+      MD_Distributor -- {0..*} MD_Distributor;
+    END distributorTransferOptionsMD_Distributor;
+
+    ASSOCIATION MD_IdentificationprocessingLevel =
+      MD_Identification -<#> {0..1} MD_Identification;
+      processingLevel -- {0..1} MD_Identifier;
+    END MD_IdentificationprocessingLevel;
+
+    DOMAIN
+
+      /** function performed by the resource
+       */
+      CI_OnLineFunctionCode = (
+        /** online instructions for transferring data from one storage device or system to another
+         */
+        download,
+        /** online information about the resource
+         */
+        information,
+        /** online instructions for requesting the resource from the provider
+         */
+        offlineAccess,
+        /** online order process for obtaining the resource
+         */
+        order,
+        /** online search interface for seeking out information about the resource
+         */
+        search,
+        completeMetadata,
+        browseGraphic,
+        upload,
+        emailService,
+        browsing,
+        fileAccess
+      );
+
+    /** root entity which defines metadata about a resource or resources
+     */
+    CLASS CHE_MD_Metadata =
+      /** language used for documenting metadata
+       */
+      defaultLocale : eCH0271_1.eCH0271.PT_Locale;
+      otherLocale : BAG {0..*} OF eCH0271_1.eCH0271.PT_Locale;
+      dateInfo : BAG {1..*} OF eCH0271_1.eCH0271.CI_Date;
+    END CHE_MD_Metadata;
+
+    DOMAIN
+
+      /** function performed by the responsible party
+       */
+      CI_RoleCode = (
+        /** party that supplies the resource
+         */
+        resourceProvider,
+        /** party that accepts accountability and responsibility for the data and ensures appropriate care and maintenance of the resource
+         */
+        custodian,
+        /** party that owns the resource
+         */
+        owner,
+        /** party who uses the resource
+         */
+        user,
+        /** party who distributes the resource
+         */
+        distributor,
+        /** party who created the resource
+         */
+        originator,
+        /** party who can be contacted for acquiring knowledge about or acquisition of the resource
+         */
+        pointOfContact,
+        /** key party responsible for gathering information and conducting research
+         */
+        principalInvestigator,
+        /** party who has processed the data in a manner such that the resource has been modified
+         */
+        processor,
+        /** party who published the resource
+         */
+        publisher,
+        author,
+        sponsor,
+        coAuthor,
+        collaborator,
+        /** part who edited the resource
+         */
+        editor,
+        mediator,
+        rightsHolder,
+        contributor,
+        funder,
+        stakeholder
+      );
+
+    ASSOCIATION applicationSchemaInfoMD_Metadata =
+      applicationSchemaInfo -- {0..*} MD_ApplicationSchemaInformation;
+      MD_Metadata -<> {0..*} CHE_MD_Metadata;
+    END applicationSchemaInfoMD_Metadata;
+
+    ASSOCIATION contentInfoMD_Metadata =
+      /** provides information about the feature catalogue and describes the coverage and image data characteristics
+       */
+      contentInfo -- {0..*} MD_ContentInformation;
+      MD_Metadata -<#> {0..1} CHE_MD_Metadata;
+    END contentInfoMD_Metadata;
+
+    ASSOCIATION MD_MetadatadataQualityInfo =
+      MD_Metadata -- {0..1} CHE_MD_Metadata;
+      dataQualityInfo -- {0..*} DQ_DataQuality;
+    END MD_MetadatadataQualityInfo;
+
+    ASSOCIATION MD_MetadataidentificationInfo =
+      MD_Metadata -<#> {0..1} CHE_MD_Metadata;
+      /** basic information about the resource(s) to which the metadata applies
+       */
+      identificationInfo -- {1..*} MD_Identification;
+    END MD_MetadataidentificationInfo;
+
+    ASSOCIATION MD_MetadatametadataMaintenance =
+      MD_Metadata -<#> {0..1} CHE_MD_Metadata;
+      metadataMaintenance -- {0..1} CHE_MD_MaintenanceInformation;
+    END MD_MetadatametadataMaintenance;
+
+    ASSOCIATION MD_MetadataresourceLineage =
+      MD_Metadata -<#> {1} CHE_MD_Metadata;
+      resourceLineage -- {0..*} LI_Lineage;
+    END MD_MetadataresourceLineage;
+
+    /** identification of, and means of communication with, person(s) and organizations associated with the dataset
+     */
+    CLASS CI_Responsibility =
+      role : MANDATORY CI_RoleCode;
+    END CI_Responsibility;
+
+    ASSOCIATION formatDistributordistributorFormat =
+      formatDistributor -- {0..*} MD_Distributor;
+      distributorFormat -- {0..*} MD_Format;
+    END formatDistributordistributorFormat;
+
+    ASSOCIATION metadataIdentifierMD_Metadata =
+      metadataIdentifier -- {0..1} MD_Identifier;
+      MD_Metadata -<> {0..1} CHE_MD_Metadata;
+    END metadataIdentifierMD_Metadata;
+
+    ASSOCIATION resourceMaintenanceMD_Identification =
+      resourceMaintenance -- {0..*} CHE_MD_MaintenanceInformation;
+      MD_Identification -<#> {0..1} MD_Identification;
+    END resourceMaintenanceMD_Identification;
+
+    /** telephone numbers for contacting the responsible individual or organization
+     */
+    CLASS CI_Telephone =
+      /** telephone number by which individuals can speak to the responsible organization or individual
+       */
+      number : MANDATORY CharacterString;
+      /** telephone number of a facsimile machine for the responsible organization or individual
+       */
+      numberType : CI_TelephoneTypeCode;
+    END CI_Telephone;
+
+    ASSOCIATION graphicOverviewMD_Identification =
+      graphicOverview -- {0..*} MD_BrowseGraphic;
+      MD_Identification -<#> {0..1} MD_Identification;
+    END graphicOverviewMD_Identification;
+
+    /** geographic area of the dataset
+     */
+    CLASS EX_GeographicExtent (ABSTRACT) =
+      /** indication of whether  the bounding polygon encompasses an area covered by the data or an area where data is not present
+       */
+      extentTypeCode : Boolean;
+    END EX_GeographicExtent;
+
+    /** boundary enclosing the dataset, expressed as the closed set of (x,y) coordinates of  the polygon (last point replicates first point)
+     */
+    CLASS EX_BoundingPolygon
+    EXTENDS EX_GeographicExtent =
+      /** sets of points defining the bounding polygon
+       */
+      polygon : BAG {1..*} OF GM_Object;
+    END EX_BoundingPolygon;
+
+    /** vertical domain of dataset
+     */
+    CLASS EX_VerticalExtent =
+      /** lowest vertical extent contained in the dataset
+       */
+      minimumValue : MANDATORY Real;
+      /** highest vertical extent contained in the dataset
+       */
+      maximumValue : MANDATORY Real;
+    END EX_VerticalExtent;
+
+    /** geographic position of the dataset NOTE This is only an approximate reference so specifying the co-ordinate system is unnecessary
+     */
+    CLASS EX_GeographicBoundingBox
+    EXTENDS EX_GeographicExtent =
+      /** northern-most, coordinate of the limit of the dataset extent expressed in latitude in decimal degrees (positive north)
+       */
+      northBoundLatitude : MANDATORY Angle;
+      /** southern-most coordinate of the limit of the dataset extent, expressed in latitude in decimal degrees (positive north)
+       */
+      southBoundLatitude : MANDATORY Angle;
+      /** eastern-most coordinate of the limit of the dataset extent, expressed in longitude in decimal degrees (positive east)
+       */
+      eastBoundLongitude : MANDATORY Angle;
+      /** western-most coordinate of the limit of the dataset extent, expressed in longitude in decimal degrees (positive east)
+       */
+      westBoundLongitude : MANDATORY Angle;
+    END EX_GeographicBoundingBox;
+
+    /** information about the distributor of and options for obtaining the resource
+     */
+    CLASS MD_Distribution =
+      description : CharacterString;
+    END MD_Distribution;
+
+    CLASS MD_MetadataScope =
+      resourceScope : MANDATORY MD_ScopeCode;
+      name : CharacterString;
+    END MD_MetadataScope;
+
+    ASSOCIATION MD_DistributiondistributionFormat =
+      MD_Distribution -<> {0..*} MD_Distribution;
+      /** provides a description of the format of the data to be distributed
+       */
+      distributionFormat -- {0..*} MD_Format;
+    END MD_DistributiondistributionFormat;
+
+    ASSOCIATION MD_Distributiondistributor =
+      distributor -- {0..*} MD_Distributor;
+      MD_Distribution -<> {0..*} MD_Distribution;
+    END MD_Distributiondistributor;
+
+    /** information about the reference system.
+     */
+    CLASS MD_ReferenceSystem =
+    END MD_ReferenceSystem;
+
+    ASSOCIATION MD_DistributiontransferOptions =
+      MD_Distribution -<#> {0..1} MD_Distribution;
+      /** provides information about technical means and media by which a resource is obtained from the distributor
+       */
+      transferOptions -- {0..*} MD_DigitalTransferOptions;
+    END MD_DistributiontransferOptions;
+
+    ASSOCIATION MD_DistributordistributorContact =
+      /** party from whom the resource may be obtained. This list need not be exhaustive
+       */
+      distributorContact -- {1} CI_Responsibility;
+      MD_Distributor -<> {0..*} MD_Distributor;
+    END MD_DistributordistributorContact;
+
+    /** derived from Scale where MD_RepresentativeFraction.denominator = 1 / Scale.measure And Scale.targetUnits = Scale.sourceUnits
+     */
+    CLASS MD_RepresentativeFraction =
+      /** the number below the line in a vulgar fraction
+       */
+      denominator : MANDATORY Integer;
+    END MD_RepresentativeFraction;
+
+    ASSOCIATION MD_ReferenceSystemreferenceSystemIdentifier =
+      /** name of reference system
+       */
+      referenceSystemIdentifier -- {0..1} MD_Identifier;
+      MD_ReferenceSystem -<> {0..*} MD_ReferenceSystem;
+    END MD_ReferenceSystemreferenceSystemIdentifier;
+
+    ASSOCIATION verticalCRSIdEX_VerticalExtent =
+      verticalCRSId -- {0..1} MD_ReferenceSystem;
+      EX_VerticalExtent -- {0..*} EX_VerticalExtent;
+    END verticalCRSIdEX_VerticalExtent;
+
+    /** standardized resource reference
+     */
+    CLASS CI_Citation =
+      /** reference date for the cited resource
+       */
+      date : BAG {0..*} OF eCH0271_1.eCH0271.CI_Date;
+      /** name by which the cited resource is known
+       */
+      title : MANDATORY Localisation_V2.MultilingualMText;
+      /** version of the cited resource
+       */
+      edition : CharacterString;
+      alternateTitle : Localisation_V2.MultilingualMText;
+    END CI_Citation;
+
+    /** level of detail expressed as a scale factor or a ground distance
+     */
+    CLASS MD_Resolution =
+      /** ground sample distance
+       */
+      distance : Distance;
+      vertical : Distance;
+      angularDistance : Angle;
+      levelOfDetail : CharacterString;
+    END MD_Resolution;
+
+    /** information required to enable contact with the responsible person and/or organization
+     */
+    CLASS CI_Contact =
+    END CI_Contact;
+
+    /** description of the data specified by the scope
+     */
+    CLASS MD_Scope =
+      /** hierarchical level of the data specified by the scope
+       */
+      level : MANDATORY MD_ScopeCode;
+    END MD_Scope;
+
+    ASSOCIATION authorityMD_Identifier =
+      /** the person or party responsible for maintenance of that namespace
+       */
+      authority -- {0..1} CI_Citation;
+      authorizedId -<> {0..*} MD_Identifier;
+    END authorityMD_Identifier;
+
+    ASSOCIATION CI_CitationcitedResponsibleParty =
+      /** name and position information for an individual or organization that is responsible for the resource
+       */
+      citedResponsibleParty -- {0..*} CI_Responsibility;
+      CI_Citation -<> {0..*} CI_Citation;
+    END CI_CitationcitedResponsibleParty;
+
+    ASSOCIATION documentationOfIdentificationadditionalDocumentation =
+      documentationOfIdentification -<#> {0..1} MD_Identification;
+      additionalDocumentation -- {0..*} CI_Citation;
+    END documentationOfIdentificationadditionalDocumentation;
+
+    ASSOCIATION featureCatalogueCitationCI_Citation =
+      /** complete bibliographic reference to one or more external feature catalogues
+       */
+      featureCatalogueCitation -- {0..*} CI_Citation;
+      MD_FeatureCatalogueDescription -<#> {0..1} MD_FeatureCatalogueDescription;
+    END featureCatalogueCitationCI_Citation;
+
+    ASSOCIATION MD_AggregateInformationaggregateDataSetName =
+      MD_AggregateInformation -<#> {0..1} MD_AssociatedResource;
+      name -- {0..1} CI_Citation;
+    END MD_AggregateInformationaggregateDataSetName;
+
+    ASSOCIATION MD_AssociatedResourcemetadataReference =
+      MD_AssociatedResource -<#> {0..1} MD_AssociatedResource;
+      metadataReference -- {0..1} CI_Citation;
+    END MD_AssociatedResourcemetadataReference;
+
+    ASSOCIATION MD_Legislationtitle =
+      legislationCitation -- {1} CI_Citation;
+      MD_Legislation -<#> {0..1} CHE_MD_Legislation;
+    END MD_Legislationtitle;
+
+    ASSOCIATION MD_ResolutionequivalentScale =
+      /** level of detail expressed as the scale of a comparable hardcopy map or chart
+       */
+      equivalentScale -- {0..1} MD_RepresentativeFraction;
+      MD_Resolution -<#> {0..1} MD_Resolution;
+    END MD_ResolutionequivalentScale;
+
+    ASSOCIATION parentIdentifierMD_Metadata =
+      child -<> {0..*} CHE_MD_Metadata;
+      parentMetadata -- {0..1} CI_Citation;
+    END parentIdentifierMD_Metadata;
+
+    ASSOCIATION standardUsedBymetadataStandard =
+      standardUsedBy -<#> {0..1} CHE_MD_Metadata;
+      metadataStandard -- {0..*} CI_Citation;
+    END standardUsedBymetadataStandard;
+
+    CLASS CI_OnlineResource =
+      protocol : CharacterString;
+      function : CI_OnLineFunctionCode;
+      description : Localisation_V2.MultilingualMText;
+      name : Localisation_V2.MultilingualMText;
+      linkage : MANDATORY Localisation_V2.MultilingualUri;
+    END CI_OnlineResource;
+
+    /** keywords, their type and reference source
+     */
+    CLASS MD_Keywords =
+      /** subject matter used to group similar keywords
+       */
+      type : MD_KeywordTypeCode;
+      /** commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject
+       */
+      keyword : BAG {1..*} OF Localisation_V2.MultilingualMText;
+    END MD_Keywords;
+
+    ASSOCIATION CI_Citationidentifier =
+      /** unique identifier for the resource EXAMPLE: Universal Product Code (UPC), National Stock Number (NSN)
+       */
+      identifier -- {0..*} MD_Identifier;
+      CI_Citation -<> {0..*} CI_Citation;
+    END CI_Citationidentifier;
+
+    ASSOCIATION CI_ResponsiblePartyaddress =
+      /** physical and email address at which the organization or individual may be contacted
+       */
+      address -- {0..*} CI_Address;
+      CI_ResponsibleParty -<#> {0..1} CI_Contact;
+    END CI_ResponsiblePartyaddress;
+
+    ASSOCIATION DQ_DataQualityscope =
+      DQ_DataQuality -<> {0..*} DQ_DataQuality;
+      scope -- {1} MD_Scope;
+    END DQ_DataQualityscope;
+
+    ASSOCIATION MD_ApplicationSchemaInformationname =
+      MD_ApplicationSchemaInformation -<#> {0..1} MD_ApplicationSchemaInformation;
+      name -- {1} CI_Citation;
+    END MD_ApplicationSchemaInformationname;
+
+    ASSOCIATION MD_MetadatalegislationInformation =
+      MD_Metadata -<> {0..*} CHE_MD_Metadata;
+      legislationInformation -- {0..*} CHE_MD_Legislation;
+    END MD_MetadatalegislationInformation;
+
+    ASSOCIATION scopeLI_Lineage =
+      LI_Lineage -<#> {0..1} LI_Lineage;
+      scope -- {0..1} MD_Scope;
+    END scopeLI_Lineage;
+
+    CLASS CI_Party =
+      /** name of the responsible organization
+       */
+      name : MANDATORY Localisation_V2.MultilingualMText;
+    END CI_Party;
+
+    ASSOCIATION CI_ContactonlineResource =
+      CI_Contact -<#> {0..1} CI_Contact;
+      onlineResource -- {0..*} CI_OnlineResource;
+    END CI_ContactonlineResource;
+
+    ASSOCIATION MD_BrowseGraphiclinkage =
+      MD_BrowseGraphic -<#> {0..1} MD_BrowseGraphic;
+      linkage -- {0..*} CI_OnlineResource;
+    END MD_BrowseGraphiclinkage;
+
+    ASSOCIATION MD_keywordsthesaurusName =
+      MD_Keywords -<> {0..*} MD_Keywords;
+      thesaurusName -- {0..1} CI_Citation;
+    END MD_keywordsthesaurusName;
+
+    ASSOCIATION MD_MetadatametadataScope =
+      MD_Metadata -<> {0..*} CHE_MD_Metadata;
+      metadataScope -- {0..*} MD_MetadataScope;
+    END MD_MetadatametadataScope;
+
+    ASSOCIATION SV_OperationMetadataconnectPoint =
+      SV_OperationMetadata -<#> {0..1} SV_OperationMetadata;
+      connectPoint -- {1..*} CI_OnlineResource;
+    END SV_OperationMetadataconnectPoint;
+
+    /** information about spatial, vertical, and temporal extent
+     */
+    CLASS EX_Extent =
+      description : Localisation_V2.MultilingualMText;
+    END EX_Extent;
+
+    ASSOCIATION CI_Responsibilityparty =
+      CI_Responsibility -<> {0..*} CI_Responsibility;
+      party -- {1..*} CI_Party;
+    END CI_Responsibilityparty;
+
+    ASSOCIATION CI_ResponsiblePartycontactInfo =
+      /** address of the responsible party
+       */
+      contactInfo -- {0..*} CI_Contact;
+      CI_ResponsibleParty -<#> {0..1} CI_Party;
+    END CI_ResponsiblePartycontactInfo;
+
+    ASSOCIATION distributionInfoMD_Metadata =
+      /** provides information about the distributor of and options for obtaining the resource(s)
+       */
+      distributionInfo -- {0..*} MD_Distribution;
+      MD_Metadata -<#> {0..1} CHE_MD_Metadata;
+    END distributionInfoMD_Metadata;
+
+    ASSOCIATION CI_ResponsiblePartyphone =
+      /** telephone numbers at which the organization or individual may be contacted
+       */
+      phone -- {0..*} CI_Telephone;
+      CI_ResponsibleParty -<#> {0..1} CI_Contact;
+    END CI_ResponsiblePartyphone;
+
+    ASSOCIATION DQ_Scopeextent =
+      /** information about the spatial, vertical and temporal extent of the data specified by the scope
+       */
+      extent -- {0..1} EX_Extent;
+      DQ_Scope -<#> {0..1} MD_Scope;
+    END DQ_Scopeextent;
+
+    ASSOCIATION MD_DataIdentificationextent =
+      /** additional extent information including the bounding polygon, vertical, and temporal extent of the dataset
+       */
+      extent -- {0..*} EX_Extent;
+      MD_DataIdentification -<#> {0..1} MD_Identification;
+    END MD_DataIdentificationextent;
+
+    ASSOCIATION MD_Metadatacontact =
+      /** party responsible for the metadata information
+       */
+      contact -- {1..*} CI_Responsibility;
+      MD_Metadata -<> {0..*} CHE_MD_Metadata;
+    END MD_Metadatacontact;
+
+    ASSOCIATION profileUsedBymetadataProfile =
+      profileUsedBy -<#> {0..1} CHE_MD_Metadata;
+      metadataProfile -- {0..*} CI_Citation;
+    END profileUsedBymetadataProfile;
+
+    ASSOCIATION CI_CitationonlineResource =
+      CI_Citation -<#> {0..1} CI_Citation;
+      onlineResource -- {0..*} CI_OnlineResource;
+    END CI_CitationonlineResource;
+
+    ASSOCIATION descriptiveKeywordsMD_Identification =
+      descriptiveKeywords -- {0..*} MD_Keywords;
+      MD_Identification -<> {0..*} MD_Identification;
+    END descriptiveKeywordsMD_Identification;
+
+    ASSOCIATION MD_DataIdentificationspatialResolution =
+      /** factor which provides a general understanding of the density of spatial data in the dataset
+       */
+      spatialResolution -- {0..*} MD_Resolution;
+      MD_DataIdentification -<#> {0..1} MD_Identification;
+    END MD_DataIdentificationspatialResolution;
+
+    ASSOCIATION referenceSystemInfoMD_Metadata =
+      /** description of the spatial and temporal reference systems used in the dataset
+       */
+      referenceSystemInfo -- {0..*} MD_ReferenceSystem;
+      MD_Metadata -<> {0..*} CHE_MD_Metadata;
+    END referenceSystemInfoMD_Metadata;
+
+    ASSOCIATION resourceFormatMD_Identification =
+      resourceFormat -- {0..*} MD_Format;
+      MD_Identification -<> {0..*} MD_Identification;
+    END resourceFormatMD_Identification;
+
+    CLASS CI_Individual
+    EXTENDS CI_Party =
+      individualFirstName : CharacterString;
+      positionName : Localisation_V2.MultilingualMText;
+    END CI_Individual;
+
+    ASSOCIATION EX_ExtentgeographicElement =
+      EX_Extent -<> {0..*} EX_Extent;
+      geographicElement -- {0..*} EX_GeographicExtent;
+    END EX_ExtentgeographicElement;
+
+    ASSOCIATION MD_DigitalTransferOptionsonLine =
+      /** information about online sources from which the resource can be obtained
+       */
+      onLine -- {0..*} CI_OnlineResource;
+      MD_DigitalTransferOptions -<#> {0..1} MD_DigitalTransferOptions;
+    END MD_DigitalTransferOptionsonLine;
+
+    CLASS CHE_CI_Organisation
+    EXTENDS CI_Party =
+      organisationAcronym : Localisation_V2.MultilingualMText;
+    END CHE_CI_Organisation;
+
+    ASSOCIATION EX_ExtenttemporalElement =
+      EX_Extent -<> {0..*} EX_Extent;
+      /** provides temporal component of the extent of the referring object
+       */
+      temporalElement -- {0..*} EX_TemporalExtent;
+    END EX_ExtenttemporalElement;
+
+    ASSOCIATION MD_Identificationcitation =
+      /** citation data for the resource(s)
+       */
+      citation -- {1} CI_Citation;
+      MD_Identification -<#> {0..1} MD_Identification;
+    END MD_Identificationcitation;
+
+    /** information required to identify a dataset
+     * citation/identifier/code shall be only one language (the unique identifier of the dataset)
+     */
+    CLASS CHE_MD_DataIdentification
+    EXTENDS MD_Identification =
+      /** language(s) used within the dataset
+       */
+      defaultLocale : eCH0271_1.eCH0271.PT_Locale;
+      supplementalInformation : Localisation_V2.MultilingualMText;
+      otherLocale : BAG {0..*} OF eCH0271_1.eCH0271.PT_Locale;
+      subTopicCategory : BAG {0..*} OF CHE_MD_SubTopicCategoryCode;
+      basicGeodata : BOOLEAN;
+      basicGeodataInformation : BAG {0..*} OF eCH0271_1.eCH0271.CHE_MD_BasicGeodataInformation;
+    END CHE_MD_DataIdentification;
+
+    ASSOCIATION CI_Organisationlogo =
+      CI_Organisation -<#> {0..1} CHE_CI_Organisation;
+      logo -- {0..*} MD_BrowseGraphic;
+    END CI_Organisationlogo;
+
+    ASSOCIATION CI_ResponsiblePartyparentinfo =
+      parentResponsibleParty -<> {0..*} CHE_CI_Organisation;
+      parentOrganisation -- {0..*} CI_Responsibility;
+    END CI_ResponsiblePartyparentinfo;
+
+    ASSOCIATION EX_ExtentverticalElement =
+      EX_Extent -<> {0..*} EX_Extent;
+      /** provides vertical component of the extent of the referring object
+       */
+      verticalElement -- {0..*} EX_VerticalExtent;
+    END EX_ExtentverticalElement;
+
+    ASSOCIATION individualorganisation =
+      individual -- {0..*} CI_Individual;
+      organisation -<> {0..*} CHE_CI_Organisation;
+    END individualorganisation;
+
+    ASSOCIATION MD_IdentificationpointOfContact =
+      /** identification of, and means of communication with, person(s)  and organizations(s) associated with the resource(s)
+       */
+      pointOfContact -- {0..*} CI_Responsibility;
+      MD_Identification -<> {0..*} MD_Identification;
+    END MD_IdentificationpointOfContact;
+
+    /** information about the series, or aggregate dataset, to which a dataset belongs
+     */
+    CLASS CI_Series =
+      name : Localisation_V2.MultilingualMText;
+    END CI_Series;
+
+    /** identifier used for reference systems
+     */
+    ASSOCIATION MD_FormatformatSpecificationCitation =
+      MD_Format -<> {0..*} MD_Format;
+      formatSpecificationCitation -- {1} CI_Citation;
+    END MD_FormatformatSpecificationCitation;
+
+    CLASS QualityResult (ABSTRACT) =
+    END QualityResult;
+
+    ASSOCIATION CI_Citationseries =
+      /** information about the series, or aggregate dataset, of which the dataset is a part
+       */
+      series -- {0..1} CI_Series;
+      CI_Citation -<#> {0..1} CI_Citation;
+    END CI_Citationseries;
+
+    CLASS DQ_ConformanceResult
+    EXTENDS QualityResult =
+      explanation : CharacterString;
+      pass : MANDATORY Boolean;
+    END DQ_ConformanceResult;
+
+    STRUCTURE gml_CodeType =
+      code : MANDATORY CharacterString;
+      codeSpace : URI;
+    END gml_CodeType;
+
+    /** information about an event in the creation process for the data specified by the scope
+     */
+    CLASS LI_ProcessStep =
+      /** description of the event, including related parameters or tolerances
+       */
+      description : MANDATORY CharacterStringLong;
+      /** date and time or range of date and time on or over which the process step occurred
+       */
+      stepDateTime : eCH0271_1.eCH0271.TM_Primitive;
+      rationale : BAG {0..*} OF CharacterString;
+    END LI_ProcessStep;
+
+    CLASS QualityElement (ABSTRACT) =
+    END QualityElement;
+
+    /** See 19119 for further info
+     */
+    CLASS SV_ServiceIdentification
+    EXTENDS MD_Identification =
+      credit : BAG {0..*} OF CharacterString;
+      serviceTypeVersion : CharacterString;
+      serviceType : MANDATORY eCH0271_1.eCH0271.gml_CodeType;
+    END SV_ServiceIdentification;
+
+    ASSOCIATION DQ_ConformanceResultspecification =
+      DQ_ConformanceResult -<#> {0..1} DQ_ConformanceResult;
+      specification -- {1} CI_Citation;
+    END DQ_ConformanceResultspecification;
+
+    CLASS DQ_LogicalConsistency (ABSTRACT)
+    EXTENDS QualityElement =
+    END DQ_LogicalConsistency;
+
+    /** information about the source data used in creating the data specified by the scope
+     */
+    CLASS LI_Source =
+      description : Localisation_V2.MultilingualMText;
+    END LI_Source;
+
+    ASSOCIATION containsOperationsSV_ServiceIdentification =
+      containsOperations -- {0..*} SV_OperationMetadata;
+      SV_ServiceIdentification -<> {0..*} SV_ServiceIdentification;
+    END containsOperationsSV_ServiceIdentification;
+
+    ASSOCIATION processStepLI_Lineage =
+      processStep -- {0..*} LI_ProcessStep;
+      LI_Lineage -<#> {0..1} LI_Lineage;
+    END processStepLI_Lineage;
+
+    ASSOCIATION reportDQ_DataQuality =
+      report -- {1..*} QualityElement;
+      DQ_Qualitiy -<> {0..*} DQ_DataQuality;
+    END reportDQ_DataQuality;
+
+    ASSOCIATION SV_ServiceIdentificationaccessProperties =
+      SV_ServiceIdentification -<#> {0..1} SV_ServiceIdentification;
+      accessProperties -- {0..1} MD_StandardOrderProcess;
+    END SV_ServiceIdentificationaccessProperties;
+
+    ASSOCIATION SV_ServiceIdentificationoperatesOn =
+      SV_ServiceIdentification -<> {0..*} SV_ServiceIdentification;
+      operatesOn -- {0..*} CHE_MD_DataIdentification;
+    END SV_ServiceIdentificationoperatesOn;
+
+    ASSOCIATION SV_ServiceIdentificationserviceStandard =
+      SV_ServiceIdentification -<#> {0..1} SV_ServiceIdentification;
+      serviceStandard -- {0..*} CI_Citation;
+    END SV_ServiceIdentificationserviceStandard;
+
+    CLASS DQ_DomainConsistency
+    EXTENDS DQ_LogicalConsistency =
+    END DQ_DomainConsistency;
+
+    ASSOCIATION LI_Sourcescope =
+      LI_Source -<#> {0..1} LI_Source;
+      scope -- {0..1} MD_Scope;
+    END LI_Sourcescope;
+
+    ASSOCIATION resourceConstraintsMD_Identification =
+      resourceConstraints -- {0..*} MD_Constraints;
+      MD_Identification -<> {0..*} MD_Identification;
+    END resourceConstraintsMD_Identification;
+
+    ASSOCIATION resultDQ_Element =
+      result -- {1..*} QualityResult;
+      DQ_Element -<#> {0..1} QualityElement;
+    END resultDQ_Element;
+
+    ASSOCIATION sourceLI_Lineage =
+      source -- {0..*} LI_Source;
+      LI_Lineage -<> {0..*} LI_Lineage;
+    END sourceLI_Lineage;
+
+    ASSOCIATION LI_ProcessStepscope =
+      LI_ProcessStep -<#> {0..1} LI_ProcessStep;
+      scope -- {0..1} MD_Scope;
+    END LI_ProcessStepscope;
+
+    ASSOCIATION sourceStepsource =
+      /** information about an event in the creation process for the source data
+       */
+      sourceStep -- {0..*} LI_ProcessStep;
+      /** information about the source data used in creating the data specified by the scope
+       */
+      source -- {0..*} LI_Source;
+    END sourceStepsource;
+
+  END eCH0271;
+
+END eCH0271_1.
