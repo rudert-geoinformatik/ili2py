@@ -94,6 +94,13 @@ class {{ class_definition.name }}:
                     {%- endfor %}
                 },
                 "type_restrictions": {{ attribute.type_restrictions }}
+            },
+            "geometric": {
+                "is_geometric": {{ attribute.geometric }},
+                "multi": {{ attribute.geometric_multi }},
+                "point_like": {{ attribute.geometric_is_point_like }},
+                "line_like": {{ attribute.geometric_is_line_like }},
+                "polygon_like": {{ attribute.geometric_is_polygon_like }},
             }
         }
     )
