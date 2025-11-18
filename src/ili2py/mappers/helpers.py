@@ -30,6 +30,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     MetaAttribute,
     MetaElementType,
     Model,
+    MultiValueType,
     ObjectType,
     Role,
     SetConstraintType,
@@ -120,12 +121,15 @@ class Index:
         self.line_type: dict = {}
         self.line_form: dict = {}
 
+        self.types_used_by_attributes: dict = {}
+
         self.class_class_attribute: dict = {}
         self.class_class_parameter: dict = {}
         self.class_association_attribute: dict = {}
         self.class_association_parameter: dict = {}
 
         self.geometric_attributes: list = []
+        self.geometric_attributes_multi: list = []
         self.geometric_attributes_line_form: dict = {}
         self.geometric_attributes_point_like: list = []
         self.geometric_attributes_line_like: list = []
@@ -248,6 +252,8 @@ class Index:
             self.handle_role(element)
         elif isinstance(element, AttrOrParam):
             self.handle_attr_or_param(element)
+            self.handle_geometric(element)
+            self.handle_multivalue_type(element)
         elif isinstance(element, MetaAttribute):
             self.handle_metaattribute(element)
         elif isinstance(element, Dependency):
@@ -258,8 +264,6 @@ class Index:
             self.handle_constraint(element)
         if isinstance(element, DomainTypeType):
             self.handle_domain_type(element)
-        if isinstance(element, CoordTypeType) or isinstance(element, LineTypeType):
-            self.handle_geometric(element)
 
     def handle_import(self, element: Import):
         """
@@ -337,15 +341,6 @@ class Index:
             line_type_bucket.append(element.line_form.ref)
         if element.line_type.ref not in line_form_bucket:
             line_form_bucket.append(element.line_type.ref)
-        # adding attribute info level to index
-        type_definition = self.index[element.line_type.ref]
-        if type_definition.ltparent:
-            self.index[type_definition.ltparent.ref]
-            if type_definition.ltparent.ref not in self.geometric_attributes_line_form:
-                self.geometric_attributes_line_form[type_definition.ltparent.ref] = []
-            self.geometric_attributes_line_form[type_definition.ltparent.ref].append(
-                element.line_form.ref
-            )
 
     def handle_role(self, element: Role):
         if element.association.ref not in self.association_role:
@@ -463,6 +458,17 @@ class Index:
                         self.transfer_class[element.tid] = []
 
                 elif isinstance(element, AttrOrParam):
+                    if element.type_value:
+                        type_definition = self.index[element.type_value.ref]
+                        type_ref = type_definition.tid
+                        if (
+                            isinstance(type_definition, MultiValueType)
+                            and type_definition.name == "TYPE"
+                        ):
+                            type_ref = type_definition.base_type.ref
+                        if type_ref not in self.types_used_by_attributes:
+                            self.types_used_by_attributes[type_ref] = []
+                        self.types_used_by_attributes[type_ref].append(element.tid)
                     if element.tid not in self.transfer_element:
                         self.transfer_element[element.tid] = None
                     if element.tid not in self.ili1_ref_attr:
@@ -637,26 +643,64 @@ class Index:
                     self.types_in_domain[element.element_in_package.ref] = []
                 self.types_in_domain[element.element_in_package.ref].append(element)
 
-    def handle_geometric(self, element: CoordTypeType | LineTypeType):
-        if element.ltparent:
-            attribute_definition: AttrOrParam = self.index[element.ltparent.ref]
-            if attribute_definition.tid not in self.geometric_attributes:
-                self.geometric_attributes.append(attribute_definition.tid)
-            if isinstance(element, CoordTypeType):
-                if attribute_definition.tid not in self.geometric_attributes_point_like:
-                    self.geometric_attributes_point_like.append(attribute_definition.tid)
-            elif isinstance(element, LineTypeType) and element.kind in [
+    def handle_geometric(
+        self,
+        element: AttrOrParam,
+        origin_type: CoordType | LineType | None = None,
+        multi: bool = False,
+    ):
+        if origin_type:
+            type_definition = origin_type
+        else:
+            type_definition = self.index[element.type_value.ref]
+        if isinstance(type_definition, CoordType) or isinstance(type_definition, LineType):
+            if origin_type:
+                inner_multi = multi
+            else:
+                inner_multi = type_definition.multi
+            if element.tid not in self.geometric_attributes:
+                self.geometric_attributes.append(element.tid)
+            if inner_multi and element.tid not in self.geometric_attributes_multi:
+                self.geometric_attributes_multi.append(element.tid)
+            if isinstance(type_definition, CoordTypeType):
+                if element.tid not in self.geometric_attributes_point_like:
+                    self.geometric_attributes_point_like.append(element.tid)
+            elif isinstance(type_definition, LineTypeType) and type_definition.kind in [
                 "Polyline",
                 "DirectedPolyline",
             ]:
-                if attribute_definition.tid not in self.geometric_attributes_line_like:
-                    self.geometric_attributes_line_like.append(attribute_definition.tid)
-            elif isinstance(element, LineTypeType) and element.kind in ["Surface", "Area"]:
-                if attribute_definition.tid not in self.geometric_attributes_polygon_like:
-                    self.geometric_attributes_polygon_like.append(attribute_definition.tid)
+                if element.tid not in self.geometric_attributes_line_like:
+                    self.geometric_attributes_line_like.append(element.tid)
+            elif isinstance(type_definition, LineTypeType) and type_definition.kind in [
+                "Surface",
+                "Area",
+            ]:
+                if element.tid not in self.geometric_attributes_polygon_like:
+                    self.geometric_attributes_polygon_like.append(element.tid)
             else:
-                logging.debug(f"Unexpected geometric type {element}")
-            class_definition: Class = self.index[attribute_definition.attr_parent.ref]
+                logging.debug(f"Unexpected geometric type {type_definition}")
+            class_definition: Class = self.index[element.attr_parent.ref]
             if class_definition.tid not in self.geometric_classes:
                 self.geometric_classes[class_definition.tid] = []
-            self.geometric_classes[class_definition.tid].append(attribute_definition.tid)
+            self.geometric_classes[class_definition.tid].append(element.tid)
+            # adding attribute info level to index
+            if isinstance(type_definition, LineType):
+                if element.tid not in self.geometric_attributes_line_form:
+                    self.geometric_attributes_line_form[element.tid] = self.line_type[
+                        type_definition.tid
+                    ]
+            for attribute_oid in self.types_used_by_attributes.get(class_definition.tid, []):
+                # the geometric class was used as a type for another class attribute
+                structure_attribute = self.index[attribute_oid]
+                structure_attribute_type = self.index[structure_attribute.type_value.ref]
+                multi = inner_multi
+                if structure_attribute_type.multiplicity:
+                    if (
+                        structure_attribute_type.multiplicity.multiplicity.max is None
+                        or structure_attribute_type.multiplicity.multiplicity.max > 1
+                    ):
+                        multi = True
+                self.handle_geometric(structure_attribute, type_definition, multi)
+
+    def handle_multivalue_type(self, element: AttrOrParam):
+        pass
