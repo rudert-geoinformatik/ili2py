@@ -194,9 +194,11 @@ class Attribute(Base):
     type_related_type_class: Optional["Class"] = field(default=None)
     reference_targets: list[str] = field(default_factory=list)
     is_list_type: bool = field(default=False)
-    is_point_like: bool = field(default=False)
-    is_line_like: bool = field(default=False)
-    is_polygon_like: bool = field(default=False)
+    geometric: bool = field(default=False)
+    geometric_multi: bool = field(default=False)
+    geometric_is_point_like: bool = field(default=False)
+    geometric_is_line_like: bool = field(default=False)
+    geometric_is_polygon_like: bool = field(default=False)
     type_related_imports: list[Tuple[str, Union[Tuple[str, str | None, str | None], None]]] = field(
         default_factory=list
     )
@@ -592,11 +594,12 @@ class Attribute(Base):
             line_type=local_type if isinstance(local_type, LineType) else None,
             type_related_type_class=local_type if isinstance(local_type, Class) else None,
             is_list_type=Attribute.decide_list_type(referenced_type),
-            is_point_like=isinstance(referenced_type, ImdCoordType),
-            is_line_like=isinstance(referenced_type, ImdLineType)
-            and referenced_type.kind in ["Polyline", "DirectedPolyline"],
-            is_polygon_like=isinstance(referenced_type, ImdLineType)
-            and referenced_type.kind in ["Surface", "Area"],
+            geometric=imd_attr_or_param.tid in index.geometric_attributes,
+            geometric_multi=imd_attr_or_param.tid in index.geometric_attributes_multi,
+            geometric_is_point_like=imd_attr_or_param.tid in index.geometric_attributes_point_like,
+            geometric_is_line_like=imd_attr_or_param.tid in index.geometric_attributes_line_like,
+            geometric_is_polygon_like=imd_attr_or_param.tid
+            in index.geometric_attributes_polygon_like,
             type_related_imports=type_related_imports,
             namespace_package=Attribute.get_last_super_model_name_from_attribute(
                 imd_attr_or_param, index
@@ -788,11 +791,11 @@ class Class(Base):
                     index.index[imd_attr_or_param_oid], imd_model_data, index
                 )
                 attributes.append(attribute)
-                if attribute.is_point_like:
+                if attribute.geometric_is_point_like:
                     point_like_attributes.append(attribute)
-                if attribute.is_line_like:
+                if attribute.geometric_is_line_like:
                     line_like_attributes.append(attribute)
-                if attribute.is_polygon_like:
+                if attribute.geometric_is_polygon_like:
                     polygon_like_attributes.append(attribute)
                 related_class_imports += attribute.type_related_imports
         if imd_class.tid in index.association_to_class_ref_attributes:
