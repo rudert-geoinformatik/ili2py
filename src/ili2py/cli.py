@@ -93,16 +93,31 @@ def cli(verbose):
     "-m",
     "--models",
     is_flag=False,
+    required=False,
     help="""Model names separated by comma. This is used to filter the content of the resulting diagram.
-    If not provided, the full tree will be drawn.""",
+    If not provided, the full tree will be drawn.
+    NOTE: This works in conjunction with the depth parameter
+    """,
 )
 @click.option(
     "-s",
     "--spacing-line-length",
     is_flag=False,
     default=2,
+    required=False,
     help="""The length of the drawn connectors between the diagram nodes.
     NOTE: Currently this only influences plantuml diagrams!
+    """,
+)
+@click.option(
+    "--depth",
+    is_flag=False,
+    default=None,
+    type=int,
+    required=False,
+    help="""The depth how the diagram should be drawn in reference to the level of imports. 0 is the model itself,
+    1 the model itself and all models its importing and so on.
+    NOTE: This can be used in conjunction to the model names to add arbitrary models to the diagram.
     """,
 )
 @click.pass_context
@@ -118,6 +133,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
     linetype = kwargs.pop("linetype")
     file_name = kwargs.pop("file_name")
     multiplier = kwargs.pop("spacing_line_length")
+    depth = kwargs.pop("depth")
     if model_names:
         model_names = model_names.split(",")
     else:
@@ -139,6 +155,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
             direction:              {direction if direction else 'DEFAULT'}
             linetype:               {linetype if linetype else 'DEFAULT'}
             spacing line length:    {multiplier}
+            depth:                  {depth}
         """
         )
         create_uml_diagram(
@@ -151,6 +168,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
             direction=direction,
             linetype=linetype,
             multiplier=multiplier,
+            depth=depth,
         )
     except Exception as error:
         click.echo(error)
