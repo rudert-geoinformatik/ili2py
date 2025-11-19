@@ -5,6 +5,7 @@ extra_css:
 nav:
   - Welcome: index.md
   - "Quick Start": quick_start.md
+  - "CLI": cli.md
   - "DEV Setup": dev_setup.md
   - "Feature Status":
       - "Overview": feature_status/index.md
@@ -41,6 +42,7 @@ theme:
 
 markdown_extensions:
   - admonition   # for snippets
+  - mkdocs-click
 #  - pymdownx.superfences   # for enhanced code blocks
 #  - attr_list  # for usage of html and css in markdown
 #  - pymdownx.emoji:  # for emojis
