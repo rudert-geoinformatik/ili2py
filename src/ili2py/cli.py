@@ -48,7 +48,7 @@ def cli(verbose):
 
 
 @cli.command(
-    help="""Parses an arbitrary IMD16 and creates and creates a diagram of selected flavour
+    help="""Parses an arbitrary IMD16 and creates a diagram of selected flavour
     representing the selected models.""",
     context_settings=dict(help_option_names=["-h", "--help"], show_default=True),
 )
@@ -58,7 +58,7 @@ def cli(verbose):
     "--output_folder",
     is_flag=False,
     required=True,
-    help="""Path to the folder where the python package should be written to.
+    help="""Path to the folder where the diagram should be written to.
     The folder will be created if not existing.""",
 )
 @click.option(
