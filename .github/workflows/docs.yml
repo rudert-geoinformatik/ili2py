@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TX_TOKEN: ${{ secrets.TX_TOKEN }}
+    permissions:
+      contents: write
+      pages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
