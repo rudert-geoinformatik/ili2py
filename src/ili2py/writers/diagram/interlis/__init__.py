@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 from random import randint
@@ -48,6 +49,7 @@ def uml_diagram(
     direction: str | None = None,
     linetype: str | None = None,
     multiplier: int = 2,
+    depth: int | None = None,
 ):
     if flavour == "mermaid":
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
@@ -73,14 +75,27 @@ def uml_diagram(
 
     tpl_dir = os.path.join(Path(__file__).parent.joinpath("templates"), flavour)
     env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
-    if len(model_names) == 0:
-        model_names = [model.name for model in diagram.model_groups]
+    if depth is None:
+        # all relevant models
+        inner_model_names = index.depth_tree[-1]
+    else:
+        try:
+            inner_model_names = index.depth_tree[depth]
+        except IndexError:
+            inner_model_names = index.depth_tree[-1]
+
+    if len(model_names) > 0:
+        if depth is not None:
+            inner_model_names = list(set(model_names) | set(inner_model_names))
+        else:
+            inner_model_names = model_names
+    logging.info(f"Drawing diagram for models: {inner_model_names}")
     output = env.get_template(f"{flavour}.jinja2").render(
         diagram=diagram,
         index=index,
         len=len,
         randint=randint,
-        model_names=model_names,
+        model_names=inner_model_names,
         direction=selected_direction,
         linetype=selected_linetype,
         multiplier=multiplier,

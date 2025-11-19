@@ -102,6 +102,7 @@ class Index:
 
         self.imported_p: dict = {}
         self.importing_p: dict = {}
+        self.models: list = []
 
         self.allowed_in_basket_class_in_basket: dict = {}
         self.allowed_in_basket_of_data_unit: dict = {}
@@ -180,6 +181,8 @@ class Index:
 
         self.types_in_domain: dict = {}
 
+        self.depth_tree: list = []
+
         for basket in data_section.ModelData:
             for element in basket.choice:
                 self.unwrap_tree(element)
@@ -190,6 +193,21 @@ class Index:
         if self.types_kind_bucket.get("Class.Association"):
             for association_class in self.types_kind_bucket["Class.Association"]:
                 self.prepare_association(association_class)
+
+        self.root_model: str = self.models[-1]
+        self.depth_tree.append([self.root_model])
+        self.assemble_depth_tree(self.root_model, [self.root_model])
+
+    def assemble_depth_tree(self, model_name: str, visited_models: list):
+        selected_models = []
+        for importing in self.importing_p[model_name]:
+            if importing not in visited_models:
+                visited_models.append(importing)
+                selected_models.append(importing)
+        if len(selected_models) > 0:
+            self.depth_tree.append(self.depth_tree[-1] + selected_models)
+        for importing in self.importing_p[model_name]:
+            self.assemble_depth_tree(importing, visited_models)
 
     def prepare_tree(self, element: Any):
         self.resolve_references(element)
@@ -422,6 +440,7 @@ class Index:
                         self.imported_p[element.tid] = []
                     if element.tid not in self.importing_p:
                         self.importing_p[element.tid] = []
+                    self.models.append(element.tid)
                 elif isinstance(element, SubModel):
                     if element.element_in_package.ref not in self.submodel_in_package:
                         self.submodel_in_package[element.element_in_package.ref] = []
