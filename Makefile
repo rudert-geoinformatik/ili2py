@@ -131,3 +131,10 @@ binary: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
 	$(VENV_BIN)/pyinstaller --name ili2py --onefile --noconfirm \
 		--add-data "src/ili2py:ili2py" \
 		src/ili2py/cli.py
+
+.PHONY: output-test
+output-test: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
+	$(VENV_BIN)/python src/ili2py/scripts/generate_test_output.py
+	find build/ili2py_output_test/mermaid/ -type f -name "*.md" | parallel -j 4 'mmdc -i {} -o {.}.png --puppeteerConfigFile=puppeteer-config.json'
+	plantuml -tpng build/ili2py_output_test/plantuml/*.puml
+	zip -r build/ili2py_output_test.zip  build/ili2py_output_test

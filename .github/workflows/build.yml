@@ -12,6 +12,40 @@ on:
       - master
 
 jobs:
+  generate_test_output:
+    name: Build Artifacts for test output
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y plantuml npm
+      - name: Install browsers for puppeteer
+        run: npx puppeteer browsers install chrome
+      - name: Install Mermaid CLI
+        run: |
+          sudo npm install -g @mermaid-js/mermaid-cli
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build Artifacts
+        run: |
+          echo "{\"executablePath\": \"$(ls -d ~/.cache/puppeteer/chrome/linux-*/chrome-linux*/chrome | head -n 1)\", \"args\": [\"--no-sandbox\", \"--disable-setuid-sandbox\"]}" > puppeteer-config.json
+          make output-test
+      - name: Move Artifact ZIP
+        run: |
+          mkdir dist_upload
+          mv build/ili2py_output_test.zip dist_upload/ili2py_output_test.zip
+        shell: bash
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          name: ili2py_output_test
+          path: dist_upload/ili2py_output_test.zip
+          retention-days: 3
   build:
     name: Build for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -99,7 +133,7 @@ jobs:
     name: Release Latest
     permissions:
       contents: write
-    needs: [ build ]
+    needs: [ build, generate_test_output ]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
