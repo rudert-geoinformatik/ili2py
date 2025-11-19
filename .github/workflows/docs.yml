@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   deploy:
@@ -26,10 +29,12 @@ jobs:
         run: make doc-html
 
       - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         with:
           name: docs
           path: docs/site
           if-no-files-found: error
 
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: make doc-gh-deploy
