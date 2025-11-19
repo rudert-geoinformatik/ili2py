@@ -89,3 +89,4 @@ def uml_diagram(
 
     diagram_file = create_file(output_path, flavour, file_name)
     diagram_file.write_text(src_code_encoded.decode(), encoding="utf-8")
+    return str(diagram_file)
