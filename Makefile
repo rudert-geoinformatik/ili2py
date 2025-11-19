@@ -10,6 +10,7 @@ PIP_COMMAND = pip3
 PYTHON_PATH = $(shell which python3)
 PYTHON_VERSION = $(shell printf '%b' "import sys\nprint(f'{sys.version_info.major}.{sys.version_info.minor}')" | $$(which python3))
 PINNED_DEPS ?= reqs.txt
+DOCS_CONFIGURATION = docs/mkdocs.yml
 
 # ********************
 # Variable definitions
@@ -110,13 +111,17 @@ check: $(PIP_REQUIREMENTS) $(TEST_REQUIREMENTS)
 	mypy --explicit-package-bases --show-error-codes src/$(PACKAGE) tests
 
 .PHONY: doc-html
-doc-html: $(DOC_REQUIREMENTS) docs/mkdocs.yml
+doc-html: $(DOC_REQUIREMENTS) $(DOCS_CONFIGURATION)
 	rm -rf doc/site
-	$(VENV_BIN)/mkdocs build -f docs/mkdocs.yml -d site
+	$(VENV_BIN)/mkdocs build -f $(DOCS_CONFIGURATION) -d site
+
+.PHONY: doc-gh-deploy
+doc-gh-deploy: $(DOC_REQUIREMENTS) $(DOCS_CONFIGURATION)
+	$(VENV_BIN)/mkdocs gh-deploy -f $(DOCS_CONFIGURATION) -d site --force
 
 .PHONY: doc-serve
-doc-serve: $(DOC_REQUIREMENTS) docs/mkdocs.yml
-	$(VENV_BIN)/mkdocs serve -f docs/mkdocs.yml
+doc-serve: $(DOC_REQUIREMENTS) $(DOCS_CONFIGURATION)
+	$(VENV_BIN)/mkdocs serve -f $(DOCS_CONFIGURATION)
 
 .PHONY: updates
 updates: $(PIP_REQUIREMENTS)
