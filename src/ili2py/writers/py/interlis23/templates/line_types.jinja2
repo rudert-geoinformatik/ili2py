@@ -38,10 +38,11 @@ class {{ line_type.name }}:
                 }
             }
         )
-    {{ line_type.attribute.name }}: Segment | None = field(
+    polyline: Segment | None = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "POLYLINE",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {
@@ -99,16 +100,17 @@ class {{ line_type.name }}:
                         }
                     }
                 )
-            POLYLINE: Segment | None = field(
+            polyline: Segment | None = field(
                 default=None,
                 metadata={
                     "type": "Element",
+                    "name": "POLYLINE",
                     "namespace": "{{ render_config['namespace_map']['ili'] }}",
                     "interlis": {"meta_attributes": {}},
                 },
             )
 
-        BOUNDARY: list[{{ line_type.name }}POLYLINE] = field(
+        boundaries: list[{{ line_type.name }}POLYLINE] = field(
             default_factory=list,
             metadata={
                 "type": "Elements",
@@ -125,10 +127,11 @@ class {{ line_type.name }}:
             }
         )
 
-    SURFACE: {{ line_type.name }}BOUNDARY | None = field(
+    surface: {{ line_type.name }}BOUNDARY | None = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "SURFACE",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {
