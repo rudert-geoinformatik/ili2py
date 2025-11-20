@@ -78,3 +78,7 @@ Currently, we can have IlisMeta16:LineType.IlisMeta16:MaxOverlap in IlisMeta16 b
 unit is coming from.
 
 Not sure if this is relevant, because there is also no unit defined in e.g. GeometryCHLV95_V1
+
+## Encoding of directed polylines
+
+It's not clear from data nor reference manuals (2.3 and 2.4) how a directed polyline is encoded in XTF.

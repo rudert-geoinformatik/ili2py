@@ -5,10 +5,11 @@ class {{ coord_type.name }}Type:
     {%- if attribute.reference_system %}
     # {{ attribute.reference_system }}
     {%- endif %}
-    {{ attribute.name }}: "{{ attribute.types|join(' | ') }} | None" = field(
+    {{ attribute.name.lower() }}: "{{ attribute.types|join(' | ') }} | None" = field(
         default=None,
         metadata={
             "type": "Element",
+            "name": "{{ attribute.name }}",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {
