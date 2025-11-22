@@ -33,9 +33,6 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
 )
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import Model as ImdModel
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
-    Multiplicity as ImdMultiplicity,
-)
-from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
     MultiValue as ImdMultiValue,
 )
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
@@ -153,7 +150,9 @@ class Class(Base):
         association_attributes = []
         association_oids = index.associated_classes.get(class_definition.tid, [])
         for association_oid in association_oids:
-            for role_oid, related_class_oid in index.association_bucket[association_oid]:
+            for role_oid, related_class_oid, strongness, min, max in index.association_bucket[
+                association_oid
+            ]:
                 if related_class_oid != class_definition.tid:
                     role_object: RoleType = index.index[role_oid]
                     min = role_object.multiplicity.multiplicity.min
@@ -220,10 +219,17 @@ class TopicGroup(Base):
     ):
         if index.association_bucket.get(association.tid):
             association_string = []
-            for role_tid, class_tid in index.association_bucket[association.tid]:
+            for role_tid, class_tid, strongness, min, max in index.association_bucket[
+                association.tid
+            ]:
                 role = index.index[role_tid]
                 related_class = index.index[class_tid]
-                multiplicity_string = TopicGroup.render_multiplicity(role.multiplicity.multiplicity)
+                if role.multiplicity.multiplicity is None:
+                    multiplicity_string = None
+                else:
+                    multiplicity_string = TopicGroup.render_multiplicity(
+                        role.multiplicity.multiplicity.min, role.multiplicity.multiplicity.max
+                    )
                 strongness_string = TopicGroup.render_strongness(role.strongness)
                 association_string.append(
                     (related_class.tid, multiplicity_string, strongness_string, role_tid)
@@ -232,25 +238,23 @@ class TopicGroup(Base):
             associations.append(association_string)
 
     @staticmethod
-    def render_multiplicity(multiplicity: ImdMultiplicity) -> str | None:
-        if multiplicity is None:
-            return None
-        if multiplicity.min == 1 and multiplicity.max == 1:
+    def render_multiplicity(minimum, maximum) -> str:
+        if minimum == 1 and maximum == 1:
             return "1"
-        elif multiplicity.min == 0 and multiplicity.max == 0:
+        elif minimum == 0 and maximum == 0:
             # Cardinality / Multiplicity '0' is not implemented in mermaid
             return "0"
-        elif multiplicity.min == 0 and multiplicity.max == 1:
+        elif minimum == 0 and maximum == 1:
             return "0..1"
-        elif multiplicity.min == 1 and multiplicity.max is None:
+        elif minimum == 1 and maximum is None:
             return "1..*"
-        elif multiplicity.min == 0 and multiplicity.max is None:
+        elif minimum == 0 and maximum is None:
             # Cardinality / Multiplicity '0..*' is not implemented in mermaid directly we deliver empty string
             return "0..*"
-        elif multiplicity.min is None and multiplicity.max is None:
+        elif minimum is None and maximum is None:
             return "*"
         else:
-            return f"{multiplicity.min}..{multiplicity.max}"
+            return f"{minimum}..{maximum}"
 
     @staticmethod
     def render_strongness(strongness: str):
