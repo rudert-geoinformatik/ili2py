@@ -122,7 +122,7 @@ data = [
     },
     {
         "imd": "tests/data/models/Hazard_Mapping_V1_3/Hazard_Mapping_V1_3.imd",
-        "model_names": ["Hazard_Mapping_V1_3"],
+        "model_names": ["Hazard_Mapping_LV95_V1_3"],
         "xtf": ["tests/data/models/Hazard_Mapping_V1_3/NE_166_dangers_nat_1_3_NE.xtf"],
     },
     {
@@ -132,12 +132,12 @@ data = [
     },
     {
         "imd": "tests/data/models/Inventar_Wasserentnahmen_V1_1/InventarWasserentnahmen_V1_1.imd",
-        "model_names": ["InventarWasserentnahmen_V1_1"],
+        "model_names": ["InventarWasserentnahmen_LV95_V1_1"],
         "xtf": ["tests/data/models/Inventar_Wasserentnahmen_V1_1/InventarWasserentnahmen_V1_1.xtf"],
     },
     {
         "imd": "tests/data/models/Kantonale_Ausnahmetransportrouten_V1_0/ExceptionalLoadsRoute_V1.imd",
-        "model_names": ["ExceptionalLoadsRoute_V1"],
+        "model_names": ["ExceptionalLoadsRoute_LV95_V1"],
         "xtf": [
             "tests/data/models/Kantonale_Ausnahmetransportrouten_V1_0/NE_184_transports_exceptionnels.xtf"
         ],
@@ -212,7 +212,7 @@ data = [
     },
     {
         "imd": "tests/data/models/Naturereigniskataster_V1_0/Naturereigniskataster_MGDM_V1.imd",
-        "model_names": ["Naturereigniskataster_MGDM_V1"],
+        "model_names": ["Naturereigniskataster_MGDM_LV95_V1"],
         "xtf": [
             "tests/data/models/Naturereigniskataster_V1_0/storme_interlis_export_MGDM_NE_20250728T024603.xtf"
         ],
@@ -451,7 +451,7 @@ data = [
     },
     {
         "imd": "tests/data/models/Waldreservate_V1_1/Waldreservate_V1_1.imd",
-        "model_names": ["Waldreservate_V1_1"],
+        "model_names": ["Waldreservate_LV95_V1_1"],
         "xtf": [
             "tests/data/models/Waldreservate_V1_1/160_1_reserves_forestieres.xtf",
         ],
@@ -465,7 +465,7 @@ data = [
     },
     {
         "imd": "tests/data/models/Wildruhezonen_V2_1_1/Wildruhezonen_V2_1.imd",
-        "model_names": ["Wildruhezonen_V2_1"],
+        "model_names": ["Wildruhezonen_LV95_V2_1"],
         "xtf": [
             "tests/data/models/Wildruhezonen_V2_1_1/mgdm_Wildruhezonen_LV95_V2_1_BL.xtf",
         ],
@@ -552,6 +552,34 @@ diagram_config = [
     },
     {
         "flavour": "plantuml",
+        "direction": "left to right",
+        "linetype": "spline",
+        "postfix": "puml",
+        "multiplier": 5,
+    },
+    {
+        "flavour": "plantuml_role_members",
+        "direction": "top to bottom",
+        "linetype": "spline",
+        "postfix": "puml",
+        "multiplier": 2,
+    },
+    {
+        "flavour": "plantuml_role_members",
+        "direction": "top to bottom",
+        "linetype": "spline",
+        "postfix": "puml",
+        "multiplier": 3,
+    },
+    {
+        "flavour": "plantuml_role_members",
+        "direction": "top to bottom",
+        "linetype": "spline",
+        "postfix": "puml",
+        "multiplier": 5,
+    },
+    {
+        "flavour": "plantuml_role_members",
         "direction": "left to right",
         "linetype": "spline",
         "postfix": "puml",
