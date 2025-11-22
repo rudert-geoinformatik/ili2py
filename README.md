@@ -19,7 +19,7 @@ Your pythonic gateway to INTERLIS
 
 ## Docs
 
-Find current version of Docs [here](https://ili2py-docs.rudert-geoinformatik.ch).
+Find current version of Docs [here](https://rudert-geoinformatik.github.io/ili2py/).
 
 ## Quickstart
 
