@@ -1,0 +1,2224 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../index_mapper/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Reading IlisMeta16 - ili2py Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../style.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#metaelements-in-general" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ili2py Docs" class="md-header__button md-logo" aria-label="ili2py Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ili2py Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reading IlisMeta16
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ili2py Docs" class="md-nav__button md-logo" aria-label="ili2py Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ili2py Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick_start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DEV Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Feature Status
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Feature Status
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Reading IlisMeta16
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Reading IlisMeta16
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metaelements-in-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      MetaElements in general
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types-related-to-other-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types related to other types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bag-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bag type
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references-and-associations" class="md-nav__link">
+    <span class="md-ellipsis">
+      References and associations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#information-for-easy-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Information for easy transfer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataunits" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataUnits
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generics-and-contexts-interlis-24-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generics and Contexts (INTERLIS 2.4 only)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#units" class="md-nav__link">
+    <span class="md-ellipsis">
+      Units
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metaobjects" class="md-nav__link">
+    <span class="md-ellipsis">
+      MetaObjects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#base-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oid-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      OID Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-and-attribute-reference-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class and attribute reference types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enumerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#line-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Line types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Views
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expressions, factors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constraints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graphic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Translation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index_mapper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Index Mapper
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python_classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Classes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Usage
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Usage
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagram.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    UML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Code
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Code
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Interfaces
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            Interfaces
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1_1" id="__nav_8_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    INTERLIS 2.4
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            INTERLIS 2.4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/ilismeta16/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IlisMeta16
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metaelements-in-general" class="md-nav__link">
+    <span class="md-ellipsis">
+      MetaElements in general
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types-related-to-other-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types related to other types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bag-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bag type
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references-and-associations" class="md-nav__link">
+    <span class="md-ellipsis">
+      References and associations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#information-for-easy-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Information for easy transfer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataunits" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataUnits
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generics-and-contexts-interlis-24-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generics and Contexts (INTERLIS 2.4 only)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#units" class="md-nav__link">
+    <span class="md-ellipsis">
+      Units
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metaobjects" class="md-nav__link">
+    <span class="md-ellipsis">
+      MetaObjects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#base-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oid-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      OID Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-and-attribute-reference-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class and attribute reference types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enumerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#line-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Line types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Views
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expressions, factors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constraints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graphic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Translation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Reading IlisMeta16</h1>
+
+<p>This is about the necessary constructions to read an arbitrary INTERLIS Metamodel File (<code>*.imd</code>) in the
+<a href="https://models.interlis.ch/core/IlisMeta16.ili">IMD16</a> format. So about parsing the XML/XTF.</p>
+<p>The following overview tries to reflect the order and structure how it is defined in the above linked
+ILI file.</p>
+<h2 id="metaelements-in-general">MetaElements in general</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.DocText</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.MetaElement</td>
+<td>CLASS ABSTRACT</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.MetaAttribute</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.MetaAttributes</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ExtendableME</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Inheritance</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="models">Models</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.Package</td>
+<td>CLASS ABSTRACT</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Ili1Format</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Model</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.SubModel</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.PackageElements</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Import</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Type</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Expression</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Multiplicity</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Constraint</td>
+<td>CLASS ABSTRACT</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.DomainType</td>
+<td>CLASS ABSTRACT</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.DomainConstraint</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.Class</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AttrOrParam</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ClassConstraint</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.LocalType</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AttrOrParamType</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ClassAttr</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ClassParam</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="types-related-to-other-types">Types related to other types</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.TypeRelatedType</td>
+<td>CLASS ABSTRACT</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.BaseType</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.TypeRestriction</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bag-type">Bag type</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.MultiValue</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references-and-associations">References and associations</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.ClassRelatedType</td>
+<td>CLASS ABSTRACT</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.BaseClass</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ClassRestriction</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ReferenceType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Role</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AssocRole</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ExplicitAssocAccess</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ExplicitAssocAcc</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AssocAccOrigin</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AssocAccTarget</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AssocAcc</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌<br/>(not exported by ili2c 5.6.6)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="information-for-easy-transfer">Information for easy transfer</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.TransferElement</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Ili1TransferElement</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dataunits">DataUnits</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.DataUnit</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Dependency</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AllowedInBasket</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="generics-and-contexts-interlis-24-only">Generics and Contexts (INTERLIS 2.4 only)</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.Context</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.GenericDef</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ConcreteForGeneric</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="units">Units</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.Unit</td>
+<td>CLASS</td>
+<td style="text-align: center;">(✅)</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="metaobjects">MetaObjects</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.MetaBasketDef</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.MetaDataUnit</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.MetaObjectDef</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.MetaBasketMembers</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.MetaObjectClass</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="base-types">Base types</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.BooleanType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.TextType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.BlackboxType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.NumType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.NumUnit</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.CoordType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AxisSpec</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.NumsRefSys</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.FormattedType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.StructOfFormat</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="oid-definition">OID Definition</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.AnyOIDType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ObjectOID</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.BasketOID</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.FunctionDef</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.LocalFType</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ResultType</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Argument</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.FormalArgument</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ArgumentType</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="class-and-attribute-reference-types">Class and attribute reference types</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.ClassRefType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ObjectType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AttributeRefType</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ARefOf</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ARefRestriction</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enumerations">Enumerations</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.EnumType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.EnumNode</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.TopNode</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.SubNode</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.EnumTreeValueType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.TreeValueTypeOf</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="line-types">Line types</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.LineForm</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.LineFormStructure</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.LineType</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.LinesForm</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.LineCoord</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.LineAttr</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="views">Views</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.View</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.RenamedBaseView</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.BaseViewDef</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.BaseViewRef</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.DerivedAssoc</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="expressions-factors">Expressions, factors</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.UnaryExpr</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.CompoundExpr</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Factor</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.PathEl</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.PathOrInspFactor</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.EnumAssignment</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.EnumMapping</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ClassRef</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ActualArgument</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.FunctionCall</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.RuntimeParamRef</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.Constant</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ClassConst</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.AttributeConst</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.UnitRef</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.UnitFunction</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="constraints">Constraints</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.SimpleConstraint</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ExistenceConstraint</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.ExistenceDef</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.UniqueConstraint</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.SetConstraint</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="graphic">Graphic</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelData.Graphic</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.GraphicBase</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.SignParamAssignment</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.CondSignParamAssignment</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.DrawingRule</td>
+<td>CLASS</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.GraphicRule</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>ModelData.SignClass</td>
+<td>ASSOCIATION</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="translation">Translation</h2>
+<table>
+<thead>
+<tr>
+<th>Construct</th>
+<th>ili Kind</th>
+<th style="text-align: center;">Mandatory v1</th>
+<th style="text-align: center;">Implemented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModelTranslation.DocTextTranslation</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌<br/>(not exported by ili2c 5.6.6)</td>
+</tr>
+<tr>
+<td>ModelTranslation.METranslation</td>
+<td>STRUCTURE</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌<br/>(not exported by ili2c 5.6.6)</td>
+</tr>
+<tr>
+<td>ModelTranslation.Translation</td>
+<td>CLASS</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌<br/>(not exported by ili2c 5.6.6)</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+    
+  </body>
+</html>
