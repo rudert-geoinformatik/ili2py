@@ -1556,14 +1556,14 @@ class Module(Base):
                     elif all(
                         index.index[role_oid].multiplicity.multiplicity.max is None
                         or index.index[role_oid].multiplicity.multiplicity.max > 1
-                        for role_oid, referenced_class_oid in association_construct
+                        for role_oid, referenced_class_oid, strongness, min, max in association_construct
                     ):
                         logging.debug("    Association roles multiplicities are > 1 => own class")
                         own_class = True
                     elif all(
                         hasattr(index.index[role_oid], "oid")
                         and index.index[role_oid].oid is not None
-                        for role_oid, referenced_class_oid in association_construct
+                        for role_oid, referenced_class_oid, strongness, min, max in association_construct
                     ):
                         logging.debug("    Association has OID => own class")
                         own_class = True
@@ -1611,7 +1611,13 @@ class Module(Base):
 
                     if own_class:
                         association_attribute_names = []
-                        for role_oid, referenced_class_oid in association_construct:
+                        for (
+                            role_oid,
+                            referenced_class_oid,
+                            strongness,
+                            min,
+                            max,
+                        ) in association_construct:
                             role_object: ImdRole = index.index[role_oid]
                             if role_object.name in association_attribute_names:
                                 logging.debug(

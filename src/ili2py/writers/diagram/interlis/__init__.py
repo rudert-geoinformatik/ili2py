@@ -7,7 +7,7 @@ from typing import List
 from jinja2 import Environment, FileSystemLoader
 
 from ili2py.mappers.helpers import Index
-from ili2py.writers.diagram.interlis.uml import Diagram
+from ili2py.writers.diagram.interlis.uml import Diagram, TopicGroup
 from ili2py.writers.helpers import create_file
 
 ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
@@ -22,6 +22,13 @@ tool_settings = {
         },
     },
     "plantuml": {
+        "postfix": "puml",
+        "settings": {
+            "directions": ["top to bottom", "left to right"],
+            "linetype": ["polyline", "ortho", "spline"],
+        },
+    },
+    "plantuml_role_members": {
         "postfix": "puml",
         "settings": {
             "directions": ["top to bottom", "left to right"],
@@ -55,6 +62,9 @@ def uml_diagram(
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
         selected_linetype = None
     elif flavour == "plantuml":
+        selected_direction = tool_settings[flavour]["settings"]["directions"][0]
+        selected_linetype = tool_settings[flavour]["settings"]["linetype"][0]
+    elif flavour == "plantuml_role_members":
         selected_direction = tool_settings[flavour]["settings"]["directions"][0]
         selected_linetype = tool_settings[flavour]["settings"]["linetype"][0]
     elif flavour == "dot":
@@ -95,6 +105,7 @@ def uml_diagram(
         index=index,
         len=len,
         randint=randint,
+        render_multiplicity=TopicGroup.render_multiplicity,
         model_names=inner_model_names,
         direction=selected_direction,
         linetype=selected_linetype,

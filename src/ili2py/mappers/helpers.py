@@ -98,8 +98,8 @@ class Index:
     """
 
     def __init__(self, data_section: DataSection):
+        self.aa_not_touched: list = []
         self.index: dict = {}
-
         self.imported_p: dict = {}
         self.importing_p: dict = {}
         self.models: list = []
@@ -197,6 +197,7 @@ class Index:
         self.root_model: str = self.models[-1]
         self.depth_tree.append([self.root_model])
         self.assemble_depth_tree(self.root_model, [self.root_model])
+        self.associations_embedded
 
     def assemble_depth_tree(self, model_name: str, visited_models: list):
         selected_models = []
@@ -340,7 +341,13 @@ class Index:
             if association.tid not in self.association_bucket:
                 self.association_bucket[association.tid] = []
             self.association_bucket[association.tid].append(
-                (class_related_type.tid, base_class.tid)
+                (
+                    class_related_type.tid,
+                    base_class.tid,
+                    class_related_type.strongness,
+                    class_related_type.multiplicity.multiplicity.min,
+                    class_related_type.multiplicity.multiplicity.max,
+                )
             )
             if base_class.tid not in self.associated_classes:
                 self.associated_classes[base_class.tid] = []
@@ -723,3 +730,120 @@ class Index:
 
     def handle_multivalue_type(self, element: AttrOrParam):
         pass
+
+    @property
+    def association_classes(self) -> dict:
+        """
+        Delivers all associations which represent own classes as defined in the reference manual of INTERLIS.
+
+        Returns:
+            A dictionary where the key is the association oid and the value is a list of tuples
+            defining the attributes of the association and its roles.
+        """
+        association_classes: dict = {}
+        for association_oid in self.association_bucket:
+            association_object = self.index[association_oid]
+            role_definitions = self.association_bucket[association_oid]
+            maxes = []
+            logging.debug(f"Deciding if association is own class {association_object}")
+            for role_oid, referenced_class_oid, strongness, min, max in role_definitions:
+                if max is None or max > 1:
+                    maxes.append(referenced_class_oid)
+            if len(role_definitions) > 2:
+                association_classes[association_oid] = role_definitions
+                logging.debug("    Association has > 2 roles => own class")
+            elif len(maxes) == len(role_definitions):
+                association_classes[association_oid] = role_definitions
+                logging.debug("    Multiplicities are > 1 for all roles => own class")
+            elif len(maxes) == 1:
+                class_object = self.index[maxes[0]]
+                if class_object.element_in_package.ref != association_object.element_in_package.ref:
+                    association_classes[association_oid] = role_definitions
+                    logging.debug(
+                        f"    One roles multiplicity is > 1 but cant be embedded because target class {class_object} is in an other topic than the base association {association_object} => own class"
+                    )
+            elif len(maxes) == 0:
+                logging.debug("    Multiplicities are <= 1 for all roles")
+                class_object2 = self.index[role_definitions[1][1]]
+                class_object1 = self.index[role_definitions[0][1]]
+                if (
+                    class_object2.element_in_package.ref
+                    != association_object.element_in_package.ref
+                    != class_object1.element_in_package.ref
+                ):
+                    logging.debug(
+                        f"        Both target classes {class_object2} {class_object1} are in different topic than base association {association_object} => own class"
+                    )
+            elif hasattr(association_object, "oid") and association_object.oid is not None:
+                association_classes[association_oid] = role_definitions
+                logging.debug("    Association has OID => own class")
+            elif len(self.class_subclassed_by.get(association_object.tid, [])) > 0:
+                association_classes[association_oid] = role_definitions
+                logging.debug(
+                    f"    Associaction has Subclasses, we construct a class for validity reason "
+                    f"(Dataclasses) {association_object} => own class"
+                )
+        return association_classes
+
+    @property
+    def associations_embedded(self):
+        associations_embedded: dict = {}
+        association_classes = self.association_classes
+        for association_oid in self.association_bucket:
+            association_object = self.index[association_oid]
+            logging.debug(f"Deciding if association gets embedded {association_object}")
+            role_definitions = self.association_bucket[association_oid]
+            if association_oid not in association_classes:
+                if len(role_definitions) == 2:
+                    # we check only the associations which are not already clearly own classes
+                    # and regarding reference manual only associations with 2 members are candidates
+                    # to be embedded.
+                    logging.debug(
+                        "   Association has 2 Role definitions, checking how to embedd..."
+                    )
+                    maxes = []
+                    roles = {}
+                    for role_definition in role_definitions:
+                        multiplicity_max = role_definition[-1]
+                        if multiplicity_max is None or multiplicity_max > 1:
+                            maxes.append(role_definition)
+                        roles[role_definition[0]] = role_definition
+                    if len(maxes) == 1:
+                        if maxes[0][1] not in associations_embedded:
+                            associations_embedded[maxes[0][1]] = []
+                        associations_embedded[maxes[0][1]].append(self.switch(roles, maxes[0][0]))
+                        logging.debug(
+                            "   Embedding at target class vice versa the multiplicity > 1"
+                        )
+                    elif len(maxes) == 0:
+                        class_object2 = self.index[role_definitions[1][1]]
+                        class_object1 = self.index[role_definitions[0][1]]
+                        if (
+                            class_object2.element_in_package.ref
+                            == association_object.element_in_package.ref
+                        ):
+                            if class_object2.tid not in associations_embedded:
+                                associations_embedded[class_object2.tid] = []
+                            associations_embedded[class_object2.tid].append(role_definitions[0])
+                            logging.debug(
+                                "   Embedding at target class 2 vice versa the multiplicity <= 1"
+                            )
+                        elif (
+                            class_object1.element_in_package.ref
+                            == association_object.element_in_package.ref
+                        ):
+                            if class_object1.tid not in associations_embedded:
+                                associations_embedded[class_object1.tid] = []
+                            associations_embedded[class_object1.tid].append(role_definitions[1])
+                            logging.debug(
+                                "   Embedding at target class 1 vice versa the multiplicity <= 1"
+                            )
+                else:
+                    self.aa_not_touched.append(association_oid)
+
+        return associations_embedded
+
+    def switch(self, d, key):
+        # Dict hat genau 2 Keys
+        k1, k2 = d.keys()
+        return d[k2] if key == k1 else d[k1]

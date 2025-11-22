@@ -10,13 +10,21 @@ namespace {{ model_group.oid }} {
         {%- for attribute in class_definition.attributes %}
         {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
         {%- endfor %}
+        {%- if class_definition.oid in index.associated_classes %}
+        --Roles--
+        {%- for association_oid in index.associated_classes[class_definition.oid] %}
+        {% for role in index.association_bucket[association_oid] if role[1] != class_definition.oid -%}
+        +{{ role[0].split(".")[-1] }}[{{ render_multiplicity(role[-2], role[-1]) }}]
+        {%- endfor -%}
+        {%- endfor %}
+        {%- endif %}
     }
     {%- endfor %}
 }
 {% endif %}
 {%- for association in model_group.associations %}
 {%- if len(association) == 3 %}
-{{ association[0][0] }} "{{ association[0][1] }}" {{ association[0][2] }}{{ "-" * multiplier }}{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0] }} : {{ association[0][3].split('.')[-1] }}\n{{ association[1][3].split('.')[-1] }}
+{{ association[0][0] }}::{{ association[1][3].split('.')[-1] }} {{ association[0][2] }}{{ "-" * multiplier }}{{ association[1][2] }} {{ association[1][0] }}::{{ association[0][3].split('.')[-1] }}
 {%- else %}
     note "Association <b>'{{ model_group.name }}.{{ association[-1] }}'</b>\n has more than 2 sides,\n this is currently not supported" as N{{ randint(1,10000) }}
 {%- endif %}
@@ -36,6 +44,14 @@ namespace {{ topic_group.oid }} {
         {%- for attribute in class_definition.attributes %}
         {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
         {%- endfor %}
+        {%- if class_definition.oid in index.associated_classes %}
+        --Roles--
+        {%- for association_oid in index.associated_classes[class_definition.oid] %}
+        {% for role in index.association_bucket[association_oid] if role[1] != class_definition.oid -%}
+        +{{ role[0].split(".")[-1] }}[{{ render_multiplicity(role[-2], role[-1]) }}]
+        {%- endfor -%}
+        {%- endfor %}
+        {%- endif %}
     }
     {%- endfor %}
 }
@@ -43,7 +59,7 @@ namespace {{ topic_group.oid }} {
 {%- for association in topic_group.associations %}
 {%- if len(association) == 3 %}
 {%- if index.index[association[0][0]].element_in_package.ref.split('.')[0] in model_names and index.index[association[1][0]].element_in_package.ref.split('.')[0] in model_names %}
-{{ association[0][0] }} "{{ association[0][1] }}" {{ association[0][2] }}{{ "-" * multiplier }}{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0] }} : {{ association[0][3].split('.')[-1] }}\n{{ association[1][3].split('.')[-1] }}
+{{ association[0][0] }}::{{ association[1][3].split('.')[-1] }} {{ association[0][2] }}{{ "-" * multiplier }}{{ association[1][2] }} {{ association[1][0] }}::{{ association[0][3].split('.')[-1] }}
 {%- endif %}
 {%- else %}
     note "Association <b>'{{ model_group.name }}.{{ topic_group.name }}.{{ association[-1] }}'</b>\n has more than 2 sides,\n this is currently not supported" as N{{ randint(1,10000) }}
