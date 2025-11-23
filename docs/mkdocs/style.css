@@ -8,3 +8,13 @@
 .md-typeset table:not([class]) {
     display: table;
 }
+
+:root {
+  --md-primary-fg-color: #004688;
+  --md-primary-fg-color--light: #0a6bc2;
+  --md-primary-fg-color--dark: #00315f;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #ababab; /* oder andere Farbe fürs Dark Mode */
+}

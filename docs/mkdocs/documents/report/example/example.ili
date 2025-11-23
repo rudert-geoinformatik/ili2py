@@ -1,0 +1,54 @@
+INTERLIS 2.3;
+
+MODEL EXAMPLE_V1 (de)
+AT "http://opengis.ch"
+VERSION "01.11.2023"  =
+
+    IMPORTS Units, CoordSys;
+
+    REFSYSTEM BASKET CoordSystems ~ CoordSys.CoordsysTopic
+        OBJECTS OF GeoEllipsoidal: WGS84
+        OBJECTS OF GeoHeight: WGS84H;
+
+    DOMAIN
+        WGS84Koord = COORD -90.00000 .. 90.00000 [Units.Angle_Degree] {WGS84[1]},
+            0.00000 .. 359.99999 CIRCULAR [Units.Angle_Degree] {WGS84[2]},
+            -2000.00 .. 9000.00 [INTERLIS.m] {WGS84H[1]};
+    TOPIC Hobby =
+        CLASS Reifen =
+          Hersteller : MANDATORY TEXT*40;
+          Bemerkung : TEXT*80;
+          Lookup : (
+            mtb,
+            strasse,
+            trekking
+          );
+          Druck: 0.0 .. 10.0 [Units.bar];
+        END Reifen;
+
+        CLASS Velo =
+            Position : WGS84Koord;
+        END Velo;
+
+        CLASS Rahmen =
+            Hoehe: MANDATORY 10 .. 80 [Units.cm];
+        END Rahmen;
+
+        ASSOCIATION VeloReifenVorneAssoc =
+            Vorderrad  -- {1} Velo;
+            Velo_Reifen_VorneAssocRef -- {0..*} Reifen;
+        END VeloReifenVorneAssoc;
+
+        ASSOCIATION VeloReifenHintenAssoc =
+            Hinterrad  -- {1} Velo;
+            Velo_Reifen_HintenAssocRef -- {0..*} Reifen;
+        END VeloReifenHintenAssoc;
+
+        ASSOCIATION Velo_RahmenAssoc =
+            RahmenRef  -<#> {1} Velo;
+            Velo_RahmenAssocRef -- {1} Rahmen;
+        END Velo_RahmenAssoc;
+
+    END Hobby;
+
+END EXAMPLE_V1.

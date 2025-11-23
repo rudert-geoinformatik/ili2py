@@ -1,22 +1,30 @@
-site_name: ili2py Docs
+site_name: ili2py Documentation
 docs_dir: mkdocs
 extra_css:
   - style.css
+repo_name: rudert-geoinformatik/ili2py
+repo_url: https://github.com/rudert-geoinformatik/ili2py
+edit_uri: https://github.com/rudert-geoinformatik/ili2py/tree/master/docs/
 nav:
-  - Welcome: index.md
-  - "Quick Start": quick_start.md
-  - "CLI": cli.md
-  - "DEV Setup": dev_setup.md
+  - "Home": index.md
+  - "User Guide":
+      - "Get started": user_guide/start.md
+      - "Diagrams": user_guide/diagram.md
+      - "Python Classes": user_guide/python_classes.md
+      - "CLI Reference": user_guide/cli-reference.md
+      - "CLI Binary usage": user_guide/cli-binary.md
   - "Feature Status":
       - "Overview": feature_status/index.md
       - "Reading IlisMeta16": feature_status/ilismeta16.md
       - "Index Mapper":  feature_status/index_mapper.md
       - "Python Classes":  feature_status/python_classes.md
       - "Diagrams":  feature_status/diagrams.md
-
-  - Installation: installation.md
-  - Usage:
-      - UML: diagram.md
+      - "Open Questions": feature_status/questions.md
+  - "Documents":
+      - "Overview": documents/overview.md
+      - "Report (Nov '23)": documents/report/report.md
+  - "DEV Guide":
+      - "Python Classes usage": dev_guide/python_classes.md
   - Code:
       - Interfaces:
           - "INTERLIS 2.4":
@@ -26,6 +34,11 @@ plugins:
   - search
   - autorefs
   - mermaid2
+  - glightbox:
+      auto_caption: true       # Untertitel automatisch aus dem Bildtitel
+      touchNavigation: true
+      loop: true
+      effect: zoom
   - mkdocstrings:
         default_handler: python
         handlers:
@@ -38,13 +51,31 @@ plugins:
 
 theme:
   name: material
+  logo: assets/img/logo.1.webp
+  favicon: assets/img/logo.1.webp
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - search.suggest
+    - search.highlight
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
 
 
 markdown_extensions:
   - admonition   # for snippets
   - mkdocs-click
-#  - pymdownx.superfences   # for enhanced code blocks
-#  - attr_list  # for usage of html and css in markdown
-#  - pymdownx.emoji:  # for emojis
-#      emoji_index: !!python/name:material.extensions.emoji.twemoji
-#      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
