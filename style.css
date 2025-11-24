@@ -1,0 +1,25 @@
+/* ******************************************************** */
+/* Table 100% Width fix */
+/* ******************************************************** */
+.md-typeset__table {
+   min-width: 100%;
+}
+
+.md-typeset table:not([class]) {
+    display: table;
+}
+
+:root {
+  --md-primary-fg-color: #004688;
+  --md-primary-fg-color--light: #0a6bc2;
+  --md-primary-fg-color--dark: #00315f;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #ababab;
+}
+
+.md-header__button.md-logo img, .md-header__button.md-logo svg {
+    height: 4rem;
+    width: 4rem;
+}
