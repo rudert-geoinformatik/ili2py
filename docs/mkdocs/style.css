@@ -16,5 +16,10 @@
 }
 
 [data-md-color-scheme="slate"] {
-  --md-primary-fg-color: #ababab; /* oder andere Farbe fürs Dark Mode */
+  --md-primary-fg-color: #ababab;
+}
+
+.md-header__button.md-logo img, .md-header__button.md-logo svg {
+    height: 4rem;
+    width: 4rem;
 }

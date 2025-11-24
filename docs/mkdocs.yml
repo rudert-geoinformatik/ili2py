@@ -51,8 +51,8 @@ plugins:
 
 theme:
   name: material
-  logo: assets/img/logo.1.webp
-  favicon: assets/img/logo.1.webp
+  logo: assets/img/logo.1.svg
+  favicon: assets/img/logo.1.svg
   features:
     - navigation.tabs
     - navigation.tabs.sticky
