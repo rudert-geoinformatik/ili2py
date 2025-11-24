@@ -145,3 +145,13 @@ output-test: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
 	plantuml -tpng build/ili2py_output_test/plantuml/*.puml
 	plantuml -tpng build/ili2py_output_test/plantuml_role_members/*.puml
 	zip -r build/ili2py_output_test.zip  build/ili2py_output_test
+
+.PHONY: doc-diagrams
+doc-diagrams: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
+	rm -rf build/ili2py_doc_diagrams
+	$(VENV_BIN)/python src/ili2py/scripts/generate_docs_diagrams.py
+	zip -r build/ili2py_doc_diagrams.zip  build/ili2py_doc_diagrams
+	cd build/ili2py_doc_diagrams/plantuml/ && ffmpeg -framerate 2 -pattern_type glob -i "*.resized.png" output.mp4 && cd -
+	ffmpeg -i build/ili2py_doc_diagrams/plantuml/output.mp4 -vf "fps=15,scale=320:-1:flags=lanczos,palettegen" build/ili2py_doc_diagrams/plantuml/palette.png
+	ffmpeg -i build/ili2py_doc_diagrams/plantuml/output.mp4 -i build/ili2py_doc_diagrams/plantuml/palette.png -filter_complex "fps=15,scale=3200:-1:flags=lanczos[x];[x][1:v]paletteuse" build/ili2py_doc_diagrams/plantuml/output.gif
+	mv build/ili2py_doc_diagrams/plantuml/output.gif docs/mkdocs/assets/img/diagrams/showcase.gif
