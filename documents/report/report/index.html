@@ -1,0 +1,2258 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../overview/">
+      
+      
+        <link rel="next" href="../../../dev_guide/python_classes/">
+      
+      
+      <link rel="icon" href="../../../assets/img/logo.1.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Report (Nov '23) - ili2py Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../style.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#python-bindings-fur-interlis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="ili2py Documentation" class="md-header__button md-logo" aria-label="ili2py Documentation" data-md-component="logo">
+      
+  <img src="../../../assets/img/logo.1.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ili2py Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Report (Nov '23)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/rudert-geoinformatik/ili2py" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    rudert-geoinformatik/ili2py
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../user_guide/start/" class="md-tabs__link">
+          
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../feature_status/" class="md-tabs__link">
+          
+  
+  Feature Status
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../overview/" class="md-tabs__link">
+          
+  
+  Documents
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../dev_guide/python_classes/" class="md-tabs__link">
+          
+  
+  DEV Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../code/ilismeta16/" class="md-tabs__link">
+          
+  
+  Code
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ili2py Documentation" class="md-nav__button md-logo" aria-label="ili2py Documentation" data-md-component="logo">
+      
+  <img src="../../../assets/img/logo.1.svg" alt="logo">
+
+    </a>
+    ili2py Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/rudert-geoinformatik/ili2py" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    rudert-geoinformatik/ili2py
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user_guide/start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Get started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user_guide/diagram/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user_guide/python_classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Classes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user_guide/cli-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user_guide/cli-binary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI Binary usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Feature Status
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Feature Status
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../feature_status/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../feature_status/ilismeta16/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reading IlisMeta16
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../feature_status/index_mapper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Index Mapper
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../feature_status/python_classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Classes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../feature_status/diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../feature_status/questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Open Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Documents
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documents
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Report (Nov '23)
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Report (Nov '23)
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#einfuhrung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Einführung
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Einführung">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#einordnung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Einordnung
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software" class="md-nav__link">
+    <span class="md-ellipsis">
+      Software
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funktionsuberblick-ilitools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Funktionsüberblick ilitools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flexibilitat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flexibilität
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ziele" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ziele
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ansatze" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ansätze
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ansätze">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interlis-modell-sourcecode-parsen" class="md-nav__link">
+    <span class="md-ellipsis">
+      INTERLIS-Modell SourceCode parsen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rucke-vor-bis-auf-los" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rücke vor bis auf Los
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-strukturen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python-Strukturen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python-Strukturen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anforderungen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anforderungen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#die-natur-des-metamodells" class="md-nav__link">
+    <span class="md-ellipsis">
+      Die Natur des Metamodells
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pseudoimplementierung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pseudoimplementierung
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ein-neues-rad" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ein neues Rad
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ein neues Rad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataclasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      dataclasses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      attrs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entscheide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entscheide
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anregung-fur-kunftige-diskussionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anregung für künftige Diskussionen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-und-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      XML und Python
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verwendete-datenmodelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verwendete Daten/Modelle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beispiel-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beispiel 1
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beispiel-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beispiel 2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beispiel-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beispiel 3
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ergebnisse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ergebnisse
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ausblick" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ausblick
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ausblick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nachste-schritte" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nächste Schritte
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5">
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DEV Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            DEV Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dev_guide/python_classes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Classes usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Code
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Code
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1">
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Interfaces
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Interfaces
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1">
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1" id="__nav_6_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    INTERLIS 2.4
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            INTERLIS 2.4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/ilismeta16/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IlisMeta16
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#einfuhrung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Einführung
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Einführung">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#einordnung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Einordnung
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software" class="md-nav__link">
+    <span class="md-ellipsis">
+      Software
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funktionsuberblick-ilitools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Funktionsüberblick ilitools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flexibilitat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flexibilität
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ziele" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ziele
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ansatze" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ansätze
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ansätze">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interlis-modell-sourcecode-parsen" class="md-nav__link">
+    <span class="md-ellipsis">
+      INTERLIS-Modell SourceCode parsen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rucke-vor-bis-auf-los" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rücke vor bis auf Los
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-strukturen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python-Strukturen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python-Strukturen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anforderungen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anforderungen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#die-natur-des-metamodells" class="md-nav__link">
+    <span class="md-ellipsis">
+      Die Natur des Metamodells
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pseudoimplementierung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pseudoimplementierung
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ein-neues-rad" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ein neues Rad
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ein neues Rad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataclasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      dataclasses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      attrs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entscheide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entscheide
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anregung-fur-kunftige-diskussionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anregung für künftige Diskussionen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-und-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      XML und Python
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verwendete-datenmodelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verwendete Daten/Modelle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beispiel-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beispiel 1
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beispiel-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beispiel 2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beispiel-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beispiel 3
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ergebnisse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ergebnisse
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ausblick" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ausblick
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ausblick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nachste-schritte" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nächste Schritte
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="python-bindings-fur-interlis">Python Bindings für INTERLIS</h1>
+<h2 id="zusammenfassung">Zusammenfassung</h2>
+<p>Vorliegender POC skizziert die Möglichkeiten anhand von INTERLIS-Modellen Pythonstrukturen abzuleiten. Diese
+Strukturen sollen genutzt werden um nativ in der Programmiersprache Python Applikationen aufbauen zu können.
+Vordringlichstes Ziel ist die Verbreiterung der Anwenderbasis. Python ist heute eine der am weitesten verbreiteten
+Programmiersprachen und besonders im Opensource-Umfeld nicht wegzudenken.</p>
+<p>Dieser POC nutzt bewusst bereits vorhandene Mechanismen mit denen INTERLIS vom abstrakten Datenmodell in
+die praktische Welt der Programmierung zu heben. Das Metamodell. Es wurde genau zu diesem Zwecke geschaffen.
+So ist der Ausgangspunkt für alle hier gezeigten Beispiele immer das Metamodell (imd) des jeweiligen
+INTERLIS-Modells (ili). Die Erstellung des jeweiligen Metamodells übernimmt in diesem POC die Software <code>ìli2c</code>.</p>
+<p>Der Ausgang dieses POCs ist positiv. Alle gewünschten Anwendungsfälle konnten belegt werden. Auf dieser Basis
+kann nun eine neuerliche Diskussion über die weiteren Ziele geführt werden.</p>
+<p>Folgende Anwendungsfälle wurden implementiert:</p>
+<ul>
+<li>beliebiges Metamodell lesen und dessen Definition als JSON ausgeben (mgl. Ziel: OPENAPI, JSON Schema Definition)</li>
+<li>beliebiges XTF seinem Modell nach lesen und dessen Inhalt als JSON ausgeben (mgl. Ziel: dynamisch erzeugte generische Reader, um XTF zu lesen)</li>
+<li>beliebiges Metamodell lesen und dessen Definition als Pyton-Code (dataclasses) ausgeben (mgl. Ziel: Validierung von Formularen, Editor-Syntax Highlighting + Autocomplete, Basisbibliothek für Fachapplikationen)</li>
+</ul>
+<h2 id="einfuhrung">Einführung</h2>
+<p>INTERLIS ist in der Schweiz eine der wichtigsten (und vom Bund vorgeschriebene) Modellierungssprache für viele
+digitale (Geo)Daten. An dieser Stelle sollen dem Leser die Details der Theorie erspart bleiben und einfach
+nur auf die umfangreichen Referenzhandbücher verwiesen werden.</p>
+<p>Wichtige Punkte zum Verständnis dieses Konzepts werden hier kurz erläutert. Es wird jedoch erwartet, dass eine
+gewisse Vorbildung zum Thema besteht. Auch wenn mit diesem Text kleinere praktische Elemente erläutert werden
+geht es doch vorerst noch darum technisch, philosophisch auf einen Nenner mit dem Leser zu kommen. Es sollen
+wichtige technische Grundbegriffe beleuchtet werden.</p>
+<h3 id="einordnung">Einordnung</h3>
+<p>INTERLIS wird immer als einer unabhängigen Modellierungssprache, vorrangig für Geodaten, inzwischen aber auch
+darüber hinaus gehandelt. Das ist korrekt. Die intuitive <em>Sprache</em> lässt aber schnell vergessen, dass
+man sich in der digitalen Welt bewegt und das, was man <em>Modellieren</em> nennt, eigentlich
+<em>Programmieren</em> ist. Dem interessierten Leser sei an dieser Stelle das Studium der Programmiersprache
+<a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a> ans Herz gelegt. Sie ist es die man schreibt, wenn man
+INTERLIS schreibt. Natürlich mit Erweiterungen, aber im Kern ist es Modula-2. Wir programmieren also wenn wir
+modellieren! Man könnte dieselben Resultate
+erreichen wenn man die Klassen und Assoziationen einfach in JAVA oder PYTHON schreiben würde. Bis auf ein
+Detail: INTERLIS bildet die Grundbausteine ab, die in jeder halbwegs modernen Programmiersprache heutzutage zu
+finden sind und ist deshalb universell. Das heisst, es lässt sich ohne Probleme in Konstrukte der Wahlsprache
+übersetzen. Und das ist eine der wichtigsten Fähigkeiten von INTERLIS. Die, die wir nutzen wollen. Denn, wozu
+ein Datenmodell, wenn man keine Software dafür hat?</p>
+<p>Wenn wir nun also beim Modellieren programmieren sollten wir unsere Werkzeuge, Arbeitsabläufe, Praktiken und
+Verwaltungsansätze auch den Entwicklungen der Zeit annähern. Versionsverwaltung, Packagemangement,
+Releasemanagement, Codingsupport, automatische Generierung von Dokumentation, all das sind verglichen mit
+INTERLIS eher neuere aber nicht weniger wichtige Erfindungen in der IT.</p>
+<p>Man könnte nun sagen, INTERLIS sei reines Austauschformat. Also ein Vertrag zwischen Datenlieferant und
+Datenempfänger, welcher in aller Tiefe den Inhalt definiert. Als solches wird es auch vorrangig genutzt.
+Allerdings hat die Praxis wie immer auch ihre eigenen Blüten neben der Theorie getrieben und INTERLIS wird eben
+nicht nur mehr zur Definition im Datenaustausch genutzt, sondern auch zur Definition von Erfassungsmodellen,
+Darstellungsmodellen (Strukturen optimiert für das grafische Rendering der Daten) oder applikationszentrischen
+Modellen (z.B.: ÖREB). Schnell wird neben dem Anwendungsfall die Daten zu senden und zu empfangen, das bedeutet
+eigentlich Datenbankexport und Datenbankimport, auch eine Applikation mit Logik auf INTERLIS Strukturen aufgebaut
+die über den ursprünglichen Anwendungszeck hinausgehen. Werkzeuge wie die verschiednen ÖREB-Server Umsetzungen,
+Versuche Texteditoren mit
+<a href="https://marketplace.visualstudio.com/items?itemName=geowerkstatt.InterlisLanguageSupport">Syntax-Highlighting und Autocompletion</a>
+auszustatten oder auch <a href="https://github.com/opengisch/QgisModelBaker">Model Baker</a> sind
+lebendige Beweise dieser These.</p>
+<h3 id="software">Software</h3>
+<p>Die folgenden Betrachtungen beziehen sich auf OpenSource Software. Sie sind nicht ausgrenzend oder
+abschliessend und orientieren sich an dem Ökosystem welches dem Autor in seinem täglichen Umgang mit dem Thema
+bekannt ist.</p>
+<p>Wovon reden wir also, wenn es um die Software geht? Heute gibt es neben diversen Fachschalen nur EINE Sammlung
+von Werkzeugen, die sich mit der generischen Nutzung von INTERLIS im Applikationsumfeld auseinandersetzt:</p>
+<p>Die <a href="http://www.eisenhutinformatik.ch/interlis/">Ilitools</a> der Eisenhut Informatik AG</p>
+<p>Sie sind seit Jahren <em>first-class-member</em> der INTERLIS-Welt und können wohl als der Goldstandard
+hinsichtlich Umsetzung, Generik und dem Verständnis der Materie gelten. Dies gilt nicht nur für JAVA sondern
+die Designentscheidungen welche hier getroffen wurden sind unabhängig von der Zielsprache als universell zu
+betrachten.</p>
+<h3 id="funktionsuberblick-ilitools">Funktionsüberblick ilitools</h3>
+<p>Auf der Webseite werden diese Werkzeuge als Schnittstellen bezeichnet. Und das sind sie. Nicht mehr und nicht
+weniger. Wenn wir das Umfeld anschauen und es grob vereinfachen gruppieren sie alle sich um einen Kern.
+Dem <a href="https://www.interlis.ch/modelle/metamodell">Metamodell</a>. Es ist die abstrakte Beschreibung der
+INTERLIS-Sprachelemente. Ihr Zweck ist die Übersetzung von <em>.ili</em> Dateien in die Sprache/Elemente des
+jeweiligen Zielsystems.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>flowchart BT
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    interlis_model[".ili"]
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    meta_model["MetaModell"]
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    pg["Postgres"]
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    oracle["Oacle"]
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    fme["FME"]
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    uml["UML"]
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    gpkg["GeoPackage"]
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    interlis_model--&gt;meta_model
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    meta_model--&gt;pg
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    meta_model--&gt;oracle
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    meta_model--&gt;fme
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    meta_model--&gt;uml
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    meta_model--&gt;gpkg
+</span></code></pre></div>
+<p>Statt also für jedes Modell eigene Software schreiben zu müssen, führt die Abfolge der Arbeitsschritte über
+die generische Schicht ins Zielsystem. Das Kompilieren des <em>.ili</em> Modells in das Metamodell
+erfolgt durch JAVA und im Prozess innerhalb von JAVA Code. Der Nutzer merkt bei den ilitools davon nichts.
+Intern wird aber nach dem Bauplan des Metamodells ein ineinander verschachteltes Konstrukt aus (Java) Klassen,
+sozusagen Programmierung-on-the-fly, erzeugt.
+Dieses standardisierte Konstrukt wird dann innerhalb der jeweiligen spezifischen Ausprägung
+(z.B.: <a href="http://www.eisenhutinformatik.ch/interlis/ili2pg/">ili2pg</a>) genutzt um Operationen auszuführen.
+In unserem Beispiel eben dann, um mittels SQL dem Modell entsprechende Datenbankstrukturen zu erstellen.
+Mittels <a href="https://www.interlis.ch/downloads/ili2c">INTERLIS Compiler (ili2c)</a> kann der "versteckte"
+Schritt für den Nutzer "sichtbar" gemacht werden. Es wird eine <em>.imd</em> Datei erzeugt. Diese
+ist eigentlich eine INTERLIS Transferdatei, also ein XML und enthält den universellen Bauplan des kompilierten
+Modells.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>flowchart LR
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    interlis_model[".ili"]
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    subgraph ili2c["INTERLIS Compiler"]
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        parsing["parsen"]
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        compile["kompilieren"]
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        meta_model["MetaModell"]
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    end
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    imd[".imd"]
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    interlis_model--&gt;parsing
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    parsing--&gt;compile
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    compile--&gt;meta_model
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    meta_model--&gt;imd
+</span></code></pre></div>
+<p>INTERLIS ermöglicht in einem Modell Elemente aus einem anderen Modell zu nutzen (<em>IMPORTS</em>). Dies ist
+ein wichtiger Baustein, der zum Erfolg des Systems beiträgt. Diese Art Verkettung bedeutet aber, dass zum
+Kompilierungszeitpunkt die komplette Kette an Informationen zur Verfügung stehen muss.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>classDiagram
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    direction BT
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    class INTERLIS{
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        Basisdefinitionen
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    }
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    class Units{
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        m
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        km
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        ...
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    }
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    class AnwenderModell{
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        IMPORTS Units;
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    }
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    AnwenderModell --|&gt; Units : imports
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    Units --|&gt; INTERLIS : imports (implizit)
+</span></code></pre></div>
+<p>Dieser Punkt ist für die späteren Diskussionspunkte wichtig und aus diesem Grunde hier nur stark verkürzt
+und fast schon unzulässig vereinfacht dargestellt. Die ilitools übernehmen dies Aufgabe aber. So ist der Inhalt
+eines kompilierten Metamodells immer der Inhalt der kompletten Kette - Ein wichtiges Detail.</p>
+<h3 id="flexibilitat">Flexibilität</h3>
+<p>Aus Sicht eines JAVA-Entwicklers dürften nun alle wichtigen Informationen klar sein. Ein neues Zielsystem
+bedeutet ein neues ili2XXX Werkzeug. Der Vielfalt sind keine Grenzen gesetzt. Solange wir uns im JAVA-Umfeld
+bewegen ist die Geschichte wahr. Und darüber hinaus auch in die eine oder andere Richtung vielleicht auch noch
+weiter. Will man aber die domainspezifischen Informationen, die üblicherweise in einem INTERLIS-Modell stecken
+in anderen Programmiersprachen nutzen, wird es schnell dünn. Über Umwege können wir diese Information
+transportieren. Klassisch wäre hier der Import von Modell und Daten in eine relationale Datenbank und aufbauend
+auf dieser dann die Extraktion der Modellinformationen. Doch halt. Wir haben hier einen Transformationsschritt,
+bei dem Informationen verloren gehen. Darüber hinaus müssen beim Wechsel vom Objektraum (INTERLIS-Modell) in
+den relationalen Raum (Datenbank) Kompromisse eingegangen werden. Dies verhindert, dass ein Programm welches
+seine Informationen aus der resultierenden Datenbank bezieht nicht die <em>Wahrheit</em> des ursprünglichen
+Modells kennen kann. In der Praxis behilft man sich mit allerhand Feenstaub und das funktioniert auch meistens.
+Ein paar Metaattribute hier, ein bisschen Kommentarprogrammierung dort. Letzen Endes sind das aber alles teils
+spezifische Lösungen und nicht vom Charakter wie wir ihn von einem generischen Software-Ansatz erwarten.
+Flexibel und systemunabhängig sind wir aktuell im INTERLIS-Umfeld nur in der JAVA-Welt. Don't state the
+obvious. Egal ich tue es trotzdem. DAS IST EIN WIDERSPRUCH IN SICH!</p>
+<p>Natürlich können wir aus JAVA heraus allerhand Spielereien machen. Wir können JAVA in Container packen, wir
+können mit JAVA Python ausführen. Aber wirklich nativ in der jeweiligen Programmiersprache und mit den ihr
+zugehörigen Bordmitteln optimalen Code produzieren. Das können wir so nicht. Wir sind unflexibel. Wir sind nicht
+frei in der Wahl unserer Werkzeuge.</p>
+<h2 id="ziele">Ziele</h2>
+<p>Bevor wir an die weitere Analyse gehen, möchte ich über die Ziele sprechen die verfolgt werden. Im Wesentlichen
+sind diese in diesem <a href="https://www.opengis.ch/de/2023/11/24/python-bindings-fuer-interlis/">Blogbeitrag</a> (bitte lesen!) hinreichend
+erläutert. Zusammenfassend:</p>
+<ul>
+<li>Zielsprache Python</li>
+<li>Unterstützung von INTERLIS nativ und generisch (keine Programmierung pro ILI)</li>
+<li>Aufbau von Workflows zum Aufzeigen des Nutzens</li>
+</ul>
+<h2 id="ansatze">Ansätze</h2>
+<p>Nach diesem kurzen Rundumschlag sind wir mit den wichtigsten Inhalten vertraut, um uns in die Diskussion der
+möglichen Ansätze zu begeben.</p>
+<h3 id="interlis-modell-sourcecode-parsen">INTERLIS-Modell SourceCode parsen</h3>
+<p>Wir haben gesehen, dass die ilitools am Beispiel des INTERLIS Compilers zuerst das INTERLIS-Modell lesen
+(den SourceCode) und dann aus ihm das Metamodell kompilieren.</p>
+<p>Der Schritt des Lesens und des "Verstehens" ist
+universell in jeder Programmiersprache und findet beinahe überall Anwendung. Textdateien werden in
+Maschinencode übersetzt. Mit der Erkenntnis, dass uns das Metamodell erlaubt modular beliebige Fachapplikationen
+darauf aufzubauen werden wir mit einiger Voraussicht feststellen, dass auch wir bei einem ähnlichen Ansatz landen
+würden. Diesen Prozess also in Python nachzubauen, würde uns vorerst nicht dem eigentlichen Ziel näher bringen.
+Zu gewinnen wären lediglich programmiersprachenspezifische Optimierungen. Diese können wir aber auch auf anderen
+Ebenen unseres Zielsystems implementieren. Insofern liegt es nahe, diesen Schritt vorerst einfach zu übernehmen. Und ab
+fertigem Metamodell zu starten. Doch wie schaffen wir den Sprung vom in JAVA kompilierten Metamodell nach Python?
+Auch hier nehmen wir vorerst die Abkürzung. Statt direkt über JAVA zu gehen, nutzen wir die <em>.imd</em> Datei, die
+wir mit ili2c aus jedem Modell erzeugen können als Ausgangspunkt.</p>
+<h3 id="rucke-vor-bis-auf-los"><em>Rücke vor bis auf Los</em></h3>
+<p>Oben beschriebene Abkürzung lässt uns nun lediglich folgende Aufgabe zu tun: Wir müssen einen XML-Parser bauen
+der das <em>.imd</em> lesen kann und daraus per Programmierung-on-the-fly Python-Strukturen erzeugt, welche wir dann
+weiternutzen können.</p>
+<h2 id="python-strukturen">Python-Strukturen</h2>
+<p>Wenn es darum geht Daten in Python zu repräsentieren, hat man die Qual der Wahl. Daten? Ja, denn aus unserer
+Perspektive sind sowohl die Metamodelle, die wir mit <code>ili2c</code> erzeugen wie auch die XTF einfach nur Daten.
+ Mit dem kleinen Unterschied, dass und das jeweilige Metamodell den Bauplan liefert die Struktur des korrespondierenden
+XTF zu "verstehen". Letzten Endes haben wir mit
+dem Metamodell eigentlich alle Stricke in der Hand um vollkommen in purem Python Code zu implementieren. Das
+führt aber hier schnell zu Fragestellungen die bereits in beliebiger Tiefe durch die Python Community behandelt
+wurde. Der folgende Abschnitt soll aufzeigen welche Ansätze wir haben, um Daten in Python abzubilden.</p>
+<h3 id="anforderungen">Anforderungen</h3>
+<p>Datenstrukturen in Python meint Daten in Objektform. Das heisst wir verzichten an dieser Stelle auf die Betrachtung
+von ORMs wie <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> oder
+<a href="https://docs.djangoproject.com/en/5.0/topics/db/models/">Django Models</a>. Das könnten allenfalls Zielestrukturen
+sein welche man in nachgeordneten Ebenen des Prozesses anstrebt. Ziel muss ein möglichst generische doch optimierte
+Repräsentation des INTERLIS-Modells sein, um die Anwendung in einem breiten Umfeld möglich zu machen. Doch möchte
+man nicht auf spezifische Funktionalitäten verzichten. Besonders sind dies allenfalls bereits vorhandene Möglichkeiten zum:</p>
+<ul>
+<li>De-/Serialisierung von Objekten</li>
+<li>Dokumentation</li>
+<li>Validierung nach vorgegebenen Regeln</li>
+<li>Präzisions bzw. Rundungsregeln (<code>0.00 .. 10.00</code> vs. <code>0.000 .. 10.000</code>)</li>
+<li>Vergleichbarkeit von Objekten</li>
+</ul>
+<h3 id="basis">Basis</h3>
+<p>Python unterstützt das Paradigma der objektorientierten Programmierung und liefert uns damit alle Werkzeuge,
+die wir benötigen, um das Metamodell in Python abzubilden. Auf Details wird in der POC Implementierung
+eingegangen.</p>
+<p>Zum besseren Verständnis nutzen wir ein einfaches <a href="../example/example.ili">Beispielmodell</a>. Es beinhaltet einige
+INTERLIS-Definitionen anhand derer wir alles Weitere nachvollziehen können. Das diesem Beispiel
+zugehörige <a href="../example/example.imd">Metamodell</a> soll uns noch kurz zur Betrachtung wichtiger Details dienen.</p>
+<h4 id="die-natur-des-metamodells">Die Natur des Metamodells</h4>
+<p>Der offensichtlichste aber deshalb nicht weniger wichtige Fakt ist, dass das Metamodell ein XML-Dokument ist.
+Weniger offensichtlich ist, dass das Metamodell ein XTF ist, und zwar nach INTERLIS 2.4 und natürlich nach
+dem <a href="../data/IlisMeta16.ili">INTERLIS-Modell Metamodell</a>. Es handelt sich also um Transferdaten.</p>
+<p>Die Dateigröße von rund 350 KB mag überraschen. Doch wenn man den Inhalt genauer anschaut, wird der Grund klar.
+Das imd enthält die komplette Beschreibung aller Modell die in der Kette durch Imports irgendwie betroffen sind.
+Der XML-Baum beginnt also mit dem <em>internen INTERLIS-Modell</em> welches alle Basisbeschreibungen von INTERLIS beinhaltet.
+Also der Ursuppe und dem Teil, den man eigentlich nie zu Gesicht bekommt, wenn man mit ili und xtf Dateien umgeht.
+Der Inhalt des Metamodells spannt sich weiter über das Modell <a href="https://models.interlis.ch/refhb23/CoordSys-20151124.ili">CoordSys</a>
+und <a href="https://models.interlis.ch/refhb23/Units-20120220.ili">Units</a> um dann am Ende den kleinen Teil unseres
+Beispielmodells abzubilden.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../img/example_metamodel.png" data-desc-position="bottom"><img alt="" src="../img/example_metamodel.png"></a></p>
+<p>Unser Beispielmodell kann also in ca. 70 Zeilen XML beschrieben werden. Die restlichen ca. 800 Zeilen XML
+beschreiben den Unterbau, der für unser Modell nötig ist. Das sind Koordinatensysteme (WGS84), Einheiten (Units.bar) und
+natürlich die ganzen Typen (Text, Integer, Foat) mit ihren Beschränkungen.</p>
+<p>Wir haben also mit einem Metamodell die komplette Hierarchie des Bauplanes zur Verfügung und müssen uns nicht
+mehr darum kümmern die Inhalte der anderen Modelle irgendwie aus dem Netz zu laden. Dies wurde bei der
+Kompilierung durch <code>ìli2c</code> vom <em>ili</em> ins <em>imd</em> bereits erledigt.</p>
+<h4 id="pseudoimplementierung">Pseudoimplementierung</h4>
+<p>In welche Richtung es gehen könnte, lässt sich in der <a href="../example/example.pseudo.py">Pseudoimplementierung</a> gut
+sehen. Wir repräsentieren Elemente aus INTERLIS in korrespondierende Gegenstücke in Python. Am gezeigten
+Beispiel wird ersichtlich, welchen Umfang eine saubere Ableitung annehmen würde. Zumal längst nicht alle
+Inhalte im Beispiel berücksichtigt sind.</p>
+<h3 id="ein-neues-rad">Ein neues Rad</h3>
+<p>Würde man dem oben beschriebenen Weg folgen, entstünde ein sehr umfangreicher Satz an Python Code.
+Schnell kommt man an den Punkt, an dem man sich fragt, ob nicht jemand schonmal an demselben Problem saß und
+ob es nicht bereits gelöst sein könnte. Nochmal kurz benannt.</p>
+<p><strong>Was ist das Problem?</strong></p>
+<p><em>Abbildung von Datenstrukturen in Python.</em></p>
+<p>Natürlich wurde dieses Thema im Pyhton-Umfeld behandelt. Aus meiner Sicht stehen 3 Wege offen diesem Problem
+zu begegnen:</p>
+<ul>
+<li><a href="https://peps.python.org/pep-0557/">dataclasses</a></li>
+<li><a href="https://www.attrs.org/en/stable/index.html">attrs</a></li>
+<li><a href="https://docs.pydantic.dev/latest/">pydantic</a></li>
+</ul>
+<p>Es gäbe bestimmt noch weitere Möglichkeiten aber wir belassen es bei diesen, da wir keine Python-Package
+Rundschau betreiben, sondern an einer Lösungsskizze arbeiten wollen.</p>
+<h4 id="dataclasses">dataclasses</h4>
+<p>PRO:</p>
+<ul>
+<li>nativ in Python seit 3.7[*]</li>
+<li>Verhalten wie einfach Klassen</li>
+<li>Vergleich von Objekten (<code>field(compare=True)</code>)</li>
+<li>einfacher @Decorator um eine Pythonklasse zu einer dataclasses Klasse zu machen</li>
+<li>Validierung mit eigenen Routinen möglich (Zeitpunkt klar)</li>
+<li>gutes stdout print</li>
+</ul>
+<p>CONTRA:</p>
+<ul>
+<li>Datenvalidierung umständlich (z.B. via <code>__post_init__</code> Funktion) und erst nach Objektinitialisierung</li>
+<li>Konvertierung zwischen verschiedenen Datatypes</li>
+<li>Funktionsumfang hängt an der Pythonversion</li>
+</ul>
+<p>*(für den POC werden Funktionen ab Python 3.11 verwendet (<code>ENUM</code>))</p>
+<h4 id="attrs">attrs</h4>
+<p>PRO:</p>
+<ul>
+<li>Vergleich von Objekten besser steuerbar (<code>field(eq=str.lower)</code>)</li>
+<li>Validierung mit eigenen Routinen möglich und einfach über <code>field</code> oder <code>@&lt;Attributname&gt;.validator</code> zuordenbar</li>
+<li>Validierungszeitpunkt klar</li>
+<li>einfacher @Decorator um eine Pythonklasse zu einer attrs Klasse zu machen</li>
+<li>gutes stdout print</li>
+</ul>
+<p>CONTRA:</p>
+<ul>
+<li>Biliothek muss installiert werden (zusätzliche Abhängigkeit)</li>
+<li>nicht verpflichtend hinsichtlich Typing</li>
+</ul>
+<h4 id="pydantic">pydantic</h4>
+<p>PRO:</p>
+<ul>
+<li>Datenvalidierung bereits eingebaut (<code>email</code>, <code>numbers</code>, <code>uris</code>, etc.)</li>
+<li>ist die Basis für viele Bibliotheken (DJango Ninja API, FastAPI, etc.)</li>
+</ul>
+<p>CONTRA:</p>
+<ul>
+<li>Biliothek muss installiert werden (zusätzliche Abhängigkeit)</li>
+<li>Vererbung von <code>BaseModel</code> führt spezielles Verhalten der Klasse ein weg von einer Standardklasse</li>
+<li>kein Vergleich von Objekten</li>
+<li>Validierungszeitpunkt nicht klar (Objektinstanzierung, Wertänderung, etc.)</li>
+<li>mässiges stdout print</li>
+</ul>
+<h3 id="entscheide">Entscheide</h3>
+<p>Die vorherigen kurzen Betrachtungen legen vorerst die Wahl von dataclasses nahe. So werden die Showcases auf
+dieser Basis umgesetzt. Hauptgrund ist die native Unterstützung seit Python 3.7 (bzw. mit Enumerations 3.11).</p>
+<p>Die rundum komplexe Thematik des INTERLIS Metamodells lässt eine abschliessende Umsetzung in der Kürze des
+POCs nicht zu. Aus diesem Grunde wird aus dem Metamodell nur umgesetzt, was wirklich für Demonstrationszwecke
+nützlich ist. Das ist trotzdem sehr umfangreich. Insbesondere bei den Attributtypen beschränkt sich der POC
+auf die Typen TextType, NumType und das Basisverständnis von Klassen, Topics sowie Attributen. Auch wenn
+die umgesetzte Lösung bereits die Vererbung kennt, ist diese im aktuellen POC nur rudimentär umgesetzt. Es
+gehört also nicht zum aktuellen Funktionsumfang innerhalb von INTERLIS-Modellen die Vererbung zwischen Klassen
+zu verfolgen.</p>
+<h3 id="anregung-fur-kunftige-diskussionen">Anregung für künftige Diskussionen</h3>
+<p>Für den POC wurde die Wahl getroffen. Für eine Umsetzung hin zu einer wirklichen Bibliothek vom Charakter
+ähnlich den ILI-Tools muss dennoch über die Implementierung auf den einfachen Konstrukten
+aus Python OOP nachgedacht werden. Nur so macht man sich möglichst unabhängig von Versionen und
+externen Bibliotheken. Die Bausteine unserer angestrebten Lösung sind im Wesentlichen Funktionen,
+Klassen, Assoziationen und XML lesen/schreiben. Auf diese Basisfunktionen können dann beliebige
+Lösungen aufgesetzt werden. Doch das ist nicht Entscheidung des vorliegenen POC's, sondern muss in
+einer größeren Runde von künftigen Anwendern diskutiert werden.</p>
+<h2 id="xml-und-python">XML und Python</h2>
+<p>Beim Umgang mit INTERLIS muss unweigerlich das Problem des Datenparsens gelöst werden. Üblicherweise wird in
+Python dazu <a href="https://lxml.de/tutorial.html">lxml</a> verwendet. Diese Biblothek liegt fast allen anderen
+Anwendungen zugrunde. Es handelt sich jedoch um eine Basisbibliothek und der Umgang mit ihr ist umständlich.</p>
+<p>Da wir uns bereits für dataclasses entschieden haben und das Metamodell bekannt ist, können wir aus Zeitgründen
+eine etwas höhere Abstraktionsebene zum Parsen wählen. Hier setzen wir auf
+<a href="https://xsdata.readthedocs.io/en/latest/">xsdata</a>. Dieses Werkzeug bietet uns nicht nur die Möglichkeit XML
+nach einer vorher in dataclasses definierten Struktur und damit metamodellkonform zu parsen, sondern erzeugt
+uns auch gleich die korrespondierenden Objekte aus den dataclasses. Damit können wir dann im Python nativ
+arbeiten. Insgesamt spart das zwar Zeit, aber es ist auch keine unzulässige Abkürzung. Der vorgestellte Ansatz
+funktioniert auch ohne xsdata. Explizit wurde nicht der Teil von xsdata genutzt um ein Modell aus XML oder aus
+XSD zu erzeugen. Die vorliegende Umsetzung bildet, soweit fortgeschritten, das Metamodell nach dem ILI und
+der zugehörigen semantischen Beschreibung im PDF ab. xsdata wird nur zum Parsen der imd XML Dateien und der XTF
+Dateien genutzt.</p>
+<h2 id="demonstration">Demonstration</h2>
+<p>Die Auswahl der hier erwähnten Modelle und Daten erfolgte zufällig aus einem Fundus der lokal zur Verfügung
+stand. Der vorgestellte Ansatz ist universeller Natur. Dennoch muss unbedingt mit Problemen gerechnet werden,
+wenn andere Modell-/Datenkombinationen ausprobiert werden. Zusätzlich sei nochmal erwähnt, dass aktuell nur
+Attributtypen TextType und keine Assoziationen umgesetzt sind. Das heisst, dass je nach Modell das Resultat
+ziemlich dünn erscheint.</p>
+<h3 id="verwendete-datenmodelle">Verwendete Daten/Modelle</h3>
+<p>Wie bereits beschrieben wurden 3 Testsätze zufällig aus einem lokalen Fundus gewählt. Diese Sätze bestehen immer
+aus einem INTERLIS-Modell (ili), dem davon abgeleiteten Metamodell (imd) und einem Beispieldatensatz (xtf).</p>
+<p>Die 3 Datensätze sind:</p>
+<table>
+<thead>
+<tr>
+<th>INTERLIS-Modell</th>
+<th>Metamodell</th>
+<th>Datensatz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../data/Planungszonen_V1_1.ili">Planungszonen_V1_1.ili</a></td>
+<td><a href="../data/Planungszonen_V1_1.imd">Planungszonen_V1_1.imd</a></td>
+<td><a href="../data/ch.Planungszonen.sh.mgdm.v1_1.xtf">ch.Planungszonen.sh.mgdm.v1_1.xtf</a></td>
+</tr>
+<tr>
+<td><a href="../data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.ili">SO_AFU_ABBAUSTELLEN_Publikation_20221103.ili</a></td>
+<td><a href="../data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd">SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd</a></td>
+<td><a href="../data/ch.so.afu.abbaustellen.xtf">ch.so.afu.abbaustellen.xtf</a></td>
+</tr>
+<tr>
+<td><a href="../data/OeREBKRMtrsfr_V2_0.ili">OeREBKRMtrsfr_V2_0.ili</a></td>
+<td><a href="../data/OeREBKRMtrsfr_V2_0.imd">OeREBKRMtrsfr_V2_0.imd</a></td>
+<td><a href="../data/ch.bazl.kataster-belasteter-standorte-zivilflugplaetze_v2_0.oereb.xtf">ch.bazl.kataster-belasteter-standorte-zivilflugplaetze_v2_0.oereb.xtf</a></td>
+</tr>
+</tbody>
+</table>
+<p>Die Erstellung eines Metamodells aus einem INTERLIS-Modell heraus kann mit <code>ìli2c</code> wie folgt erreicht werden:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>java<span class="w"> </span>-jar<span class="w"> </span>&lt;path-to-ili2c&gt;/ili2c.jar<span class="w"> </span>-oIMD16<span class="w"> </span>data/OeREBKRMtrsfr_V2_0.ili<span class="w"> </span>--out<span class="w"> </span>data/OeREBKRMtrsfr_V2_0.imd
+</span></code></pre></div>
+<h3 id="beispiel-1">Beispiel 1</h3>
+<p>Es soll gezeigt werden, dass wir mit vorliegender Technik in der Lage sind, beliebige imd's zu lesen und dem
+Modell nach zu verstehen. Es werden Pythonstrukturen gemäss Metamodell erzeugt. Dies ist ein zentraler
+Bestandteil des Konzepts. Wohlgemerkt wird hier nicht einfach xml =&gt; json umgewandelt.</p>
+<p>Liest das <a href="../data/OeREBKRMtrsfr_V2_0.ili">OeREBKRMtrsfr_V2_0</a> Modell und gibt den Inhalt als JSON aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ili2py-imd_json<span class="w"> </span>--imd<span class="w"> </span>data/OeREBKRMtrsfr_V2_0.imd
+</span></code></pre></div>
+<p>Liest das <a href="../data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.ili">SO_AFU_ABBAUSTELLEN_Publikation_20221103</a> Modell und gibt den Inhalt als JSON aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ili2py-imd_json<span class="w"> </span>--imd<span class="w"> </span>data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd
+</span></code></pre></div>
+<p>Liest das <a href="../data/Planungszonen_V1_1.ili">Planungszonen_V1_1</a> Modell und gibt den Inhalt als JSON aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ili2py-imd_json<span class="w"> </span>--imd<span class="w"> </span>data/Planungszonen_V1_1.imd
+</span></code></pre></div>
+<h2 id="beispiel-2">Beispiel 2</h2>
+<p>Es soll gezeigt werden, was mit dem <em>verstandenen</em> Datenmodell aus Beispiel 1 alles gemacht werden kann. Es
+wird anhand des Modells dynamisch ein Reader erzeugt, der in der Lage ist, ein XTF zu lesen welches zum Modell
+passt. Das bedeutet, wann immer man das Modell und die Daten hat, muss man keinen modellspezifischen Code mehr
+schreiben. Dieser wird zur Laufzeit erzeugt und zum Lesen der Daten verwendet.</p>
+<p>Liest Daten aus einem XTF nach <a href="../data/OeREBKRMtrsfr_V2_0.ili">OeREBKRMtrsfr_V2_0</a> Modell und gibt den Inhalt als JSON aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ili2py-xtf_json<span class="w"> </span>--imd<span class="w"> </span>data/OeREBKRMtrsfr_V2_0.imd<span class="w"> </span>--xtf<span class="w"> </span>data/ch.bazl.kataster-belasteter-standorte-zivilflugplaetze_v2_0.oereb.xtf<span class="w"> </span>--model<span class="w"> </span>OeREBKRMtrsfr_V2_0
+</span></code></pre></div>
+<p>Liest Daten aus einem XTF nach <a href="../data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.ili">SO_AFU_ABBAUSTELLEN_Publikation_20221103</a> Modell und gibt den Inhalt als JSON aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ili2py-xtf_json<span class="w"> </span>--imd<span class="w"> </span>data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd<span class="w"> </span>--xtf<span class="w"> </span>data/ch.so.afu.abbaustellen.xtf<span class="w"> </span>--model<span class="w"> </span>SO_AFU_ABBAUSTELLEN_Publikation_20221103
+</span></code></pre></div>
+<p>Liest Daten aus einem XTF nach <a href="../data/Planungszonen_V1_1.ili">Planungszonen_V1_1</a> Modell und gibt den Inhalt als JSON aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ili2py-xtf_json<span class="w"> </span>--imd<span class="w"> </span>data/Planungszonen_V1_1.imd<span class="w"> </span>--xtf<span class="w"> </span>data/ch.Planungszonen.sh.mgdm.v1_1.xtf<span class="w"> </span>--model<span class="w"> </span>Planungszonen_V1_1
+</span></code></pre></div>
+<h2 id="beispiel-3">Beispiel 3</h2>
+<p>Neben der dynamischen Erstellung eines modellkonformen Readers und dessen Nutzung ist die Persistierung
+des Codes ein anderer wichtiger Anwendungsfall. In diesem Beispiel soll gezeigt werden, dass wir mit unserem
+Ansatz in der Lage sind Pythonstrukturen erzeugen zu kommen welche wir später in Fachapplikationen einsetzen
+können. Ein denkbarer Anwendungsfall wäre hier die Erstellung eine API (CRUD/REST/OPENAPI) auf Basis des
+jeweiligen Modells. Oder aber direkt eine Formularlösung (Django Forms o. ä.). Alle Beispiele schreiben in
+eine Pythondatei.</p>
+<p>Liest das <a href="../data/OeREBKRMtrsfr_V2_0.ili">OeREBKRMtrsfr_V2_0</a> Modell und gibt den Inhalt als Python Code aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ili2py-xtf_reader_classes<span class="w"> </span>--imd<span class="w"> </span>data/OeREBKRMtrsfr_V2_0.imd<span class="w"> </span>--model<span class="w"> </span>OeREBKRMtrsfr_V2_0<span class="w"> </span>&gt;<span class="w"> </span>data/OeREBKRMtrsfr_V2_0.py
+</span></code></pre></div>
+<p>Liest das <a href="../data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.ili">SO_AFU_ABBAUSTELLEN_Publikation_20221103</a> Modell und gibt den Inhalt als Python Code aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ili2py-xtf_reader_classes<span class="w"> </span>--imd<span class="w"> </span>data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd<span class="w"> </span>--model<span class="w"> </span>SO_AFU_ABBAUSTELLEN_Publikation_20221103<span class="w"> </span>&gt;<span class="w"> </span>data/SO_AFU_ABBAUSTELLEN_Publikation_20221103.py
+</span></code></pre></div>
+<p>Liest das <a href="../data/Planungszonen_V1_1.ili">Planungszonen_V1_1</a> Modell und gibt den Inhalt als Python Code aus:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ili2py-xtf_reader_classes<span class="w"> </span>--imd<span class="w"> </span>data/Planungszonen_V1_1.imd<span class="w"> </span>--model<span class="w"> </span>Planungszonen_V1_1<span class="w"> </span>&gt;<span class="w"> </span>data/Planungszonen_V1_1.py
+</span></code></pre></div>
+<h2 id="ergebnisse">Ergebnisse</h2>
+<p>Die Resultate sind ausgesprochen positiv. Mit überschaubarem Aufwand konnte bereits das generische
+Grundverständnis von INTERLIS in Python implementiert werden. Wir sind in der Lage beliebige Modell in Python
+abzuleiten. Damit ist der Grundstein für beliebig komplexe Fachapplikationen und Services gelegt.</p>
+<h2 id="ausblick">Ausblick</h2>
+<p>Bei der Umsetzung sind insbesondere beim auseinandersetzen des Modells zur Implementierung des XTF-Readers
+Unzulänglichkeiten aufgefallen. Vorrangig betrifft das die Navigation im XML-Baum. xsdata ist unschlagbar um
+schnell zu Lösungen zu kommen. Für den XTF-Reader muss aber der Baum nach Elementen durchsucht werden
+um Assoziationen auflösen zu können. Das geht mit xsdata nicht ohne Weiteres. Eine einfache Xpath Expression
+via lxml (z.B.: <code>//[@ili:tid="GeometryCHLV95_V1.SurfaceStructure"]</code>) ist da sehr viel eleganter und vermutlich
+besser optimiert als alle ineinander verschachtelte Pythonschleifen, die man programmieren kann.</p>
+<p>Die Betrachtungen zu den Datenstrukturen in Python lassen noch Potenzial zu weiteren Untersuchungen erahnen.
+Hier sollten weitere Tests nicht gescheut werden, um die richtige Wahl zu treffen.</p>
+<p>Weiterhin bietet xsdata einen Pluginansatz mit dem man via Jinja Templates Code erzeugen kann. Das erscheint
+als eine vielversprechende Möglichkeit um Pythonbibliotheken zu erzeugen, die dann als Pythonpaket via pypi
+veröffentlicht werden können.</p>
+<p>Am wichtigsten scheint aber die Umsetzung der MultiValue Typen zu sein. Diese sind essentiell (aber komplex)
+für INTERLIS. Besonders, weil diese Typen die Geometrien definieren und damit der Weg für praxisnähere
+Beispiele geebnet wäre (QGIS drag'n'drop eines XTF).</p>
+<h3 id="nachste-schritte">Nächste Schritte</h3>
+<p>Nach der Präsentation der Ergebnisse muss entschieden werden, inwiefern diese ausreichen, um ein breiteres
+Publikum zu animieren. Insbesondere ist die baldige Unterstützung durch übergeordnete Stufen zu suchen. Dies
+kann vorerst durch eine weitere Finanzierung im Rahmen einer grösseren Usergroup (BL, NE, SH, GR, TI) erfolgen.
+Parallel dazu sollten aber auch wieder Instanzen wie KGK oder Geostandards angefragt werden.</p>
+<p>Neben den architektonischen Entscheiden steht aber dann hauptsächlich die Umsetzung der Volumenarbeit an. Dabei
+geht es um die korrekte Abbildung aller Belange des Metamodells. Wenn diese Basisarbeit getan ist, steht ein
+Framework zur Verfügung um beliebige Applikationen darauf aufzubauen.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": true, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
