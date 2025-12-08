@@ -154,4 +154,22 @@ doc-diagrams: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
 	cd build/ili2py_doc_diagrams/plantuml/ && ffmpeg -framerate 2 -pattern_type glob -i "*.resized.png" output.mp4 && cd -
 	ffmpeg -i build/ili2py_doc_diagrams/plantuml/output.mp4 -vf "fps=15,scale=320:-1:flags=lanczos,palettegen" build/ili2py_doc_diagrams/plantuml/palette.png
 	ffmpeg -i build/ili2py_doc_diagrams/plantuml/output.mp4 -i build/ili2py_doc_diagrams/plantuml/palette.png -filter_complex "fps=15,scale=3200:-1:flags=lanczos[x];[x][1:v]paletteuse" build/ili2py_doc_diagrams/plantuml/output.gif
-	mv build/ili2py_doc_diagrams/plantuml/output.gif docs/mkdocs/assets/img/diagrams/showcase.gif
+	# mv build/ili2py_doc_diagrams/plantuml/output.gif docs/mkdocs/assets/img/diagrams/showcase.gif
+
+.PHONY: plantuml-showcase-diagrams
+plantuml-showcase-diagrams: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
+	rm -rf build/plantuml_showcase_diagrams
+	$(VENV_BIN)/python src/ili2py/scripts/generate_plantuml_diagrams.py
+	zip -r build/plantuml_showcase_diagrams.zip  build/plantuml_showcase_diagrams
+	cd build/plantuml_showcase_diagrams/plantuml/ && ffmpeg -framerate 2 -pattern_type glob -i "*.resized.png" output.mp4 && cd -
+	ffmpeg -i build/plantuml_showcase_diagrams/plantuml/output.mp4 -vf "fps=15,scale=320:-1:flags=lanczos,palettegen" build/plantuml_showcase_diagrams/plantuml/palette.png
+	ffmpeg -i build/plantuml_showcase_diagrams/plantuml/output.mp4 -i build/plantuml_showcase_diagrams/plantuml/palette.png -filter_complex "fps=15,scale=3200:-1:flags=lanczos[x];[x][1:v]paletteuse" build/plantuml_showcase_diagrams/plantuml/output.gif
+
+.PHONY: mermaid-showcase-diagrams
+mermaid-showcase-diagrams: $(PIP_REQUIREMENTS) $(DEV_REQUIREMENTS)
+	rm -rf build/mermaid_showcase_diagrams
+	$(VENV_BIN)/python src/ili2py/scripts/generate_mermaid_diagrams.py
+	zip -r build/mermaid_showcase_diagrams.zip  build/mermaid_showcase_diagrams
+	cd build/mermaid_showcase_diagrams/mermaid/ && ffmpeg -framerate 2 -pattern_type glob -i "*.resized.png" output.mp4 && cd -
+	ffmpeg -i build/mermaid_showcase_diagrams/mermaid/output.mp4 -vf "fps=15,scale=320:-1:flags=lanczos,palettegen" build/mermaid_showcase_diagrams/mermaid/palette.png
+	ffmpeg -i build/mermaid_showcase_diagrams/mermaid/output.mp4 -i build/mermaid_showcase_diagrams/mermaid/palette.png -filter_complex "fps=15,scale=3200:-1:flags=lanczos[x];[x][1:v]paletteuse" build/mermaid_showcase_diagrams/mermaid/output.gif
