@@ -14,7 +14,7 @@ description = "Your pythonic gateway to INTERLIS"
 authors = [
     {name="Clemens Rudert", email="rudert-geoinformatik@posteo.ch"}
 ]
-requires-python = ">=3.11.0"
+requires-python = ">=3.12.0"
 maintainers = [
     {name="Clemens Rudert", email="rudert-geoinformatik@posteo.ch"}
 ]
@@ -40,7 +40,6 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Software Development",
