@@ -62,6 +62,9 @@ def test_init():
         "models/LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0/LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0.imd",
         "models/Kantonale_Ausnahmetransportrouten_V1_0/ExceptionalLoadsRoute_V1.imd",
         "models/Rodungen_Rodungsersatz_V1_1/Rodungen_V1_1.imd",
+        "models/modelbaker/hasarcs.imd",
+        "models/modelbaker/noarcs.imd",
+        "models/modelbaker/Staedtische_Ortsplanung_V1_1.imd",
     ],
 )
 def test_writing(resource_path_root, imd_path):
