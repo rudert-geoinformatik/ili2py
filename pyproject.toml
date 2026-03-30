@@ -119,62 +119,25 @@ explicit-only = [
 ]
 "resource-path.directory-name-test-resources" = "data"
 
-[tool.black]
-line-length = 100
-target-version = ["py313"]
-skip-string-normalization = false
-skip-magic-trailing-comma = false
-exclude = '''
-(
-    /(\.venv|\.git|\.mypy_cache|\.pytest_cache|build|dist)/
-    | /src/ili2py/interfaces/interlis/interlis_24/ilismeta/ilismeta16_2022_10_10/
-    | /example/
-    | /tests/data/ilismeta16/
-    | /tests/data/models/
-)
-'''
-
-[tool.isort]
-profile = 'black'
-line_length = 100
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-
-[tool.ruff]
-line-length = 100
-target-version = "py311"
-fix = true  # Optional: erlaubt automatisches Fixen per CLI
-select = [
-    "E",  # pycodestyle errors
-    "F",  # pyflakes
-    "W",  # pycodestyle warnings
-    "I",  # isort
-    "UP",  # pyupgrade
-    "C90",  # mccabe complexity
-]
-ignore = [
-    "E501"  # Zeilenlänge ignorieren, da Black das übernimmt
-]
-
-[tool.autoflake]
-remove-all-unused-imports = true
-remove-unused-variables = true
-in-place = true
-recursive = true
-ignore-init-module-imports = true
-
-
-[tool.bandit]
-tests = []
-skips = [
-    "B101",
-]
 
 [tool.software-release]
 version_variable = "src/georama/__init__.py:__version__"
 
-[virtualenvs]
-create = true
-in-project = true
+[tool.ruff]
+line-length = 95
+target-version = "py312"
+exclude = [
+    "tests/**",
+    "src/ili2py/interfaces/interlis/interlis_24/ilismeta/**",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "UP",   # pyupgrade replacement
+    "B",    # bugbear
+    "SIM",  # simplify
+    "I",    # isort
+]
+fixable = ["ALL"]
