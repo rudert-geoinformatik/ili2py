@@ -41,3 +41,4 @@ src/ili2py_interface
 tests/data/*/*.py
 tests/data/models/*/*.xtf
 tests/data/models/*/*.xml
+/.venv/
