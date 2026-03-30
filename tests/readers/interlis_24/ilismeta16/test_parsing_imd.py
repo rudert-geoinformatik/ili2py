@@ -60,6 +60,7 @@ def test_init():
         "models/modelbaker/hasarcs.imd",
         "models/modelbaker/noarcs.imd",
         "models/modelbaker/Staedtische_Ortsplanung_V1_1.imd",
+        "models/refhb24/AbstractSymbology.imd",
     ],
 )
 def test_parsing(resource_path_root, imd_path):
