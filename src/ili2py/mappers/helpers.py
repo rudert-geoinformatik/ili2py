@@ -290,6 +290,14 @@ class Index:
         Args:
             element: The import reference which will be handled.
         """
+        # Null-safety checks to prevent AttributeError
+        if element.imported_p is None or element.importing_p is None:
+            return
+        if not hasattr(element.imported_p, 'ref') or element.imported_p.ref is None:
+            return
+        if not hasattr(element.importing_p, 'ref') or element.importing_p.ref is None:
+            return
+            
         imported_p_bucket = self.imported_p[element.imported_p.ref]
         if element.imported_p.ref not in imported_p_bucket:
             imported_p_bucket.append(element.importing_p.ref)
@@ -378,47 +386,58 @@ class Index:
         self.metaelement_metaattributes[element.meta_element.ref].append(element.tid)
 
     def handle_element_in_package(self, element: MetaElementType):
-        if element.element_in_package:
+        if element.element_in_package and hasattr(element.element_in_package, 'ref') and element.element_in_package.ref:
             if element.element_in_package.ref not in self.elements_in_package:
                 self.elements_in_package[element.element_in_package.ref] = []
             self.elements_in_package[element.element_in_package.ref].append(element.tid)
         if isinstance(element, DataUnitType):
-            self.topic_basket[element.element_in_package.ref] = element.tid
-            if element.oid:
-                package = self.index[element.element_in_package.ref]
-                if isinstance(package, SubModel):
-                    self.basket_oid_in_submodel[package.tid] = element.tid
-                    package = self.index[package.element_in_package.ref]
-                self.basket_oid_in_model[package.tid] = element.tid
+            if element.element_in_package and hasattr(element.element_in_package, 'ref') and element.element_in_package.ref:
+                self.topic_basket[element.element_in_package.ref] = element.tid
+                if element.oid:
+                    package = self.index[element.element_in_package.ref]
+                    if isinstance(package, SubModel):
+                        self.basket_oid_in_submodel[package.tid] = element.tid
+                        package = self.index[package.element_in_package.ref]
+                    self.basket_oid_in_model[package.tid] = element.tid
         if isinstance(element, ClassType):
             if element.kind == "Class":
-                if element.element_in_package.ref not in self.elements_in_package_class_class:
+                if (element.element_in_package and hasattr(element.element_in_package, 'ref') and 
+                    element.element_in_package.ref not in self.elements_in_package_class_class):
                     self.elements_in_package_class_class[element.element_in_package.ref] = []
-                self.elements_in_package_class_class[element.element_in_package.ref].append(
-                    element.tid
-                )
+                if element.element_in_package and hasattr(element.element_in_package, 'ref'):
+                    self.elements_in_package_class_class[element.element_in_package.ref].append(
+                        element.tid
+                    )
             elif element.kind == "Structure":
-                if element.element_in_package.ref not in self.elements_in_package_class_structure:
+                if (element.element_in_package and hasattr(element.element_in_package, 'ref') and 
+                    element.element_in_package.ref not in self.elements_in_package_class_structure):
                     self.elements_in_package_class_structure[element.element_in_package.ref] = []
-                self.elements_in_package_class_structure[element.element_in_package.ref].append(
-                    element.tid
-                )
+                if element.element_in_package and hasattr(element.element_in_package, 'ref'):
+                    self.elements_in_package_class_structure[element.element_in_package.ref].append(
+                        element.tid
+                    )
             elif element.kind == "Association":
-                if element.element_in_package.ref not in self.elements_in_package_class_association:
+                if (element.element_in_package and hasattr(element.element_in_package, 'ref') and 
+                    element.element_in_package.ref not in self.elements_in_package_class_association):
                     self.elements_in_package_class_association[element.element_in_package.ref] = []
-                self.elements_in_package_class_association[element.element_in_package.ref].append(
-                    element.tid
-                )
+                if element.element_in_package and hasattr(element.element_in_package, 'ref'):
+                    self.elements_in_package_class_association[element.element_in_package.ref].append(
+                        element.tid
+                    )
             else:
                 logging.debug(f"Element kind of Class type was not handled correctly: {element}")
 
     def handle_dependency(self, element: Dependency):
-        if element.using.ref not in self.dependency_used_by:
-            self.dependency_used_by[element.using.ref] = []
-        self.dependency_used_by[element.using.ref].append(element.dependent.ref)
-        if element.dependent.ref not in self.dependency_depends_on:
-            self.dependency_depends_on[element.dependent.ref] = []
-        self.dependency_depends_on[element.dependent.ref].append(element.using.ref)
+        if element.using and hasattr(element.using, 'ref') and element.using.ref:
+            if element.using.ref not in self.dependency_used_by:
+                self.dependency_used_by[element.using.ref] = []
+            if element.dependent and hasattr(element.dependent, 'ref') and element.dependent.ref:
+                self.dependency_used_by[element.using.ref].append(element.dependent.ref)
+        if element.dependent and hasattr(element.dependent, 'ref') and element.dependent.ref:
+            if element.dependent.ref not in self.dependency_depends_on:
+                self.dependency_depends_on[element.dependent.ref] = []
+            if element.using and hasattr(element.using, 'ref') and element.using.ref:
+                self.dependency_depends_on[element.dependent.ref].append(element.using.ref)
 
     def unwrap_tree(self, element: Any):
         """
@@ -449,9 +468,10 @@ class Index:
                         self.importing_p[element.tid] = []
                     self.models.append(element.tid)
                 elif isinstance(element, SubModel):
-                    if element.element_in_package.ref not in self.submodel_in_package:
+                    if element.element_in_package and element.element_in_package.ref not in self.submodel_in_package:
                         self.submodel_in_package[element.element_in_package.ref] = []
-                    self.submodel_in_package[element.element_in_package.ref].append(element.tid)
+                    if element.element_in_package:
+                        self.submodel_in_package[element.element_in_package.ref].append(element.tid)
 
                 elif isinstance(element, DataUnit):
                     if element.tid not in self.allowed_in_basket_of_data_unit:
@@ -467,15 +487,17 @@ class Index:
                     if element.tid not in self.base_class:
                         self.base_class[element.tid] = []
                     if element.kind == "Class":
-                        if element.element_in_package.ref not in self.class_in_package:
+                        if element.element_in_package and element.element_in_package.ref not in self.class_in_package:
                             self.class_in_package[element.element_in_package.ref] = []
-                        self.class_in_package[element.element_in_package.ref].append(element.tid)
+                        if element.element_in_package:
+                            self.class_in_package[element.element_in_package.ref].append(element.tid)
                     if element.kind == "Association":
-                        if element.element_in_package.ref not in self.association_in_package:
+                        if element.element_in_package and element.element_in_package.ref not in self.association_in_package:
                             self.association_in_package[element.element_in_package.ref] = []
-                        self.association_in_package[element.element_in_package.ref].append(
-                            element.tid
-                        )
+                        if element.element_in_package:
+                            self.association_in_package[element.element_in_package.ref].append(
+                                element.tid
+                            )
 
                 elif isinstance(element, View):
                     if element.tid not in self.allowed_in_basket_class_in_basket:
@@ -484,14 +506,15 @@ class Index:
                         self.transfer_class[element.tid] = []
 
                 elif isinstance(element, AttrOrParam):
-                    if element.type_value:
+                    if element.type_value and hasattr(element.type_value, 'ref') and element.type_value.ref:
                         type_definition = self.index[element.type_value.ref]
                         type_ref = type_definition.tid
                         if (
                             isinstance(type_definition, MultiValueType)
                             and type_definition.name == "TYPE"
                         ):
-                            type_ref = type_definition.base_type.ref
+                            if hasattr(type_definition.base_type, 'ref') and type_definition.base_type.ref:
+                                type_ref = type_definition.base_type.ref
                         if type_ref not in self.types_used_by_attributes:
                             self.types_used_by_attributes[type_ref] = []
                         self.types_used_by_attributes[type_ref].append(element.tid)
@@ -705,28 +728,32 @@ class Index:
                     self.geometric_attributes_polygon_like.append(element.tid)
             else:
                 logging.debug(f"Unexpected geometric type {type_definition}")
-            class_definition: Class = self.index[element.attr_parent.ref]
-            if class_definition.tid not in self.geometric_classes:
-                self.geometric_classes[class_definition.tid] = []
-            self.geometric_classes[class_definition.tid].append(element.tid)
-            # adding attribute info level to index
-            if isinstance(type_definition, LineType):
-                if element.tid not in self.geometric_attributes_line_form:
-                    self.geometric_attributes_line_form[element.tid] = self.line_type[
-                        type_definition.tid
-                    ]
-            for attribute_oid in self.types_used_by_attributes.get(class_definition.tid, []):
-                # the geometric class was used as a type for another class attribute
-                structure_attribute = self.index[attribute_oid]
-                structure_attribute_type = self.index[structure_attribute.type_value.ref]
-                multi = inner_multi
-                if structure_attribute_type.multiplicity:
-                    if (
-                        structure_attribute_type.multiplicity.multiplicity.max is None
-                        or structure_attribute_type.multiplicity.multiplicity.max > 1
-                    ):
-                        multi = True
-                self.handle_geometric(structure_attribute, type_definition, multi)
+            if element.attr_parent and hasattr(element.attr_parent, 'ref') and element.attr_parent.ref:
+                class_definition: Class = self.index[element.attr_parent.ref]
+                if class_definition.tid not in self.geometric_classes:
+                    self.geometric_classes[class_definition.tid] = []
+                self.geometric_classes[class_definition.tid].append(element.tid)
+                # adding attribute info level to index
+                if isinstance(type_definition, LineType):
+                    if element.tid not in self.geometric_attributes_line_form:
+                        self.geometric_attributes_line_form[element.tid] = self.line_type[
+                            type_definition.tid
+                        ]
+                for attribute_oid in self.types_used_by_attributes.get(class_definition.tid, []):
+                    # the geometric class was used as a type for another class attribute
+                    structure_attribute = self.index[attribute_oid]
+                    if structure_attribute.type_value and hasattr(structure_attribute.type_value, 'ref'):
+                        structure_attribute_type = self.index[structure_attribute.type_value.ref]
+                        multi = inner_multi
+                        if structure_attribute_type.multiplicity:
+                            if (
+                                structure_attribute_type.multiplicity.multiplicity.max is None
+                                or structure_attribute_type.multiplicity.multiplicity.max > 1
+                            ):
+                                multi = True
+                        self.handle_geometric(structure_attribute, type_definition, multi)
+            else:
+                logging.debug(f"Element {element.tid} has no attr_parent or attr_parent.ref is None")
 
     def handle_multivalue_type(self, element: AttrOrParam):
         pass
