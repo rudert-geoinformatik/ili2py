@@ -11,8 +11,8 @@ class TranslationTypeTranslations:
     class Meta:
         global_type = False
 
-    metranslation: Optional[Metranslation] = field(
-        default=None,
+    metranslation: list[Metranslation] = field(
+        default_factory=list,
         metadata={
             "name": "METranslation",
             "type": "Element",

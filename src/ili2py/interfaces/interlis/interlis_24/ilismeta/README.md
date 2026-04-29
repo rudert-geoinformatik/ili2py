@@ -19,3 +19,7 @@ generated as a single object choice, but had to be a list of choices, actually. 
 corrected manually by making it an optional list of union... and in the field definition the
 `default=None` had to be changed to `default_factory=list`. After that fix all expressions could
 be parsed from IMD16 files in the tests.
+
+The generated class attribute for [TranslationTypeTranslations.metranslation]
+(ilismeta16_2022_10_10/translation_type_translations.py#L14)
+was optional single attribute instead of list. This was fixed manually.

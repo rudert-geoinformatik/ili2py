@@ -116,6 +116,7 @@ class Base(ABC):
     identifier: str
     doc: list[str]
     meta_attributes: list[MetaAttribute]
+    translations: dict[str, str]
 
     @staticmethod
     def doc_string(documentation: list[MetaElementTypeDocumentation]) -> list[str]:
@@ -507,10 +508,12 @@ class Attribute(Base):
                         is_list_type=list_type,
                         namespace_package=model_name,
                         kind=referenced_type.name,
+                        translations={},
                     )
                 ],
                 abstract=False,
                 related_class_imports=imports,
+                translations={},
             )
             final_type_name = local_type.name
         else:
@@ -613,6 +616,7 @@ class Attribute(Base):
                 imd_attr_or_param, index
             ),
             is_oid_type=index.is_oid_type(mandatory(referenced_type.tid)),
+            translations=index.model_translations.get(tid, {}),
         )
 
     @staticmethod
@@ -802,6 +806,7 @@ class Class(Base):
                 enumeration=None,
                 line_type=None,
                 type_related_type_class=None,
+                translations={},
             )
         point_like_attributes = []
         line_like_attributes = []
@@ -841,6 +846,7 @@ class Class(Base):
                         type_restrictions=type_restrictions,
                         reference_targets=[related_class_tid],
                         namespace_package=package_name,
+                        translations=index.model_translations.get(role.tid, {}),
                     )
                 )
         meta_attributes = cls.assemble_meta_attributes(index, tid)
@@ -887,6 +893,7 @@ class Class(Base):
             geom_point_like_attributes=point_like_attributes,
             geom_line_like_attributes=line_like_attributes,
             geom_polygon_like_attributes=polygon_like_attributes,
+            translations=index.model_translations.get(imd_class.tid, {}),
         )
 
     @staticmethod
@@ -1209,6 +1216,7 @@ class Choice:
     name: str = field()
     identifier: str = field()
     model_name: str = field()
+    translations: dict[str, str]
 
 
 @dataclass
@@ -1300,9 +1308,11 @@ class Basket:
                     ),
                     identifier=type_object.tid,
                     model_name=type_model_object.name,
+                    translations=index.model_translations.get(type_object.tid, {}),
                 )
             )
-        return cls(choices=choices, related_class_imports=related_class_imports)
+        instance = cls(choices=choices, related_class_imports=related_class_imports)
+        return instance
 
 
 @dataclass
@@ -1338,6 +1348,7 @@ class CoordType(Base):
                         reference_system=reference_system,
                         type_restrictions=CoordAttribute.construct_type_restrictions(imd_axis),
                         meta_attributes=meta_attributes,
+                        translations=index.model_translations.get(imd_axis.tid, {}),
                     )
                 )
         meta_attributes = cls.assemble_meta_attributes(index, tid)
@@ -1348,6 +1359,7 @@ class CoordType(Base):
             attributes=attributes,
             meta_attributes=meta_attributes,
             multi=imd_coord_type.multi if imd_coord_type.multi else False,
+            translations=index.model_translations.get(imd_coord_type.tid, {}),
         )
 
 
@@ -1389,6 +1401,7 @@ class LineType(Base):
             doc=attribute_doc,
             types=[type_name],
             meta_attributes=meta_attributes,
+            translations={},
         )
         if kind not in ["Polyline", "DirectedPolyline", "Surface", "Area"]:
             logging.debug(f"LineType kind not recognized {kind}, {imd_line_type}")
@@ -1407,6 +1420,7 @@ class LineType(Base):
             is_line_like=kind in ["Polyline", "DirectedPolyline"],
             is_polygon_like=kind in ["Surface", "Area"],
             multi=imd_line_type.multi if imd_line_type.multi else False,
+            translations=index.model_translations.get(imd_line_type.tid, {}),
         )
 
 
@@ -1424,6 +1438,7 @@ class Value(Base):
             value=name,
             doc=cls.doc_string(imd_enum_node.documentation),
             meta_attributes=[],
+            translations=index.model_translations.get(imd_enum_node.tid, {}),
         )
 
     def get_enum_values(self, values: list, current_path: list, tree: bool = False):
@@ -1486,6 +1501,7 @@ class Enumeration(Base):
             values=values,
             tree=tree,
             meta_attributes=meta_attributes,
+            translations=index.model_translations.get(tid, {}),
         )
 
     @staticmethod
@@ -1593,6 +1609,7 @@ class Module(Base):
                             "name": element.name,
                             "restrictions": Attribute.construct_type_restrictions(element),
                             "reference": reference,
+                            "translations": index.model_translations.get(element.tid, {}),
                             "kind": kind,
                             "existence_constraints": Class.translate_existence_constraint(
                                 index.domain_with_existence_constraints.get(element.tid, []),
@@ -1741,6 +1758,9 @@ class Module(Base):
                                     line_type=None,
                                     reference_targets=[referenced_class_oid],
                                     namespace_package=package_name,
+                                    translations=index.model_translations.get(
+                                        role_object.tid, {}
+                                    ),
                                 )
                             )
                 super_reference = None
@@ -1767,6 +1787,9 @@ class Module(Base):
                             related_class_imports=type_reference_imports,
                             enumerations=[],
                             kind="Association",
+                            translations=index.model_translations.get(
+                                association_object.tid, {}
+                            ),
                         )
                     )
         return cls(
@@ -1783,6 +1806,7 @@ class Module(Base):
             meta_attributes=meta_attributes,
             type_definitions=type_definitions,
             basket=basket,
+            translations=index.model_translations.get(imd_instance.tid, {}),
         )
 
 
@@ -1838,6 +1862,7 @@ class Package(Module):
             related_class_imports=partialy_initialized_package.related_class_imports,
             meta_attributes=partialy_initialized_package.meta_attributes,
             type_definitions=partialy_initialized_package.type_definitions,
+            translations=index.model_translations.get(imd_model.tid, {}),
         )
 
 
@@ -1872,6 +1897,9 @@ class Library(Base):
                                 name=module.name,
                                 model_name=package.name,
                                 identifier=module.identifier,
+                                translations=index.model_translations.get(
+                                    module.identifier, {}
+                                ),
                             )
                         )
 
@@ -1883,4 +1911,5 @@ class Library(Base):
             meta_attributes=[],
             topic_choices=topic_choices,
             related_class_imports=related_class_imports,
+            translations=index.model_translations.get(name, {}),
         )

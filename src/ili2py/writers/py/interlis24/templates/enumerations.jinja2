@@ -21,7 +21,8 @@ class {{ enumeration.name }}(str, Enum):
                     {%- for item in enumeration.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                },
+                "translations": {{ enumeration.translations }},
             }
         }
 {% endfor -%}

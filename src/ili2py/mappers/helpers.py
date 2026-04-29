@@ -30,6 +30,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     MetaAttribute,
     MetaElementType,
     Model,
+    ModelTranslation,
     Multiplicity,
     MultiValueType,
     ObjectType,
@@ -224,6 +225,8 @@ class Index:
         self.domain_with_unique_constraints: dict = {}
         self.domain_with_set_constraints: dict = {}
 
+        self.model_translations: dict = {}
+
         self.types_in_domain: dict = {}
 
         self.depth_tree: list = []
@@ -234,6 +237,9 @@ class Index:
         for basket in data_section.ModelData:
             for element in basket.choice:
                 self.prepare_tree(element)
+
+        for translation in data_section.ModelTranslation:
+            self.handle_translation(translation)
 
         self.prepare_embedded_roles()
         self.oid_types: set = set()
@@ -1048,3 +1054,20 @@ class Index:
         # Dict hat genau 2 Keys
         k1, k2 = d.keys()
         return d[k2] if key == k1 else d[k1]
+
+    def handle_translation(self, mt: ModelTranslation):
+        for translation in mt.translation:
+            for item in translation.translations:
+                for metatrans_item in item.metranslation:
+                    if metatrans_item.of.ref not in self.model_translations:
+                        self.model_translations[metatrans_item.of.ref] = {}
+                    if self.model_translations[metatrans_item.of.ref].get(
+                        translation.language
+                    ):
+                        logging.info(
+                            f"Translation for {metatrans_item.of.ref} in language "
+                            f"{translation.language} was handled already"
+                        )
+                    self.model_translations[metatrans_item.of.ref][translation.language] = (
+                        metatrans_item.translated_name
+                    )

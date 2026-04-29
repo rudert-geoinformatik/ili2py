@@ -16,7 +16,8 @@ class {{ coord_type.name }}Type:
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
                 }{%- if attribute.type_restrictions %},
-                "type_restrictions": {{ attribute.type_restrictions }}
+                "type_restrictions": {{ attribute.type_restrictions }},
+                "translations": {{ attribute.translations }}
                 {%- endif  %}
             }
         }

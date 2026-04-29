@@ -28,7 +28,8 @@ metadata: dict = {
             {% for item in module.meta_attributes %}
                 "{{ item.name }}": "{{ item.value }}",
             {% endfor %}
-        }
+        },
+        "translations": {{ module.translations }},
     }
 }
 

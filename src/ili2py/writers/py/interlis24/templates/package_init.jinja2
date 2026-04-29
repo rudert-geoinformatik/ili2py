@@ -35,7 +35,8 @@ metadata: dict = {
             {% for item in package.meta_attributes %}
                 "{{ item.name }}": "{{ item.value }}",
             {% endfor %}
-        }
+        },
+        "translations": {{ package.translations }},
     }
 }
 

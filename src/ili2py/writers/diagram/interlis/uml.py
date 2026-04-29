@@ -1,6 +1,6 @@
 import logging
 from abc import ABC
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 from typing import Any
 
 from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 import (
@@ -63,6 +63,25 @@ type Association = list[AssociationEnd | str]
 class Base(ABC):
     oid: str
     name: str
+    index: InitVar[Index]
+    language: InitVar[str | None]
+
+    def __post_init__(self, index: Index, language: str | None = None):
+        if language is not None:
+            translated_name = index.model_translations.get(self.oid, {}).get(language)
+            if translated_name is None:
+                logging.info(f"No Translation was found for {self.oid} in language {language}")
+            else:
+                self.name = translated_name
+
+    def get_translated_name(self, index: Index, language: str | None) -> str:
+        if language is not None:
+            translated_name = index.model_translations.get(self.oid, {}).get(language)
+            if translated_name is None:
+                logging.info(f"No Translation was found for {self.oid} in language {language}")
+            else:
+                translated_name = self.name
+        return translated_name
 
     @property
     def save_oid(self) -> str:
@@ -78,6 +97,7 @@ class Attribute(Base):
     def from_imd(cls, attribute: ImdAttrOrParam, index: Index):
         type_name, is_mandatory = Attribute.handle_type(attribute, index)
         return cls(
+            index=index,
             name=mandatory(attribute.name),
             oid=mandatory(attribute.tid),
             type_definition=type_name,
@@ -172,6 +192,7 @@ class Class(Base):
                     maximum = "*" if multiplicity.max is None else multiplicity.max
                     association_attributes.append(
                         Attribute(
+                            index=index,
                             oid=role_oid,
                             name=mandatory(role_object.name),
                             type_definition="Ref",
@@ -182,6 +203,7 @@ class Class(Base):
                     )
 
         return cls(
+            index=index,
             name=mandatory(class_definition.name),
             oid=mandatory(class_definition.tid),
             inherits_from=class_definition.super.ref if class_definition.super else None,
@@ -209,6 +231,7 @@ class Group(Base, ABC):
         associations: list[Association],
         association: ImdClass,
         index: Index,
+        language: str | None,
     ):
         if index.association_bucket.get(association.tid):
             association_string: Association = []
@@ -273,7 +296,7 @@ class TopicGroup(Group):
     """
 
     @classmethod
-    def from_imd(cls, sub_model: ImdSubmodel, index: Index):
+    def from_imd(cls, sub_model: ImdSubmodel, index: Index, language: str | None):
         classes: list[Class] = []
         associations: list[Association] = []
 
@@ -287,6 +310,7 @@ class TopicGroup(Group):
                 cls.handle_association(associations, element, index)
 
         return cls(
+            index=index,
             name=mandatory(sub_model.name),
             oid=mandatory(sub_model.tid),
             classes=classes,
@@ -303,7 +327,7 @@ class ModelGroup(Group):
     topic_groups: list[TopicGroup]
 
     @classmethod
-    def from_imd(cls, model: ImdModel, index: Index):
+    def from_imd(cls, model: ImdModel, index: Index, language: str | None):
         topics: list[TopicGroup] = []
         classes: list[Class] = []
         associations: list[Association] = []
@@ -320,6 +344,8 @@ class ModelGroup(Group):
                 element = index.index[element_tid]
                 cls.handle_association(associations, element, index)
         return cls(
+            index=index,
+            language=language,
             name=mandatory(model.name),
             oid=mandatory(model.tid),
             topic_groups=topics,
@@ -328,9 +354,11 @@ class ModelGroup(Group):
         )
 
     @staticmethod
-    def handle_topic(topics: list[TopicGroup], element: Any, index: Index):
+    def handle_topic(
+        topics: list[TopicGroup], element: Any, index: Index, language: str | None
+    ):
         if isinstance(element, ImdSubmodel):
-            topics.append(TopicGroup.from_imd(element, index))
+            topics.append(TopicGroup.from_imd(element, index, language=language))
 
 
 @dataclass
@@ -342,11 +370,13 @@ class Diagram(Base):
     model_groups: list[ModelGroup]
 
     @classmethod
-    def from_imd(cls, index: Index):
+    def from_imd(cls, index: Index, language: str | None):
         models = []
         for model in index.types_bucket["Model"]:
-            models.append(ModelGroup.from_imd(model, index))
+            models.append(ModelGroup.from_imd(model, index, language))
         return cls(
+            index=index,
+            language=language,
             name=", ".join([model.name for model in models]),
             oid="diagram",
             model_groups=models,
