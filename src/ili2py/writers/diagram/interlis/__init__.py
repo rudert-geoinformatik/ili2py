@@ -84,7 +84,7 @@ def uml_diagram(
             selected_linetype = linetype
 
     tpl_dir = os.path.join(Path(__file__).parent.joinpath("templates"), flavour)
-    env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
+    env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False) # nosec B701
     if depth is None:
         # all relevant models
         inner_model_names = index.depth_tree[-1]

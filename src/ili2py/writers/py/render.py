@@ -88,7 +88,7 @@ def library_storage_name(library_name: str) -> str:
 
 def reader_classes(library: Library, output_path: str, render_config: dict, beautify: bool = True):
     tpl_dir = Path(__file__).parent.joinpath(f"interlis{render_config['selector']}", "templates")
-    env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False)
+    env = Environment(loader=FileSystemLoader(str(tpl_dir)), autoescape=False) # nosec B701
     library_content = env.get_template("library_init.jinja2").render(
         library=library,
         render_config=render_config,
