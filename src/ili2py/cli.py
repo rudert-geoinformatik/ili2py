@@ -132,6 +132,16 @@ def cli(verbose):
     diagram.
     """,
 )
+@click.option(
+    "--language",
+    is_flag=False,
+    default=None,
+    type=str,
+    required=False,
+    help="""The language which the diagram should be outputted with => de, fr, it, etc.
+    If not provided the language of the untranslated model is used.
+    """,
+)
 @click.pass_context
 def diagram(ctx: click.Context, **kwargs: Any):
     """
@@ -157,7 +167,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
     try:
         metamodel = Imd16Reader().read(metamodel_path)
         index = Index(metamodel.datasection)
-        diagram = Diagram.from_imd(index)
+        diagram = Diagram.from_imd(index, None)
         assembled_file_name = f"{file_name or flavour}.{tool_settings[flavour].postfix}"
         logging.info(
             f"""Diagram ({flavour}) is generated with:

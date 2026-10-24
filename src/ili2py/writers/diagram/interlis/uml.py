@@ -70,7 +70,10 @@ class Base(ABC):
         if language is not None:
             translated_name = index.model_translations.get(self.oid, {}).get(language)
             if translated_name is None:
-                logging.info(f"No Translation was found for {self.oid} in language {language}")
+                logging.info(
+                    f"No Translation was found for {self.oid} "
+                    f"in language {language} => using original model."
+                )
             else:
                 self.name = translated_name
 
@@ -94,7 +97,7 @@ class Attribute(Base):
     mandatory: str
 
     @classmethod
-    def from_imd(cls, attribute: ImdAttrOrParam, index: Index):
+    def from_imd(cls, attribute: ImdAttrOrParam, index: Index, language: str | None):
         type_name, is_mandatory = Attribute.handle_type(attribute, index)
         return cls(
             index=index,
@@ -102,6 +105,7 @@ class Attribute(Base):
             oid=mandatory(attribute.tid),
             type_definition=type_name,
             mandatory="[1]" if is_mandatory else "[0..1]",
+            language=language,
         )
 
     @staticmethod
@@ -169,12 +173,12 @@ class Class(Base):
     association_attributes: list[Attribute] = field(default_factory=list)
 
     @classmethod
-    def from_imd(cls, class_definition: ImdClass, index: Index):
+    def from_imd(cls, class_definition: ImdClass, index: Index, language: str | None):
         attributes = []
         if index.class_class_attribute.get(class_definition.tid):
             for attribute_tid in index.class_class_attribute[class_definition.tid]:
                 attribute = index.index[attribute_tid]
-                attributes.append(Attribute.from_imd(attribute, index))
+                attributes.append(Attribute.from_imd(attribute, index, language))
         association_attributes = []
         association_oids = index.associated_classes.get(class_definition.tid, [])
         for association_oid in association_oids:
@@ -199,6 +203,7 @@ class Class(Base):
                             mandatory=f"{minimum}...{maximum}"
                             if minimum != maximum
                             else f"{minimum}",
+                            language=language,
                         )
                     )
 
@@ -209,6 +214,7 @@ class Class(Base):
             inherits_from=class_definition.super.ref if class_definition.super else None,
             attributes=attributes,
             association_attributes=association_attributes,
+            language=language,
         )
 
 
@@ -222,8 +228,8 @@ class Group(Base, ABC):
     associations: list[Association]
 
     @staticmethod
-    def handle_class(classes: list[Class], element: Any, index: Index):
-        classes.append(Class.from_imd(element, index))
+    def handle_class(classes: list[Class], element: Any, index: Index, language: str | None):
+        classes.append(Class.from_imd(element, index, language))
 
     @classmethod
     def handle_association(
@@ -303,11 +309,11 @@ class TopicGroup(Group):
         if index.class_in_package.get(sub_model.tid):
             for element_tid in index.class_in_package[sub_model.tid]:
                 element = index.index[element_tid]
-                cls.handle_class(classes, element, index)
+                cls.handle_class(classes, element, index, language)
         if index.association_in_package.get(sub_model.tid):
             for element_tid in index.association_in_package[sub_model.tid]:
                 element = index.index[element_tid]
-                cls.handle_association(associations, element, index)
+                cls.handle_association(associations, element, index, language)
 
         return cls(
             index=index,
@@ -315,6 +321,7 @@ class TopicGroup(Group):
             oid=mandatory(sub_model.tid),
             classes=classes,
             associations=associations,
+            language=language,
         )
 
 
@@ -334,15 +341,15 @@ class ModelGroup(Group):
         if index.submodel_in_package.get(model.tid):
             for element_tid in index.submodel_in_package[model.tid]:
                 element = index.index[element_tid]
-                cls.handle_topic(topics, element, index)
+                cls.handle_topic(topics, element, index, language)
         if index.class_in_package.get(model.tid):
             for element_tid in index.class_in_package[model.tid]:
                 element = index.index[element_tid]
-                cls.handle_class(classes, element, index)
+                cls.handle_class(classes, element, index, language)
         if index.association_in_package.get(model.tid):
             for element_tid in index.association_in_package[model.tid]:
                 element = index.index[element_tid]
-                cls.handle_association(associations, element, index)
+                cls.handle_association(associations, element, index, language)
         return cls(
             index=index,
             language=language,
@@ -369,8 +376,11 @@ class Diagram(Base):
 
     model_groups: list[ModelGroup]
 
+    def __post_init__(self, index: Index, language: str | None):
+        pass
+
     @classmethod
-    def from_imd(cls, index: Index, language: str | None):
+    def from_imd(cls, index: Index, language: str | None = None):
         models = []
         for model in index.types_bucket["Model"]:
             models.append(ModelGroup.from_imd(model, index, language))

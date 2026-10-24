@@ -2,11 +2,11 @@
 skinparam linetype {{ linetype }}
 {{ direction }} direction
 {%- for model_group in diagram.model_groups %}
-{%- if model_group.name in model_names %}
+{%- if model_group.oid in model_names %}
 {%- if model_group.classes %}
-namespace {{ model_group.oid }} {
+namespace "<b>{{ model_group.name }}</b>\n<size:8>{{ model_group.oid }}" as {{ model_group.oid }} {
     {%- for class_definition in model_group.classes  %}
-    class {{ class_definition.oid }}{
+    class "<b>{{ class_definition.name }}</b>\n<size:8>{{ class_definition.oid }}" as {{ class_definition.oid }}{
         {%- for attribute in class_definition.attributes %}
         {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
         {%- endfor %}
@@ -30,9 +30,9 @@ namespace {{ model_group.oid }} {
 {% endfor %}
 {%- for topic_group in model_group.topic_groups  %}
 {%- if topic_group.classes %}
-namespace {{ topic_group.oid }} {
+namespace "<b>{{ topic_group.name }}</b>\n<size:8>{{ topic_group.oid }}" as  {{ topic_group.oid }} {
     {%- for class_definition in topic_group.classes  %}
-    class {{ class_definition.oid }}{
+    class "<b>{{ class_definition.name }}</b>\n<size:8>{{ class_definition.oid }}" as {{ class_definition.oid }}{
         {%- for attribute in class_definition.attributes %}
         {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
         {%- endfor %}
