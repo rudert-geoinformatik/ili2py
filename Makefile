@@ -11,6 +11,8 @@ DOCS_CONFIGURATION = docs/mkdocs.yml
 # Package name
 PACKAGE = ili2py
 
+TEST_MODEL_TARGETS = $(patsubst %.ili,%.imd,$(shell find tests/data/models -type f -name "*.ili"))
+
 # ili2c (IMD generation, tests/data/Makefile)
 ILI2C_VERSION ?= 5.6.9
 ILI2C_URL ?= https://downloads.interlis.ch/ili2c/ili2c-$(ILI2C_VERSION).zip
@@ -99,6 +101,9 @@ $(ILIVALIDATOR_JAR): $(ILIVALIDATOR_ZIP)
 	test -f $@
 	touch $@
 
+$(TEST_MODEL_TARGETS): %.imd: %.ili | ili2c
+	$(ILI2C_EXECUTABLE) -oIMD16 --out "$@" "$<"
+
 .PHONY: ilivalidator
 ilivalidator: $(ILIVALIDATOR_JAR)
 	@command -v java >/dev/null 2>&1 || { echo "java not found: ilivalidator needs a Java runtime (JRE)" >&2; exit 1; }
@@ -186,3 +191,13 @@ mermaid-showcase-diagrams:
 	cd build/mermaid_showcase_diagrams/mermaid/ && ffmpeg -framerate 2 -pattern_type glob -i "*.resized.png" output.mp4 && cd -
 	ffmpeg -i build/mermaid_showcase_diagrams/mermaid/output.mp4 -vf "fps=15,scale=320:-1:flags=lanczos,palettegen" build/mermaid_showcase_diagrams/mermaid/palette.png
 	ffmpeg -i build/mermaid_showcase_diagrams/mermaid/output.mp4 -i build/mermaid_showcase_diagrams/mermaid/palette.png -filter_complex "fps=15,scale=3200:-1:flags=lanczos[x];[x][1:v]paletteuse" build/mermaid_showcase_diagrams/mermaid/output.gif
+
+.PHONY: test-imd
+test-imd: $(TEST_MODEL_TARGETS)
+
+.PHONY: clean-all-test-imd
+clean-all-test-imd:
+	rm -f $(TEST_MODEL_TARGETS)
+
+.PHONY: recreate-test-imd
+recreate-test-imd: clean-all-test-imd $(TEST_MODEL_TARGETS)
