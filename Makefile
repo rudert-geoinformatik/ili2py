@@ -11,12 +11,21 @@ DOCS_CONFIGURATION = docs/mkdocs.yml
 # Package name
 PACKAGE = ili2py
 
+# ili2c (IMD generation, tests/data/Makefile)
+ILI2C_VERSION ?= 5.6.9
+ILI2C_URL ?= https://downloads.interlis.ch/ili2c/ili2c-$(ILI2C_VERSION).zip
+ILI2C_DIR = build/ili2c-$(ILI2C_VERSION)
+ILI2C_ZIP = build/ili2c-$(ILI2C_VERSION).zip
+ILI2C_JAR = $(ILI2C_DIR)/ili2c.jar
+ILI2C_EXECUTABLE = java -jar $(abspath $(ILI2C_JAR))
+
 # ilivalidator (e2e tests)
 ILIVALIDATOR_VERSION ?= 1.15.0
 ILIVALIDATOR_URL ?= https://downloads.interlis.ch/ilivalidator/ilivalidator-$(ILIVALIDATOR_VERSION).zip
 ILIVALIDATOR_DIR = build/ilivalidator-$(ILIVALIDATOR_VERSION)
 ILIVALIDATOR_ZIP = build/ilivalidator-$(ILIVALIDATOR_VERSION).zip
 ILIVALIDATOR_JAR = $(ILIVALIDATOR_DIR)/ilivalidator-$(ILIVALIDATOR_VERSION).jar
+
 # parallel pytest workers (pytest-xdist) for test-e2e
 E2E_WORKERS ?= 4
 
@@ -39,6 +48,22 @@ install-dev:
 .PHONY: install-test
 install-test:
 	$(UV) sync --locked --group test
+
+$(ILI2C_ZIP):
+	mkdir -p $(dir $@)
+	curl -fL -o $@.part $(ILI2C_URL)
+	mv $@.part $@
+
+$(ILI2C_JAR): $(ILI2C_ZIP)
+	rm -rf $(ILI2C_DIR)
+	unzip -q -o $< -d $(ILI2C_DIR)
+	test -f $@
+	touch $@
+
+.PHONY: ili2c
+ili2c: $(ILI2C_JAR)
+	@command -v java >/dev/null 2>&1 || { echo "java not found: ili2c needs a Java runtime (JRE)" >&2; exit 1; }
+	@echo "ILI2C_EXECUTABLE=\"$(ILI2C_EXECUTABLE)\""
 
 .PHONY: build
 build:
