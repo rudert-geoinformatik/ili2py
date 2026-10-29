@@ -3,7 +3,7 @@ Associations, easing the access between linked elements for later usage. For exa
 all the attributes of a class without any additional iteration as it is really helpful for UML and Python
 Class generation.
 
-In the current status as of 09/2025 we consider **21/51 ASSOCIATIONS in ilisMeta16 as helpful** candidates for
+In the current status as of 10/2026 we consider **21/54 ASSOCIATIONS in ilisMeta16 as helpful** candidates for
 indexing.
 
 ## MetaElements in general
@@ -19,13 +19,13 @@ indexing.
 |----------------------------|-------------|:------------:|:----------------------------------------------------:|
 | ModelData.PackageElements  | ASSOCIATION |      ✅       |              `0..1`<br/>(not relevant)               |
 | ModelData.Import           | ASSOCIATION |      ❌       | ✅<br/>`Index().imported_p`<br/>`Index().importing_p` |
-| ModelData.DomainConstraint | ASSOCIATION |      ❌       |          ❌<br/>no usecase in tested models           |
+| ModelData.DomainConstraint | ASSOCIATION |      ❌       | ✅<br/>`Index().domain_with_simple_constraints`<br/>`Index().domain_with_existence_constraints`<br/>`Index().domain_with_unique_constraints`<br/>`Index().domain_with_set_constraints` |
 
 ## Classes
 
 | Construct                 | ili Kind    | Mandatory v1 |              Implemented              |
 |---------------------------|-------------|:------------:|:-------------------------------------:|
-| ModelData.ClassConstraint | ASSOCIATION |      ✅       |   ❌<br/>no usecase in tested models   |
+| ModelData.ClassConstraint | ASSOCIATION |      ✅       | ✅<br/>`Index().class_with_simple_constraints`<br/>`Index().class_with_existence_constraints`<br/>`Index().class_with_unique_constraints`<br/>`Index().class_with_set_constraints` |
 | ModelData.LocalType       | ASSOCIATION |      ❌       |       `0..1`<br/>(not relevant)       |
 | ModelData.AttrOrParamType | ASSOCIATION |      ✅       |        `1`<br/>(not relevant)         |
 | ModelData.ClassAttr       | ASSOCIATION |      ✅       | ✅<br/>`Index().class_class_attribute` |
@@ -52,7 +52,7 @@ No Associations in this group.
 | ModelData.ExplicitAssocAcc | ASSOCIATION |      ❌       |                              ❌                              |
 | ModelData.AssocAccOrigin   | ASSOCIATION |      ❌       |                              ❌                              |
 | ModelData.AssocAccTarget   | ASSOCIATION |      ❌       |                              ❌                              |
-| ModelData.AssocAcc         | ASSOCIATION |      ✅       |                ❌<br/>(pending clarification)                |
+| ModelData.AssocAcc         | ASSOCIATION |      ✅       |         ❌<br/>(not exported by ili2c 5.6.9)          |
 
 ## Information for easy transfer
 
@@ -164,4 +164,5 @@ No Associations in this group.
 
 ## Translation
 
-No Associations in this group.
+No Associations in this group. The translations are indexed nevertheless: `Index().model_translations` holds
+the translated names per element and language, `Index().translated_models` the translated models per original model.
