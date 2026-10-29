@@ -1,5 +1,5 @@
 {%- for definition in domain_types %}
-class {{ definition['name'] }}({{ definition['reference'] }}):
+class {{ definition['name'] }}{% if definition['reference'] %}({{ definition['reference'] }}){% endif %}:
 
     @property
     def metadata(self) -> dict:

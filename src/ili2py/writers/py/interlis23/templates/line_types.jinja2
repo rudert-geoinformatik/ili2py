@@ -34,7 +34,8 @@ class {{ line_type.name }}:
                 "interlis": {
                     "meta_attributes": {
 
-                    }
+                    },
+                    "translations": {}
                 }
             }
         )
@@ -49,7 +50,8 @@ class {{ line_type.name }}:
                     {%- for item in line_type.attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                },
+                "translations": {}
             }
         }
     )
@@ -96,7 +98,8 @@ class {{ line_type.name }}:
                         "interlis": {
                             "meta_attributes": {
 
-                            }
+                            },
+                            "translations": {}
                         }
                     }
                 )
@@ -106,7 +109,7 @@ class {{ line_type.name }}:
                     "type": "Element",
                     "name": "POLYLINE",
                     "namespace": "{{ render_config['namespace_map']['ili'] }}",
-                    "interlis": {"meta_attributes": {}},
+                    "interlis": {"meta_attributes": {}, "translations": {}},
                 },
             )
 
@@ -122,7 +125,8 @@ class {{ line_type.name }}:
                 "interlis": {
                     "meta_attributes": {
 
-                    }
+                    },
+                    "translations": {}
                 }
             }
         )
@@ -138,7 +142,8 @@ class {{ line_type.name }}:
                     {%- for item in line_type.attribute.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                },
+                "translations": {}
             }
         }
     )
@@ -156,7 +161,8 @@ class {{ line_type.name }}:
                 },
                 "max_overlap": {{ line_type.max_overlap }},
                 "straights": {{ line_type.straights }},
-                "arcs": {{ line_type.arcs }}
+                "arcs": {{ line_type.arcs }},
+                "translations": {{ line_type.translations }}
             }
         }
 {%- endfor %}

@@ -1,5 +1,5 @@
 {%- for definition in domain_types %}
-class {{ definition['name'] }}({{ definition['reference'] }}):
+class {{ definition['name'] }}{% if definition['reference'] %}({{ definition['reference'] }}){% endif %}:
 
     @property
     def metadata(self) -> dict:
@@ -7,7 +7,8 @@ class {{ definition['name'] }}({{ definition['reference'] }}):
             "interlis": {
                 "oid": "{{ definition['oid'] }}",
                 "meta_attributes": {},
-                "type_restrictions": {{ definition['restrictions'] }}
+                "type_restrictions": {{ definition['restrictions'] }},
+                "translations": {{ definition['translations'] }},
             }
         }
 

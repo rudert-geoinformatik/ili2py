@@ -18,7 +18,8 @@ class {{ coord_type.name }}Type:
                     {%- endfor %}
                 }{%- if attribute.type_restrictions %},
                 "type_restrictions": {{ attribute.type_restrictions }}
-                {%- endif  %}
+                {%- endif  %},
+                "translations": {{ attribute.translations }}
             }
         }
     )
@@ -40,7 +41,9 @@ class {{ coord_type.name }}:
             "type": "Element",
             "name": "COORD",
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
-            "interlis": {}
+            "interlis": {
+                "translations": {}
+            }
         }
     )
     @property
@@ -48,12 +51,13 @@ class {{ coord_type.name }}:
         return {
             "interlis": {
                 "oid": "{{ coord_type.identifier }}",
-                "kind": "Enumeration",
+                "kind": "CoordType",
                 "meta_attributes": {
                     {%- for item in coord_type.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                },
+                "translations": {{ coord_type.translations }}
             }
         }
 
@@ -73,7 +77,8 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},
-                "type_restrictions": {}
+                "type_restrictions": {},
+                "translations": {}
             }
         }
     )
@@ -85,7 +90,8 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},
-                "type_restrictions": {}
+                "type_restrictions": {},
+                "translations": {}
             }
         }
     )
@@ -97,7 +103,8 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},
-                "type_restrictions": {}
+                "type_restrictions": {},
+                "translations": {}
             }
         }
     )
@@ -118,7 +125,8 @@ class {{ coord_type.name }}ARC:
             "namespace": "{{ render_config['namespace_map']['ili'] }}",
             "interlis": {
                 "meta_attributes": {},
-                "type_restrictions": {}
+                "type_restrictions": {},
+                "translations": {}
             }
         }
     )

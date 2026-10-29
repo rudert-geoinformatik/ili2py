@@ -51,7 +51,8 @@ class {{ class_definition.name }}:
             "name": "tid",
             "interlis": {
                 "meta_attributes": {},
-                "type_restrictions": {{ class_definition.oid.type_restrictions }}
+                "type_restrictions": {{ class_definition.oid.type_restrictions }},
+                "translations": {{ class_definition.oid.translations }}
             }
         }
     )
