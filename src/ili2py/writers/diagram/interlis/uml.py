@@ -53,8 +53,8 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
 )
 from ili2py.mappers.helpers import Index, mandatory, mandatory_ref
 
-# (class tid, multiplicity, strongness, role tid) of one end of an association
-type AssociationEnd = tuple[str, str | None, str, str]
+# (class tid, multiplicity, strongness, role tid, role name) of one end of an association
+type AssociationEnd = tuple[str, str | None, str, str, str]
 # all ends of an association, followed by the name of the association
 type Association = list[AssociationEnd | str]
 
@@ -65,10 +65,13 @@ class Base(ABC):
     name: str
     index: InitVar[Index]
     language: InitVar[str | None]
+    # qualified name in the selected language, the oid stays the untranslated reference
+    path: str = field(init=False)
 
     def __post_init__(self, index: Index, language: str | None = None):
+        self.path = index.translated_path(self.oid, language)
         if language is not None:
-            translated_name = index.model_translations.get(self.oid, {}).get(language)
+            translated_name = index.translated_name(self.oid, language)
             if translated_name is None:
                 logging.info(
                     f"No Translation was found for {self.oid} "
@@ -76,15 +79,6 @@ class Base(ABC):
                 )
             else:
                 self.name = translated_name
-
-    def get_translated_name(self, index: Index, language: str | None) -> str:
-        if language is not None:
-            translated_name = index.model_translations.get(self.oid, {}).get(language)
-            if translated_name is None:
-                logging.info(f"No Translation was found for {self.oid} in language {language}")
-            else:
-                translated_name = self.name
-        return translated_name
 
     @property
     def save_oid(self) -> str:
@@ -98,7 +92,7 @@ class Attribute(Base):
 
     @classmethod
     def from_imd(cls, attribute: ImdAttrOrParam, index: Index, language: str | None):
-        type_name, is_mandatory = Attribute.handle_type(attribute, index)
+        type_name, is_mandatory = Attribute.handle_type(attribute, index, language)
         return cls(
             index=index,
             name=mandatory(attribute.name),
@@ -109,10 +103,16 @@ class Attribute(Base):
         )
 
     @staticmethod
-    def handle_type(attribute: ImdAttrOrParam, index: Index) -> tuple[str, bool]:
+    def handle_type(
+        attribute: ImdAttrOrParam, index: Index, language: str | None
+    ) -> tuple[str, bool]:
         type_definition = index.index[mandatory_ref(attribute.type_value)]
-        name = Attribute.handle_type_trail(type_definition, index)
+        name = Attribute.handle_type_trail(type_definition, index, language)
         return name, type_definition.mandatory
+
+    @staticmethod
+    def type_name(element: Any, index: Index, language: str | None) -> str:
+        return index.translated_name(element.tid, language) or mandatory(element.name)
 
     @staticmethod
     def handle_type_trail(
@@ -130,16 +130,17 @@ class Attribute(Base):
             | ImdClassRefType
         ),
         index: Index,
+        language: str | None,
     ) -> str:
         if isinstance(type_definition, ImdTextType):
             return "String"
         elif isinstance(type_definition, ImdFormattedType):
             if type_definition.super and type_definition.name == "TYPE":
                 return Attribute.handle_type_trail(
-                    index.index[type_definition.super.ref], index
+                    index.index[type_definition.super.ref], index, language
                 )
             else:
-                return mandatory(type_definition.name)
+                return Attribute.type_name(type_definition, index, language)
         elif isinstance(type_definition, ImdBlackboxType):
             return "BlackBox"
         elif isinstance(type_definition, ImdNumType):
@@ -147,18 +148,22 @@ class Attribute(Base):
         elif isinstance(type_definition, ImdBooleanType):
             return "Boolean"
         elif isinstance(type_definition, ImdMultiValue):
-            return index.index[mandatory_ref(type_definition.base_type)].name
+            return Attribute.type_name(
+                index.index[mandatory_ref(type_definition.base_type)], index, language
+            )
         elif isinstance(type_definition, (ImdEnumType, ImdEnumTreeValueType)):
             return "Enumeration"
         elif isinstance(type_definition, (ImdCoordType, ImdLineType)):
             if type_definition.super and type_definition.name == "TYPE":
                 return Attribute.handle_type_trail(
-                    index.index[type_definition.super.ref], index
+                    index.index[type_definition.super.ref], index, language
                 )
             else:
-                return mandatory(type_definition.name)
+                return Attribute.type_name(type_definition, index, language)
         elif isinstance(type_definition, ImdClassRefType):
-            return index.index[index.class_related_type[type_definition.tid]].name
+            return Attribute.type_name(
+                index.index[index.class_related_type[type_definition.tid]], index, language
+            )
         else:
             logging.debug(
                 f"Type was not handled correctly for UML preparation: {type_definition}"
@@ -254,9 +259,15 @@ class Group(Base, ABC):
                     )
                 strongness_string = TopicGroup.render_strongness(role.strongness)
                 association_string.append(
-                    (related_class.tid, multiplicity_string, strongness_string, role_tid)
+                    (
+                        related_class.tid,
+                        multiplicity_string,
+                        strongness_string,
+                        role_tid,
+                        Attribute.type_name(role, index, language),
+                    )
                 )
-            association_string.append(mandatory(association.name))
+            association_string.append(Attribute.type_name(association, index, language))
             associations.append(association_string)
 
     @staticmethod
@@ -375,9 +386,12 @@ class Diagram(Base):
     """
 
     model_groups: list[ModelGroup]
+    # kept to translate elements which are rendered directly from the index
+    translation_language: str | None = field(init=False)
 
     def __post_init__(self, index: Index, language: str | None):
-        pass
+        self.path = self.oid
+        self.translation_language = language
 
     @classmethod
     def from_imd(cls, index: Index, language: str | None = None):

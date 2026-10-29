@@ -16,7 +16,7 @@ digraph UML_Class_diagram {
 	]
 	edge [fontname="Helvetica,Arial,sans-serif"]
 	{% for model_group in diagram.model_groups %}
-    {%- if model_group.name in model_names %}
+    {%- if model_group.oid in model_names %}
     subgraph cluster_{{ model_group.save_oid }} {
         style=filled;
 		color=lightgrey;

@@ -103,6 +103,7 @@ def uml_diagram(
         len=len,
         randint=randint,
         render_multiplicity=TopicGroup.render_multiplicity,
+        translate=lambda tid: index.translated_path(tid, diagram.translation_language),
         model_names=inner_model_names,
         direction=selected_direction,
         linetype=selected_linetype,

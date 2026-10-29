@@ -156,6 +156,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
     file_name = kwargs.pop("file_name")
     multiplier = kwargs.pop("spacing_line_length")
     depth = kwargs.pop("depth")
+    language = kwargs.pop("language")
     model_names = model_names.split(",") if model_names else []
     flavour = kwargs.pop("flavour")
     if flavour not in tool_settings:
@@ -167,7 +168,7 @@ def diagram(ctx: click.Context, **kwargs: Any):
     try:
         metamodel = Imd16Reader().read(metamodel_path)
         index = Index(metamodel.datasection)
-        diagram = Diagram.from_imd(index, None)
+        diagram = Diagram.from_imd(index, language)
         assembled_file_name = f"{file_name or flavour}.{tool_settings[flavour].postfix}"
         logging.info(
             f"""Diagram ({flavour}) is generated with:

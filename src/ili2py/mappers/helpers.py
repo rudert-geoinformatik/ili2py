@@ -1071,3 +1071,38 @@ class Index:
                     self.model_translations[metatrans_item.of.ref][translation.language] = (
                         metatrans_item.translated_name
                     )
+
+    def translated_name(self, tid: str, language: str | None) -> str | None:
+        """
+        Looks up the translated name of an element.
+
+        Args:
+            tid: The tid of the element (its qualified name in the untranslated model).
+            language: The language code (de, fr, it, etc.).
+
+        Returns:
+            The translated name or None if no translation exists for the language.
+        """
+        if language is None:
+            return None
+        return self.model_translations.get(tid, {}).get(language)
+
+    def translated_path(self, tid: str, language: str | None) -> str:
+        """
+        Translates every segment of a qualified name. Segments without translation keep
+        their original name.
+
+        Args:
+            tid: The tid of the element (its qualified name in the untranslated model).
+            language: The language code (de, fr, it, etc.).
+
+        Returns:
+            The translated qualified name, e.g. DMAV_CouvertureDuSol_V1_1.CouvertureSol
+            for DMAV_Bodenbedeckung_V1_1.Bodenbedeckung in language fr.
+        """
+        segments = tid.split(".")
+        translated_segments = []
+        for position, segment in enumerate(segments):
+            prefix = ".".join(segments[: position + 1])
+            translated_segments.append(self.translated_name(prefix, language) or segment)
+        return ".".join(translated_segments)
