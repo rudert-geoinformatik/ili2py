@@ -28,7 +28,8 @@ metadata: dict = {
             {% for item in module.meta_attributes %}
                 "{{ item.name }}": "{{ item.value }}",
             {% endfor %}
-        }
+        },
+        "translations": {{ module.translations }},
     }
 }
 
@@ -51,7 +52,7 @@ metadata: dict = {
 @dataclass
 class {{ module.name }}TOPIC:
     class Meta:
-        name = "{{ module.identifier }}"
+        name = "{{ module.tag }}"
 
     elements: list[Union[
         {% for choice in module.basket.choices %}
@@ -64,7 +65,7 @@ class {{ module.name }}TOPIC:
             "choices": (
             {%- for choice in module.basket.choices %}
                 {
-                    "name": "{{ choice.identifier }}",
+                    "name": "{{ choice.tag }}",
                     "type": {{ choice.type_reference }},
                     "namespace": "{{ render_config['namespace_map']['ili'] }}",
                 },

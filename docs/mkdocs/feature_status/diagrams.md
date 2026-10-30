@@ -26,6 +26,7 @@ As a part of the initial project we defined
 |                                                              Association names on connectors |    💡     |                         ✅                         |
 |                                                      Filter of drawn models by CLI parameter |    💡     |                         ✅                         |
 | Optimization of connector placement (Association/Inheritance) - less overlapping as possible |    ⚠️     | (✅)<br/>through `linetype` parameter for plantuml |
+|                                  Output in the language of a translated model (`--language`) |    💡     |                         ✅                         |
 
 !!! info
     💡 = `Nice To Have`

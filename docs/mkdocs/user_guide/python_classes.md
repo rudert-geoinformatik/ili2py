@@ -86,3 +86,54 @@ These things are often used to implement behaviour which was not intended by int
 is forwarded to each pythonic twin transparently.
 
 ![](../assets/img/python_classes/7.meta_attributes.png)
+
+### Translations
+
+Models can be translated into other languages (`TRANSLATION OF`). The translated names are forwarded to each pythonic
+twin as well. Classes, attributes, topics, models, domains and constraints carry them in their metadata, the key is the
+language code. Members of value lists carry them in `translations`.
+
+The translations are only in the IMD if it was compiled for the translated model. ili2c (>= 5.6.7) then writes the
+original model and its translation, e.g. compiling the INTERLIS 2.4 model `DMAVTYM_Tous_V1_1` gives:
+
+```python
+from ili2py_interface.DMAV_Bodenbedeckung_V1_1.Bodenbedeckung import Bodenbedeckung
+
+print(Bodenbedeckung().metadata["interlis"]["translations"])
+# {'fr': 'CouvertureSol'}
+```
+
+The library is always built from the original model. So the python names (packages, modules, classes, fields, members
+of value lists) are always the ones of the original model, regardless of which model the IMD was compiled for.
+
+### Translated models in INTERLIS 2.3 and 2.4
+
+The transfer of a translated model differs between the INTERLIS versions:
+
+| INTERLIS | Tags and values in the transfer                                                                                       | Library                                                                                             |
+|----------|-----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| 2.3      | in the language of the translated model<br/>(reference manual 2.3, 3.3.3)                                             | reads and writes the tags and values of the translated model, if the IMD contains its translation  |
+| 2.4      | always in the language of the original model, the format does not change<br/>(reference manual 2.4, 4.3.3)            | reads and writes the tags and values of the original model                                          |
+
+For INTERLIS 2.3 this means: create the library from the IMD of the model the data is delivered in. If the data is
+delivered in the French model `PlanDirecteurEnergiesRenouvelables_V1`, compile that one. The library then reads and
+writes `<PlanDirecteurEnergiesRenouvelables_V1.Objets.Objet>` and the value `Donnees_de_base`, while you still work with
+the python class `Objekt` and the member `Objektart.AUSGANGSLAGE`. The translations turn around in this case, they
+contain the name of the original model:
+
+```python
+from ili2py_interface.RichtplanungErneuerbareEnergien_V1 import Objektart
+
+print(Objektart.AUSGANGSLAGE.value)
+# Donnees_de_base
+print(Objektart.AUSGANGSLAGE.translations)
+# {'de': 'Ausgangslage'}
+```
+
+This applies to every model in the IMD which is translated, also to imported ones. Models without translation keep
+their tags.
+
+!!! note
+    If an IMD contains more than one translation of the same model, the tags of the original model are kept, since the
+    IMD does not tell which language the transfer uses. The alias table of the header (reference manual 2.3, 3.3.4) is
+    not written, it is optional and only needed for polymorphic reading.

@@ -1,4 +1,4 @@
-In general there are 2 ways to use ili2py:
+In general there are 4 ways to use ili2py:
 
 - CLI pure python
 - CLI binary (linux, window, macos)

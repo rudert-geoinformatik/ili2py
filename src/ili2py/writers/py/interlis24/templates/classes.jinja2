@@ -51,7 +51,8 @@ class {{ class_definition.name }}:
             "name": "tid",
             "interlis": {
                 "meta_attributes": {},
-                "type_restrictions": {{ class_definition.oid.type_restrictions }}
+                "type_restrictions": {{ class_definition.oid.type_restrictions }},
+                "translations": {{ class_definition.oid.translations }}
             }
         }
     )
@@ -65,7 +66,8 @@ class {{ class_definition.name }}:
             "name": "tid",
             "interlis": {
                 "meta_attributes": {},
-                "type_restrictions": None
+                "type_restrictions": None,
+                "translations": {}
             }
         }
     )
@@ -100,7 +102,8 @@ class {{ class_definition.name }}:
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
                 },
-                "type_restrictions": {{ attribute.type_restrictions }}
+                "type_restrictions": {{ attribute.type_restrictions }},
+                "translations": {{ attribute.translations }}
             },
             "geometric": {
                 "is_geometric": {{ attribute.geometric }},
@@ -123,7 +126,8 @@ class {{ class_definition.name }}:
                     {%- for item in class_definition.meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                },
+                "translations": {{ class_definition.translations }}
             }
         }
 

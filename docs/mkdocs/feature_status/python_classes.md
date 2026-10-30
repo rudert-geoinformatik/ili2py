@@ -33,3 +33,11 @@ As a part of the initial project we defined
 | Associations are stored as references. This is done to be agnostic to later usage in tools. With this construction associations can always be determined cleanly.                                                                                                                                                         |     ✅     |      ✅      |
 | Information about association constraints (e.g. 1:n, etc.) are read and stored for later use by other tools. ili2py does not validate those.                                                                                                                                                                              |     ✅     |      ✅      |
 | Inheritance is implemented with Python class inheritance 1:1 as defined in the INTERLIS model.                                                                                                                                                                                                                            |     ✅     |      ✅      |
+| Reading and writing XTF (INTERLIS 2.3 and 2.4) with the generated classes. Verified by a roundtrip (read, write, ilivalidator) on 39 test models (`make test-e2e`). | 💡 | ✅ |
+| Incremental and inconsistent transfers (`BID`, `OPERATION`, `CONSISTENCY`) | 💡 | ✅ |
+| Translations of the model elements (`TRANSLATION OF`) are stored for each corresponding element. | 💡 | ✅ |
+| Transfers of translated models in INTERLIS 2.3 (tags and values in the translated language, see [user guide](../user_guide/python_classes.md#translated-models-in-interlis-23-and-24)) | 💡 | ✅ |
+| Alias table of the INTERLIS 2.3 header for polymorphic reading | 💡 | ❌ |
+
+!!! info
+    💡 = `Nice To Have`, beyond the initial requirements

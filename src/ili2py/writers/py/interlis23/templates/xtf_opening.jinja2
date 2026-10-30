@@ -25,7 +25,7 @@ class DataSection:
             "choices": (
             {%- for choice in library.topic_choices %}
                 {
-                    "name": "{{ choice.identifier }}",
+                    "name": "{{ choice.tag }}",
                     "type": {{ choice.type_reference }},
                     "namespace": "{{ render_config['namespace_map']['ili'] }}",
                 },
@@ -39,7 +39,8 @@ class DataSection:
             "interlis": {
                 "oid": "DATASECTION",
                 "kind": None,
-                "meta_attributes": {}
+                "meta_attributes": {},
+                "translations": {}
             }
         }
 
@@ -59,7 +60,8 @@ class Model:
             "interlis": {
                 "oid": "MODEL",
                 "kind": None,
-                "meta_attributes": {}
+                "meta_attributes": {},
+                "translations": {}
             }
         }
 
@@ -188,7 +190,8 @@ class HeaderSection:
             "interlis": {
                 "oid": "HEADERSECTION",
                 "kind": None,
-                "meta_attributes": {}
+                "meta_attributes": {},
+                "translations": {}
             }
         }
 
@@ -212,6 +215,7 @@ class Transfer:
             "interlis": {
                 "oid": "TRANSFER",
                 "kind": None,
-                "meta_attributes": {}
+                "meta_attributes": {},
+                "translations": {}
             }
         }

@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: {{ ', '.join(model_names) }}
+title: {% for model_name in model_names %}{{ translate(model_name) }}{% if not loop.last %}, {% endif %}{% endfor %}
 ---
 %%{
     init: {
@@ -17,9 +17,9 @@ title: {{ ', '.join(model_names) }}
 classDiagram
 direction {{ direction }}
 {%- for model_group in diagram.model_groups %}
-{%- if model_group.name in model_names %}
+{%- if model_group.oid in model_names %}
 {%- if model_group.classes %}
-namespace {{ model_group.oid.replace('.', '_') }} {
+namespace {{ model_group.path.replace('.', '_') }} {
     {%- for class_definition in model_group.classes  %}
     class {{ class_definition.oid.replace('.', '_') }}["{{ class_definition.name }}"]{
     {%- for attribute in class_definition.attributes %}
@@ -41,7 +41,7 @@ namespace {{ model_group.oid.replace('.', '_') }} {
 {% endfor %}
 {%- for topic_group in model_group.topic_groups  %}
 {%- if topic_group.classes %}
-namespace {{ topic_group.oid.replace('.', '_') }} {
+namespace {{ topic_group.path.replace('.', '_') }} {
     {%- for class_definition in topic_group.classes  %}
     class {{ class_definition.oid.replace('.', '_') }}["{{ class_definition.name }}"]{
     {%- for attribute in class_definition.attributes %}
