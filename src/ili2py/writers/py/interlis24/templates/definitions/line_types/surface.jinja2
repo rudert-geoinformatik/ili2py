@@ -1,0 +1,96 @@
+{%- from "macros/docs.jinja2" import docstring %}
+{%- from "macros/fields.jinja2" import choice, element_field, elements_field %}
+{%- from "definitions/line_types/polyline.jinja2" import polyline %}
+
+{%- macro boundary(surface_class_name, class_name, coord_type_name, namespace, meta_attributes=[]) -%}
+{%- set polyline_class_name = surface_class_name ~ "Polyline" %}
+{%- set choices -%}
+{{ choice("exterior", polyline_class_name ~ "Exterior", namespace) }},
+{{ choice("interior", polyline_class_name ~ "Interior", namespace) }},
+{%- endset -%}
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ polyline(polyline_class_name, coord_type_name, namespace, meta_attributes) | indent(4) }}
+
+    @dataclass
+    class {{ polyline_class_name }}Interior({{ polyline_class_name }}):
+        pass
+
+    @dataclass
+    class {{ polyline_class_name }}Exterior({{ polyline_class_name }}):
+        pass
+
+    {{ elements_field(
+        "boundaries",
+        "list[" ~ polyline_class_name ~ "]",
+        choices,
+        meta_attributes=[],
+        translations={},
+    ) | indent(4) }}
+{%- endmacro %}
+
+{#- the body of a call block is appended to the class -#}
+{%- macro surface(class_name, coord_type_name, namespace, meta_attributes=[], doc=none) -%}
+{%- set boundary_class_name = class_name ~ "Boundary" -%}
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ docstring(doc) | indent(4) }}
+    {{ boundary(class_name, boundary_class_name, coord_type_name, namespace, meta_attributes) | indent(4) }}
+
+    {{ element_field(
+        "surface",
+        none,
+        boundary_class_name ~ " | None",
+        namespace,
+        meta_attributes=meta_attributes,
+        translations={},
+    ) | indent(4) }}
+    {%- if caller %}
+
+    {{ caller() | indent(4) }}
+    {%- endif %}
+{%- endmacro %}
+
+{#- the body of a call block is appended to the class -#}
+{%- macro multi_surface(class_name, coord_type_name, namespace, meta_attributes=[], doc=none) -%}
+{%- set boundary_class_name = class_name ~ "Boundary" -%}
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ docstring(doc) | indent(4) }}
+
+    @dataclass
+    class Surfaces:
+        class Meta:
+            namespace = "{{ namespace }}"
+
+        {{ boundary(class_name, boundary_class_name, coord_type_name, namespace, meta_attributes) | indent(8) }}
+
+        {{ elements_field(
+            "parts",
+            "list[" ~ boundary_class_name ~ "]",
+            choice("surface", boundary_class_name, namespace) ~ ",",
+            translations={},
+        ) | indent(8) }}
+
+    {{ element_field(
+        "multisurface",
+        none,
+        "Surfaces",
+        namespace,
+        meta_attributes=meta_attributes,
+        translations={},
+    ) | indent(4) }}
+    {%- if caller %}
+
+    {{ caller() | indent(4) }}
+    {%- endif %}
+{%- endmacro %}

@@ -1,0 +1,25 @@
+{%- macro definition_imports(library_name) -%}
+from dataclasses import dataclass, field
+from enum import Enum
+from abc import ABC
+from typing import Any, Union, Tuple
+from {{ library_name }}.references import Ref, XmlBlBoxType, BinBlBoxType
+{%- endmacro %}
+
+{%- macro imported_packages(library_name, packages) -%}
+{%- for item in packages %}
+from {{ library_name }} import {{ item }}
+{%- endfor %}
+{%- endmacro %}
+
+{%- macro related_class_imports(library_name, imports) -%}
+{%- for module_path, class_item, alias in imports %}
+{%- if class_item and alias %}
+from {{ library_name }}.{{ module_path }} import {{ class_item }} as {{ alias }}
+{%- elif class_item %}
+from {{ library_name }}.{{ module_path }} import {{ class_item }}
+{%- elif not alias %}
+import {{ library_name }}.{{ module_path }}
+{%- endif %}
+{%- endfor %}
+{%- endmacro %}

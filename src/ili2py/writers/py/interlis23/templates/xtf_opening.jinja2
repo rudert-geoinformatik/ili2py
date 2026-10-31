@@ -1,82 +1,51 @@
+{%- from "macros/fields.jinja2" import choice, element_field, elements_field %}
+{%- from "macros/imports.jinja2" import related_class_imports %}
+{%- from "macros/metadata.jinja2" import metadata_property %}
 
-{%- for module_path, class_item, alias in library.related_class_imports %}
-{%- if class_item and alias  %}
-from {{ library.name }}.{{ module_path }} import {{ class_item }} as {{ alias }}
-{%- elif class_item and not alias %}
-from {{ library.name }}.{{ module_path }} import {{ class_item }}
-{%- elif not class_item and not alias %}
-import {{ library.name }}.{{ module_path }}
-{%- endif %}
+{%- macro transfer_metadata_property(oid) -%}
+{{ metadata_property(oid=oid, kind=none, meta_attributes=[], translations={}) }}
+{%- endmacro %}
+
+{%- set namespace = render_config['namespace_map']['ili'] %}
+{%- set choices -%}
+{%- for item in library.topic_choices %}
+{{ choice(item.tag, item.type_reference, namespace) }},
 {%- endfor %}
+{%- endset -%}
+
+{{ related_class_imports(library.name, library.related_class_imports) }}
 from dataclasses import dataclass, field
 
 
 @dataclass
 class DataSection:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ namespace }}"
 
-    baskets: list[
-        {{library.topic_choices|map(attribute='type_reference')|join('|') }}
-    ] = field(
-        default_factory=list,
-        metadata={
-            "type": "Elements",
-            "choices": (
-            {%- for choice in library.topic_choices %}
-                {
-                    "name": "{{ choice.tag }}",
-                    "type": {{ choice.type_reference }},
-                    "namespace": "{{ render_config['namespace_map']['ili'] }}",
-                },
-            {%- endfor %}
-            )
-        }
-    )
-    @property
-    def metadata(self) -> dict:
-        return {
-            "interlis": {
-                "oid": "DATASECTION",
-                "kind": None,
-                "meta_attributes": {},
-                "translations": {}
-            }
-        }
+    {{ elements_field(
+        "baskets",
+        "list[" ~ library.topic_choices | map(attribute='type_reference') | join(" | ") ~ "]",
+        choices,
+    ) | indent(4) }}
+
+    {{ transfer_metadata_property("DATASECTION") | indent(4) }}
 
 
 @dataclass
 class Model:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ namespace }}"
 
     name: str | None = field(default=None, metadata={"name": "NAME", "type": "Attribute"})
     version: str | None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
     uri: str | None = field(default=None, metadata={"name": "URI", "type": "Attribute"})
 
-    @property
-    def metadata(self) -> dict:
-        return {
-            "interlis": {
-                "oid": "MODEL",
-                "kind": None,
-                "meta_attributes": {},
-                "translations": {}
-            }
-        }
+    {{ transfer_metadata_property("MODEL") | indent(4) }}
 
 
 @dataclass
 class ModelsType:
-    choice: list[Model] = field(
-        default_factory=list,
-        metadata={
-            "type": "Elements",
-            "choices": (
-                {"name": "MODEL", "type": Model, "namespace": "{{ render_config['namespace_map']['ili'] }}"},
-            )
-        }
-    )
+    {{ elements_field("choice", "list[Model]", choice("MODEL", "Model", namespace) ~ ",") | indent(4) }}
 
 
 @dataclass
@@ -101,17 +70,12 @@ class DelEntry:
 
 @dataclass
 class EntriesType:
-    choice: list[TagEntry | ValEntry | DelEntry] = field(
-        default_factory=list,
-        metadata={
-            "type": "Elements",
-            "choices": (
-                {"name": "TAGENTRY", "type": TagEntry, "namespace": "{{ render_config['namespace_map']['ili'] }}"},
-                {"name": "VALENTRY", "type": ValEntry, "namespace": "{{ render_config['namespace_map']['ili'] }}"},
-                {"name": "DELENTRY", "type": DelEntry, "namespace": "{{ render_config['namespace_map']['ili'] }}"},
-            )
-        }
-    )
+    {%- set entry_choices -%}
+    {{ choice("TAGENTRY", "TagEntry", namespace) }},
+    {{ choice("VALENTRY", "ValEntry", namespace) }},
+    {{ choice("DELENTRY", "DelEntry", namespace) }},
+    {%- endset %}
+    {{ elements_field("choice", "list[TagEntry | ValEntry | DelEntry]", entry_choices) | indent(4) }}
     for_value: str | None = field(default=None, metadata={"name": "FOR", "type": "Attribute"})
 
 
@@ -122,8 +86,8 @@ class AliasType:
         metadata={
             "name": "ENTRIES",
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}"
-        }
+            "namespace": "{{ namespace }}",
+        },
     )
 
 
@@ -140,82 +104,49 @@ class OidSpacesType:
         metadata={
             "name": "OIDSPACE",
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}"
-        }
+            "namespace": "{{ namespace }}",
+        },
     )
 
 
 @dataclass
 class HeaderSection:
     """The HEADERSECTION of INTERLIS 2.3, structure as in ili2c (XSDGenerator)."""
+
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ namespace }}"
+
     models: ModelsType = field(
         metadata={
             "name": "MODELS",
             "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}"
+            "namespace": "{{ namespace }}",
         }
     )
-    alias: AliasType | None = field(
-        default=None,
-        metadata={
-            "name": "ALIAS",
-            "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}"
-        }
-    )
-    oid_spaces: OidSpacesType | None = field(
-        default=None,
-        metadata={
-            "name": "OIDSPACES",
-            "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}"
-        }
-    )
-    comment: str | None = field(
-        default=None,
-        metadata={
-            "name": "COMMENT",
-            "type": "Element",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}"
-        }
-    )
-    sender: str|None = field(default=None, metadata={"name": "SENDER", "type": "Attribute"})
-    version: str|None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
+    {%- for name, annotation, tag in [
+        ("alias", "AliasType", "ALIAS"),
+        ("oid_spaces", "OidSpacesType", "OIDSPACES"),
+        ("comment", "str", "COMMENT"),
+    ] %}
+    {{ element_field(name, tag, annotation ~ " | None", namespace) | indent(4) }}
+    {%- endfor %}
+    sender: str | None = field(default=None, metadata={"name": "SENDER", "type": "Attribute"})
+    version: str | None = field(default=None, metadata={"name": "VERSION", "type": "Attribute"})
 
-    @property
-    def metadata(self) -> dict:
-        return {
-            "interlis": {
-                "oid": "HEADERSECTION",
-                "kind": None,
-                "meta_attributes": {},
-                "translations": {}
-            }
-        }
+    {{ transfer_metadata_property("HEADERSECTION") | indent(4) }}
 
 
 @dataclass
 class Transfer:
     class Meta:
-        namespace = "{{ render_config['namespace_map']['ili'] }}"
+        namespace = "{{ namespace }}"
         name = "TRANSFER"
 
     headersection: HeaderSection = field(
-        metadata={"name": "HEADERSECTION", "type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"}
+        metadata={"name": "HEADERSECTION", "type": "Element", "namespace": "{{ namespace }}"}
     )
     datasection: DataSection = field(
-        metadata={"name": "DATASECTION", "type": "Element", "namespace": "{{ render_config['namespace_map']['ili'] }}"}
+        metadata={"name": "DATASECTION", "type": "Element", "namespace": "{{ namespace }}"}
     )
 
-    @property
-    def metadata(self) -> dict:
-        return {
-            "interlis": {
-                "oid": "TRANSFER",
-                "kind": None,
-                "meta_attributes": {},
-                "translations": {}
-            }
-        }
+    {{ transfer_metadata_property("TRANSFER") | indent(4) }}

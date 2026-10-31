@@ -1,57 +1,19 @@
-from typing import Union
-from enum import Enum
-from abc import ABC
-from typing import Any, Union, Tuple
-from dataclasses import dataclass, field
-from {{ package.library }}.references import Ref, Oid, XmlBlBoxType, BinBlBoxType
+{%- from "macros/docs.jinja2" import docstring %}
+{%- from "macros/imports.jinja2" import definition_imports, imported_packages, related_class_imports %}
+{%- from "macros/metadata.jinja2" import module_metadata %}
+{%- from "definitions/all.jinja2" import all_definitions with context -%}
+
+{{ definition_imports(package.library) }}
 {%- if package.name != 'INTERLIS' %}
 from {{ package.library }} import INTERLIS
 {%- endif %}
-{% for item in  package.imported_packages %}
-from {{ package.library }} import {{ item }}
-{% endfor %}
-{% for module_path, class_item, alias in package.related_class_imports %}
-{%- if class_item and alias  %}
-from {{ package.library }}.{{ module_path }} import {{ class_item }} as {{ alias }}
-{%- elif class_item and not alias %}
-from {{ package.library }}.{{ module_path }} import {{ class_item }}
-{%- elif not class_item and not alias %}
-import {{ package.library }}.{{ module_path }}
-{%- endif %}
-{% endfor %}
-{%- if package.doc %}
-"""
-{{ "\n".join(package.doc) }}
-"""
-{%- endif %}
+{{ imported_packages(package.library, package.imported_packages) }}
+{{ related_class_imports(package.library, package.related_class_imports) }}
+{{ docstring(package.doc) }}
 
 
-VERSION={% if package.version %}"{{ package.version }}"{% else %}{{ package.version }}{% endif %}
-ILI_VERSION="{{ package.ili_version }}"
+VERSION = {% if package.version %}"{{ package.version }}"{% else %}{{ package.version }}{% endif %}
+ILI_VERSION = "{{ package.ili_version }}"
 
-metadata: dict = {
-    "interlis": {
-        "meta_attributes": {
-            {% for item in package.meta_attributes %}
-                "{{ item.name }}": "{{ item.value }}",
-            {% endfor %}
-        },
-        "translations": {{ package.translations }},
-    }
-}
-
-{%- set domain_types=package.type_definitions %}
-{%- include "domain_types.jinja2" %}
-
-{%- set enumerations=package.enumerations %}
-{%- include "enumerations.jinja2" %}
-
-{%- set coord_types=package.coord_types %}
-{%- include "coord_types.jinja2" %}
-{%- if package.line_types  %}
-{%- endif %}
-{%- set line_types=package.line_types %}
-{%- include "line_types.jinja2" %}
-
-{%- set classes=package.classes %}
-{%- include "classes.jinja2" %}
+{{ module_metadata(package) }}
+{{ all_definitions(package) }}

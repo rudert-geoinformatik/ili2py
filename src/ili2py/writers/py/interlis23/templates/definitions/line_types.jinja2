@@ -1,0 +1,36 @@
+{%- from "macros/metadata.jinja2" import metadata_property %}
+{%- from "definitions/line_types/polyline.jinja2" import polyline %}
+{%- from "definitions/line_types/surface.jinja2" import surface %}
+
+{%- macro line_types(definitions) -%}
+{%- set namespace = render_config['namespace_map']['ili'] %}
+{%- for line_type in definitions %}
+{%- set line_form = line_type.attribute.name %}
+{%- set line_type_macro = none %}
+{%- if line_form in ["POLYLINE", "DIRECTEDPOLYLINE"] %}
+{%- set line_type_macro = polyline %}
+{%- elif line_form in ["SURFACE", "AREA"] %}
+{%- set line_type_macro = surface %}
+{%- endif %}
+{%- if line_type_macro %}
+
+{% call line_type_macro(
+    line_type.name,
+    line_type.attribute.types[0],
+    namespace,
+    meta_attributes=line_type.attribute.meta_attributes,
+    doc=line_type.doc,
+) -%}
+{{ metadata_property(
+    oid=line_type.identifier,
+    kind="LineType",
+    meta_attributes=line_type.meta_attributes,
+    max_overlap=line_type.max_overlap,
+    straights=line_type.straights,
+    arcs=line_type.arcs,
+    translations=line_type.translations,
+) }}
+{%- endcall %}
+{%- endif %}
+{%- endfor %}
+{%- endmacro %}

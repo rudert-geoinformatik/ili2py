@@ -1,0 +1,59 @@
+{#- a model or topic group with its classes, their roles and relations -#}
+
+{%- macro class_node(class_definition) -%}
+class "<b>{{ class_definition.name }}</b>\n<size:8>{{ class_definition.oid }}" as {{ class_definition.oid }}{
+    {%- for attribute in class_definition.attributes %}
+    {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
+    {%- endfor %}
+    {%- if class_definition.oid in index.associated_classes %}
+    --Roles--
+    {%- for association_oid in index.associated_classes[class_definition.oid] %}
+    {%- for role in index.association_bucket[association_oid] if role[1] != class_definition.oid %}
+    +{{ translate(role[0]).split(".")[-1] }}[{{ render_multiplicity(role[-2], role[-1]) }}]
+    {%- endfor %}
+    {%- endfor %}
+    {%- endif %}
+}
+{%- endmacro %}
+
+{%- macro namespace(element_group) -%}
+namespace "<b>{{ element_group.name }}</b>\n<size:8>{{ element_group.oid }}" as {{ element_group.oid }} {
+    {%- for class_definition in element_group.classes %}
+    {{ class_node(class_definition) | indent(4) }}
+    {%- endfor %}
+}
+{%- endmacro %}
+
+{%- macro association(association) -%}
+{{ association[0][0] }}::{{ association[1][4] }} {{ association[0][2] }}{{ "-" * multiplier }}{{ association[1][2] }} {{ association[1][0] }}::{{ association[0][4] }}
+{%- endmacro %}
+
+{%- macro unsupported_association(path, association) -%}
+note "Association <b>'{{ path }}.{{ association[-1] }}'</b>\n has more than 2 sides,\n this is currently not supported" as N{{ randint(1,10000) }}
+{%- endmacro %}
+
+{%- macro inheritance(class_definition) -%}
+{{ class_definition.inherits_from }} <|{{ "-" * multiplier }} {{ class_definition.oid }}
+{%- endmacro %}
+
+{#- associations are only filtered by the models of their classes when filter_associations is set -#}
+{%- macro group(element_group, path, show_namespace, filter_associations=false) -%}
+{%- if show_namespace %}
+{{ namespace(element_group) }}
+{%- endif %}
+{%- for item in element_group.associations %}
+{%- if len(item) != 3 %}
+    {{ unsupported_association(path, item) }}
+{%- elif not filter_associations or (
+    index.index[item[0][0]].element_in_package.ref.split('.')[0] in model_names
+    and index.index[item[1][0]].element_in_package.ref.split('.')[0] in model_names
+) %}
+{{ association(item) }}
+{%- endif %}
+{%- endfor %}
+{%- for class_definition in element_group.classes %}
+{%- if class_definition.inherits_from and class_definition.inherits_from.split('.')[0] in model_names %}
+{{ inheritance(class_definition) }}
+{%- endif %}
+{%- endfor %}
+{%- endmacro %}

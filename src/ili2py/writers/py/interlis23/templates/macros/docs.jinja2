@@ -1,0 +1,24 @@
+{%- macro docstring(doc) -%}
+{%- if doc -%}
+"""
+{{ "\n".join(doc) }}
+"""
+{%- endif -%}
+{%- endmacro %}
+
+{#- docstring of a summary and a section listing the documented members (google style) -#}
+{%- macro member_docstring(summary, section, members) -%}
+{%- if summary or members -%}
+"""
+{%- if summary %}
+{{ summary }}
+{%- endif %}
+{%- if summary and members %}
+{% endif %}
+{%- if members %}
+{{ section }}:
+{{ members | indent(4, true) }}
+{%- endif %}
+"""
+{%- endif -%}
+{%- endmacro %}

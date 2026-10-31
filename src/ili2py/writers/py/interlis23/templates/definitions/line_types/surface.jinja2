@@ -1,0 +1,44 @@
+{%- from "macros/docs.jinja2" import docstring %}
+{%- from "macros/fields.jinja2" import choice, element_field, elements_field %}
+{%- from "definitions/line_types/polyline.jinja2" import polyline %}
+
+{#- the body of a call block is appended to the class -#}
+{%- macro surface(class_name, coord_type_name, namespace, meta_attributes=[], doc=none) -%}
+{%- set boundary_class_name = class_name ~ "BOUNDARY" %}
+{%- set polyline_class_name = class_name ~ "POLYLINE" -%}
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ docstring(doc) | indent(4) }}
+
+    @dataclass
+    class {{ boundary_class_name }}:
+        class Meta:
+            namespace = "{{ namespace }}"
+            name = "SURFACE"
+
+        {{ polyline(polyline_class_name, coord_type_name, namespace) | indent(8) }}
+
+        {{ elements_field(
+            "boundaries",
+            "list[" ~ polyline_class_name ~ "]",
+            choice("BOUNDARY", polyline_class_name, namespace) ~ ",",
+            meta_attributes=[],
+            translations={},
+        ) | indent(8) }}
+
+    {{ element_field(
+        "surface",
+        "SURFACE",
+        boundary_class_name ~ " | None",
+        namespace,
+        meta_attributes=meta_attributes,
+        translations={},
+    ) | indent(4) }}
+    {%- if caller %}
+
+    {{ caller() | indent(4) }}
+    {%- endif %}
+{%- endmacro %}

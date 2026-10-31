@@ -1,90 +1,35 @@
-from dataclasses import dataclass, field
-from enum import Enum
-from abc import ABC
-from typing import Any, Union, Tuple
+{%- from "macros/docs.jinja2" import docstring %}
+{%- from "macros/fields.jinja2" import attribute_field, choice, elements_field %}
+{%- from "macros/imports.jinja2" import definition_imports, imported_packages, related_class_imports %}
+{%- from "macros/metadata.jinja2" import module_metadata %}
+{%- from "definitions/all.jinja2" import all_definitions with context -%}
+{{ docstring(module.doc) }}
+{{ definition_imports(module.library) }}
 from {{ module.library }} import INTERLIS
-from {{ module.library }}.references import Ref, XmlBlBoxType, BinBlBoxType
-{% for item in  module.imported_packages %}
-from {{ module.library }} import {{ item }}
-{% endfor %}
-{%- for module_path, class_item, alias in module.related_class_imports %}
-{%- if class_item and alias  %}
-from {{ module.library }}.{{ module_path }} import {{ class_item }} as {{ alias }}
-{%- elif class_item and not alias %}
-from {{ module.library }}.{{ module_path }} import {{ class_item }}
-{%- elif not class_item and not alias %}
-import {{ module.library }}.{{ module_path }}
-{%- endif %}
+{{ imported_packages(module.library, module.imported_packages) }}
+{{ related_class_imports(module.library, module.related_class_imports) }}
+
+{{ module_metadata(module) }}
+{{ all_definitions(module) }}
+{%- if module.basket.choices %}
+{%- set choices -%}
+{%- for item in module.basket.choices %}
+{{ choice(item.name, item.type_reference, render_config['base_url'] ~ "/" ~ item.model_name) }},
 {%- endfor %}
-{%- if module.doc %}
-"""
-{{ "\n".join(module.doc) }}
-"""
-{%- endif %}
+{%- endset %}
 
-metadata: dict = {
-    "interlis": {
-        "meta_attributes": {
-            {% for item in module.meta_attributes %}
-                "{{ item.name }}": "{{ item.value }}",
-            {% endfor %}
-        },
-        "translations": {{ module.translations }},
-    }
-}
 
-{%- set domain_types=module.type_definitions %}
-{%- include "domain_types.jinja2" %}
-
-{%- set enumerations=module.enumerations %}
-{%- include "enumerations.jinja2" %}
-
-{%- set coord_types=module.coord_types %}
-{%- include "coord_types.jinja2" %}
-{%- if module.line_types  %}
-{%- endif %}
-{%- set line_types=module.line_types %}
-{%- include "line_types.jinja2" %}
-
-{%- set classes=module.classes %}
-{%- include "classes.jinja2" %}
-{% if module.basket.choices %}
 @dataclass
 class {{ module.name }}TOPIC:
     class Meta:
         name = "{{ module.name }}"
 
-    elements: list[Union[
-        {% for choice in module.basket.choices %}
-        {{choice.type_reference}},
-        {% endfor %}
-    ]] = field(
-        default_factory=list,
-        metadata={
-            "type": "Elements",
-            "choices": (
-            {%- for choice in module.basket.choices %}
-                {
-                    "name": "{{ choice.name }}",
-                    "type": {{ choice.type_reference }},
-                    "namespace": "{{ render_config['base_url'] }}/{{ choice.model_name }}",
-                },
-            {%- endfor %}
-            )
-        }
-    )
-    bid: str|None = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
-        },
-    )
-    kind: str|None = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-            "namespace": "{{ render_config['namespace_map']['ili'] }}",
-        },
-    )
-{% endif %}
+    {{ elements_field(
+        "elements",
+        "list[Union[" ~ module.basket.choices | map(attribute='type_reference') | join(", ") ~ "]]",
+        choices,
+    ) | indent(4) }}
+    {%- for name in ["bid", "kind"] %}
+    {{ attribute_field(name, none, namespace=render_config['namespace_map']['ili']) | indent(4) }}
+    {%- endfor %}
+{%- endif %}

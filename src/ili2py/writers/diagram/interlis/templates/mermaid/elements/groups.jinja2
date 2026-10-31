@@ -1,0 +1,41 @@
+{#- a model or topic group with its classes and relations -#}
+
+{%- macro namespace(path, class_definitions) -%}
+namespace {{ path.replace('.', '_') }} {
+    {%- for class_definition in class_definitions %}
+    class {{ class_definition.oid.replace('.', '_') }}["{{ class_definition.name }}"]{
+        {%- for attribute in class_definition.attributes %}
+        {{ attribute.name }}{{ attribute.mandatory }}: {{ attribute.type_definition }}
+        {%- endfor %}
+    }
+    {%- endfor %}
+}
+{%- endmacro %}
+
+{%- macro association(association) -%}
+{{ association[0][0].replace('.', '_') }} "{{ association[0][1] }}" {{ association[0][2] }}--{{ association[1][2] }} "{{ association[1][1] }}" {{ association[1][0].replace('.', '_') }} : {{ association[2] }}
+{%- endmacro %}
+
+{%- macro inheritance(class_definition) -%}
+{{ class_definition.oid.replace('.', '_') }} --|> {{ class_definition.inherits_from.replace('.', '_') }}
+{%- endmacro %}
+
+{#- associations are only filtered by the models of their classes when filter_associations is set -#}
+{%- macro group(element_group, filter_associations=false) -%}
+{%- if element_group.classes %}
+{{ namespace(element_group.path, element_group.classes) }}
+{%- endif %}
+{%- for item in element_group.associations %}
+{%- if not filter_associations or (
+    index.index[item[0][0]].element_in_package.ref.split('.')[0] in model_names
+    and index.index[item[1][0]].element_in_package.ref.split('.')[0] in model_names
+) %}
+{{ association(item) }}
+{%- endif %}
+{%- endfor %}
+{%- for class_definition in element_group.classes %}
+{%- if class_definition.inherits_from and class_definition.inherits_from.split('.')[0] in model_names %}
+{{ inheritance(class_definition) }}
+{%- endif %}
+{%- endfor %}
+{%- endmacro %}

@@ -1,50 +1,35 @@
-{% for package in library.packages %}
+{%- macro special_types(kind) -%}
+[
+    {%- for package in library.packages %}
+    {%- for definition in package.type_definitions if definition["kind"] == kind %}
+    {{ package.name }}_{{ definition['name'] }},
+    {%- endfor %}
+    {%- endfor %}
+]
+{%- endmacro -%}
+
+{%- for package in library.packages %}
 {%- for definition in package.type_definitions %}
 from {{ library.name }}.{{ package.name }} import {{ definition['name'] }} as {{ package.name }}_{{ definition['name'] }}
-{% endfor %}
-{% endfor %}
+{%- endfor %}
+{%- endfor %}
 
 
 def get_special_int_types() -> list:
-    return [
-        {%- for package in library.packages %}
-        {%- for definition in package.type_definitions %}
-        {%- if definition["kind"] == "int" %}
-            {{ package.name }}_{{ definition['name'] }},
-        {%- endif %}
-        {%- endfor %}
-        {%- endfor %}
-    ]
+    return {{ special_types("int") | indent(4) }}
 
 
 def get_special_str_types() -> list:
-    return [
-        {%- for package in library.packages %}
-        {%- for definition in package.type_definitions %}
-        {%- if definition["kind"] == "text" %}
-            {{ package.name }}_{{ definition['name'] }},
-        {%- endif %}
-        {%- endfor %}
-        {%- endfor %}
-    ]
+    return {{ special_types("text") | indent(4) }}
 
 
 def get_special_float_types() -> list:
-    return [
-        {%- for package in library.packages %}
-        {%- for definition in package.type_definitions %}
-        {%- if definition["kind"] == "float" %}
-            {{ package.name }}_{{ definition['name'] }},
-        {%- endif %}
-        {%- endfor %}
-        {%- endfor %}
-    ]
+    return {{ special_types("float") | indent(4) }}
+
 
 def get_contained_model_names() -> list:
     return [
-    {%- for package in library.packages %}
-    {%- if package.name != "INTERLIS" %}
-    "{{ package.name }}",
-    {%- endif %}
-    {%- endfor %}
+        {%- for package in library.packages if package.name != "INTERLIS" %}
+        "{{ package.name }}",
+        {%- endfor %}
     ]

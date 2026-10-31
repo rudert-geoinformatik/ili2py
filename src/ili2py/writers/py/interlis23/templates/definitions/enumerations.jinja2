@@ -1,0 +1,40 @@
+{%- from "macros/docs.jinja2" import member_docstring %}
+{%- from "macros/metadata.jinja2" import interlis %}
+
+{%- macro enumerations(definitions) -%}
+{%- for enumeration in definitions %}
+{%- set members -%}
+{%- for value, doc in enumeration.value_docs.items() %}
+{{ value.upper().replace('.', '_') }}: {{ " ".join(doc) }}
+{%- endfor %}
+{%- endset %}
+
+class {{ enumeration.name }}(str, Enum):
+    {{ member_docstring("\n".join(enumeration.doc), "Attributes", members | trim) | indent(4) }}
+    {%- for value in enumeration.values %}
+    {{ value.upper().replace('.', '_') }} = "{{ enumeration.value_tags.get(value, value) }}", {{ enumeration.value_translations.get(value, {}) }}
+    {%- if value in enumeration.value_docs %}
+    """{{ " ".join(enumeration.value_docs[value]) }}"""
+    {%- endif %}
+    {%- endfor %}
+
+    def __new__(cls, value: str, translations: dict[str, str]):
+        # the value stays the plain XTF value, translations are attached to each member
+        member = str.__new__(cls, value)
+        member._value_ = value
+        member.translations = translations
+        return member
+
+    @property
+    def metadata(self) -> dict:
+        return {
+            "ili2py": {},
+            {{ interlis(
+                oid=enumeration.identifier,
+                kind="Enumeration",
+                meta_attributes=enumeration.meta_attributes,
+                translations=enumeration.translations,
+            ) | indent(12) }},
+        }
+{%- endfor %}
+{%- endmacro %}

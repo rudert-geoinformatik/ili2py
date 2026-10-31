@@ -1,0 +1,54 @@
+{#- classes and relations of a model or topic group -#}
+
+{%- macro class_node(class_definition) -%}
+{{ class_definition.save_oid }} [
+    shape=plain;
+    style=filled;
+    fillcolor=gray95;
+    label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr>
+            <td colspan="3">
+                <b>{{ class_definition.name }}</b>
+            </td>
+        </tr>
+        {%- for attribute in class_definition.attributes %}
+        <tr>
+            <td align="left">+ {{ attribute.name }}</td>
+            <td align="left">{{ attribute.type_definition }}</td>
+            <td align="left">{{ attribute.mandatory }}</td>
+        </tr>
+        {%- endfor %}
+        {%- for attribute in class_definition.association_attributes %}
+        <tr>
+            <td align="left">+ {{ attribute.name }}</td>
+            <td align="left"></td>
+            <td align="left" port="{{ attribute.save_oid }}">[{{ attribute.mandatory }}]</td>
+        </tr>
+        {%- endfor %}
+    </table>>
+]
+{%- if class_definition.inherits_from %}
+edge [dir=back arrowtail=empty style=""]
+{{ class_definition.inherits_from.replace('.', '_') }} -> {{ class_definition.save_oid }}
+{%- endif %}
+{%- endmacro %}
+
+{%- macro arrow(cardinality) -%}
+{%- if cardinality == '' %}none{% elif cardinality == '*' %}diamond{% else %}odiamond{% endif %}
+{%- endmacro %}
+
+{%- macro association(association) -%}
+edge [dir=back style="" arrowhead="{{ arrow(association[1][2]) }}" arrowtail="{{ arrow(association[0][2]) }}"]
+{{ association[0][0].replace('.', '_') }}:{{ association[1][3].replace('.', '_') }}:e -> {{ association[1][0].replace('.', '_') }}:{{ association[0][3].replace('.', '_') }}:e [constraint=false]
+{%- endmacro %}
+
+{%- macro group(element_group) -%}
+{%- for class_definition in element_group.classes %}
+{{ class_node(class_definition) }}
+{%- endfor %}
+{%- for item in element_group.associations %}
+{%- if item[0][0].split('.')[0] in model_names and item[1][0].split('.')[0] in model_names %}
+{{ association(item) }}
+{%- endif %}
+{%- endfor %}
+{%- endmacro %}

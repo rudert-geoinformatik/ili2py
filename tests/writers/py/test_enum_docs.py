@@ -86,11 +86,11 @@ def test_rendered_class(generated):
     tree = ast.parse(content)
     objekt = find_class(tree, "Objekt")
     # docstring has to be the first statement, before class Meta
-    assert ast.get_docstring(objekt).startswith("Ein Objekt\n\nArgs:\n    Farbe: Farbe des Objekts")
+    assert ast.get_docstring(objekt).startswith("Ein Objekt\n\nAttributes:\n    Farbe: Farbe des Objekts")
     assert ast.get_docstring(find_class(objekt, "ObjektArtEnum")) == "Attributes:\n    A: Erste Art"
     # class without own documentation still documents its attributes
     assert ast.get_docstring(find_class(tree, "OhneDoku")) == (
-        "Args:\n    Bemerkung: Bemerkung zum Objekt"
+        "Attributes:\n    Bemerkung: Bemerkung zum Objekt"
     )
 
 

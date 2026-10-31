@@ -1,5 +1,3 @@
-{%- if library.doc %}
-"""
-{{ "\n".join(library.doc) }}
-"""
-{%- endif %}
+{%- from "macros/docs.jinja2" import docstring -%}
+
+{{ docstring(library.doc) }}
