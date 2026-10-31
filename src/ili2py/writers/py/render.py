@@ -70,24 +70,37 @@ reserved_python_key_words = [
 ]
 
 
-def create_python_classes(
-    library: Library, index: Index, output_path: str, beautify: bool = True
-):
+def prepare_library(library: Library, index: Index) -> tuple[Library, dict]:
+    """
+    Prepares the library for the INTERLIS version of the models. Used by the rendered and the
+    runtime classes (`readers.xtf.runtime`), so both are derived from the same input.
+
+    Args:
+        library: The library of the IMD.
+        index: The index of the IMD.
+
+    Returns:
+        The library to create the classes of and the render configuration of the version.
+
+    Raises:
+        NotImplementedError: If the INTERLIS version is neither 2.3 nor 2.4.
+    """
     ili_version = handle_model_versions(index)
+    if ili_version not in render_configuration:
+        raise NotImplementedError(f"ili version '{ili_version}' not supported")
     if ili_version == "2.3":
         # the tags of translated models are in the translated language in INTERLIS 2.3 only,
         # the passed library stays the one of the original models
         library = copy.deepcopy(library)
         translate_transfer_names(library, index)
-    if ili_version == "2.3" or ili_version == "2.4":
-        reader_classes(
-            library,
-            output_path,
-            render_config=render_configuration[ili_version],
-            beautify=beautify,
-        )
-    else:
-        raise NotImplementedError(f"ili version '{ili_version}' not supported")
+    return library, render_configuration[ili_version]
+
+
+def create_python_classes(
+    library: Library, index: Index, output_path: str, beautify: bool = True
+):
+    library, render_config = prepare_library(library, index)
+    reader_classes(library, output_path, render_config=render_config, beautify=beautify)
 
 
 def library_storage_name(library_name: str) -> str:

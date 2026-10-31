@@ -2,14 +2,13 @@
 {%- from "macros/imports.jinja2" import definition_imports, imported_packages, related_class_imports %}
 {%- from "macros/metadata.jinja2" import module_metadata %}
 {%- from "definitions/all.jinja2" import all_definitions with context -%}
-
+{{ docstring(package.doc) }}
 {{ definition_imports(package.library) }}
 {%- if package.name != 'INTERLIS' %}
 from {{ package.library }} import INTERLIS
 {%- endif %}
 {{ imported_packages(package.library, package.imported_packages) }}
 {{ related_class_imports(package.library, package.related_class_imports) }}
-{{ docstring(package.doc) }}
 
 
 VERSION = {% if package.version %}"{{ package.version }}"{% else %}{{ package.version }}{% endif %}

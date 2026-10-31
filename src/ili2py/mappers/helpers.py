@@ -950,6 +950,51 @@ class Index:
     def handle_multivalue_type(self, element: AttrOrParam):
         pass
 
+    def is_association_class(self, association_tid: str) -> bool:
+        """
+        Decides if an association is transferred as own class, otherwise its roles are
+        embedded in the objects of the associated classes, see
+        https://github.com/rudert-geoinformatik/ili2py/blob/master/tests/data/ilismeta16/ili2-refman_2006-04-13_d.pdf
+        chapter 3.3.9 (page 87).
+
+        An association is an own class if it has more than 2 roles, if all roles have a
+        multiplicity > 1, if none of the associated classes is in the topic of the association
+        or if it is extended by another association.
+
+        Args:
+            association_tid: The tid of the association.
+
+        Returns:
+            True if the association is an own class in the transfer.
+        """
+        roles = self.association_bucket.get(association_tid)
+        if not roles:
+            return False
+        association = self.index[association_tid]
+        if self.class_subclassed_by.get(association_tid):
+            logging.debug(f"    Association has sub classes => own class {association_tid}")
+            return True
+        if len(roles) > 2:
+            logging.debug(f"    Association has > 2 roles => own class {association_tid}")
+            return True
+        if all(role_max is None or role_max > 1 for *_, role_max in roles):
+            logging.debug(f"    Role multiplicities are > 1 => own class {association_tid}")
+            return True
+        if len(roles) == 2:
+            package = mandatory_ref(association.element_in_package)
+            embedding_classes = [
+                class_tid
+                for _, class_tid, *_ in roles
+                if mandatory_ref(self.index[class_tid].element_in_package) == package
+            ]
+            if not embedding_classes:
+                logging.debug(
+                    "    Both associated classes are in another topic => own class "
+                    f"{association_tid}"
+                )
+                return True
+        return False
+
     @property
     def association_classes(self) -> dict:
         """

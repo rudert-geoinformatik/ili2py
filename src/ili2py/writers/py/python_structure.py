@@ -1732,83 +1732,9 @@ class Module(Base):
             for association_oid in association_oids:
                 association_object = index.index[association_oid]
                 association_construct = index.association_bucket.get(association_oid)
-                own_class = False
                 attributes: list[Attribute] = []
-                # https://github.com/rudert-geoinformatik/ili2py/blob/master/tests/data/ilismeta16/ili2-refman_2006-04-13_d.pdf
-                # chapter 3.3.9 (page 87)
                 if association_construct:
-                    logging.debug(
-                        "Deciding if association is embedded or own class "
-                        f"{association_object}"
-                    )
-                    if len(association_construct) > 2:
-                        logging.debug("    Association has > 2 roles => own class")
-                        own_class = True
-                    elif all(
-                        index.index[role_oid].multiplicity.multiplicity.max is None
-                        or index.index[role_oid].multiplicity.multiplicity.max > 1
-                        for role_oid, *_ in association_construct
-                    ):
-                        logging.debug(
-                            "    Association roles multiplicities are > 1 => own class"
-                        )
-                        own_class = True
-                    elif all(
-                        hasattr(index.index[role_oid], "oid")
-                        and index.index[role_oid].oid is not None
-                        for role_oid, *_ in association_construct
-                    ):
-                        logging.debug("    Association has OID => own class")
-                        own_class = True
-                    # special check for own association class based on external references
-                    elif len(association_construct) == 2:
-                        logging.debug(
-                            "   Association has 2 Role definitions, checking how to embedd..."
-                        )
-                        same_topic2 = (
-                            index.index[association_construct[1][1]].element_in_package.ref
-                            == tid
-                        )
-                        same_topic1 = (
-                            index.index[association_construct[0][1]].element_in_package.ref
-                            == tid
-                        )
-                        if not same_topic1 and not same_topic2:
-                            logging.debug(
-                                "       Embedding Association: Both referenced classes are "
-                                "in a different "
-                                "topic, we need a own class for the association "
-                                f"{association_object}"
-                            )
-                            own_class = True
-                        else:
-                            if same_topic2:
-                                logging.debug(
-                                    "       Embedding Association: Referenced Class of "
-                                    "second role is in same topic, "
-                                    "assuming the association is embedded there and we dont "
-                                    "need an own class "
-                                    f"for {association_object}"
-                                )
-                                own_class = False
-                            elif same_topic1:
-                                logging.debug(
-                                    "       Embedding Association: Referenced Class of first "
-                                    "role is in same topic, "
-                                    "assuming the association is embedded there and we dont "
-                                    "need an own class "
-                                    f"for {association_object}"
-                                )
-                                own_class = False
-
-                    if len(index.class_subclassed_by.get(association_object.tid, [])) > 0:
-                        logging.debug(
-                            "    Associaction has Subclasses, we construct a class for "
-                            "validity reason "
-                            f"(Dataclasses) {association_object}"
-                        )
-                        own_class = True
-
+                    own_class = index.is_association_class(association_oid)
                     if own_class:
                         association_attribute_names: list[str] = []
                         for (
