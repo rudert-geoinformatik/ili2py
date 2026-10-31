@@ -44,8 +44,10 @@ def member_docs(class_node: ast.ClassDef) -> dict[str, str]:
     for previous, current in zip(class_node.body, class_node.body[1:]):
         if (
             isinstance(previous, ast.Assign)
+            and isinstance(previous.targets[0], ast.Name)
             and isinstance(current, ast.Expr)
             and isinstance(current.value, ast.Constant)
+            and isinstance(current.value.value, str)
         ):
             docs[previous.targets[0].id] = current.value.value
     return docs
