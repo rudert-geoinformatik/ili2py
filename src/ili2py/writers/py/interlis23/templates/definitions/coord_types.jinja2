@@ -1,0 +1,83 @@
+{%- from "macros/docs.jinja2" import docstring %}
+{%- from "macros/fields.jinja2" import element_field %}
+{%- from "macros/metadata.jinja2" import metadata_property %}
+
+{%- macro coord_types(definitions) -%}
+{%- set namespace = render_config['namespace_map']['ili'] %}
+{%- for coord_type in definitions %}
+
+@dataclass
+class {{ coord_type.name }}Type:
+    {%- for attribute in coord_type.attributes %}
+    {%- if attribute.reference_system %}
+    # {{ attribute.reference_system }}
+    {%- endif %}
+    {%- set restrictions = {"type_restrictions": attribute.type_restrictions} if attribute.type_restrictions else {} %}
+    {{ element_field(
+        attribute.name.lower(),
+        attribute.name,
+        '"' ~ attribute.types | join(' | ') ~ ' | None"',
+        namespace,
+        meta_attributes=attribute.meta_attributes,
+        translations=attribute.translations,
+        **restrictions
+    ) | indent(4) }}
+    {%- endfor %}
+
+
+@dataclass
+class {{ coord_type.name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ docstring(coord_type.doc) | indent(4) }}
+    {{ element_field("coord", "COORD", coord_type.name ~ "Type | None", namespace, translations={}) | indent(4) }}
+
+    {{ metadata_property(
+        oid=coord_type.identifier,
+        kind="CoordType",
+        meta_attributes=coord_type.meta_attributes,
+        translations=coord_type.translations,
+    ) | indent(4) }}
+
+
+@dataclass
+class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    """
+    This is an intermediate class which simplifies parsing of XTF later.
+    """
+    {%- for tag in ["A1", "A2", "R"] %}
+    {{ element_field(
+        tag.lower(),
+        tag,
+        "float | None",
+        namespace,
+        meta_attributes=[],
+        type_restrictions={},
+        translations={},
+    ) | indent(4) }}
+    {%- endfor %}
+
+
+@dataclass
+class {{ coord_type.name }}ARC:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    """
+    This is an intermediate class which simplifies parsing of XTF later.
+    """
+    {{ element_field(
+        "arc",
+        "ARC",
+        coord_type.name ~ "ARCType | None",
+        namespace,
+        meta_attributes=[],
+        type_restrictions={},
+        translations={},
+    ) | indent(4) }}
+{%- endfor %}
+{%- endmacro %}

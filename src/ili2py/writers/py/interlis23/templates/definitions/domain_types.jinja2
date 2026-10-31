@@ -1,0 +1,17 @@
+{%- from "macros/metadata.jinja2" import metadata_property %}
+{%- from "macros/properties.jinja2" import constraints_properties %}
+
+{%- macro domain_types(definitions) -%}
+{%- for definition in definitions %}
+
+class {{ definition['name'] }}{% if definition['reference'] %}({{ definition['reference'] }}){% endif %}:
+
+    {{ metadata_property(
+        oid=definition['oid'],
+        meta_attributes=[],
+        type_restrictions=definition['restrictions'],
+        translations=definition['translations'],
+    ) | indent(4) }}
+    {{ constraints_properties(definition, with_doc=false) | indent(4) }}
+{%- endfor %}
+{%- endmacro %}

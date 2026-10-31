@@ -1,0 +1,38 @@
+{#- the metadata of the rendered definitions, the interlis block is shared by all of them -#}
+
+{%- macro meta_attributes(items) -%}
+{
+    {%- for item in items %}
+    "{{ item.name }}": "{{ item.value }}",
+    {%- endfor %}
+}
+{%- endmacro %}
+
+{#- keys are rendered in the order they are passed, strings are quoted -#}
+{%- macro interlis() -%}
+"interlis": {
+    {%- for key, value in kwargs.items() %}
+    {%- if key == "meta_attributes" %}
+    "{{ key }}": {{ meta_attributes(value) | indent(4) }},
+    {%- elif value is string %}
+    "{{ key }}": "{{ value }}",
+    {%- else %}
+    "{{ key }}": {{ value }},
+    {%- endif %}
+    {%- endfor %}
+}
+{%- endmacro %}
+
+{%- macro metadata_property() -%}
+@property
+def metadata(self) -> dict:
+    return {
+        {{ interlis(**kwargs) | indent(8) }},
+    }
+{%- endmacro %}
+
+{%- macro module_metadata(container) -%}
+metadata: dict = {
+    {{ interlis(meta_attributes=container.meta_attributes, translations=container.translations) | indent(4) }},
+}
+{%- endmacro %}

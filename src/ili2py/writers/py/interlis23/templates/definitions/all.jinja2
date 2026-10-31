@@ -1,0 +1,14 @@
+{%- from "definitions/domain_types.jinja2" import domain_types with context %}
+{%- from "definitions/enumerations.jinja2" import enumerations with context %}
+{%- from "definitions/coord_types.jinja2" import coord_types with context %}
+{%- from "definitions/line_types.jinja2" import line_types with context %}
+{%- from "definitions/classes.jinja2" import classes with context %}
+
+{#- all definitions of a package or module, in the order they depend on each other -#}
+{%- macro all_definitions(container) -%}
+{{ domain_types(container.type_definitions) }}
+{{ enumerations(container.enumerations) }}
+{{ coord_types(container.coord_types) }}
+{{ line_types(container.line_types) }}
+{{ classes(container.classes) }}
+{%- endmacro %}

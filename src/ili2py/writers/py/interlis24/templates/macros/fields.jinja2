@@ -1,0 +1,61 @@
+{#- dataclass fields as used by xsdata, keyword arguments are passed to the interlis metadata,
+    the name is omitted when no tag is passed -#}
+{%- from "macros/metadata.jinja2" import interlis %}
+
+{%- macro choice(name, type, namespace) -%}
+{
+    "name": "{{ name }}",
+    "type": {{ type }},
+    "namespace": "{{ namespace }}",
+}
+{%- endmacro %}
+
+{%- macro attribute_field(name, tag, annotation="str | None", namespace=none) -%}
+{{ name }}: {{ annotation }} = field(
+    default=None,
+    metadata={
+        "type": "Attribute",
+        {%- if tag %}
+        "name": "{{ tag }}",
+        {%- endif %}
+        {%- if namespace %}
+        "namespace": "{{ namespace }}",
+        {%- endif %}
+        {%- if kwargs %}
+        {{ interlis(**kwargs) | indent(8) }},
+        {%- endif %}
+    },
+)
+{%- endmacro %}
+
+{%- macro element_field(name, tag, annotation, namespace) -%}
+{{ name }}: {{ annotation }} = field(
+    default=None,
+    metadata={
+        "type": "Element",
+        {%- if tag %}
+        "name": "{{ tag }}",
+        {%- endif %}
+        "namespace": "{{ namespace }}",
+        {%- if kwargs %}
+        {{ interlis(**kwargs) | indent(8) }},
+        {%- endif %}
+    },
+)
+{%- endmacro %}
+
+{#- choices is the rendered content of the choices tuple -#}
+{%- macro elements_field(name, annotation, choices) -%}
+{{ name }}: {{ annotation }} = field(
+    default_factory=list,
+    metadata={
+        "type": "Elements",
+        "choices": (
+            {{ choices | indent(12) }}
+        ),
+        {%- if kwargs %}
+        {{ interlis(**kwargs) | indent(8) }},
+        {%- endif %}
+    },
+)
+{%- endmacro %}

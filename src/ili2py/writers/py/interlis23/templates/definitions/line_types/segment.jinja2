@@ -1,0 +1,26 @@
+{%- from "macros/fields.jinja2" import choice, elements_field %}
+
+{%- macro segment(coord_type_name, namespace) -%}
+{%- if coord_type_name == 'Any' %}
+{%- set coord_type, arc_type, vertex_types = "Any", "Any", "Any" %}
+{%- else %}
+{%- set coord_type, arc_type = coord_type_name ~ "Type", coord_type_name ~ "ARCType" %}
+{%- set vertex_types = coord_type ~ " | " ~ arc_type %}
+{%- endif %}
+{%- set choices -%}
+{{ choice("COORD", coord_type, namespace) }},
+{{ choice("ARC", arc_type, namespace) }},
+{%- endset -%}
+@dataclass
+class Segment:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ elements_field(
+        "vertices",
+        '"list[' ~ vertex_types ~ ']"',
+        choices,
+        meta_attributes=[],
+        translations={},
+    ) | indent(4) }}
+{%- endmacro %}

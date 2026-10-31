@@ -1,0 +1,64 @@
+{%- from "macros/docs.jinja2" import docstring %}
+{%- from "macros/fields.jinja2" import choice, element_field, elements_field %}
+{%- from "definitions/line_types/segment.jinja2" import segment %}
+
+{#- the body of a call block is appended to the class -#}
+{%- macro polyline(class_name, coord_type_name, namespace, meta_attributes=[], doc=none) -%}
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ docstring(doc) | indent(4) }}
+    {{ segment(coord_type_name, namespace) | indent(4) }}
+
+    {{ element_field(
+        "polyline",
+        none,
+        "Segment | None",
+        namespace,
+        meta_attributes=meta_attributes,
+        translations={},
+    ) | indent(4) }}
+    {%- if caller %}
+
+    {{ caller() | indent(4) }}
+    {%- endif %}
+{%- endmacro %}
+
+{#- the body of a call block is appended to the class -#}
+{%- macro multi_polyline(class_name, coord_type_name, namespace, meta_attributes=[], doc=none) -%}
+@dataclass
+class {{ class_name }}:
+    class Meta:
+        namespace = "{{ namespace }}"
+
+    {{ docstring(doc) | indent(4) }}
+
+    @dataclass
+    class Polylines:
+        class Meta:
+            namespace = "{{ namespace }}"
+
+        {{ segment(coord_type_name, namespace) | indent(8) }}
+
+        {{ elements_field(
+            "parts",
+            "list[Segment]",
+            choice("polyline", "Segment", namespace) ~ ",",
+            translations={},
+        ) | indent(8) }}
+
+    {{ element_field(
+        "multipolyline",
+        none,
+        "Polylines",
+        namespace,
+        meta_attributes=meta_attributes,
+        translations={},
+    ) | indent(4) }}
+    {%- if caller %}
+
+    {{ caller() | indent(4) }}
+    {%- endif %}
+{%- endmacro %}

@@ -1,0 +1,56 @@
+{%- macro constraints_property(kind, constraints, with_doc=true) -%}
+@property
+def {{ kind }}_constraints(self) -> list:
+    {%- if with_doc %}
+    """
+    Delivers the {{ kind }} constraints applying to this object.
+
+    Returns:
+        The list of constraints as dict. They can be deserialized with the
+        corresponding classes.
+    """
+    {%- endif %}
+    return {{ constraints }}
+{%- endmacro %}
+
+{%- macro constraints_properties(definition, with_doc=true) -%}
+{%- for kind in ["existence", "set", "simple", "unique"] %}
+{{ constraints_property(kind, definition[kind ~ "_constraints"], with_doc) }}
+{%- endfor %}
+{%- endmacro %}
+
+{%- macro geom_attribute_values_property(kind, attributes) -%}
+@property
+def geom_{{ kind }}_like_attribute_values(self) -> list[Tuple[str, Any]]:
+    """
+    Gives back a list of tuples which contain the name of the attribute and
+    the corresponding value for {{ kind }} like geometries.
+
+    Returns:
+        Tuple, first element is the attribute name, second the geometry value.
+    """
+    return [
+        {%- for attribute in attributes %}
+        ("{{ attribute.name }}", self.{{ attribute.name }}),
+        {%- endfor %}
+    ]
+{%- endmacro %}
+
+{%- macro geom_properties(definition) -%}
+{%- for kind in ["point", "line", "polygon"] %}
+{{ geom_attribute_values_property(kind, definition["geom_" ~ kind ~ "_like_attributes"]) }}
+{%- endfor %}
+@property
+def geom_attributes(self) -> list[str]:
+    """
+    Delivers a list of attributes names which contain geometric information.
+
+    Returns:
+        The list of geometry attribute names. Empty list when no geometry attributes at this class.
+    """
+    return [
+        {%- for attribute in definition.geom_attributes %}
+        "{{ attribute.name }}",
+        {%- endfor %}
+    ]
+{%- endmacro %}
