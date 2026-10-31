@@ -58,6 +58,14 @@ type AssociationEnd = tuple[str, str | None, str, str, str]
 # all ends of an association, followed by the name of the association
 type Association = list[AssociationEnd | str]
 
+# domains of the INTERLIS model which stand for a keyword of BaseType (refman 2.4, chapter 3.8)
+# and therefore are labelled like their base type instead of their domain name
+KEYWORD_DOMAINS = {
+    "INTERLIS.BOOLEAN": "Boolean",
+    "INTERLIS.NAME": "String",
+    "INTERLIS.URI": "String",
+}
+
 
 @dataclass
 class Base(ABC):
@@ -132,38 +140,62 @@ class Attribute(Base):
         index: Index,
         language: str | None,
     ) -> str:
-        if isinstance(type_definition, ImdTextType):
-            return "String"
-        elif isinstance(type_definition, ImdFormattedType):
-            if type_definition.super and type_definition.name == "TYPE":
+        """
+        Follows the type of an attribute up to the definition which names it in the diagram
+        (refman 2.4, chapter 3.8: Type = ( BaseType | LineType )). An attribute which uses a
+        DomainRef is labelled with the name of that domain. Anonymous types (named "TYPE" in
+        the IMD) are followed via their super to the referenced domain, or labelled with
+        their base type if there is none.
+        """
+        if isinstance(type_definition, ImdMultiValue):
+            return Attribute.type_name(
+                index.index[mandatory_ref(type_definition.base_type)], index, language
+            )
+        elif isinstance(type_definition, ImdClassRefType):
+            return Attribute.type_name(
+                index.index[index.class_related_type[type_definition.tid]], index, language
+            )
+        elif type_definition.name == "TYPE":
+            if type_definition.super:
                 return Attribute.handle_type_trail(
                     index.index[type_definition.super.ref], index, language
                 )
-            else:
-                return Attribute.type_name(type_definition, index, language)
+            return Attribute.base_type_name(type_definition)
+        elif type_definition.tid in KEYWORD_DOMAINS:
+            return KEYWORD_DOMAINS[type_definition.tid]
+        else:
+            return Attribute.type_name(type_definition, index, language)
+
+    @staticmethod
+    def base_type_name(
+        type_definition: (
+            ImdTextType
+            | ImdFormattedType
+            | ImdBlackboxType
+            | ImdNumType
+            | ImdBooleanType
+            | ImdEnumType
+            | ImdCoordType
+            | ImdLineType
+            | ImdEnumTreeValueType
+        ),
+    ) -> str:
+        if isinstance(type_definition, ImdTextType):
+            return "String"
+        elif isinstance(type_definition, ImdFormattedType):
+            return "Formatted"
         elif isinstance(type_definition, ImdBlackboxType):
             return "BlackBox"
         elif isinstance(type_definition, ImdNumType):
             return "Number"
         elif isinstance(type_definition, ImdBooleanType):
             return "Boolean"
-        elif isinstance(type_definition, ImdMultiValue):
-            return Attribute.type_name(
-                index.index[mandatory_ref(type_definition.base_type)], index, language
-            )
         elif isinstance(type_definition, (ImdEnumType, ImdEnumTreeValueType)):
             return "Enumeration"
-        elif isinstance(type_definition, (ImdCoordType, ImdLineType)):
-            if type_definition.super and type_definition.name == "TYPE":
-                return Attribute.handle_type_trail(
-                    index.index[type_definition.super.ref], index, language
-                )
-            else:
-                return Attribute.type_name(type_definition, index, language)
-        elif isinstance(type_definition, ImdClassRefType):
-            return Attribute.type_name(
-                index.index[index.class_related_type[type_definition.tid]], index, language
-            )
+        elif isinstance(type_definition, ImdCoordType):
+            return "Coord"
+        elif isinstance(type_definition, ImdLineType):
+            return mandatory(type_definition.kind)
         else:
             logging.debug(
                 f"Type was not handled correctly for UML preparation: {type_definition}"
