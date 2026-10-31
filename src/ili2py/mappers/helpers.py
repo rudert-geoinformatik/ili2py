@@ -30,6 +30,7 @@ from ili2py.interfaces.interlis.interlis_24.ilismeta.ilismeta16_2022_10_10 impor
     MetaAttribute,
     MetaElementType,
     Model,
+    ModelTranslation,
     Multiplicity,
     MultiValueType,
     ObjectType,
@@ -88,6 +89,28 @@ class Reference:
     instance: Any
 
 
+@dataclass
+class TranslatedModel:
+    """
+    A model declared as TRANSLATION OF another model (ili2-refman_2006-04-13_d.pdf, 2.5.1).
+    ili2c >= 5.6.7 writes it only as ModelTranslation basket with the Translation of its
+    elements (ili24-metamodel_2022-06-17_d.pdf, 2.1.5), the original model is the only
+    one in ModelData.
+
+    Attributes:
+        name: The name of the translated model, e.g. PlanDirecteurEnergiesRenouvelables_V1.
+        language: The language of the translated model (Translation.Language).
+        original: The tid of the original model, e.g. RichtplanungErneuerbareEnergien_V1.
+        original_language: The language of the original model (Model.Language), None if the
+            original model does not declare one.
+    """
+
+    name: str
+    language: str
+    original: str
+    original_language: str | None
+
+
 class Index:
     """
     Attributes:
@@ -140,6 +163,12 @@ class Index:
         topic_basket: Key is the tid of the package (SubModel) and value is the tid of the
             corresponding basket.
         dependency_using: Key is the
+        model_translations: Key is the tid of a MetaElement of an original model, value is a
+            dict of language code to the translated name, see `handle_translation`.
+        translated_models: Key is the tid of an original model which has a ModelTranslation
+            basket in the IMD, value is the list of its translations (one per language), see
+            `handle_translation`. Models not in here are untranslated, that is the same rule
+            for the requested and the imported models.
     """
 
     def __init__(self, data_section: DataSection):
@@ -224,6 +253,9 @@ class Index:
         self.domain_with_unique_constraints: dict = {}
         self.domain_with_set_constraints: dict = {}
 
+        self.model_translations: dict[str, dict[str, str]] = {}
+        self.translated_models: dict[str, list[TranslatedModel]] = {}
+
         self.types_in_domain: dict = {}
 
         self.depth_tree: list = []
@@ -234,6 +266,9 @@ class Index:
         for basket in data_section.ModelData:
             for element in basket.choice:
                 self.prepare_tree(element)
+
+        for translation in data_section.ModelTranslation:
+            self.handle_translation(translation)
 
         self.prepare_embedded_roles()
         self.oid_types: set = set()
@@ -1048,3 +1083,91 @@ class Index:
         # Dict hat genau 2 Keys
         k1, k2 = d.keys()
         return d[k2] if key == k1 else d[k1]
+
+    def handle_translation(self, mt: ModelTranslation):
+        """
+        Collects the translated names of a ModelTranslation basket into `model_translations`
+        and the translated model itself into `translated_models`. The translated model is
+        the METranslation whose Of points to a Model of ModelData, the basket id
+        (MODEL.<translated model name>) is not relied on.
+
+        Args:
+            mt: The ModelTranslation basket of the IMD.
+        """
+        for translation in mt.translation:
+            language = mandatory(translation.language)
+            for item in translation.translations:
+                for metatrans_item in item.metranslation:
+                    of = mandatory_ref(metatrans_item.of)
+                    translated_name = metatrans_item.translated_name
+                    if translated_name is None:
+                        # TranslatedName is optional in IlisMeta16, a METranslation with only
+                        # a TranslatedDoc does not change the name
+                        continue
+                    if of not in self.model_translations:
+                        self.model_translations[of] = {}
+                    if self.model_translations[of].get(language):
+                        logging.info(
+                            f"Translation for {of} in language {language} was handled already"
+                        )
+                    self.model_translations[of][language] = translated_name
+                    if of in self.models:
+                        self.translated_models.setdefault(of, []).append(
+                            TranslatedModel(
+                                name=translated_name,
+                                language=language,
+                                original=of,
+                                original_language=self.index[of].language,
+                            )
+                        )
+
+    def translated_model(self, name: str) -> TranslatedModel | None:
+        """
+        Looks up a translated model by its name, e.g. the model a library is requested for.
+
+        Args:
+            name: The name of the translated model (not the original one).
+
+        Returns:
+            The translated model or None if no model of this name is a translation.
+        """
+        for translations in self.translated_models.values():
+            for translated in translations:
+                if translated.name == name:
+                    return translated
+        return None
+
+    def translated_name(self, tid: str, language: str | None) -> str | None:
+        """
+        Looks up the translated name of an element.
+
+        Args:
+            tid: The tid of the element (its qualified name in the untranslated model).
+            language: The language code (de, fr, it, etc.).
+
+        Returns:
+            The translated name or None if no translation exists for the language.
+        """
+        if language is None:
+            return None
+        return self.model_translations.get(tid, {}).get(language)
+
+    def translated_path(self, tid: str, language: str | None) -> str:
+        """
+        Translates every segment of a qualified name. Segments without translation keep
+        their original name.
+
+        Args:
+            tid: The tid of the element (its qualified name in the untranslated model).
+            language: The language code (de, fr, it, etc.).
+
+        Returns:
+            The translated qualified name, e.g. DMAV_CouvertureDuSol_V1_1.CouvertureSol
+            for DMAV_Bodenbedeckung_V1_1.Bodenbedeckung in language fr.
+        """
+        segments = tid.split(".")
+        translated_segments = []
+        for position, segment in enumerate(segments):
+            prefix = ".".join(segments[: position + 1])
+            translated_segments.append(self.translated_name(prefix, language) or segment)
+        return ".".join(translated_segments)

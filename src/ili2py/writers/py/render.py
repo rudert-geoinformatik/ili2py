@@ -1,3 +1,4 @@
+import copy
 import inspect
 import os
 import shutil
@@ -12,6 +13,7 @@ from ili2py.mappers.helpers import Index
 from ili2py.writers.helpers import create_file, handle_model_versions
 from ili2py.writers.py import constraints
 from ili2py.writers.py.python_structure import Library
+from ili2py.writers.py.transfer_names import translate_transfer_names
 
 base_url_23 = "http://www.interlis.ch/INTERLIS2.3"
 base_url_24 = "http://www.interlis.ch/xtf/2.4"
@@ -72,6 +74,11 @@ def create_python_classes(
     library: Library, index: Index, output_path: str, beautify: bool = True
 ):
     ili_version = handle_model_versions(index)
+    if ili_version == "2.3":
+        # the tags of translated models are in the translated language in INTERLIS 2.3 only,
+        # the passed library stays the one of the original models
+        library = copy.deepcopy(library)
+        translate_transfer_names(library, index)
     if ili_version == "2.3" or ili_version == "2.4":
         reader_classes(
             library,

@@ -152,6 +152,8 @@ class Constraint:
     documentation: list[str] = field()
     to_class: str | None = field(default=None)
     to_domain: str | None = field(default=None)
+    # language code => translated name, xsdata needs it to be typed as wildcard attributes
+    translations: dict[str, str] = field(default_factory=dict, metadata={"type": "Attributes"})
 
 
 @dataclass(kw_only=True)

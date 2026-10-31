@@ -30,7 +30,9 @@ class {{ class_name }}:
                     "name": "surface",
                     "namespace": "{{ namespace }}"
                 }],
-                "interlis": {}
+                "interlis": {
+                    "translations": {}
+                }
             }
         )
 
@@ -44,7 +46,8 @@ class {{ class_name }}:
                     {%- for item in meta_attributes %}
                         "{{ item.name }}": "{{ item.value }}",
                     {%- endfor %}
-                }
+                },
+                "translations": {}
             }
         }
     )

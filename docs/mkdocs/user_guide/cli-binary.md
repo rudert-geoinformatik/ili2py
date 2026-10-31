@@ -10,7 +10,7 @@ The files are named by release:
 
 The examples below use the short names `ili2py-linux`, `ili2py-macos` and `ili2py-windows.exe`. Rename the downloaded file or use its full name.
 
-As described above, the _Command Line Interface_ of ili2py offerse two sub commands besides the main command:
+The _Command Line Interface_ of ili2py offers two sub commands besides the main command:
 
 - `diagram`
 - `python-classes`
@@ -104,17 +104,20 @@ All other parameters are optional:
 
 - `-f`/`--flavour` => Which diagram type should be created. Currently `plantuml`, `plantuml_role_members`, `mermaid`, `dot` (experimental) are implemented. Default type is `mermaid`.
 - `-d`/`--direction` => In which direction should the diagram be drawn. This depends on the selected `flavour`:
-    - `mermaid` => `LR`, `RL`, `TD`, `DT` => default `LR`
+    - `mermaid` => `LR`, `RL`, `TB`, `BT` => default `LR`
     - `plantuml` => `'top to bottom'`, `'left to right'`  => default `'top to bottom'`
     - `plantuml_role_members` => `'top to bottom'`, `'left to right'`  => default `'top to bottom'`
     - `dot` => No setting available
 - `-l`/`--linetype` => Of which kind should be the inter-class-connectors. This depends on the selected `flavour`:
     - `mermaid` => No setting available
-    - `plantuml` => `polyline`, `ortho`, `spline`
+    - `plantuml` => `polyline`, `ortho`, `spline` => default `polyline`
+    - `plantuml_role_members` => `polyline`, `ortho`, `spline` => default `polyline`
     - `dot` => No setting available
 - `-n`/`--file_name` => The name of the diagram file. Without file extension, this is defined by the `flavour` and is added automatically.
 - `-m`/`--models` => A comma-separated list of ili model names. These are used as a filter on the content of the diagram. Only models contained in the list will be drawn on the diagram. If the list is empty (default), all models will be drawn.
-- `--depth` => A filter based on the analysis of the import tree.
+- `-s`/`--spacing-line-length` => The length of the drawn connectors between the diagram nodes. Currently only used by plantuml. Default is `2`.
+- `--depth` => A filter based on the analysis of the import tree. `0` is the model itself, `1` the model itself and all models it imports and so on. Works in conjunction with `-m`/`--models`.
+- `--language` => The language the diagram is drawn in (e.g. `de`, `fr`, `it`). This needs an IMD which contains the translation of the model. If not provided, the language of the original model is used.
 
 !!! info
     If command line parameters contain spaces, they must be wrapped into quotation marks `'a b c'` oder `"a b c"`!
@@ -159,17 +162,14 @@ Creates typed python class library out of an IlisMeta16 file input.
 # Windows
 .\ili2py-windows.exe python-classes --help
 ```
-The mandatory parameters of the sub command python-classes` are:
+The mandatory parameters of the sub command `python-classes` are:
 
 - the path to the meta model `-i`/`--imd` (only IMD16 is allowed!)
-- and the path where the result should be written to `-o`/`--output_folder`
+- the path where the result should be written to `-o`/`--output_folder`
+- and the name of the resulting library `-l`/`--library_name`
 
 !!! info
-    A subfolder `output_folder` with the name of the flavor will be created.
-
-Optional parameters are:
-
-- `-l`/`--library_name` => The name of the resulting library.
+    A subfolder in `output_folder` with the (last part of the) library name will be created.
 
 !!! tip
     This can be a point separated name. The library is created to be in the scope of that path (internal imports are aligned). This way you can integrate the generated library easily in existing projects.
@@ -177,7 +177,7 @@ Optional parameters are:
 !!! info
     If the name is `ili2py.interfaces.interlis.OeREBKRMtrsfr_V2_0`, the library will be created still in the folder `OeREBKRMtrsfr_V2_0`. It has to be copied to the correct place manually then.
 
-The following command creates a python library in the folder `OeREBKRMtrsfr_V2_0`:
+The following command creates a python library in the folder `interface`:
 
 ```shell
 # Linux
@@ -195,11 +195,11 @@ The following command creates the same library. But it puts out a lot more logs.
 
 ```shell
 # Linux
-./ili2py-linux python-classes -i models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o ./ -l interface
+./ili2py-linux -v python-classes -i models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o ./ -l interface
 
 # Mac
-./ili2py-macos python-classes -i models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o ./ -l interface
+./ili2py-macos -v python-classes -i models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd -o ./ -l interface
 
 # Windows
-.\ili2py-windows.exe python-classes -i models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -o .\ -l interface
+.\ili2py-windows.exe -v python-classes -i models\OeREBKRMtrsfr_V2_0\OeREBKRMtrsfr_V2_0.imd -o .\ -l interface
 ```

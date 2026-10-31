@@ -25,6 +25,7 @@ nav:
       - "Report (Nov '23)": documents/report/report.md
   - "DEV Guide":
       - "Python Classes usage": dev_guide/python_classes.md
+      - "Build executable": build_executable.md
 
 theme:
   name: material

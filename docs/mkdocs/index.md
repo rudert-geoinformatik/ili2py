@@ -19,12 +19,13 @@ out of python or with an easy-to-use CLI.
 
 ![](assets/img/diagrams/showcase.gif)
 
-This program generates UML diagrams of different flavourss. Its advanced features are:
+This program generates UML diagrams of different flavours. Its advanced features are:
 
-- **multiple TOPICS and MODELS in one diagram** to vizualize the broader context
+- **multiple TOPICS and MODELS in one diagram** to visualize the broader context
 - fine-grained settings for direction, distance and connector types
 - filter to select which models should be drawn
 - import based depth filter to easily filter diagram content
+- output in the language of a translated model
 - and more...
 
 Consult the [Userguide](user_guide/diagram.md) for more info.
@@ -44,6 +45,8 @@ This program generates Python Classes representing 1:1 the classes defined in th
     - enumerations
     - geometries
     - documentation
+    - translations
+- reads and writes XTF (INTERLIS 2.3 and 2.4)
 - delivers a well-structured and ready to use python package
 - enables comfortable coding (autocompletion, jump-to-definition, documentation, ...)
 - and many many more...
@@ -81,7 +84,7 @@ including geometries.
 This quick draft based on **_ili2py_** and the generated classes shows a QT (PyQT) canvas with nodes and ports to create data
 flows to ETL XTF's directly. Because its QT it natively integrates with Python and QGIS.
 The infinite canvas allows positioning of nodes all around. Patching ports of nodes with connectors to other nodes.
-All elements including their position can bei serialized and therefore be stored. A styling inteface already allows
+All elements including their position can be serialized and therefore be stored. A styling interface already allows
 customization.
 
 First usecases coming into my mind are:

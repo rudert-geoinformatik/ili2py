@@ -37,11 +37,11 @@ Alter your script to.
 ```python
 from ili2py_interface.OeREBKRM_V2_0 import RechtsStatus
 
-print(list(RechtsStatus.INKRAFT.value))
+print(RechtsStatus.INKRAFT.value)
 ```
 
 The output should look like:
-`ìnKraft`
+`inKraft`
 
 This is how you access the value lists defined originally in the interlis model. You find them by following the linked
 types in the IDE of your choice using go-to-definition features.
@@ -56,19 +56,20 @@ How can we access it?
 from ili2py_interface.OeREBKRMtrsfr_V2_0.Transferstruktur import Eigentumsbeschraenkung
 from dataclasses import fields
 
-print(fields(Eigentumsbeschraenkung)[2])
+print(fields(Eigentumsbeschraenkung)[5])
 ```
 
 The output should look like:
 ```
-Field(name='publiziertAb',type='str | None',default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x7f0439902f90>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({'type': 'Element', 'namespace': 'http://www.interlis.ch/INTERLIS2.3', 'interlis': {'oid': 'OeREBKRMtrsfr_V2_0.Transferstruktur.Eigentumsbeschraenkung.publiziertAb', 'meta_attributes': {}, 'type_restrictions': {'mandatory': True, 'kind': None, 'format': '"Year"-"Month"-"Day"', 'unit': None, 'ref_sys': None, 'clockwise': None, 'circular': None, 'abstract': False, 'final': False, 'generic': False, 'super': 'OeREBKRM_V2_0.Datum', 'type_related_type': False, 'multiplicity': {'min': 1, 'max': 1}, 'struct': 'INTERLIS.GregorianDate', 'min': '1848-1-1', 'max': '2100-12-31'}}, 'geometric': {'is_geometric': False, 'multi': False, 'point_like': False, 'line_like': False, 'polygon_like': False}}),kw_only=False,_field_type=_FIELD)
+Field(name='publiziertAb',type='str | None',default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x7f01cfdb0980>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({'type': 'Element', 'namespace': 'http://www.interlis.ch/INTERLIS2.3', 'interlis': {'oid': 'OeREBKRMtrsfr_V2_0.Transferstruktur.Eigentumsbeschraenkung.publiziertAb', 'meta_attributes': {}, 'type_restrictions': {'mandatory': True, 'kind': None, 'format': '"Year"-"Month"-"Day"', 'unit': None, 'ref_sys': None, 'clockwise': None, 'circular': None, 'abstract': False, 'final': False, 'generic': False, 'super': 'OeREBKRM_V2_0.Datum', 'type_related_type': False, 'multiplicity': {'min': 1, 'max': 1}, 'struct': 'INTERLIS.GregorianDate', 'min': '1848-1-1', 'max': '2100-12-31'}, 'translations': {}}, 'geometric': {'is_geometric': False, 'multi': False, 'point_like': False, 'line_like': False, 'polygon_like': False}}),kw_only=False,_field_type=_FIELD)
 ```
 
 Fields of dataclasses can be accessed from a class or also from an instance. This is really handy since we also can
 access this information at runtime on instantiated objects. We use the [fields](https://docs.python.org/3/library/dataclasses.html#dataclasses.fields)
 method from the `dataclasses` library for that.
 
-In the example above we access the 3rd field of the class `Eigentumsbeschraenkung` which is the `publiziertAb` attribute.
+In the example above we access the 6th field of the class `Eigentumsbeschraenkung` which is the `publiziertAb` attribute.
+The first 4 fields (`TID`, `BID`, `OPERATION`, `CONSISTENCY`) belong to the transfer of each object.
 
 On that we now can access the dataclass native `metadata` attribute and in that the interlis specific information.
 
@@ -78,7 +79,7 @@ Alter your script:
 from ili2py_interface.OeREBKRMtrsfr_V2_0.Transferstruktur import Eigentumsbeschraenkung
 from dataclasses import fields
 
-print(fields(Eigentumsbeschraenkung)[2].metadata["interlis"]["type_restrictions"])
+print(fields(Eigentumsbeschraenkung)[5].metadata["interlis"]["type_restrictions"])
 ```
 
 This gives:
@@ -108,4 +109,17 @@ To access the metadata of the object instance itself:
 
 ```python
 print(Eigentumsbeschraenkung().metadata)
+```
+
+This gives:
+
+```python
+{
+    "interlis": {
+        "oid": "OeREBKRMtrsfr_V2_0.Transferstruktur.Eigentumsbeschraenkung",
+        "kind": "Class",
+        "meta_attributes": {},
+        "translations": {},
+    }
+}
 ```
