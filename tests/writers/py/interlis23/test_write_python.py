@@ -1,5 +1,8 @@
+import importlib
 import os
+import sys
 import tempfile
+import typing
 
 import pytest
 from xsdata.formats.dataclass.parsers.config import ParserConfig
@@ -81,3 +84,38 @@ def test_writing(resource_path_root, imd_path):
     library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
     create_python_classes(library, index, output_path)
     assert os.path.isdir(os.path.join(output_path, library_name))
+
+
+@pytest.mark.parametrize(
+    "imd_path",
+    [
+        # baskets of VIEW TOPICs listed views, which are not rendered as classes (NameError)
+        "models/SIA405_Abwasser_3D_2015_2_d-20211020/SIA405_Abwasser_3D_2015_2_d-20211020.imd",
+        # a domain and an attribute type both ALL OF the same enumeration (unresolvable type)
+        "models/SIA405_Wasser_2015_2_d-20181005/SIA405_Wasser_2015_2_d-20181005.imd",
+    ],
+)
+def test_importing(resource_path_root, imd_path):
+    """The rendered library can be imported and the type hints of all its classes resolve."""
+    reader = Imd16Reader()
+    metamodel = reader.read(os.path.join(resource_path_root, imd_path))
+    index = Index(metamodel.datasection)
+    library_name = index.types_bucket["Model"][-1].name
+    library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
+    target_path = tempfile.mkdtemp(prefix="ili2py")
+    create_python_classes(library, index, target_path)
+    sys.path.insert(0, target_path)
+    try:
+        importlib.import_module(f"{library_name}.xtf_opening")
+        for module_name, module in list(sys.modules.items()):
+            if module_name != library_name and not module_name.startswith(f"{library_name}."):
+                continue
+            for item in vars(module).values():
+                if isinstance(item, type) and item.__module__ == module_name:
+                    typing.get_type_hints(item)
+    finally:
+        sys.path.remove(target_path)
+        for module_name in list(sys.modules):
+            if module_name == library_name or module_name.startswith(f"{library_name}."):
+                del sys.modules[module_name]
+        importlib.invalidate_caches()
