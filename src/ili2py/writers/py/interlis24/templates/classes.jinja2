@@ -8,21 +8,25 @@ class {{ class_definition.name }}(ABC):
 {%- else %}
 class {{ class_definition.name }}:
 {%- endif %}
-
-    class Meta:
-        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
-
-    {%- if class_definition.doc %}
+    {%- set documented_attributes = class_definition.attributes | selectattr("doc") | list %}
+    {%- if class_definition.doc or documented_attributes %}
     """
+    {%- if class_definition.doc %}
     {{ " ".join(class_definition.doc) }}
-    {% if class_definition.attributes %}
+    {%- endif %}
+    {%- if documented_attributes %}
+    {% if class_definition.doc %}
+    {% endif -%}
     Args:
-    {%- for attribute in class_definition.attributes %}
+    {%- for attribute in documented_attributes %}
         {{ attribute.name }}: {{ " ".join(attribute.doc) }}
     {%- endfor %}
     {%- endif %}
     """
-    {%- endif -%}
+    {%- endif %}
+
+    class Meta:
+        namespace = "{{ render_config['base_url'] }}/{{ package.name }}"
 
 
 {%- for attribute in class_definition.attributes %}

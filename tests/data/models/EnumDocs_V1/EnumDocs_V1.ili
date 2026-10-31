@@ -1,0 +1,50 @@
+INTERLIS 2.4;
+
+/** Dokumentierte Aufzaehlungswerte */
+MODEL EnumDocs_V1 (de) AT "https://github.com/rudert-geoinformatik/ili2py" VERSION "2026-10-31" =
+
+  /** Farbe des Objekts */
+  DOMAIN Farbe = (
+    /** Signalfarbe */
+    rot,
+    gruen (
+      /** Helles Gruen */
+      hell,
+      dunkel
+    ),
+    blau
+  );
+
+  DOMAIN Zustand = (
+    /** In Betrieb */
+    aktiv,
+    /** Ausser Betrieb */
+    inaktiv
+  );
+
+  DOMAIN Kategorie = ALL OF Farbe;
+
+  TOPIC Objekte =
+
+    /** Ein Objekt */
+    CLASS Objekt =
+      /** Farbe des Objekts */
+      Farbe : EnumDocs_V1.Farbe;
+      Kategorie : EnumDocs_V1.Kategorie;
+      Zustand : EnumDocs_V1.Zustand;
+      /** Lokale Aufzaehlung */
+      Art : (
+        /** Erste Art */
+        a,
+        b
+      );
+    END Objekt;
+
+    CLASS OhneDoku =
+      /** Bemerkung zum Objekt */
+      Bemerkung : TEXT*30;
+    END OhneDoku;
+
+  END Objekte;
+
+END EnumDocs_V1.
