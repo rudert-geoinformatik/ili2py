@@ -1509,6 +1509,18 @@ class Value(Base):
             child.get_enum_value_translations(translations, path, tree=tree)
         return translations
 
+    def get_enum_value_docs(
+        self, docs: dict, current_path: list["Value"], tree: bool = False
+    ) -> dict[str, list[str]]:
+        # same paths as get_enum_values, every path carries the documentation of its last
+        # segment only, values without documentation are skipped
+        path = current_path + [self]
+        if (tree or len(self.children) == 0) and self.doc:
+            docs[".".join(value.value for value in path)] = self.doc
+        for child in self.children:
+            child.get_enum_value_docs(docs, path, tree=tree)
+        return docs
+
 
 @dataclass
 class Enumeration(Base):
@@ -1517,6 +1529,7 @@ class Enumeration(Base):
     # value in the INTERLIS 2.3 transfer if it differs from the value of the original model
     # (translated models), the member name stays derived from the original value
     value_tags: dict[str, str] = field(default_factory=dict)
+    value_docs: dict[str, list[str]] = field(default_factory=dict)
     super_class: str | None = field(default=None)
     tree: bool = field(default=False)
 
@@ -1545,9 +1558,11 @@ class Enumeration(Base):
         tree = matched_imd_enum_tree_value_type is not None
         values: list[str] = []
         value_translations: dict[str, dict[str, str]] = {}
+        value_docs: dict[str, list[str]] = {}
         for node in enum_hirarchie:
             values = values + node.get_enum_values([], [], tree=tree)
             node.get_enum_value_translations(value_translations, [], tree=tree)
+            node.get_enum_value_docs(value_docs, [], tree=tree)
         # Shortening the relation between AttrOrParam.type and EnumTreeValueType.tid to the
         # actual EnumType.tid because an EnumTreeValueType is a EnumType of all nodes and leafs
         # in the enum tree, see 2.8.2 Aufzählungen in
@@ -1567,6 +1582,7 @@ class Enumeration(Base):
             super_class=imd_enum_type.super.ref if imd_enum_type.super else None,
             values=values,
             value_translations=value_translations,
+            value_docs=value_docs,
             tree=tree,
             meta_attributes=meta_attributes,
             translations=index.model_translations.get(mandatory(imd_enum_type.tid), {}),

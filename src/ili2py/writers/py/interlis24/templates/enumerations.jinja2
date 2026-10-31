@@ -1,12 +1,25 @@
 {%- for enumeration in enumerations %}
 class {{ enumeration.name }}(str, Enum):
-    {%- if enumeration.doc %}
+    {%- if enumeration.doc or enumeration.value_docs %}
     """
+    {%- if enumeration.doc %}
     {{ "\n".join(enumeration.doc) }}
+    {%- endif %}
+    {%- if enumeration.value_docs %}
+    {% if enumeration.doc %}
+    {% endif -%}
+    Attributes:
+    {%- for value, doc in enumeration.value_docs.items() %}
+        {{ value.upper().replace('.', '_') }}: {{ " ".join(doc) }}
+    {%- endfor %}
+    {%- endif %}
     """
     {%- endif -%}
 {% for value in enumeration.values %}
     {{ value.upper().replace('.', '_') }} = "{{ value }}", {{ enumeration.value_translations.get(value, {}) }}
+    {%- if value in enumeration.value_docs %}
+    """{{ " ".join(enumeration.value_docs[value]) }}"""
+    {%- endif %}
 {%- endfor %}
 
     def __new__(cls, value: str, translations: dict[str, str]):
