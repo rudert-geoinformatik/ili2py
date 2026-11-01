@@ -30,6 +30,7 @@ def test_init():
         "models/Grundwasservorkommen_V2_0/Grundwasservorkommen_V2_0.imd",
         "models/Laermempfindlichkeitsstufen_V1_2/Laermempfindlichkeitsstufen_V1_2.imd",
         "models/LWB_Perimeter_Terrassenreben_V2_0/LWB_Perimeter_Terrassenreben_V2_0.imd",
+        "models/SIA405_Abwasser_2015_2_d-20180417/SIA405_Abwasser_2015_2_d-20180417.imd",
         "models/SIA405_Abwasser_3D_2015_2_d-20211020/SIA405_Abwasser_3D_2015_2_d-20211020.imd",
         "models/Statische_Waldgrenzen_v1_2/Waldgrenzen_V1_2.imd",
         "models/SZ_Waldfeststellungen_V2/SZ_Waldfeststellungen_V2.imd",

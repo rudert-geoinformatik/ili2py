@@ -64,6 +64,8 @@ def known_failure(imd_path: str, *reasons: str):
         "models/Revitalisierungen_Fliessgewaesser_V1_2/Revitalisierung_Fliessgewaesser_V1_2.imd",
         "models/Richtplan_erneuerbare_Energien_V1_0/PlanDirecteurEnergiesRenouvelables_V1.imd",
         "models/Rodungen_Rodungsersatz_V1_1/Rodungen_V1_1.imd",
+        "models/SIA405_Abwasser_2015_2_d-20180417/SIA405_Abwasser_2015_2_d-20180417.imd",
+        "models/SIA405_LKMap_3D_2015_2_d-20180427/SIA405_LKMap_3D_2015_2_d-20180427.imd",
         "models/SO_AFU_ABBAUSTELLEN_Publikation_20221103/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd",
         "models/SZ_Lebensraum_Fisch_V2/SZ_Lebensraum_Fisch_V2.imd",
         "models/SZ_Waldfeststellungen_V2/SZ_Waldfeststellungen_V2.imd",
