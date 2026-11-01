@@ -338,7 +338,11 @@ class Attribute(Base):
                 return base_type_ref, True
             else:
                 return mandatory(imd_type.tid), True
-        elif isinstance(imd_type, (EnumType, EnumTreeValueType)):
+        elif isinstance(imd_type, EnumTreeValueType):
+            # the enumeration carries the identifier of one EnumTreeValueType only
+            matched = Enumeration.enum_tree_value_type(mandatory_ref(imd_type.et), index)
+            return mandatory(matched.tid if matched else imd_type.tid), True
+        elif isinstance(imd_type, EnumType):
             return mandatory(imd_type.tid), True
         elif isinstance(imd_type, ReferenceType):
             return "Ref", False
@@ -1322,18 +1326,22 @@ class Basket:
         xtf24_element_names: dict[str, dict[str, str]] = {}
         for type_oid in index.allowed_in_basket_of_data_unit[tid]:
             type_object = index.index[type_oid]
+            if not isinstance(type_object, ImdClass):
+                # views (of a VIEW TOPIC) are not rendered as classes
+                continue
+            type_tid = mandatory(type_object.tid)
+            type_name = mandatory(type_object.name)
+            type_package_tid = mandatory_ref(type_object.element_in_package)
             # a DataUnit is always defined in a topic
-            if type_object.element_in_package.ref == mandatory_ref(
-                imd_class.element_in_package
-            ):
-                type_reference = type_object.name
+            if type_package_tid == mandatory_ref(imd_class.element_in_package):
+                type_reference = type_name
             else:
                 type_reference, type_reference_imports = Class.decide_type_reference(
-                    type_object.tid, tid, index
+                    type_tid, tid, index
                 )
                 if type_reference_imports:
                     related_class_imports.append(type_reference_imports)
-            type_model_object = index.index[type_object.element_in_package.ref]
+            type_model_object = index.index[type_package_tid]
             if isinstance(type_model_object, SubModel):
                 type_model_object = index.index[
                     mandatory_ref(type_model_object.element_in_package)
@@ -1345,13 +1353,11 @@ class Basket:
             choices.append(
                 Choice(
                     type_reference=type_reference,
-                    name=xtf24_element_names[type_model_object.tid].get(
-                        type_object.tid, type_object.name
-                    ),
-                    identifier=type_object.tid,
+                    name=xtf24_element_names[type_model_object.tid].get(type_tid, type_name),
+                    identifier=type_tid,
                     model_name=type_model_object.name,
-                    translations=index.model_translations.get(type_object.tid, {}),
-                    tag=type_object.tid,
+                    translations=index.model_translations.get(type_tid, {}),
+                    tag=type_tid,
                 )
             )
         instance = cls(choices=choices, related_class_imports=related_class_imports)
@@ -1547,14 +1553,38 @@ class Enumeration(Base):
                 related_enum_nodes.append(enum_value)
         return related_enum_nodes
 
+    @staticmethod
+    def enum_tree_value_type(enum_type_tid: str, index: Index) -> EnumTreeValueType | None:
+        """
+        Finds the EnumTreeValueType (ALL OF) which represents an enumeration. If there are
+        several (e.g. a domain `Status = ALL OF Statuswerte` and an attribute
+        `Status: MANDATORY Status`, which is an own type extending the domain), the domain
+        wins, so the enumeration and the attributes referencing it agree on one identifier.
+
+        Args:
+            enum_type_tid: The tid of the EnumType.
+            index: The index of the IMD.
+
+        Returns:
+            The EnumTreeValueType, None if the enumeration is not used as a tree.
+        """
+        matched = None
+        for imd_enum_tree_value_type in index.types_bucket.get("EnumTreeValueType", []):
+            if imd_enum_tree_value_type.et.ref != enum_type_tid:
+                continue
+            if imd_enum_tree_value_type.element_in_package or not (
+                matched and matched.element_in_package
+            ):
+                matched = imd_enum_tree_value_type
+        return matched
+
     @classmethod
     def from_imd(cls, imd_enum_type: EnumType, index: Index):
         top_enum_node = index.index[f"{imd_enum_type.tid}.TOP"]
         enum_hirarchie = cls.get_related_enum_nodes(top_enum_node, index)
-        matched_imd_enum_tree_value_type = None
-        for imd_enum_tree_value_type in index.types_bucket.get("EnumTreeValueType", []):
-            if imd_enum_tree_value_type.et.ref == imd_enum_type.tid:
-                matched_imd_enum_tree_value_type = imd_enum_tree_value_type
+        matched_imd_enum_tree_value_type = Enumeration.enum_tree_value_type(
+            mandatory(imd_enum_type.tid), index
+        )
         tree = matched_imd_enum_tree_value_type is not None
         values: list[str] = []
         value_translations: dict[str, dict[str, str]] = {}
@@ -1569,7 +1599,7 @@ class Enumeration(Base):
         # https://www.interlis.ch/download/interlis2/ili2-refman_2006-04-13_d.pdf
         # and this is resolved already Values.get_related_enum_nodes
         if matched_imd_enum_tree_value_type:
-            tid = matched_imd_enum_tree_value_type.tid
+            tid = mandatory(matched_imd_enum_tree_value_type.tid)
             name = matched_imd_enum_tree_value_type.name
         else:
             tid = cls.prepare_tid(mandatory(imd_enum_type.tid))

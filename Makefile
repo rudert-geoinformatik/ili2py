@@ -1,4 +1,5 @@
-
+# select e2e cases by substring of the imd path, e.g. model=SIA405_LKMap_2015_2_d-20180427
+model ?=
 VENV_PATH ?= .venv
 UV ?= uv
 UV_RUN = $(UV) run --locked
@@ -118,7 +119,7 @@ test:
 
 .PHONY: test-e2e
 test-e2e: ilivalidator
-	ILIVALIDATOR_JAR=$(abspath $(ILIVALIDATOR_JAR)) $(UV_RUN) --group test pytest -vv -n $(E2E_WORKERS) -m e2e --run-e2e --run-network_bound tests/e2e
+	ILIVALIDATOR_JAR=$(abspath $(ILIVALIDATOR_JAR)) $(UV_RUN) --group test pytest -vv -n $(E2E_WORKERS) -m e2e --run-e2e --run-network_bound tests/e2e $(if $(model),-k "$(model)")
 
 .PHONY: tests
 tests: test test-e2e
