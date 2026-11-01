@@ -1329,18 +1329,19 @@ class Basket:
             if not isinstance(type_object, ImdClass):
                 # views (of a VIEW TOPIC) are not rendered as classes
                 continue
+            type_tid = mandatory(type_object.tid)
+            type_name = mandatory(type_object.name)
+            type_package_tid = mandatory_ref(type_object.element_in_package)
             # a DataUnit is always defined in a topic
-            if type_object.element_in_package.ref == mandatory_ref(
-                imd_class.element_in_package
-            ):
-                type_reference = type_object.name
+            if type_package_tid == mandatory_ref(imd_class.element_in_package):
+                type_reference = type_name
             else:
                 type_reference, type_reference_imports = Class.decide_type_reference(
-                    type_object.tid, tid, index
+                    type_tid, tid, index
                 )
                 if type_reference_imports:
                     related_class_imports.append(type_reference_imports)
-            type_model_object = index.index[type_object.element_in_package.ref]
+            type_model_object = index.index[type_package_tid]
             if isinstance(type_model_object, SubModel):
                 type_model_object = index.index[
                     mandatory_ref(type_model_object.element_in_package)
@@ -1352,13 +1353,11 @@ class Basket:
             choices.append(
                 Choice(
                     type_reference=type_reference,
-                    name=xtf24_element_names[type_model_object.tid].get(
-                        type_object.tid, type_object.name
-                    ),
-                    identifier=type_object.tid,
+                    name=xtf24_element_names[type_model_object.tid].get(type_tid, type_name),
+                    identifier=type_tid,
                     model_name=type_model_object.name,
-                    translations=index.model_translations.get(type_object.tid, {}),
-                    tag=type_object.tid,
+                    translations=index.model_translations.get(type_tid, {}),
+                    tag=type_tid,
                 )
             )
         instance = cls(choices=choices, related_class_imports=related_class_imports)
@@ -1600,7 +1599,7 @@ class Enumeration(Base):
         # https://www.interlis.ch/download/interlis2/ili2-refman_2006-04-13_d.pdf
         # and this is resolved already Values.get_related_enum_nodes
         if matched_imd_enum_tree_value_type:
-            tid = matched_imd_enum_tree_value_type.tid
+            tid = mandatory(matched_imd_enum_tree_value_type.tid)
             name = matched_imd_enum_tree_value_type.name
         else:
             tid = cls.prepare_tid(mandatory(imd_enum_type.tid))
