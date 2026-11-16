@@ -124,6 +124,13 @@ test-e2e: ilivalidator
 .PHONY: tests
 tests: test test-e2e
 
+# sections of the XTF tests, e.g. `make test-rendered-write` runs `pytest -m rendered_write`
+TEST_SECTIONS = rendered-read rendered-write
+
+.PHONY: $(addprefix test-,$(TEST_SECTIONS))
+$(addprefix test-,$(TEST_SECTIONS)): test-%:
+	$(UV_RUN) --group test pytest -vv -m $(subst -,_,$*) tests $(if $(model),-k "$(model)")
+
 .PHONY: check
 check:
 	$(UV_RUN) --group test mypy src/$(PACKAGE) tests
