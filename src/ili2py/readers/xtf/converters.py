@@ -19,6 +19,10 @@ class TypeConverter(Converter):
     """
 
     def __init__(self, data_type: type):
+        """
+        Args:
+            data_type: The type of the library the converter is responsible for.
+        """
         self.data_type = data_type
 
 
@@ -29,9 +33,11 @@ class SpecialTypeConverter(TypeConverter):
     """
 
     def deserialize(self, value: Any, **kwargs: Any) -> Any:
+        """The text of the XTF as the special type, so the value keeps knowing what it is."""
         return self.data_type(value) if value is not None else None
 
     def serialize(self, value: Any, **kwargs: Any) -> str | None:  # type: ignore[override]
+        """The value as text, the special type is a str, int or float underneath anyway."""
         return str(value) if value is not None else None
 
 
@@ -41,9 +47,11 @@ class BinBlBoxConverter(TypeConverter):
     """
 
     def deserialize(self, value: Any, **kwargs: Any) -> Any:
+        """The base64 text of the XTF as the bytes it stands for."""
         return self.data_type(b64decode(value)) if value is not None else None
 
     def serialize(self, value: Any, **kwargs: Any) -> str | None:  # type: ignore[override]
+        """The bytes back as base64 text."""
         return b64encode(value).decode() if value is not None else None
 
 

@@ -44,6 +44,10 @@ class Geometry:
     spec: ClassVar[CoordSpec | None] = None
 
     def __init__(self, *args: Any) -> None:
+        """
+        Args:
+            args: The values in the order of `fields`.
+        """
         for name, value in zip(self.__slots__ or self.fields(), args, strict=True):
             setattr(self, name, value)
 
@@ -57,10 +61,20 @@ class Geometry:
 
     @classmethod
     def with_spec(cls, spec: CoordSpec | None) -> type[Self]:
-        """A subclass of the geometry type, named as it, which carries the spec of the axes."""
+        """
+        A subclass of the geometry type which carries the spec of the axes. It keeps the name
+        of its base, so a printed geometry does not tell about the trick.
+
+        Args:
+            spec: The spec of the axes of a coord type.
+
+        Returns:
+            The subclass, the backend keeps one per geometry type and spec.
+        """
         return type(cls.__name__, (cls,), {"__slots__": (), "spec": spec})
 
     def values(self) -> tuple[Any, ...]:
+        """The values in the order of `fields`, enough to build the geometry again."""
         return tuple(getattr(self, name) for name in self.fields())
 
     def __eq__(self, other: object) -> bool:
@@ -79,12 +93,19 @@ class Geometry:
 
 
 class Coord(Geometry):
+    """
+    Attributes:
+        values_: The values of the axes (C1, C2[, C3]). The trailing underscore keeps it apart
+            from the method `values`.
+    """
+
     __slots__ = ("values_",)
 
     values_: tuple[float, ...]
 
     @property
     def coordinates(self) -> tuple[float, ...]:
+        """The values of the axes, for those who prefer to read a name without underscore."""
         return self.values_
 
 
@@ -107,6 +128,13 @@ class Polyline(Geometry):
         return len(self.coords) // self.dimension if self.dimension else 0
 
     def vertex(self, index: int) -> tuple[float, ...]:
+        """
+        Args:
+            index: The index of the vertex.
+
+        Returns:
+            The values of the axes of the vertex.
+        """
         start = index * self.dimension
         return tuple(self.coords[start : start + self.dimension])
 
@@ -123,12 +151,22 @@ class Surface(Geometry):
 
 
 class MultiPolyline(Geometry):
+    """
+    Attributes:
+        polylines: The polylines, INTERLIS 2.4 only.
+    """
+
     __slots__ = ("polylines",)
 
     polylines: list[Polyline]
 
 
 class MultiSurface(Geometry):
+    """
+    Attributes:
+        surfaces: The surfaces, INTERLIS 2.4 only.
+    """
+
     __slots__ = ("surfaces",)
 
     surfaces: list[Surface]

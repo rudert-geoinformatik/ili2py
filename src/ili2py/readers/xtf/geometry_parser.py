@@ -1,9 +1,10 @@
 """
 Reading of an XTF in two passes, the geometry apart from xsdata.
 
-xsdata binds every XML element on its own, also the elements of a field it does not know
-(`SkipNode`, ~4.5 µs per element). An XTF with surfaces consists to ~97 % of COORD, C1 and C2
-elements. So the geometry is kept from xsdata completely:
+xsdata binds every XML element on its own (~11 µs per element, see `xsdata_backend`). Even
+an element it is told to ignore still costs ~4.5 µs (`SkipNode`), and an XTF with surfaces
+consists to ~97 % of COORD, C1 and C2 elements. So ignoring is not enough, the geometry is
+kept from xsdata completely:
 
 1. Bind: xsdata binds the objects as usual. The subtree of a geometric field is skipped in the
    lxml walk (`skip_subtree`), xsdata never sees it and the field keeps its default. The
@@ -70,7 +71,8 @@ class XtfLxmlEventHandler(LxmlEventHandler):
     @staticmethod
     def parser_options(config: ParserConfig) -> dict[str, Any]:
         """
-        The options of libxml2, the same for parsing incrementally and into a tree.
+        The options of libxml2, the same for parsing incrementally and into a tree. They live
+        here once, so the two handlers can not drift apart on how forgiving they are.
 
         Args:
             config: The xsdata parser configuration.

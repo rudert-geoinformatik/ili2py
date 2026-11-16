@@ -2,8 +2,10 @@
 The XTF backend based on xsdata and lxml (see `backend.XtfBackend`), with a fast path for the
 geometry (`geometry`).
 
-xsdata binds every XML element on its own (~11 µs per element), an XTF with surfaces consists
-to ~97 % of COORD, C1 and C2 elements. So the geometry does not go through xsdata:
+xsdata binds every XML element on its own (~11 µs per element). That is fine for objects, but
+an XTF with surfaces consists to ~97 % of COORD, C1 and C2 elements, so most of the time would
+be spent on numbers nobody looks at one by one. Therefore the geometry takes a shortcut around
+xsdata:
 
 - Reading with `compact_geometry`: xsdata binds the objects, the geometric fields are left to
   a second pass which builds the compact geometry from the lxml elements (`geometry_parser`).
@@ -58,7 +60,10 @@ T = TypeVar("T")
 
 
 class GeometryReader:
-    """Converts the geometry elements of an lxml tree to compact geometries."""
+    """
+    Converts the geometry elements of an lxml tree to compact geometries. It does not ask the
+    dataclasses for anything, it only knows the element names of the transfer version.
+    """
 
     def __init__(self, tags: GeometryTags):
         """
@@ -74,6 +79,18 @@ class GeometryReader:
         self.axis_tags = set(tags.axes)
 
     def geometry(self, element: Any) -> Geometry:
+        """
+        Looks at the element name and hands over to the matching geometry.
+
+        Args:
+            element: The geometry element (COORD, POLYLINE, SURFACE, MULTI*).
+
+        Returns:
+            The compact geometry, still without the spec of the axes.
+
+        Raises:
+            ValueError: If the element is no geometry of the transfer version.
+        """
         tags = self.tags
         tag = element.tag
         if tag == tags.coord:
@@ -89,10 +106,30 @@ class GeometryReader:
         raise ValueError(f"unknown geometry element {tag}")
 
     def surface(self, element: Any) -> Surface:
+        """
+        Collects the boundaries of a surface, the exterior comes first as it does in the XTF.
+
+        Args:
+            element: The SURFACE element.
+
+        Returns:
+            The surface.
+        """
         # 2.3: BOUNDARY/POLYLINE, 2.4: exterior/polyline and interior/polyline
         return Surface([self.polyline(boundary[0]) for boundary in element])
 
     def polyline(self, element: Any) -> Polyline:
+        """
+        Collects the vertices of a polyline flat into one array. Most polylines know straights
+        only, for them one XPath call fetches all values at once and the walk in python is
+        saved. Only if an arc shows up, the vertices are visited one by one.
+
+        Args:
+            element: The POLYLINE element.
+
+        Returns:
+            The polyline, the arcs are kept by the index of their end point.
+        """
         if len(element) == 0:
             return Polyline(array("d"), 0, {})
         if element.find(self.tags.arc) is None:
@@ -255,7 +292,11 @@ class CompactGeometryBuilder(GeometryBuilder):
 
 
 class GeometryWriter:
-    """Generates the xsdata writer events of the geometry elements."""
+    """
+    Generates the xsdata writer events of the geometry elements. It is the slow but polite
+    path: xsdata gets every element as an event and can declare a namespace on the way, see
+    `GeometryEventWriter`.
+    """
 
     def __init__(self, tags: GeometryTags):
         """
@@ -268,7 +309,16 @@ class GeometryWriter:
 
     @staticmethod
     def format_float(value: float) -> str:
-        """As xsdata writes floats (FloatConverter)."""
+        """
+        Writes a float exactly as the FloatConverter of xsdata does, otherwise the compact
+        path and the one of xsdata would not agree on the written XTF.
+
+        Args:
+            value: The float.
+
+        Returns:
+            The text, e.g. 1E-07, NaN or INF.
+        """
         if math.isnan(value):
             return "NaN"
         if math.isinf(value):
@@ -276,10 +326,32 @@ class GeometryWriter:
         return repr(value).upper().replace("E+", "E")
 
     def events(self, geometry: Geometry) -> Iterator[tuple]:
-        """The events of a geometry, its axes as its spec defines them."""
+        """
+        The events of a geometry, its axes as its spec defines them.
+
+        Args:
+            geometry: The compact geometry.
+
+        Yields:
+            The xsdata writer events (START, DATA, END).
+        """
         yield from self.geometry(geometry, geometry.spec)
 
     def geometry(self, geometry: Geometry, spec: CoordSpec | None) -> Iterator[tuple]:
+        """
+        Hands the geometry over to its writer. The spec is passed along explicitly, so the
+        parts of a multi geometry are written with the spec of the whole.
+
+        Args:
+            geometry: The compact geometry.
+            spec: The spec of the axes.
+
+        Yields:
+            The xsdata writer events.
+
+        Raises:
+            TypeError: If the geometry is unknown.
+        """
         if isinstance(geometry, Coord):
             yield from self.coord(geometry.values_, spec)
         elif isinstance(geometry, Polyline):
@@ -294,6 +366,17 @@ class GeometryWriter:
             raise TypeError(f"unknown geometry {geometry}")
 
     def values(self, tags: list[str], values: Any, spec: CoordSpec | None) -> Iterator[tuple]:
+        """
+        One element per value, an integer axis is written without decimals.
+
+        Args:
+            tags: The element names, one per value.
+            values: The values.
+            spec: The spec of the axes, None writes all values as floats.
+
+        Yields:
+            The xsdata writer events.
+        """
         start, data, end = XmlWriterEvent.START, XmlWriterEvent.DATA, XmlWriterEvent.END
         types = spec.types if spec else ()
         for index, value in enumerate(values):
@@ -306,11 +389,27 @@ class GeometryWriter:
             yield end, tag
 
     def coord(self, values: Any, spec: CoordSpec | None) -> Iterator[tuple]:
+        """
+        Args:
+            values: The values of the axes.
+            spec: The spec of the axes.
+
+        Yields:
+            The xsdata writer events of a COORD.
+        """
         yield XmlWriterEvent.START, self.tags.coord
         yield from self.values(self.axis_tags, values, spec)
         yield XmlWriterEvent.END, self.tags.coord
 
     def polyline(self, polyline: Polyline, spec: CoordSpec | None) -> Iterator[tuple]:
+        """
+        Args:
+            polyline: The polyline.
+            spec: The spec of the axes.
+
+        Yields:
+            The xsdata writer events of a POLYLINE, an ARC where the polyline knows one.
+        """
         tags = self.tags
         yield XmlWriterEvent.START, tags.polyline
         dimension = polyline.dimension
@@ -329,6 +428,14 @@ class GeometryWriter:
         yield XmlWriterEvent.END, tags.polyline
 
     def surface(self, surface: Surface, spec: CoordSpec | None) -> Iterator[tuple]:
+        """
+        Args:
+            surface: The surface.
+            spec: The spec of the axes.
+
+        Yields:
+            The xsdata writer events of a SURFACE with its boundaries.
+        """
         tags = self.tags
         yield XmlWriterEvent.START, tags.surface
         for index, boundary in enumerate(surface.boundaries):
@@ -341,6 +448,18 @@ class GeometryWriter:
     def multi(
         self, tag: str | None, items: Sequence[Geometry], spec: CoordSpec | None
     ) -> Iterator[tuple]:
+        """
+        Args:
+            tag: The element name of the multi geometry, None in INTERLIS 2.3.
+            items: The polylines or surfaces.
+            spec: The spec of the axes.
+
+        Yields:
+            The xsdata writer events of a MULTI* with its parts.
+
+        Raises:
+            TypeError: If the transfer version knows no multi geometries.
+        """
         if tag is None:
             raise TypeError("the transfer version has no multi geometries")
         yield XmlWriterEvent.START, tag
@@ -352,10 +471,19 @@ class GeometryWriter:
 class GeometryText:
     """
     Writes the geometry elements as text at a depth of the document, indented as
-    `XmlEventWriter` does it.
+    `XmlEventWriter` does it. It is the fast path: instead of three events per value it puts
+    together strings, a COORD is one prepared template which is only filled. The templates are
+    kept per depth, dimension and axis types, an XTF has only a handful of them.
     """
 
     def __init__(self, writer: GeometryWriter, prefix: str | None, depth: int, indent: str):
+        """
+        Args:
+            writer: The writer of the events, it lends its element names.
+            prefix: The prefix of the geometry namespace in the document, None if default.
+            depth: The depth of the geometry element in the document.
+            indent: The indent of one level, empty writes everything in one line.
+        """
         self.writer = writer
         self.prefix = prefix
         self.depth = depth
@@ -363,13 +491,22 @@ class GeometryText:
         self.templates: dict[tuple[int, int, tuple[type, ...]], str] = {}
 
     def name(self, tag: str) -> str:
+        """The element name as written in the document, with the prefix if there is one."""
         local = GeometryTags.local_name(tag)
         return f"{self.prefix}:{local}" if self.prefix else local
 
     def newline(self, depth: int) -> str:
+        """The line break with the indent of a depth, nothing if not indented."""
         return f"\n{self.indent * depth}" if self.indent else ""
 
     def text(self, geometry: Geometry) -> str:
+        """
+        Args:
+            geometry: The compact geometry.
+
+        Returns:
+            The geometry elements as text, starting with a line break.
+        """
         parts: list[str] = []
         self.geometry(parts, geometry, self.depth, geometry.spec)
         return "".join(parts)
@@ -377,6 +514,18 @@ class GeometryText:
     def geometry(
         self, parts: list[str], geometry: Geometry, depth: int, spec: CoordSpec | None
     ) -> None:
+        """
+        Hands the geometry over to its writer, see `GeometryWriter.geometry`.
+
+        Args:
+            parts: The text parts collected so far, the geometry adds its own.
+            geometry: The compact geometry.
+            depth: The depth of the geometry element.
+            spec: The spec of the axes.
+
+        Raises:
+            TypeError: If the geometry is unknown.
+        """
         tags = self.writer.tags
         if isinstance(geometry, Coord):
             dimension = len(geometry.values_)
@@ -397,7 +546,19 @@ class GeometryText:
             raise TypeError(f"unknown geometry {geometry}")
 
     def strings(self, values: Any, dimension: int, spec: CoordSpec | None) -> list[str]:
-        """The values of the vertices (flat) as xsdata writes them, int axes as int."""
+        """
+        The values of the vertices as xsdata writes them. `repr` is the quick way for nearly
+        all of them, only if one of them looks odd (exponent, nan, inf) all of them take the
+        careful way of `GeometryWriter.format_float`.
+
+        Args:
+            values: The values of the vertices, flat.
+            dimension: The number of axes of a vertex.
+            spec: The spec of the axes, its integer axes are written without decimals.
+
+        Returns:
+            The values as text, flat.
+        """
         strings = list(map(repr, values))
         # repr is what xsdata writes, except exponents, nan and inf
         if any("e" in item or "n" in item for item in strings):
@@ -411,6 +572,17 @@ class GeometryText:
         return strings
 
     def coord_template(self, depth: int, dimension: int, spec: CoordSpec | None) -> str:
+        """
+        The COORD element with a placeholder per axis, put together once per kind.
+
+        Args:
+            depth: The depth of the COORD element.
+            dimension: The number of axes.
+            spec: The spec of the axes.
+
+        Returns:
+            The template for `str.format`.
+        """
         key = (depth, dimension, spec.types if spec else ())
         if key not in self.templates:
             axes = "".join(
@@ -426,6 +598,13 @@ class GeometryText:
     def polyline(
         self, parts: list[str], polyline: Polyline, depth: int, spec: CoordSpec | None
     ) -> None:
+        """
+        Args:
+            parts: The text parts collected so far.
+            polyline: The polyline.
+            depth: The depth of the POLYLINE element.
+            spec: The spec of the axes.
+        """
         name = self.name(self.writer.tags.polyline)
         count = len(polyline)
         if not count:
@@ -462,6 +641,13 @@ class GeometryText:
     def surface(
         self, parts: list[str], surface: Surface, depth: int, spec: CoordSpec | None
     ) -> None:
+        """
+        Args:
+            parts: The text parts collected so far.
+            surface: The surface.
+            depth: The depth of the SURFACE element.
+            spec: The spec of the axes.
+        """
         tags = self.writer.tags
         name = self.name(tags.surface)
         if not surface.boundaries:
@@ -483,6 +669,17 @@ class GeometryText:
         depth: int,
         spec: CoordSpec | None,
     ) -> None:
+        """
+        Args:
+            parts: The text parts collected so far.
+            tag: The element name of the multi geometry, None in INTERLIS 2.3.
+            items: The polylines or surfaces.
+            depth: The depth of the MULTI* element.
+            spec: The spec of the axes.
+
+        Raises:
+            TypeError: If the transfer version knows no multi geometries.
+        """
         if tag is None:
             raise TypeError("the transfer version has no multi geometries")
         name = self.name(tag)
@@ -511,11 +708,26 @@ class GeometryEventWriter(XmlEventWriter):
         ns_map: dict,
         geometry_writer: GeometryWriter,
     ):
+        """
+        Args:
+            config: The xsdata serializer configuration.
+            output: The text stream to write to.
+            ns_map: The namespace prefixes of the document.
+            geometry_writer: The writer of the geometry events of the transfer version.
+        """
         super().__init__(config, output, ns_map)
         self.geometry_writer = geometry_writer
         self.texts: dict[tuple[str | None, int], GeometryText] = {}
 
     def set_data(self, data: Any) -> None:
+        """
+        Writes the data of an element. Plain values are left to xsdata, a geometry is written
+        as text. Since the text bypasses the writer of xsdata, the writer has to be told
+        afterwards that the element is filled, otherwise it would close it as empty.
+
+        Args:
+            data: The value of the element, a compact geometry or anything xsdata knows.
+        """
         if not isinstance(data, Geometry):
             super().set_data(data)
             return
@@ -536,6 +748,13 @@ class GeometryEventWriter(XmlEventWriter):
         self.in_tail = True
 
     def write_events(self, geometry: Geometry) -> None:
+        """
+        Writes the geometry event by event, so xsdata declares the namespace on its first
+        appearance.
+
+        Args:
+            geometry: The compact geometry.
+        """
         for name, *args in self.geometry_writer.events(geometry):
             if name == XmlWriterEvent.START:
                 self.start_tag(*args)
@@ -556,6 +775,18 @@ class GeometrySerializer(XmlSerializer):
     geometry_writer: GeometryWriter | None = None
 
     def convert_element(self, value: Any, var: XmlVar, namespace: str | None) -> Any:
+        """
+        Converts the value of a field into events. A compact geometry would confuse xsdata,
+        it is handed over in one piece, everything else takes the usual way.
+
+        Args:
+            value: The value of the field.
+            var: The xsdata meta of the field.
+            namespace: The namespace of the parent element.
+
+        Yields:
+            The xsdata writer events.
+        """
         if isinstance(value, Geometry) and self.geometry_writer is not None:
             yield XmlWriterEvent.START, var.qname
             yield XmlWriterEvent.DATA, value
@@ -564,6 +795,15 @@ class GeometrySerializer(XmlSerializer):
             yield from super().convert_element(value, var, namespace)
 
     def write(self, out: TextIOBase, obj: Any, ns_map: dict | None = None) -> None:
+        """
+        Writes the object tree to the stream, with `GeometryEventWriter` if a geometry writer
+        is given.
+
+        Args:
+            out: The text stream to write to.
+            obj: The object tree.
+            ns_map: The namespace prefixes, key None is the default namespace.
+        """
         if self.geometry_writer is None:
             super().write(out, obj, ns_map)
             return
@@ -604,12 +844,18 @@ class XsdataBackend(XtfBackend):
     def geometry_tags(transfer_class: type) -> GeometryTags:
         """
         The element names of the geometry in the transfer version the transfer class reads.
+        The backend only chooses, what the names are is the business of the version packages
+        (`interfaces.interlis.interlis_23`, `interfaces.interlis.interlis_24`). It does not
+        guess either: a transfer of neither version would only fail later and less clearly.
 
         Args:
             transfer_class: The class of the root element of the XTF (`xtf_opening.Transfer`).
 
         Returns:
             The element names of INTERLIS 2.3 or 2.4.
+
+        Raises:
+            ValueError: If the transfer class belongs to neither version.
         """
         for tags_class in (Ili23GeometryTags, Ili24GeometryTags):
             if tags_class.reads(transfer_class):
@@ -622,12 +868,32 @@ class XsdataBackend(XtfBackend):
         return transfer_class.__module__.rsplit(".", 1)[0]
 
     def read(self, source: str | Path | IO[bytes], transfer_class: type[T]) -> T:
+        """
+        Parses an XTF into the objects of the classes, see `parse`. The special types of the
+        library are registered for the time of the call.
+
+        Args:
+            source: The path or file object of the XTF.
+            transfer_class: The class of the root element of the XTF (`xtf_opening.Transfer`).
+
+        Returns:
+            The transfer object tree.
+        """
         with registered_converters(self.library_name(transfer_class)):
             return self.parse(source, transfer_class)
 
     def write(
         self, transfer: Any, out: TextIOBase, ns_map: dict[str | None, str] | None = None
     ) -> None:
+        """
+        Serializes a transfer object tree to an XTF, see `serialize`. The special types of the
+        library are registered for the time of the call.
+
+        Args:
+            transfer: The transfer object tree.
+            out: The text stream to write to.
+            ns_map: The namespace prefixes, key None is the default namespace.
+        """
         with registered_converters(self.library_name(type(transfer))):
             self.serialize(transfer, out, ns_map)
 
