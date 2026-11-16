@@ -4,20 +4,13 @@ import importlib
 import subprocess
 import sys
 import zipfile
-from base64 import b64decode, b64encode
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from types import ModuleType
-from typing import IO, Any, cast
+from typing import IO, cast
 from xml.etree.ElementTree import iterparse
-
-from xsdata.formats.converter import Converter, converter
-from xsdata.formats.dataclass.parsers import XmlParser
-from xsdata.formats.dataclass.parsers.config import ParserConfig
-from xsdata.formats.dataclass.serializers import XmlSerializer
-from xsdata.formats.dataclass.serializers.config import SerializerConfig
 
 from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
@@ -39,6 +32,10 @@ class XtfHeader:
 
     models: set[str] = field(default_factory=set)
     namespaces: dict[str, str] = field(default_factory=dict)
+
+    def ns_map(self) -> dict[str | None, str]:
+        """The namespaces as the xsdata serializer takes them, the default "" becomes None."""
+        return {(prefix or None): uri for prefix, uri in self.namespaces.items()}
 
 
 @dataclass
@@ -105,17 +102,36 @@ def _extract_member(archive: zipfile.ZipFile, member: str, target_dir: Path) -> 
     return target
 
 
-def find_xtf(library: GeneratedLibrary, model_folder: Path, target_dir: Path) -> Path:
+def imd_models(index: Index) -> tuple[str, set[str]]:
     """
-    Finds the XTF for a generated library in its test data folder.
-
-    The main model (library name) is searched first. Only if no XTF lists it, the other
-    models of the IMD are accepted (e.g. LV95 variant in an IMD whose last model is LV03).
-    Imported models are not preferred, otherwise data of an imported model in the same
-    folder would win (LWB_Nutzungsflaechen_V2_0 imports LWB_Bewirtschaftungseinheiten_V2_0).
+    The models of an IMD as the XTF of it lists them.
 
     Args:
-        library: The generated library the XTF is searched for.
+        index: The index of the IMD.
+
+    Returns:
+        The main model (the last one, it is the library name) and all models except INTERLIS.
+        An IMD can hold several (e.g. LV03 and LV95).
+    """
+    return index.types_bucket["Model"][-1].name, {
+        model.name
+        for model in index.types_bucket["Model"]
+        if model.name != "INTERLIS" and "." not in model.name
+    }
+
+
+def find_xtf(main_model: str, models: set[str], model_folder: Path, target_dir: Path) -> Path:
+    """
+    Finds the XTF for the models of an IMD in its test data folder, see `imd_models`.
+
+    The main model is searched first. Only if no XTF lists it, the other models of the IMD
+    are accepted (e.g. LV95 variant in an IMD whose last model is LV03). Imported models are
+    not preferred, otherwise data of an imported model in the same folder would win
+    (LWB_Nutzungsflaechen_V2_0 imports LWB_Bewirtschaftungseinheiten_V2_0).
+
+    Args:
+        main_model: The main model of the IMD.
+        models: All models of the IMD except INTERLIS.
         model_folder: The test data folder of the model.
         target_dir: The folder a zip member is extracted to.
 
@@ -125,12 +141,12 @@ def find_xtf(library: GeneratedLibrary, model_folder: Path, target_dir: Path) ->
     Raises:
         LookupError: If no XTF lists one of the models.
     """
-    for model_names in ({library.name}, library.models):
+    for model_names in ({main_model}, models):
         try:
             return _find_xtf(model_folder, model_names, target_dir)
         except LookupError:
             continue
-    raise LookupError(f"no xtf for models {sorted(library.models)} found in {model_folder}")
+    raise LookupError(f"no xtf for models {sorted(models)} found in {model_folder}")
 
 
 def _find_xtf(model_folder: Path, model_names: set[str], target_dir: Path) -> Path:
@@ -183,18 +199,14 @@ def generate_library(imd_path: Path, output_path: Path) -> GeneratedLibrary:
     """
     metamodel = Imd16Reader().read(str(imd_path))
     index = Index(metamodel.datasection)
-    library_name = index.types_bucket["Model"][-1].name
+    library_name, models = imd_models(index)
     library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
     create_python_classes(library, index, str(output_path))
     return GeneratedLibrary(
         name=library_name,
         ili_version=handle_model_versions(index),
         path=output_path / library_name,
-        models={
-            model.name
-            for model in index.types_bucket["Model"]
-            if model.name != "INTERLIS" and "." not in model.name
-        },
+        models=models,
     )
 
 
@@ -221,114 +233,6 @@ def imported_library(library: GeneratedLibrary) -> Iterator[ModuleType]:
             if module_name == library.name or module_name.startswith(f"{library.name}."):
                 del sys.modules[module_name]
         importlib.invalidate_caches()
-
-
-class SpecialTypeConverter(Converter):
-    """
-    Converts the special str, int and float types of a generated library (e.g.
-    INTERLIS.UUIDOID, INTERLIS.GregorianYear). The type is bound per instance, so every
-    registered type gets its own converter.
-    """
-
-    def __init__(self, data_type: type):
-        self.data_type = data_type
-
-    def deserialize(self, value: Any, **kwargs: Any) -> Any:
-        return self.data_type(value) if value is not None else None
-
-    def serialize(self, value: Any, **kwargs: Any) -> str | None:  # type: ignore[override]
-        return str(value) if value is not None else None
-
-
-class BinBlBoxConverter(Converter):
-    """
-    Converts the BLACKBOX BINARY type of a generated library, the XTF holds it base64
-    encoded.
-    """
-
-    def __init__(self, data_type: type):
-        self.data_type = data_type
-
-    def deserialize(self, value: Any, **kwargs: Any) -> Any:
-        return self.data_type(b64decode(value)) if value is not None else None
-
-    def serialize(self, value: Any, **kwargs: Any) -> str | None:  # type: ignore[override]
-        return b64encode(value).decode() if value is not None else None
-
-
-@contextmanager
-def registered_types(library: GeneratedLibrary) -> Iterator[None]:
-    """
-    Registers the special types of a generated library as xsdata converters and unregisters
-    them on exit. xsdata supports only registered types, models and enums, without it e.g. a
-    TID typed with INTERLIS.UUIDOID fails. Reading and writing have to happen inside, the
-    parser and the serializer build their own context.
-
-    The converter registry of xsdata is global per process, it is not thread safe.
-
-    Args:
-        library: The generated library, it has to be imported (see `imported_library`).
-    """
-    convertable_types = importlib.import_module(f"{library.name}.convertable_types")
-    references = importlib.import_module(f"{library.name}.references")
-    # 2.3 wraps the bytes in the BinBlBoxType element, 2.4 uses BinBlBoxType directly
-    bin_bl_box = getattr(references, "BinBlBox", references.BinBlBoxType)
-    converters: dict[type, Converter] = {bin_bl_box: BinBlBoxConverter(bin_bl_box)}
-    for special_type in (
-        convertable_types.get_special_str_types()
-        + convertable_types.get_special_int_types()
-        + convertable_types.get_special_float_types()
-    ):
-        converters[special_type] = SpecialTypeConverter(special_type)
-    for data_type, type_converter in converters.items():
-        converter.register_converter(data_type, type_converter)
-    try:
-        yield
-    finally:
-        for data_type in converters:
-            converter.unregister_converter(data_type)
-
-
-def read_xtf(path: Path, transfer_class: type[Any]) -> Any:
-    """
-    Parses an XTF into the generated dataclass objects. Unknown elements, attributes and
-    converter warnings fail, so data the classes can not hold is not dropped silently. Has to
-    be called inside `registered_types`.
-
-    Args:
-        path: The path of the XTF.
-        transfer_class: The Transfer class of the generated library.
-
-    Returns:
-        The transfer object tree.
-    """
-    parser = XmlParser(
-        config=ParserConfig(
-            fail_on_unknown_properties=True,
-            fail_on_unknown_attributes=True,
-            fail_on_converter_warnings=True,
-        )
-    )
-    return parser.parse(str(path), transfer_class)
-
-
-def write_xtf(transfer: Any, path: Path, namespaces: dict[str, str]) -> None:
-    """
-    Serializes the transfer object tree to an XTF. Has to be called inside `registered_types`.
-
-    Args:
-        transfer: The transfer object tree.
-        path: The path of the XTF to write.
-        namespaces: The namespaces of the source XTF, their prefixes are reused.
-    """
-    serializer = XmlSerializer(
-        config=SerializerConfig(indent="  ", xml_declaration=True, encoding="UTF-8")
-    )
-    ns_map: dict[str | None, str] = {
-        (prefix or None): uri for prefix, uri in namespaces.items()
-    }
-    with path.open("w", encoding="UTF-8") as out:
-        serializer.write(out, transfer, ns_map=ns_map)
 
 
 def run_ilivalidator(
