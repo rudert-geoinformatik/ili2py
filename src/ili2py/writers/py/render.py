@@ -16,6 +16,7 @@ from ili2py.writers.py import constraints
 from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.transfer_names import translate_transfer_names
 
+# the namespaces are owned by the version packages, the templates only borrow them
 render_configuration = {
     "2.3": {
         "selector": 23,
