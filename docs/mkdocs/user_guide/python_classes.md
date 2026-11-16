@@ -153,6 +153,7 @@ own reader optimized for your own needs
 | `ili2py.readers.xtf.xsdata_backend`  | `XsdataBackend`, the backend based on [xsdata](https://xsdata.readthedocs.io) and lxml        |
 | `ili2py.readers.xtf.converters`      | `registered_converters`, registers the types of the library which xsdata does not know       |
 | `ili2py.readers.xtf.geometry`        | the compact geometry types, see [Compact geometry](#compact-geometry)                         |
+| `ili2py.readers.xtf.access`          | the access to the geometry, the same compact or not, see [Geometry access](#geometry-access)  |
 | `ili2py.readers.xtf.geometry_parser` | the second pass building the compact geometry                                                 |
 | `ili2py.readers.xtf.backend`         | `XtfBackend`, the interface of a backend                                                      |
 
@@ -235,13 +236,13 @@ The geometry values are:
 | Type            | Values                                                                                                                       |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------|
 | `Coord`         | `coordinates`, a tuple of the axes                                                                                           |
-| `Polyline`      | `coords`, the vertices flat (x1, y1, x2, y2, ...), `dimension`, `arcs` (key is the vertex ending an arc, value the arc point and the radius if given), `vertex(index)` |
+| `Polyline`      | `coords`, the vertices flat (x1, y1, x2, y2, ...), `dimension`, `arcs` (key is the vertex ending an arc, value the arc point and the radius if given), `vertex(index)`, `arc(index)` |
 | `Surface`       | `boundaries`, a list of `Polyline`, the first one is the exterior                                                            |
 | `MultiPolyline` | `polylines`, a list of `Polyline`                                                                                            |
 | `MultiSurface`  | `surfaces`, a list of `Surface`                                                                                              |
 
 The type of the value of a field carries the `spec` of its coord type: the axes, their python types and precisions.
-The parts inside (e.g. the boundaries of a surface) are plain `Polyline`.
+The parts inside (e.g. the boundaries of a surface) carry it as well.
 
 ```python
 for basket in transfer.datasection.baskets:
@@ -255,8 +256,64 @@ for basket in transfer.datasection.baskets:
 ```
 
 !!! note
-    The values are `float`, `float(text)` keeps the value of the XTF exactly. `XsdataBackend` writes them as xsdata
-    writes floats.
+    The values are stored as `float`, `float(text)` keeps the value of the XTF exactly. `XsdataBackend` writes them as
+    xsdata writes floats. What `coordinates`, `vertex` and iterating hand out is in the python types of the axes, e.g.
+    `int` for an axis without decimals, as the dataclasses of the library hold them.
+
+### Geometry access
+
+Read with or without `compact_geometry`, the same attribute holds two different things: the dataclasses of the library,
+which mirror the XML (`Surface.surface.boundaries[0].polyline.vertices[0].c1`), or the compact value
+(`Surface.boundaries[0].coords`). A tool should not have to care which one it gets. Both offer the same access, defined
+as protocols in `ili2py.readers.xtf.access`. They follow the geometry of INTERLIS, not the XML:
+
+| Protocol              | Geometry                     | Access                                                                                          |
+|-----------------------|------------------------------|-------------------------------------------------------------------------------------------------|
+| `CoordAccess`         | COORD                        | `coordinates`, the values of the axes                                                           |
+| `PolylineAccess`      | POLYLINE, DIRECTED POLYLINE  | `len(line)`, iterating gives the axes of each vertex, `vertex(index)`, `arc(index)`             |
+| `SurfaceAccess`       | SURFACE, AREA                | `boundaries`, a list of polylines, the first one is the exterior                                |
+| `MultiPolylineAccess` | MULTIPOLYLINE (2.4)          | `polylines`                                                                                     |
+| `MultiSurfaceAccess`  | MULTISURFACE, MULTIAREA (2.4)| `surfaces`                                                                                      |
+
+`arc(index)` answers with the arc point and the radius if given (`(a1, a2)` or `(a1, a2, r)`) if the vertex ends an
+arc, otherwise with `None`. INTERLIS keeps an arc at its end point, it starts at the vertex before. Indices count from
+the end if negative, as in a list. A vertex which is not there raises an `IndexError`.
+
+The compact types inherit the protocols. The dataclasses of the library fulfill them by their methods, the library does
+not depend on **_ili2py_**. The protocols are checkable at runtime, so a tool can ask which geometry it holds:
+
+```python
+from ili2py.readers.xtf.access import CoordAccess, PolylineAccess, SurfaceAccess
+from ili2py.readers.xtf.xsdata_backend import XsdataBackend
+from oereb.xtf_opening import Transfer
+
+
+def describe(geometry) -> str:
+    if isinstance(geometry, SurfaceAccess):
+        exterior, *holes = geometry.boundaries
+        return f"surface, {len(exterior)} vertices, starts at {exterior.vertex(0)}, {len(holes)} holes"
+    if isinstance(geometry, PolylineAccess):
+        arcs = sum(geometry.arc(index) is not None for index in range(len(geometry)))
+        return f"polyline, {len(geometry)} vertices, {arcs} arcs"
+    if isinstance(geometry, CoordAccess):
+        return f"coord {geometry.coordinates}"
+    return "no geometry"
+
+
+# the very same code for both ways of reading
+for compact_geometry in (False, True):
+    transfer = XsdataBackend(compact_geometry=compact_geometry).read("data.xtf", Transfer)
+    for basket in transfer.datasection.baskets:
+        for element in basket.elements:
+            # the SURFACE attribute Flaeche of the OeREB model
+            if getattr(element, "Flaeche", None) is not None:
+                print(describe(element.Flaeche))
+                # e.g. surface, 12 vertices, starts at (2682494.504, 1258951.958), 0 holes
+```
+
+!!! tip
+    If the model already tells the kind of geometry of an attribute (see [Geometries](#geometries)), there is no need
+    to ask with `isinstance`, the access can be used right away.
 
 ### Own backend
 
@@ -288,7 +345,8 @@ assert isinstance(MyBackend(), XtfBackend)
 
 The geometry types take their values positionally, as listed in the table above, e.g. `Polyline(coords, dimension,
 arcs)` with `coords` as `array("d")`. `Polyline.with_spec(spec)` creates the type carrying the `spec` of the axes, it
-keeps the name `Polyline`.
+keeps the name `Polyline`. A backend bringing its own geometry types lets them fulfill the protocols of
+[Geometry access](#geometry-access), so the tools reading its data don't need to know it.
 
 The element names of the geometry differ between the transfer versions: INTERLIS 2.3 writes them in capitals in its one
 namespace (`COORD`, `C1`), INTERLIS 2.4 in lower case in the namespace `geom` (`geom:coord`, `geom:c1`) and adds the
