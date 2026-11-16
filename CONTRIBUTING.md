@@ -176,6 +176,21 @@ make test-e2e ILIVALIDATOR_VERSION=1.15.0 E2E_WORKERS=8
 
 Without `ILIVALIDATOR_JAR` (set by `make test-e2e`) or `java` the tests are skipped.
 
+To run them for some models only, `model` is handed to pytest as `-k` expression:
+
+```bash
+make test-e2e model="Fruchtfolgeflaechen or Hazard_Mapping"
+```
+
+### Reading and writing with the rendered classes
+
+The tests of reading and writing XTF with the rendered classes are grouped in sections, so they can be run on their own:
+
+* `make test-rendered-read`: the rendered classes read the XTF of a model, with the geometry as dataclasses and compact
+* `make test-rendered-write`: the XTF written with compact geometry is the same as the one written by xsdata alone
+
+Both take `model` as well. They run on a fast selection of INTERLIS 2.3 and 2.4 models and need neither java nor network.
+
 To run the unit tests and the end-to-end tests together:
 
 ```bash
