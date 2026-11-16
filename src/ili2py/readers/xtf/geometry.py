@@ -8,6 +8,11 @@ the task of a backend (see `backend.XtfBackend`), e.g. `xsdata_backend`.
 
 The values are kept as `float`, `float(text)` keeps the value of the transfer exactly (shortest
 repr). The precision of the axes is in `CoordSpec`.
+
+Tools don't need to know any of this. The geometries inherit the protocols of `access`, which
+the rendered dataclasses fulfill as well, so a tool reads a surface the same way whether it
+was read compact or not. Only the values the protocols hand out are converted into the types
+of the axes, what is stored stays float.
 """
 
 from array import array
@@ -158,7 +163,14 @@ class Polyline(Geometry, PolylineAccess):
         return len(self.coords) // self.dimension if self.dimension else 0
 
     def __iter__(self) -> Iterator[tuple[float, ...]]:
-        # this is the hot path, the vertices are sliced without asking `position` each time
+        """
+        Walks the vertices, see `access.PolylineAccess`. This is the hot path of a tool
+        reading all the geometry, so the vertices are sliced straight out of `coords`
+        instead of asking `vertex` and its bounds check each time.
+
+        Yields:
+            The values of the axes of each vertex in the python types of the coord type.
+        """
         coords, dimension = self.coords, self.dimension
         if not dimension:
             # an empty polyline does not know its dimension, there is nothing to slice
@@ -173,6 +185,9 @@ class Polyline(Geometry, PolylineAccess):
 
         Returns:
             The values of the axes of the vertex in the python types of the coord type.
+
+        Raises:
+            IndexError: If the polyline has no such vertex.
         """
         start = self.position(index) * self.dimension
         return self.axis_values(self.coords[start : start + self.dimension])
@@ -180,11 +195,14 @@ class Polyline(Geometry, PolylineAccess):
     def arc(self, index: int) -> tuple[float, ...] | None:
         """
         Args:
-            index: The index of the vertex.
+            index: The index of the vertex, negative counts from the end as in a list.
 
         Returns:
             The intermediate point and the radius if given (A1, A2[, R]) if the vertex ends an
             arc, None if it ends a straight.
+
+        Raises:
+            IndexError: If the polyline has no such vertex.
         """
         return self.arcs.get(self.position(index))
 
