@@ -1,11 +1,28 @@
 from dataclasses import dataclass
 
-# the common name space used in an INTERLIS 2.3 XTF
-namespace_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
+from ili2py.interfaces.interlis import GeometryTags
+
+# the common name space used in an INTERLIS 2.3 XTF, the models share it
+base_url = "http://www.interlis.ch/INTERLIS2.3"
+namespace_map = {"ili": base_url}
 
 
 class ILI_META_BASE:
     namespace = namespace_map["ili"]
+
+
+class Ili23GeometryTags(GeometryTags):
+    """The element names of the geometry in an INTERLIS 2.3 XTF, in the one namespace."""
+
+    transfer_namespace = namespace_map["ili"]
+    namespace = namespace_map["ili"]
+    coord_name = "COORD"
+    arc_name = "ARC"
+    polyline_name = "POLYLINE"
+    surface_name = "SURFACE"
+    boundary_names = ("BOUNDARY",)
+    axis_names = ("C1", "C2", "C3")
+    arc_point_names = ("A1", "A2", "R")
 
 
 @dataclass(kw_only=True)
