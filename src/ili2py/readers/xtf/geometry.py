@@ -11,9 +11,9 @@ repr). The precision of the axes is in `CoordSpec`.
 """
 
 from array import array
-from collections.abc import Iterable, Iterator, Sequence
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from typing import Any, ClassVar, Protocol, Self, runtime_checkable
+from typing import Any, ClassVar, Self
 
 
 @dataclass(frozen=True, slots=True)
@@ -125,7 +125,7 @@ class Coord(Geometry):
 
     @property
     def coordinates(self) -> tuple[float, ...]:
-        """The values of the axes in the python types of the coord type (`CoordAccess`)."""
+        """The values of the axes in the python types of the coord type, see `access`."""
         return self.axis_values(self.values_)
 
 
@@ -148,8 +148,10 @@ class Polyline(Geometry):
         return len(self.coords) // self.dimension if self.dimension else 0
 
     def __iter__(self) -> Iterator[tuple[float, ...]]:
-        for index in range(len(self)):
-            yield self.vertex(index)
+        # this is the hot path, the vertices are sliced without asking `position` each time
+        coords, dimension = self.coords, self.dimension
+        for start in range(0, len(self) * dimension, dimension):
+            yield self.axis_values(coords[start : start + dimension])
 
     def vertex(self, index: int) -> tuple[float, ...]:
         """
@@ -223,61 +225,3 @@ class MultiSurface(Geometry):
     __slots__ = ("surfaces",)
 
     surfaces: list[Surface]
-
-
-@runtime_checkable
-class CoordAccess(Protocol):
-    """
-    The access to a COORD, the same for the compact geometry (`Coord`) and the rendered coord
-    dataclasses. Tools reading geometry rely on this and not on how it is stored.
-    """
-
-    @property
-    def coordinates(self) -> tuple[float, ...]: ...
-
-
-@runtime_checkable
-class PolylineAccess(Protocol):
-    """
-    The access to a POLYLINE, the same for the compact geometry (`Polyline`) and the rendered
-    line dataclasses. Iterating gives the values of the axes of each vertex.
-    """
-
-    def __len__(self) -> int: ...
-
-    def __iter__(self) -> Iterator[tuple[float, ...]]: ...
-
-    def vertex(self, index: int) -> tuple[float, ...]: ...
-
-    def arc(self, index: int) -> tuple[float, ...] | None: ...
-
-
-@runtime_checkable
-class SurfaceAccess(Protocol):
-    """
-    The access to a SURFACE or AREA, the same for the compact geometry (`Surface`) and the
-    rendered surface dataclasses. The first boundary is the exterior.
-    """
-
-    @property
-    def boundaries(self) -> Sequence[PolylineAccess]: ...
-
-
-@runtime_checkable
-class MultiPolylineAccess(Protocol):
-    """
-    The access to a MULTIPOLYLINE (INTERLIS 2.4), see `PolylineAccess`.
-    """
-
-    @property
-    def polylines(self) -> Sequence[PolylineAccess]: ...
-
-
-@runtime_checkable
-class MultiSurfaceAccess(Protocol):
-    """
-    The access to a MULTISURFACE or MULTIAREA (INTERLIS 2.4), see `SurfaceAccess`.
-    """
-
-    @property
-    def surfaces(self) -> Sequence[SurfaceAccess]: ...
