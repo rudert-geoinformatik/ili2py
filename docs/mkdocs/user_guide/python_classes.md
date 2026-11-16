@@ -336,8 +336,7 @@ class MyBackend:
 
     def write(
         self, transfer: Any, out: TextIOBase, ns_map: dict[str | None, str] | None = None
-    ) -> None:
-        ...
+    ) -> None: ...
 
 
 assert isinstance(MyBackend(), XtfBackend)
