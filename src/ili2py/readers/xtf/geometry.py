@@ -150,6 +150,9 @@ class Polyline(Geometry):
     def __iter__(self) -> Iterator[tuple[float, ...]]:
         # this is the hot path, the vertices are sliced without asking `position` each time
         coords, dimension = self.coords, self.dimension
+        if not dimension:
+            # an empty polyline does not know its dimension, there is nothing to slice
+            return
         for start in range(0, len(self) * dimension, dimension):
             yield self.axis_values(coords[start : start + dimension])
 

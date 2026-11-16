@@ -8,12 +8,13 @@ from ili2py.interfaces.interlis.interlis_24 import Ili24GeometryTags
 from ili2py.readers.xtf.backend import XtfBackend
 from ili2py.readers.xtf.geometry import (
     Coord,
-    CoordSpec,
     MultiPolyline,
+    MultiSurface,
     Polyline,
     Surface,
 )
 from ili2py.readers.xtf.xsdata_backend import (
+    CompactGeometryBuilder,
     GeometryReader,
     GeometryText,
     GeometryWriter,
@@ -29,17 +30,6 @@ def ili23_reader() -> GeometryReader:
 @pytest.fixture
 def ili24_reader() -> GeometryReader:
     return GeometryReader(Ili24GeometryTags())
-
-
-@pytest.fixture
-def integer_east_spec() -> CoordSpec:
-    # a coord type with an integer first axis, e.g. COORD 0 .. 10 [m], 0.000 .. 10.000 [m]
-    return CoordSpec(
-        tid="Model.Coord",
-        axes=("C1", "C2"),
-        types=(int, float),
-        precisions=(None, 3),
-    )
 
 
 class TestXsdataBackend:
@@ -133,6 +123,29 @@ class TestGeometryReader:
         element = etree.fromstring(b'<point xmlns="http://www.interlis.ch/geometry/1.0"/>')
         with pytest.raises(ValueError, match="unknown geometry element"):
             ili24_reader.geometry(element)
+
+
+class TestCompactGeometryBuilder:
+    def test_the_parts_carry_the_spec_as_well(self, integer_east_spec):
+        builder = CompactGeometryBuilder(Ili24GeometryTags())
+        boundary = Polyline(array("d", [1.0, 0.5, 2.0, 0.5, 1.0, 0.5]), 2, {})
+        multi_surface = builder.typed(MultiSurface([Surface([boundary])]), integer_east_spec)
+        # not only the geometry of the field, a boundary on its own knows its axes too, so it
+        # answers with the int axis as the rendered dataclasses do
+        surface = multi_surface.surfaces[0]
+        assert surface.spec == integer_east_spec
+        assert surface.boundaries[0].spec == integer_east_spec
+        assert surface.boundaries[0].vertex(0) == (1, 0.5)
+        assert type(surface.boundaries[0].vertex(0)[0]) is int
+        # the values are the same as before
+        assert multi_surface == MultiSurface([Surface([boundary])])
+
+    def test_a_typed_type_is_created_once(self, integer_east_spec):
+        builder = CompactGeometryBuilder(Ili24GeometryTags())
+        first = builder.typed(Coord((1.0, 2.0)), integer_east_spec)
+        second = builder.typed(Coord((3.0, 4.0)), integer_east_spec)
+        # a type per geometry and spec, not one per geometry read
+        assert type(first) is type(second)
 
 
 class TestGeometryWriter:

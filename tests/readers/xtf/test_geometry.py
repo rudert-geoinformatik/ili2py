@@ -3,7 +3,21 @@ from array import array
 
 import pytest
 
-from ili2py.readers.xtf.geometry import Coord, CoordSpec, Polyline, Surface
+from ili2py.readers.xtf.access import (
+    CoordAccess,
+    MultiPolylineAccess,
+    MultiSurfaceAccess,
+    PolylineAccess,
+    SurfaceAccess,
+)
+from ili2py.readers.xtf.geometry import (
+    Coord,
+    CoordSpec,
+    MultiPolyline,
+    MultiSurface,
+    Polyline,
+    Surface,
+)
 
 
 @pytest.fixture
@@ -48,6 +62,21 @@ class TestGeometry:
         assert lv95_coord((1.0, 2.0)).fields() == ("values_",)
 
 
+class TestCoord:
+    def test_coordinates_without_spec_are_floats(self):
+        # without a spec nobody knows better, the values stay as they were read
+        assert Coord((2600000.0, 1200000.0)).coordinates == (2600000.0, 1200000.0)
+
+    def test_coordinates_come_in_the_types_of_the_axes(self, integer_east_spec):
+        # the compact geometry stores floats, the rendered dataclasses hold the first axis as
+        # int, so the access has to answer with an int as well
+        coord = Coord.with_spec(integer_east_spec)((2600000.0, 1.5))
+        assert coord.coordinates == (2600000, 1.5)
+        assert [type(value) for value in coord.coordinates] == [int, float]
+        # what is stored does not change, the writer relies on it
+        assert coord.values_ == (2600000.0, 1.5)
+
+
 class TestPolyline:
     def test_vertices(self, polyline_with_arc):
         assert len(polyline_with_arc) == 3
@@ -58,6 +87,39 @@ class TestPolyline:
 
     def test_empty_polyline_has_no_vertices(self):
         assert len(Polyline(array("d"), 0, {})) == 0
+        assert list(Polyline(array("d"), 0, {})) == []
+
+    def test_iterating_gives_the_vertices(self, polyline_with_arc):
+        # one tuple of axis values per vertex, the arc point is not one of them
+        assert list(polyline_with_arc) == [(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)]
+
+    def test_negative_index_counts_from_the_end(self, polyline_with_arc):
+        # as in a list, the rendered dataclasses hold their vertices in one
+        assert polyline_with_arc.vertex(-1) == (2.0, 0.0)
+        assert polyline_with_arc.vertex(-3) == (0.0, 0.0)
+
+    @pytest.mark.parametrize("index", [3, -4])
+    def test_vertex_out_of_range_fails(self, polyline_with_arc, index):
+        # a slice would answer with an empty tuple, a missing vertex has to be loud
+        with pytest.raises(IndexError, match="out of 3"):
+            polyline_with_arc.vertex(index)
+        with pytest.raises(IndexError, match="out of 3"):
+            polyline_with_arc.arc(index)
+
+    def test_arc_of_a_vertex(self, polyline_with_arc):
+        # the vertex 2 ends the arc, the vertices before end a straight
+        assert polyline_with_arc.arc(2) == (2.5, 1.5)
+        assert polyline_with_arc.arc(-1) == (2.5, 1.5)
+        assert polyline_with_arc.arc(1) is None
+        assert polyline_with_arc.arc(0) is None
+
+    def test_vertices_come_in_the_types_of_the_axes(self, integer_east_spec):
+        polyline = Polyline.with_spec(integer_east_spec)(array("d", [1.0, 0.5, 2.0, 0.25]), 2, {})
+        # the first axis is an int, by index and by iterating
+        assert polyline.vertex(0) == (1, 0.5)
+        assert [type(value) for value in polyline.vertex(0)] == [int, float]
+        assert list(polyline) == [(1, 0.5), (2, 0.25)]
+        assert [type(value) for value in list(polyline)[1]] == [int, float]
 
 
 class TestSurface:
@@ -65,3 +127,25 @@ class TestSurface:
         surface = Surface([polyline_with_arc])
         assert surface.boundaries == [polyline_with_arc]
         assert surface == Surface([polyline_with_arc])
+
+
+class TestAccess:
+    def test_coord(self):
+        assert isinstance(Coord((1.0, 2.0)), CoordAccess)
+
+    def test_polyline(self, polyline_with_arc):
+        assert isinstance(polyline_with_arc, PolylineAccess)
+
+    def test_surface(self, polyline_with_arc):
+        assert isinstance(Surface([polyline_with_arc]), SurfaceAccess)
+
+    def test_multi_polyline(self, polyline_with_arc):
+        assert isinstance(MultiPolyline([polyline_with_arc]), MultiPolylineAccess)
+
+    def test_multi_surface(self, polyline_with_arc):
+        assert isinstance(MultiSurface([Surface([polyline_with_arc])]), MultiSurfaceAccess)
+
+    def test_a_coord_is_no_polyline(self):
+        # the protocols tell the geometries apart, tools can ask which one they have
+        assert not isinstance(Coord((1.0, 2.0)), PolylineAccess)
+        assert not isinstance(Coord((1.0, 2.0)), SurfaceAccess)

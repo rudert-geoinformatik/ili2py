@@ -9,11 +9,18 @@ from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from types import ModuleType
-from typing import IO, cast
+from typing import IO, Any, cast
 from xml.etree.ElementTree import iterparse
 
 from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
+from ili2py.readers.xtf.access import (
+    CoordAccess,
+    MultiPolylineAccess,
+    MultiSurfaceAccess,
+    PolylineAccess,
+    SurfaceAccess,
+)
 from ili2py.writers.helpers import handle_model_versions
 from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.render import create_python_classes
@@ -233,6 +240,69 @@ def imported_library(library: GeneratedLibrary) -> Iterator[ModuleType]:
             if module_name == library.name or module_name.startswith(f"{library.name}."):
                 del sys.modules[module_name]
         importlib.invalidate_caches()
+
+
+def read_by_access(geometry: Any) -> Any:
+    """
+    Reads a geometry through the access protocols (`ili2py.readers.xtf.access`) only, into
+    plain tuples and lists. Two geometries read like this are equal if a tool reading them
+    can not tell them apart, whether they are compact or the rendered dataclasses.
+
+    Args:
+        geometry: The value of a geometric field.
+
+    Returns:
+        The kind of the geometry and what the access tells about it, the python types of the
+        axis values included.
+    """
+    if isinstance(geometry, MultiSurfaceAccess):
+        return "multisurface", [read_by_access(surface) for surface in geometry.surfaces]
+    if isinstance(geometry, MultiPolylineAccess):
+        return "multipolyline", [read_by_access(polyline) for polyline in geometry.polylines]
+    if isinstance(geometry, SurfaceAccess):
+        return "surface", [read_by_access(boundary) for boundary in geometry.boundaries]
+    if isinstance(geometry, PolylineAccess):
+        vertices = [
+            (vertex, [type(value) for value in vertex], geometry.arc(index))
+            for index, vertex in enumerate(geometry)
+        ]
+        return "polyline", vertices
+    if isinstance(geometry, CoordAccess):
+        coordinates = geometry.coordinates
+        return "coord", coordinates, [type(value) for value in coordinates]
+    raise TypeError(f"{type(geometry)} offers no geometry access")
+
+
+def geometries_by_access(transfer: Any) -> list[tuple[int, str, Any]]:
+    """
+    The geometric attributes of all objects of a transfer, read through the access protocols
+    (see `read_by_access`). Only the attributes of the objects are visited, not the ones of
+    structures inside them.
+
+    Args:
+        transfer: The transfer object tree.
+
+    Returns:
+        The position of the object, the attribute name and the geometry as read.
+    """
+    found = []
+    elements = (
+        element for basket in transfer.datasection.baskets for element in basket.elements
+    )
+    for position, element in enumerate(elements):
+        for name, value in vars(element).items():
+            if isinstance(
+                value,
+                (
+                    CoordAccess,
+                    PolylineAccess,
+                    SurfaceAccess,
+                    MultiPolylineAccess,
+                    MultiSurfaceAccess,
+                ),
+            ):
+                found.append((position, name, read_by_access(value)))
+    return found
 
 
 def run_ilivalidator(

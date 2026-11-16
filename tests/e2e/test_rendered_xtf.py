@@ -15,7 +15,7 @@ from xsdata.formats.dataclass.serializers import XmlSerializer
 from ili2py.readers.xtf.converters import registered_converters
 from ili2py.readers.xtf.xsdata_backend import XsdataBackend
 
-from .helpers import imported_library, xtf_header
+from .helpers import geometries_by_access, imported_library, xtf_header
 
 
 class TestRenderedXtf:
@@ -30,6 +30,24 @@ class TestRenderedXtf:
             # the root is the Transfer of the rendered library and it holds the data
             assert isinstance(transfer, xtf_opening.Transfer)
             assert transfer.datasection.baskets
+
+    @pytest.mark.rendered_read
+    def test_geometry_access_is_the_same_compact_or_not(
+        self, fast_library, fast_xtf, parser_config
+    ):
+        with imported_library(fast_library) as xtf_opening:
+            # we read the XTF twice, once with the geometry as the rendered dataclasses and
+            # once compact
+            as_dataclasses = XsdataBackend(parser_config=parser_config).read(
+                fast_xtf, xtf_opening.Transfer
+            )
+            as_compact = XsdataBackend(
+                parser_config=parser_config, compact_geometry=True
+            ).read(fast_xtf, xtf_opening.Transfer)
+
+        # a tool reading the geometry through the access must not see a difference: same
+        # attributes, same vertices and arcs, the axis values in the same python types
+        assert geometries_by_access(as_dataclasses) == geometries_by_access(as_compact)
 
     @pytest.mark.rendered_write
     def test_compact_geometry_writes_what_xsdata_writes(
