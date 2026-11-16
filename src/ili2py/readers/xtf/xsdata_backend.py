@@ -208,13 +208,31 @@ class CompactGeometryBuilder(GeometryBuilder):
         spec = self.specs[key]
         if spec is None:
             return geometry
+        return self.typed(geometry, spec)
+
+    def typed(self, geometry: Geometry, spec: CoordSpec) -> Geometry:
+        """
+        The geometry with the type carrying the spec of the axes, its parts as well (the
+        boundaries of a surface, the polylines of a multi polyline, ...). Otherwise a boundary
+        would not know its axis types and answer different than the rendered dataclasses.
+
+        Args:
+            geometry: The geometry without spec.
+            spec: The spec of the axes.
+
+        Returns:
+            The geometry with the same values, the type carries the spec.
+        """
         base = type(geometry)
         typed = self.types.get((base, spec))
         if typed is None:
             typed = base.with_spec(spec)
             self.types[(base, spec)] = typed
-        # same values, the type carries the spec
-        return typed(*geometry.values())
+        values = (
+            [self.typed(part, spec) for part in value] if isinstance(value, list) else value
+            for value in geometry.values()
+        )
+        return typed(*values)
 
     def spec(self, owner: type, name: str) -> CoordSpec | None:
         """

@@ -1,4 +1,5 @@
 {%- from "macros/docs.jinja2" import docstring %}
+{%- from "macros/geometry.jinja2" import surface_access, multi_surface_access %}
 {%- from "macros/fields.jinja2" import choice, element_field, elements_field %}
 {%- from "definitions/line_types/polyline.jinja2" import polyline %}
 
@@ -51,6 +52,8 @@ class {{ class_name }}:
         meta_attributes=meta_attributes,
         translations={},
     ) | indent(4) }}
+
+    {{ surface_access() | indent(4) }}
     {%- if caller %}
 
     {{ caller() | indent(4) }}
@@ -89,6 +92,8 @@ class {{ class_name }}:
         meta_attributes=meta_attributes,
         translations={},
     ) | indent(4) }}
+
+    {{ multi_surface_access() | indent(4) }}
     {%- if caller %}
 
     {{ caller() | indent(4) }}

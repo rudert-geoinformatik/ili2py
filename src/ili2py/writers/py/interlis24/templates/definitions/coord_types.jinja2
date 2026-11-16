@@ -1,5 +1,6 @@
 {%- from "macros/docs.jinja2" import docstring %}
 {%- from "macros/fields.jinja2" import element_field %}
+{%- from "macros/geometry.jinja2" import arc_access, axes_access, coord_access %}
 {%- from "macros/metadata.jinja2" import metadata_property %}
 
 {%- macro coord_types(definitions) -%}
@@ -24,6 +25,8 @@ class {{ coord_type.name }}Type:
     ) | indent(4) }}
     {%- endfor %}
 
+    {{ axes_access(coord_type.attributes) | indent(4) }}
+
 
 @dataclass
 class {{ coord_type.name }}:
@@ -32,6 +35,8 @@ class {{ coord_type.name }}:
 
     {{ docstring(coord_type.doc) | indent(4) }}
     {{ element_field("coord", none, coord_type.name ~ "Type | None", namespace, translations={}) | indent(4) }}
+
+    {{ coord_access() | indent(4) }}
 
     {{ metadata_property(
         oid=coord_type.identifier,
@@ -60,6 +65,8 @@ class {{ coord_type.name }}ARCType({{ coord_type.name }}Type):
         translations={},
     ) | indent(4) }}
     {%- endfor %}
+
+    {{ arc_access() | indent(4) }}
 
 
 @dataclass
