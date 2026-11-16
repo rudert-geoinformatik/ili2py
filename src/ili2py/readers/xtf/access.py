@@ -1,8 +1,12 @@
 """
 The access to the geometry of XTF data, the same whether it was read compact (`geometry`) or as
 the rendered dataclasses. Tools reading geometry rely on these protocols and not on how the
-geometry is stored, the rendered classes and the compact types fulfill them without importing
-them.
+geometry is stored. The compact types inherit them, so the type checker holds them to the
+contract. The rendered classes fulfill them by their shape, the library must not depend on
+ili2py.
+
+The protocols have empty slots, otherwise every compact geometry inheriting them would get a
+`__dict__` and lose what the slots save.
 
 The values of the axes come in the python types of the coord type of the model, the protocols
 follow the geometry of INTERLIS (COORD, POLYLINE with straights and arcs, SURFACE and AREA by
@@ -21,6 +25,8 @@ class CoordAccess(Protocol):
     stored.
     """
 
+    __slots__ = ()
+
     @property
     def coordinates(self) -> tuple[float, ...]: ...
 
@@ -31,6 +37,8 @@ class PolylineAccess(Protocol):
     The access to a POLYLINE, the same for the compact geometry (`geometry.Polyline`) and
     the rendered line dataclasses. Iterating gives the values of the axes of each vertex.
     """
+
+    __slots__ = ()
 
     def __len__(self) -> int: ...
 
@@ -48,6 +56,8 @@ class SurfaceAccess(Protocol):
     and the rendered surface dataclasses. The first boundary is the exterior.
     """
 
+    __slots__ = ()
+
     @property
     def boundaries(self) -> Sequence[PolylineAccess]: ...
 
@@ -58,6 +68,8 @@ class MultiPolylineAccess(Protocol):
     The access to a MULTIPOLYLINE (INTERLIS 2.4), see `PolylineAccess`.
     """
 
+    __slots__ = ()
+
     @property
     def polylines(self) -> Sequence[PolylineAccess]: ...
 
@@ -67,6 +79,8 @@ class MultiSurfaceAccess(Protocol):
     """
     The access to a MULTISURFACE or MULTIAREA (INTERLIS 2.4), see `SurfaceAccess`.
     """
+
+    __slots__ = ()
 
     @property
     def surfaces(self) -> Sequence[SurfaceAccess]: ...

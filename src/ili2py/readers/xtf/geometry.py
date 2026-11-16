@@ -15,6 +15,14 @@ from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from typing import Any, ClassVar, Self
 
+from ili2py.readers.xtf.access import (
+    CoordAccess,
+    MultiPolylineAccess,
+    MultiSurfaceAccess,
+    PolylineAccess,
+    SurfaceAccess,
+)
+
 
 @dataclass(frozen=True, slots=True)
 class CoordSpec:
@@ -72,7 +80,9 @@ class Geometry:
         Returns:
             The subclass, the backend keeps one per geometry type and spec.
         """
-        return type(cls.__name__, (cls,), {"__slots__": (), "spec": spec})
+        # the protocol bases bring their metaclass, without the module it would claim to be abc
+        namespace = {"__slots__": (), "spec": spec, "__module__": cls.__module__}
+        return type(cls.__name__, (cls,), namespace)
 
     def values(self) -> tuple[Any, ...]:
         """The values in the order of `fields`, enough to build the geometry again."""
@@ -112,7 +122,7 @@ class Geometry:
         return type(self), self.values()
 
 
-class Coord(Geometry):
+class Coord(Geometry, CoordAccess):
     """
     Attributes:
         values_: The values of the axes (C1, C2[, C3]). The trailing underscore keeps it apart
@@ -129,7 +139,7 @@ class Coord(Geometry):
         return self.axis_values(self.values_)
 
 
-class Polyline(Geometry):
+class Polyline(Geometry, PolylineAccess):
     """
     Attributes:
         coords: The coordinates of all vertices, flat (x1, y1, x2, y2, ...).
@@ -197,7 +207,7 @@ class Polyline(Geometry):
         return index % count
 
 
-class Surface(Geometry):
+class Surface(Geometry, SurfaceAccess):
     """
     Attributes:
         boundaries: The boundaries, the first one is the exterior.
@@ -208,7 +218,7 @@ class Surface(Geometry):
     boundaries: list[Polyline]
 
 
-class MultiPolyline(Geometry):
+class MultiPolyline(Geometry, MultiPolylineAccess):
     """
     Attributes:
         polylines: The polylines, INTERLIS 2.4 only.
@@ -219,7 +229,7 @@ class MultiPolyline(Geometry):
     polylines: list[Polyline]
 
 
-class MultiSurface(Geometry):
+class MultiSurface(Geometry, MultiSurfaceAccess):
     """
     Attributes:
         surfaces: The surfaces, INTERLIS 2.4 only.
