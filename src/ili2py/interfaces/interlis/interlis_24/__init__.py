@@ -12,7 +12,11 @@ namespace_map = {
 
 
 class Ili24GeometryTags(GeometryTags):
-    """The element names of the geometry in an INTERLIS 2.4 XTF, in the namespace geom."""
+    """
+    The element names of the geometry in an INTERLIS 2.4 XTF. 2.4 moved the geometry into a
+    namespace of its own (geom), writes it in lower case and learned MULTI geometries on the
+    way.
+    """
 
     transfer_namespace = namespace_map["ili"]
     namespace = namespace_map["geom"]

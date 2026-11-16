@@ -28,6 +28,8 @@ class GeometryTags(ABC):  # noqa: B024 - subclasses set the names of their trans
     multisurface_name: ClassVar[str | None] = None
 
     def __init__(self) -> None:
+        # the qualified names are plain attributes, the readers compare them per element and
+        # a property would be asked again every time
         self.coord = self.qualified(self.coord_name)
         self.arc = self.qualified(self.arc_name)
         self.polyline = self.qualified(self.polyline_name)
@@ -68,7 +70,11 @@ class GeometryTags(ABC):  # noqa: B024 - subclasses set the names of their trans
 
     @property
     def geometries(self) -> frozenset[str]:
-        """The element names of the geometries (COORD, POLYLINE, SURFACE, MULTI*)."""
+        """
+        The element names of the geometries (COORD, POLYLINE, SURFACE, MULTI*). A geometric
+        field holding one of them is left to the compact path, anything else (e.g. a
+        structure with a geometry inside) stays with xsdata.
+        """
         candidates = (
             self.coord,
             self.polyline,

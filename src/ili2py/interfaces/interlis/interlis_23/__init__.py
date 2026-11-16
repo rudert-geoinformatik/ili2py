@@ -12,7 +12,11 @@ class ILI_META_BASE:
 
 
 class Ili23GeometryTags(GeometryTags):
-    """The element names of the geometry in an INTERLIS 2.3 XTF, in the one namespace."""
+    """
+    The element names of the geometry in an INTERLIS 2.3 XTF. 2.3 keeps everything in its one
+    namespace, writes the elements in capitals and does not know MULTI geometries yet
+    (see the encoding of the geometry in ili2-refman_2006-04-13_d.pdf).
+    """
 
     transfer_namespace = namespace_map["ili"]
     namespace = namespace_map["ili"]
