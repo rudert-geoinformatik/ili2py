@@ -20,11 +20,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y plantuml npm
-      - name: Install browsers for puppeteer
-        run: npx puppeteer browsers install chrome
+      # installed for the runner user (no sudo), so the postinstall of the puppeteer bundled
+      # with mermaid-cli downloads its matching chrome into the runner users ~/.cache/puppeteer
       - name: Install Mermaid CLI
+        env:
+          MERMAID_CLI_VERSION: "12.2.0"
         run: |
-          sudo npm install -g @mermaid-js/mermaid-cli
+          npm config set prefix ~/.npm-global
+          echo ~/.npm-global/bin >> "$GITHUB_PATH"
+          npm install -g @mermaid-js/mermaid-cli@${MERMAID_CLI_VERSION}
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -39,7 +43,7 @@ jobs:
           enable-cache: true
       - name: Build Artifacts
         run: |
-          echo "{\"executablePath\": \"$(ls -d ~/.cache/puppeteer/chrome/linux-*/chrome-linux*/chrome | head -n 1)\", \"args\": [\"--no-sandbox\", \"--disable-setuid-sandbox\"]}" > puppeteer-config.json
+          echo "{\"args\": [\"--no-sandbox\", \"--disable-setuid-sandbox\"]}" > puppeteer-config.json
           make output-test
       - name: Move Artifact ZIP
         run: |
