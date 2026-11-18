@@ -10,8 +10,6 @@ from ili2py.mappers.helpers import Index
 from ili2py.writers.diagram.interlis.uml import Diagram, TopicGroup
 from ili2py.writers.helpers import create_file
 
-ns_map = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
-
 
 @dataclass
 class FlavourSettings:

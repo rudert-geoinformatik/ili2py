@@ -1,122 +1,127 @@
 import importlib
 import os
 import sys
-import tempfile
 import typing
+from pathlib import Path
 
 import pytest
-from xsdata.formats.dataclass.parsers.config import ParserConfig
 
 from ili2py.mappers.helpers import Index
 from ili2py.readers.interlis_24.ilismeta16.xsdata import Imd16Reader
 from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.render import create_python_classes
 
-output_path = tempfile.mkdtemp(prefix="ili2py")
 
+class TestWritePython:
+    @pytest.mark.parametrize(
+        "imd_path",
+        [
+            "models/Planerischer_Gewaesserschutz_V1_2/PlanerischerGewaesserschutz_V1_2.imd",
+            "models/Kataster_belasteter_Standorte_V1_5/KbS_V1_5.imd",
+            "models/Nutzungsplanung_V1_2/Nutzungsplanung_V1_2.imd",
+            "models/Revitalisierungen_Fliessgewaesser_V1_2/Revitalisierung_Fliessgewaesser_V1_2.imd",
+            "models/Waldreservate_V2_0/Waldreservate_V2_0.imd",
+            "models/Elektrische_Anlagen_Nennspannung_36kV_V1_0/ElektrischeAnlagenNennspannungUeber36kV_V1.imd",
+            "models/LWB_Bewirtschaftungseinheiten_V3_0/LWB_Bewirtschaftungseinheiten_V3_0.imd",
+            "models/Wildruhezonen_V2_1_1/Wildruhezonen_V2_1.imd",
+            "models/SZ_Lebensraum_Fisch_V2/SZ_Lebensraum_Fisch_V2.imd",
+            "models/LWB_Biodiversitaetsfoerderflaechen_Qualitaet_II_und_Vernetzung_V2_0/LWB_Biodiversitaetsfoerderflaechen_Qualitaet_II_und_Vernetzung_V2_0.imd",
+            "models/SZ_Waldreservate_V3/SZ_Waldreservate_V3.imd",
+            "models/Naturereigniskataster_V1_0/Naturereigniskataster_MGDM_V1.imd",
+            "models/Grundwasservorkommen_V2_0/Grundwasservorkommen_V2_0.imd",
+            "models/Laermempfindlichkeitsstufen_V1_2/Laermempfindlichkeitsstufen_V1_2.imd",
+            "models/LWB_Perimeter_Terrassenreben_V2_0/LWB_Perimeter_Terrassenreben_V2_0.imd",
+            "models/SIA405_Abwasser_2015_2_d-20180417/SIA405_Abwasser_2015_2_d-20180417.imd",
+            "models/SIA405_Abwasser_3D_2015_2_d-20211020/SIA405_Abwasser_3D_2015_2_d-20211020.imd",
+            "models/Statische_Waldgrenzen_v1_2/Waldgrenzen_V1_2.imd",
+            "models/SZ_Waldfeststellungen_V2/SZ_Waldfeststellungen_V2.imd",
+            "models/Revitalisierung_Seeufer_V1_2/Revitalisierung_Seen_V1_2.imd",
+            "models/Gewaesserraum_V1_1/Gewaesserraum_V1_1.imd",
+            "models/Gewaesserraum_V1_1/Gewaesserraum_LegendeEintrag_V1_1.imd",
+            "models/SupplySecurity_RuledAreas_V1_2/SupplySecurity_RuledAreas_V1_2.imd",
+            "models/Richtplan_erneuerbare_Energien_V1_0/RichtplanungErneuerbareEnergien_V1.imd",
+            "models/SO_AFU_ABBAUSTELLEN_Publikation_20221103/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd",
+            "models/Waldreservate_V1_1/Waldreservate_V1_1.imd",
+            "models/Leitungskataster/SIA405_LKMap_2015_2_d-20180427.imd",
+            "models/Inventar_Wasserentnahmen_V1_1/InventarWasserentnahmen_V1_1.imd",
+            "models/Sanierung_Wasserkraft_V1_2/SanierungWasserkraft_V1_2.imd",
+            "models/Fruchtfolgeflaechen_V1/Fruchtfolgeflaechen_V1.imd",
+            "models/LWB_Bewirtschaftungseinheiten_V2_0/LWB_Bewirtschaftungseinheiten_V2_0.imd",
+            "models/Hazard_Mapping_V1_3/Hazard_Mapping_V1_3.imd",
+            "models/SIA405_LKMap_3D_2015_2_d-20180427/SIA405_LKMap_3D_2015_2_d-20180427.imd",
+            "models/LWB_Nutzungsflaechen_V3_0/LWB_Nutzungsflaechen_V3_0.imd",
+            "models/LWB_Nutzungsflaechen_V2_0/LWB_Nutzungsflaechen_V2_0.imd",
+            "models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd",
+            "models/Holznutzungsbewilligung_V1/Holznutzungsbewilligung_V1_0.imd",
+            "models/DMAVTYM_Alles_V1_0/DMAVTYM_Alles_V1_0.imd",
+            "models/DMAVTYM_Alles_V1_1/DMAVTYM_Alles_V1_1.imd",
+            "models/DMAVTYM_Tous_V1_0/DMAVTYM_Tous_V1_0.imd",
+            "models/DMAVTYM_Tous_V1_1/DMAVTYM_Tous_V1_1.imd",
+            "models/DMAVTYM_Tutti_V1_1/DMAVTYM_Tutti_V1_1.imd",
+            "models/Planungszonen_v1_1/Planungszonen_V1_1.imd",
+            "models/SIA405_Wasser_2015_2_d-20181005/SIA405_Wasser_2015_2_d-20181005.imd",
+            "models/LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0/LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0.imd",
+            "models/Kantonale_Ausnahmetransportrouten_V1_0/ExceptionalLoadsRoute_V1.imd",
+            "models/Rodungen_Rodungsersatz_V1_1/Rodungen_V1_1.imd",
+            "models/modelbaker/hasarcs.imd",
+            "models/modelbaker/noarcs.imd",
+            "models/modelbaker/Staedtische_Ortsplanung_V1_1.imd",
+            "models/refhb24/AbstractSymbology.imd",
+        ],
+    )
+    def test_writing(self, resource_path_root, tmp_path, imd_path):
+        reader = Imd16Reader()
+        metamodel = reader.read(os.path.join(resource_path_root, imd_path))
+        index = Index(metamodel.datasection)
+        library_name = index.types_bucket["Model"][-1].name
+        library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
+        create_python_classes(library, index, str(tmp_path))
+        assert (tmp_path / library_name).is_dir()
 
-def test_init():
-    reader = Imd16Reader()
-    assert isinstance(reader.parser_config, ParserConfig)
+        # the library holds the classes and types only, it does not depend on ili2py or a
+        # library to parse or serialize XML, reading and writing XTF is part of ili2py
+        # (`readers.xtf.xsdata_backend`)
+        for module_path in Path(tmp_path, library_name).rglob("*.py"):
+            source = module_path.read_text(encoding="utf-8")
+            for dependency in ["ili2py", "xsdata", "lxml"]:
+                assert f"from {dependency}" not in source, module_path
+                assert f"import {dependency}" not in source, module_path
 
+    @pytest.mark.parametrize(
+        "imd_path",
+        [
+            # baskets of VIEW TOPICs listed views, which are not rendered as classes
+            # (NameError)
+            "models/SIA405_Abwasser_3D_2015_2_d-20211020/SIA405_Abwasser_3D_2015_2_d-20211020.imd",
+            # a domain and an attribute type both ALL OF the same enumeration
+            # (unresolvable type)
+            "models/SIA405_Wasser_2015_2_d-20181005/SIA405_Wasser_2015_2_d-20181005.imd",
+        ],
+    )
+    def test_importing(self, resource_path_root, tmp_path, imd_path):
+        reader = Imd16Reader()
+        metamodel = reader.read(os.path.join(resource_path_root, imd_path))
+        index = Index(metamodel.datasection)
+        library_name = index.types_bucket["Model"][-1].name
+        library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
+        create_python_classes(library, index, str(tmp_path))
 
-@pytest.mark.parametrize(
-    "imd_path",
-    [
-        "models/Planerischer_Gewaesserschutz_V1_2/PlanerischerGewaesserschutz_V1_2.imd",
-        "models/Kataster_belasteter_Standorte_V1_5/KbS_V1_5.imd",
-        "models/Nutzungsplanung_V1_2/Nutzungsplanung_V1_2.imd",
-        "models/Revitalisierungen_Fliessgewaesser_V1_2/Revitalisierung_Fliessgewaesser_V1_2.imd",
-        "models/Waldreservate_V2_0/Waldreservate_V2_0.imd",
-        "models/Elektrische_Anlagen_Nennspannung_36kV_V1_0/ElektrischeAnlagenNennspannungUeber36kV_V1.imd",
-        "models/LWB_Bewirtschaftungseinheiten_V3_0/LWB_Bewirtschaftungseinheiten_V3_0.imd",
-        "models/Wildruhezonen_V2_1_1/Wildruhezonen_V2_1.imd",
-        "models/SZ_Lebensraum_Fisch_V2/SZ_Lebensraum_Fisch_V2.imd",
-        "models/LWB_Biodiversitaetsfoerderflaechen_Qualitaet_II_und_Vernetzung_V2_0/LWB_Biodiversitaetsfoerderflaechen_Qualitaet_II_und_Vernetzung_V2_0.imd",
-        "models/SZ_Waldreservate_V3/SZ_Waldreservate_V3.imd",
-        "models/Naturereigniskataster_V1_0/Naturereigniskataster_MGDM_V1.imd",
-        "models/Grundwasservorkommen_V2_0/Grundwasservorkommen_V2_0.imd",
-        "models/Laermempfindlichkeitsstufen_V1_2/Laermempfindlichkeitsstufen_V1_2.imd",
-        "models/Laermempfindlichkeitsstufen_V1_2/Laermempfindlichkeitsstufen_V1_2.imd",
-        "models/LWB_Perimeter_Terrassenreben_V2_0/LWB_Perimeter_Terrassenreben_V2_0.imd",
-        "models/SIA405_Abwasser_2015_2_d-20180417/SIA405_Abwasser_2015_2_d-20180417.imd",
-        "models/SIA405_Abwasser_3D_2015_2_d-20211020/SIA405_Abwasser_3D_2015_2_d-20211020.imd",
-        "models/Statische_Waldgrenzen_v1_2/Waldgrenzen_V1_2.imd",
-        "models/SZ_Waldfeststellungen_V2/SZ_Waldfeststellungen_V2.imd",
-        "models/Revitalisierung_Seeufer_V1_2/Revitalisierung_Seen_V1_2.imd",
-        "models/Gewaesserraum_V1_1/Gewaesserraum_V1_1.imd",
-        "models/Gewaesserraum_V1_1/Gewaesserraum_LegendeEintrag_V1_1.imd",
-        "models/SupplySecurity_RuledAreas_V1_2/SupplySecurity_RuledAreas_V1_2.imd",
-        "models/Richtplan_erneuerbare_Energien_V1_0/RichtplanungErneuerbareEnergien_V1.imd",
-        "models/SO_AFU_ABBAUSTELLEN_Publikation_20221103/SO_AFU_ABBAUSTELLEN_Publikation_20221103.imd",
-        "models/Waldreservate_V1_1/Waldreservate_V1_1.imd",
-        "models/Leitungskataster/SIA405_LKMap_2015_2_d-20180427.imd",
-        "models/Inventar_Wasserentnahmen_V1_1/InventarWasserentnahmen_V1_1.imd",
-        "models/Sanierung_Wasserkraft_V1_2/SanierungWasserkraft_V1_2.imd",
-        "models/Fruchtfolgeflaechen_V1/Fruchtfolgeflaechen_V1.imd",
-        "models/LWB_Bewirtschaftungseinheiten_V2_0/LWB_Bewirtschaftungseinheiten_V2_0.imd",
-        "models/Hazard_Mapping_V1_3/Hazard_Mapping_V1_3.imd",
-        "models/SIA405_LKMap_3D_2015_2_d-20180427/SIA405_LKMap_3D_2015_2_d-20180427.imd",
-        "models/LWB_Nutzungsflaechen_V3_0/LWB_Nutzungsflaechen_V3_0.imd",
-        "models/LWB_Nutzungsflaechen_V2_0/LWB_Nutzungsflaechen_V2_0.imd",
-        "models/OeREBKRMtrsfr_V2_0/OeREBKRMtrsfr_V2_0.imd",
-        "models/Holznutzungsbewilligung_V1/Holznutzungsbewilligung_V1_0.imd",
-        "models/DMAVTYM_Alles_V1_0/DMAVTYM_Alles_V1_0.imd",
-        "models/DMAVTYM_Alles_V1_1/DMAVTYM_Alles_V1_1.imd",
-        "models/DMAVTYM_Tous_V1_0/DMAVTYM_Tous_V1_0.imd",
-        "models/DMAVTYM_Tous_V1_1/DMAVTYM_Tous_V1_1.imd",
-        "models/DMAVTYM_Tutti_V1_1/DMAVTYM_Tutti_V1_1.imd",
-        "models/Planungszonen_v1_1/Planungszonen_V1_1.imd",
-        "models/SIA405_Wasser_2015_2_d-20181005/SIA405_Wasser_2015_2_d-20181005.imd",
-        "models/LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0/LWB_Perimeter_LandwirtschaftlicheNutzflaeche_Soemmerung_V2_0.imd",
-        "models/Kantonale_Ausnahmetransportrouten_V1_0/ExceptionalLoadsRoute_V1.imd",
-        "models/Rodungen_Rodungsersatz_V1_1/Rodungen_V1_1.imd",
-        "models/modelbaker/hasarcs.imd",
-        "models/modelbaker/noarcs.imd",
-        "models/modelbaker/Staedtische_Ortsplanung_V1_1.imd",
-        "models/refhb24/AbstractSymbology.imd",
-    ],
-)
-def test_writing(resource_path_root, imd_path):
-    reader = Imd16Reader()
-    metamodel = reader.read(os.path.join(resource_path_root, imd_path))
-    index = Index(metamodel.datasection)
-    library_name = index.types_bucket["Model"][-1].name
-    library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
-    create_python_classes(library, index, output_path)
-    assert os.path.isdir(os.path.join(output_path, library_name))
-
-
-@pytest.mark.parametrize(
-    "imd_path",
-    [
-        # baskets of VIEW TOPICs listed views, which are not rendered as classes (NameError)
-        "models/SIA405_Abwasser_3D_2015_2_d-20211020/SIA405_Abwasser_3D_2015_2_d-20211020.imd",
-        # a domain and an attribute type both ALL OF the same enumeration (unresolvable type)
-        "models/SIA405_Wasser_2015_2_d-20181005/SIA405_Wasser_2015_2_d-20181005.imd",
-    ],
-)
-def test_importing(resource_path_root, imd_path):
-    """The rendered library can be imported and the type hints of all its classes resolve."""
-    reader = Imd16Reader()
-    metamodel = reader.read(os.path.join(resource_path_root, imd_path))
-    index = Index(metamodel.datasection)
-    library_name = index.types_bucket["Model"][-1].name
-    library = Library.from_imd(metamodel.datasection.ModelData, index, library_name)
-    target_path = tempfile.mkdtemp(prefix="ili2py")
-    create_python_classes(library, index, target_path)
-    sys.path.insert(0, target_path)
-    try:
-        importlib.import_module(f"{library_name}.xtf_opening")
-        for module_name, module in list(sys.modules.items()):
-            if module_name != library_name and not module_name.startswith(f"{library_name}."):
-                continue
-            for item in vars(module).values():
-                if isinstance(item, type) and item.__module__ == module_name:
-                    typing.get_type_hints(item)
-    finally:
-        sys.path.remove(target_path)
-        for module_name in list(sys.modules):
-            if module_name == library_name or module_name.startswith(f"{library_name}."):
-                del sys.modules[module_name]
-        importlib.invalidate_caches()
+        # the rendered library can be imported and the type hints of all its classes resolve
+        sys.path.insert(0, str(tmp_path))
+        try:
+            importlib.import_module(f"{library_name}.xtf_opening")
+            for module_name, module in list(sys.modules.items()):
+                if module_name != library_name and not module_name.startswith(
+                    f"{library_name}."
+                ):
+                    continue
+                for item in vars(module).values():
+                    if isinstance(item, type) and item.__module__ == module_name:
+                        typing.get_type_hints(item)
+        finally:
+            # parametrized runs render other libraries, nothing of this one may stay behind
+            sys.path.remove(str(tmp_path))
+            for module_name in list(sys.modules):
+                if module_name == library_name or module_name.startswith(f"{library_name}."):
+                    del sys.modules[module_name]
+            importlib.invalidate_caches()

@@ -1,4 +1,6 @@
 {%- from "elements/groups.jinja2" import group with context -%}
+{#- the model order based cycle breaking strategies (GREEDY_MODEL_ORDER, MODEL_ORDER) crash elkjs 0.12
+    (mermaid 12) on models with association cycles, e.g. OeREBKRMtrsfr_V2_0, so ELK's default is used -#}
 ```mermaid
 ---
 title: {% for model_name in model_names %}{{ translate(model_name) }}{% if not loop.last %}, {% endif %}{% endfor %}
@@ -9,7 +11,7 @@ title: {% for model_name in model_names %}{{ translate(model_name) }}{% if not l
         "elk": {
             "mergeEdges": false,
             "nodePlacementStrategy": "SIMPLE",
-            "cycleBreakingStrategy": "GREEDY_MODEL_ORDER",
+            "cycleBreakingStrategy": "GREEDY",
             "forceNodeModelOrder": true,
             "considerModelOrder": "NODES_AND_EDGES"
         }

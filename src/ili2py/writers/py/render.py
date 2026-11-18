@@ -9,25 +9,24 @@ import black
 import isort
 from jinja2 import Environment, FileSystemLoader
 
+from ili2py.interfaces.interlis import interlis_23, interlis_24
 from ili2py.mappers.helpers import Index
 from ili2py.writers.helpers import create_file, handle_model_versions
 from ili2py.writers.py import constraints
 from ili2py.writers.py.python_structure import Library
 from ili2py.writers.py.transfer_names import translate_transfer_names
 
-base_url_23 = "http://www.interlis.ch/INTERLIS2.3"
-base_url_24 = "http://www.interlis.ch/xtf/2.4"
-
+# the namespaces are owned by the version packages, the templates only borrow them
 render_configuration = {
-    "2.3": {"selector": 23, "base_url": base_url_23, "namespace_map": {"ili": base_url_23}},
+    "2.3": {
+        "selector": 23,
+        "base_url": interlis_23.base_url,
+        "namespace_map": interlis_23.namespace_map,
+    },
     "2.4": {
         "selector": 24,
-        "base_url": base_url_24,
-        "namespace_map": {
-            "ili": f"{base_url_24}/INTERLIS",
-            "geom": "http://www.interlis.ch/geometry/1.0",
-            "xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        },
+        "base_url": interlis_24.base_url,
+        "namespace_map": interlis_24.namespace_map,
     },
 }
 

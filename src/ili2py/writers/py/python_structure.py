@@ -1568,21 +1568,20 @@ class Enumeration(Base):
         Returns:
             The EnumTreeValueType, None if the enumeration is not used as a tree.
         """
-        matched = None
-        for imd_enum_tree_value_type in index.types_bucket.get("EnumTreeValueType", []):
-            if imd_enum_tree_value_type.et.ref != enum_type_tid:
-                continue
-            if imd_enum_tree_value_type.element_in_package or not (
-                matched and matched.element_in_package
-            ):
-                matched = imd_enum_tree_value_type
-        return matched
+        candidates = [
+            imd_enum_tree_value_type
+            for imd_enum_tree_value_type in index.types_bucket.get("EnumTreeValueType", [])
+            if imd_enum_tree_value_type.et.ref == enum_type_tid
+        ]
+        # a domain is an element of a package, the own type of an attribute is not
+        domains = [candidate for candidate in candidates if candidate.element_in_package]
+        return (domains or candidates or [None])[-1]
 
     @classmethod
     def from_imd(cls, imd_enum_type: EnumType, index: Index):
         top_enum_node = index.index[f"{imd_enum_type.tid}.TOP"]
         enum_hirarchie = cls.get_related_enum_nodes(top_enum_node, index)
-        matched_imd_enum_tree_value_type = Enumeration.enum_tree_value_type(
+        matched_imd_enum_tree_value_type = cls.enum_tree_value_type(
             mandatory(imd_enum_type.tid), index
         )
         tree = matched_imd_enum_tree_value_type is not None

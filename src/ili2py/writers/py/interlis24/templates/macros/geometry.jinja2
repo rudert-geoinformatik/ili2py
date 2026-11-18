@@ -1,0 +1,87 @@
+{#- the geometry access of the rendered dataclasses, the same as the compact geometry of ili2py
+    offers (CoordAccess, PolylineAccess, SurfaceAccess, ... in ili2py.readers.xtf.access) -#}
+
+{%- macro axes_access(attributes) -%}
+@property
+def coordinates(self) -> tuple:
+    """The values of the axes."""
+    return ({% for attribute in attributes %}self.{{ attribute.name.lower() }}, {% endfor %})
+
+@property
+def arc_point(self) -> "tuple | None":
+    """A straight ends here, there is no intermediate point."""
+    return None
+{%- endmacro %}
+
+{%- macro arc_access() -%}
+@property
+def arc_point(self) -> tuple:
+    """The intermediate point and the radius if given (A1, A2[, R])."""
+    if self.r is None:
+        return (self.a1, self.a2)
+    return (self.a1, self.a2, self.r)
+{%- endmacro %}
+
+{%- macro coord_access() -%}
+@property
+def coordinates(self) -> tuple:
+    """The values of the axes, see CoordAccess of ili2py."""
+    return self.coord.coordinates if self.coord is not None else ()
+{%- endmacro %}
+
+{%- macro segment_access() -%}
+def __len__(self) -> int:
+    return len(self.vertices)
+
+def __iter__(self) -> Iterator[tuple]:
+    return (vertex.coordinates for vertex in self.vertices)
+
+def vertex(self, index: int) -> tuple:
+    """The values of the axes of a vertex, see PolylineAccess of ili2py."""
+    return self.vertices[index].coordinates
+
+def arc(self, index: int) -> "tuple | None":
+    """The intermediate point and the radius if the vertex ends an arc, None otherwise."""
+    return self.vertices[index].arc_point
+{%- endmacro %}
+
+{%- macro polyline_access() -%}
+def __len__(self) -> int:
+    return len(self.polyline) if self.polyline is not None else 0
+
+def __iter__(self) -> Iterator[tuple]:
+    return iter(self.polyline) if self.polyline is not None else iter(())
+
+def vertex(self, index: int) -> tuple:
+    """The values of the axes of a vertex, see PolylineAccess of ili2py."""
+    if self.polyline is None:
+        raise IndexError(f"vertex {index} out of 0")
+    return self.polyline.vertex(index)
+
+def arc(self, index: int) -> "tuple | None":
+    """The intermediate point and the radius if the vertex ends an arc, None otherwise."""
+    if self.polyline is None:
+        raise IndexError(f"vertex {index} out of 0")
+    return self.polyline.arc(index)
+{%- endmacro %}
+
+{%- macro surface_access() -%}
+@property
+def boundaries(self) -> list:
+    """The boundaries, the first one is the exterior, see SurfaceAccess of ili2py."""
+    return self.surface.boundaries if self.surface is not None else []
+{%- endmacro %}
+
+{%- macro multi_polyline_access() -%}
+@property
+def polylines(self) -> list:
+    """The polylines, see MultiPolylineAccess of ili2py."""
+    return self.multipolyline.parts if self.multipolyline is not None else []
+{%- endmacro %}
+
+{%- macro multi_surface_access() -%}
+@property
+def surfaces(self) -> list:
+    """The surfaces, see MultiSurfaceAccess of ili2py."""
+    return self.multisurface.parts if self.multisurface is not None else []
+{%- endmacro %}

@@ -111,6 +111,8 @@ markers = [
     "integration: Integration Tests",
     "network_bound: Require internet connection",
     "e2e: End-to-end tests (IMD -> python classes -> XTF -> ilivalidator), require java and ilivalidator",
+    "rendered_read: Reading XTF with the rendered classes (writers/py/render.py)",
+    "rendered_write: Writing XTF with the rendered classes (writers/py/render.py)",
 ]
 testpaths = [
     "tests",
