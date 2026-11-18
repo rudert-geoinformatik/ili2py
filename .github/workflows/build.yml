@@ -22,6 +22,8 @@ jobs:
           sudo apt-get install -y plantuml npm
       # installed for the runner user (no sudo), so the postinstall of the puppeteer bundled
       # with mermaid-cli downloads its matching chrome into the runner users ~/.cache/puppeteer
+      # pinned, since mermaid updates bring new ELK versions which already broke charts once
+      # (elkjs 0.12 crashing on GREEDY_MODEL_ORDER, see templates/mermaid/mermaid.jinja2)
       - name: Install Mermaid CLI
         env:
           MERMAID_CLI_VERSION: "12.2.0"

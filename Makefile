@@ -29,14 +29,6 @@ ILIVALIDATOR_DIR = build/ilivalidator-$(ILIVALIDATOR_VERSION)
 ILIVALIDATOR_ZIP = build/ilivalidator-$(ILIVALIDATOR_VERSION).zip
 ILIVALIDATOR_JAR = $(ILIVALIDATOR_DIR)/ilivalidator-$(ILIVALIDATOR_VERSION).jar
 
-# mermaid cli (output-test), ELK crashes on some layouts, those charts are rendered
-# again without the ELK directive so one chart does not break the whole artifact
-MMDC ?= mmdc
-MMDC_RENDER = $(MMDC) -i {} -o {.}.png --puppeteerConfigFile=puppeteer-config.json
-MMDC_FALLBACK = sed '/layout.: *.elk/d' {} > {.}.default-layout.md \
-	&& $(MMDC) -i {.}.default-layout.md -o {.}.png --puppeteerConfigFile=puppeteer-config.json \
-	&& rm {.}.default-layout.md
-
 # parallel pytest workers (pytest-xdist) for test-e2e
 E2E_WORKERS ?= 4
 
@@ -175,8 +167,7 @@ binary:
 output-test:
 	rm -rf build/ili2py_output_test
 	$(UV_RUN) python src/ili2py/scripts/generate_test_output.py
-	find build/ili2py_output_test/mermaid/ -type f -name "*.md" | parallel -j 4 \
-		"$(MMDC_RENDER) || (echo 'ELK layout failed for {}, falling back to default layout' && $(MMDC_FALLBACK))"
+	find build/ili2py_output_test/mermaid/ -type f -name "*.md" | parallel -j 4 'mmdc -i {} -o {.}.png --puppeteerConfigFile=puppeteer-config.json'
 	plantuml -tpng build/ili2py_output_test/plantuml/*.puml
 	plantuml -tpng build/ili2py_output_test/plantuml_role_members/*.puml
 	zip -r build/ili2py_output_test.zip  build/ili2py_output_test
