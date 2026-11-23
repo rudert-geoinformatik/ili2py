@@ -225,8 +225,6 @@ class Attribute(Base):
     geometric_is_point_like: bool = field(default=False)
     geometric_is_line_like: bool = field(default=False)
     geometric_is_polygon_like: bool = field(default=False)
-    # Whether the line forms of its type allow arcs, also when the type is a domain, of which
-    # `line_type` holds nothing.
     geometric_arcs: bool = field(default=False)
     type_related_imports: list[RelatedImport] = field(default_factory=list)
     namespace_package: str | None = field(default=None)
