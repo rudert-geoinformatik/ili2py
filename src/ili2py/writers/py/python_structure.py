@@ -225,6 +225,9 @@ class Attribute(Base):
     geometric_is_point_like: bool = field(default=False)
     geometric_is_line_like: bool = field(default=False)
     geometric_is_polygon_like: bool = field(default=False)
+    # Whether the line forms of its type allow arcs, also when the type is a domain, of which
+    # `line_type` holds nothing.
+    geometric_arcs: bool = field(default=False)
     type_related_imports: list[RelatedImport] = field(default_factory=list)
     namespace_package: str | None = field(default=None)
     kind: str | None = field(default=None)
@@ -645,6 +648,8 @@ class Attribute(Base):
             geometric_is_point_like=tid in index.geometric_attributes_point_like,
             geometric_is_line_like=tid in index.geometric_attributes_line_like,
             geometric_is_polygon_like=tid in index.geometric_attributes_polygon_like,
+            geometric_arcs="INTERLIS.ARCS"
+            in index.geometric_attributes_line_form.get(tid, []),
             type_related_imports=type_related_imports,
             namespace_package=Attribute.get_last_super_model_name_from_attribute(
                 imd_attr_or_param, index
